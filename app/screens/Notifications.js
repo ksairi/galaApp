@@ -5,7 +5,7 @@ import ContainerStyles from '../components/View/styles'
 import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
-import { NotificationsListItem } from '../components/ListItem'
+import { NotificationListItem } from '../components/ListItem'
 
 export default class Notifications extends React.Component {
   static LocalMessages = {
@@ -65,7 +65,7 @@ export default class Notifications extends React.Component {
             <FlatList
               data={this.state.notificationsData}
               renderItem={({item}) =>
-                <NotificationsListItem title={item.title} onPress={() => console.log(item)}/> 
+                <NotificationListItem title={item.title} onPress={() => console.log(item)}/> 
               }
             />
           </GenericContainer>

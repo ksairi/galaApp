@@ -1,7 +1,7 @@
-import RoutineItemList from './RoutineItemList'
-import NotificationsListItem from './NotificationsListItem'
+import RoutineListItem from './RoutineListItem'
+import NotificationListItem from './NotificationListItem'
 
 module.exports = {
-  RoutineItemList,
-  NotificationsListItem
+  RoutineListItem,
+  NotificationListItem
 }
