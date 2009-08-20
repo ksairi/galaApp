@@ -7,7 +7,6 @@ import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
 import { RoutineItemList } from '../components/ListItem'
 
-
 export default class Routines extends React.Component {
   static Messages = {
     NO_ROUTINES:"Sin rutinas"
@@ -66,7 +65,7 @@ export default class Routines extends React.Component {
             <FlatList
               data={this.state.routinesData}
               renderItem={({item}) =>
-                <RoutineItemList description={item.description} active={item.isActive} dateFrom={item.dateFrom} dateTo={item.dateTo} /> 
+                <RoutineItemList description={item.description} active={item.isActive} dateFrom={item.dateFrom} dateTo={item.dateTo} onPress={() => console.log(item)}/> 
               }
             />
           </GenericContainer>

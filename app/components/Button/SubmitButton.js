@@ -4,8 +4,8 @@ import Style from './styles'
 
 export default ({title, onPress}) => 
   <Button
-    containerStyle={Style.containerStyle}
-    style={Style.fontStyle}
+    containerStyle={Style.submitButtonContainer}
+    style={Style.submitButtonFont}
     onPress={onPress()}>
     {title}
   </Button>
