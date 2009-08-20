@@ -1,6 +1,7 @@
 //  @flow
 import React from 'react'
 import { Keyboard } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
@@ -76,6 +77,10 @@ export default class ResetPassword extends React.Component {
   doResetPassword(){
     var message
     Keyboard.dismiss()
+    if (this.state.userId.length == 0 ||  this.state.password.length == 0 || this.state.confirmPassword.length == 0){
+      this.setState({message:Messages.INCOMPLETE_INPUT_DATA, hasErrors:true})
+      return
+    }
     message = ValidationHelper.userIdWithErrors(this.state.userId)
     if(message){
       this.setState({message, hasErrors:true})
@@ -125,7 +130,13 @@ export default class ResetPassword extends React.Component {
   }
 
   goToSignIn() {
-    this.setState({message:""});
-    this.props.navigation.navigate(Screens.SignIn)
+    this.setState({message:""})
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName:Screens.SignIn})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 }

@@ -1,6 +1,7 @@
 import React from 'react'
 import { Keyboard } from 'react-native'
 import { AsyncStorage } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
@@ -37,14 +38,11 @@ export default class SignUp extends React.Component{
     Keyboard.dismiss()
     var errorMessage
     
-    if (this.state.userFullName.length == 0){
-        this.setState({errorMessage:Messages.INVALID_USER_FULLNAME})
+    if (this.state.userFullName.length == 0 || this.state.userId.length == 0 || this.state.password.length == 0){
+        this.setState({errorMessage:Messages.INCOMPLETE_INPUT_DATA})
         return
     }
-    if (this.state.userId.length == 0 || this.state.password.length == 0){
-        this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
-        return
-    }
+    
     errorMessage = ValidationHelper.userIdWithErrors(this.state.userId)
     if(errorMessage){
       this.setState({errorMessage})  
@@ -64,7 +62,14 @@ export default class SignUp extends React.Component{
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         saveInitialData(response.data, this.state.userId)
         .then(()=>{
-          this.props.navigation.navigate(Screens.HomeDrawerStack)  
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({routeName:Screens.HomeDrawerStack})
+            ],
+            key: null
+          })
+          this.props.navigation.dispatch(resetAction)
         })
         .catch((errorMessage)=>{
           this.setState({errorMessage})      
@@ -108,7 +113,13 @@ export default class SignUp extends React.Component{
   }
   goToSignIn(){
     this.setState({message:""})
-    this.props.navigation.navigate(Screens.SignIn)
+    const resetAction = NavigationActions.reset({
+      index: 0,
+      actions: [
+        NavigationActions.navigate({routeName:Screens.SignIn})
+      ]
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   render(){

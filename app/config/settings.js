@@ -9,7 +9,6 @@ exports.Urls = {
 
 exports.Messages = {
 	INVALID_USER_ID_PASSWORD:"Ingresá el DNI y tu contraseña para continuar",
-  INVALID_USER_FULLNAME:"Ingresá tu nombre completo",
   INVALID_CONFIRM_PASSWORD:"Las contraseñas no coinciden",
   SERVER_ERROR:"Error de conexión a nuestros servidores. Por favor reintentá en unos minutos",
   CHECK_INTERNET_CONNECTION:"Verificá tu conexión de internet",
@@ -25,7 +24,8 @@ exports.Messages = {
   SYSTEM_ERROR: "Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente",
   SYSTEM_READ_ERROR:"Error al leer información del dispositivo. Vuelva a intentarlo nuevamente",
   INVALID_COMMENTS:"Por favor ingresá un comentario antes de enviar",
-  SEND_COMMENTS_OK:"Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias"
+  SEND_COMMENTS_OK:"Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias",
+  INCOMPLETE_INPUT_DATA:"Completá todos los campos antes de continuar"
 }
 
 exports.Labels = {
