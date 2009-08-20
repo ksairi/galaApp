@@ -9,6 +9,7 @@ exports.saveInitialData = (serverData, userId) => {
       [Keys.userData, JSON.stringify(serverData[Keys.userData])],
       [Keys.timeTable, JSON.stringify(serverData[Keys.timeTable])],
       [Keys.routines, JSON.stringify(serverData[Keys.routines])],
+      [Keys.notifications, JSON.stringify(serverData[Keys.notifications])],
     ])
     .catch(()=>{
       throw Messages.SYSTEM_ERROR

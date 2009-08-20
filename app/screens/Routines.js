@@ -8,7 +8,7 @@ import { LoadingSpinner } from '../components/Spinner'
 import { RoutineItemList } from '../components/ListItem'
 
 export default class Routines extends React.Component {
-  static Messages = {
+  static LocalMessages = {
     NO_ROUTINES:"Sin rutinas"
   }
   
@@ -22,7 +22,7 @@ export default class Routines extends React.Component {
     .then((routinesDataJson)=>{
       try{
         var routinesData = JSON.parse(routinesDataJson)
-        if (routinesData !== null){
+        if (routinesData !== null && routinesData.length > 0){
           this.setState({routinesData})
         }
         else {
@@ -53,7 +53,7 @@ export default class Routines extends React.Component {
     if(this.state.routinesData.length == 0){
       return(
         <GenericText error={true}>
-          {Messages.NO_ROUTINES}
+          {Routines.LocalMessages.NO_ROUTINES}
         </GenericText>
       )  
     }

@@ -11,5 +11,10 @@ export default StyleSheet.create({
   },
   inactiveRoutine:{
     color:'red'
+  },
+  notificationListItemText:{
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width:200  
   }
 })
