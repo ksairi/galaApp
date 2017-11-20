@@ -1,4 +1,4 @@
-const GenericText = require('./GenericText')
+const { GenericText } = require('./GenericText')
 
 module.exports = {
 	GenericText

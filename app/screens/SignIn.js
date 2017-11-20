@@ -13,18 +13,19 @@ const hs = React.createElement
 const component = compose(
  
   withReducer('userId', 'setUserId', (state, action) => {
-    return (action.userId ? action.userId : state)
+    
+    return action
   }, ''),
   withReducer('password', 'setPassword', (state, action) => {
-    return (action.password ? action.password : state)
+    return action
   }, ''),
   withReducer('errorMessage', 'setErrorMessage', (state, action) => {
-    return (action.errorMessage ? action.errorMessage : state)
+    return action
   }, ''),
   withHandlers({
   	signIn: props => () => {
   		if (props.userId.length == 0 || props.password.length == 0){
-  			setErrorMessage(Messages.INVALID_USER_PASSWORD)
+  			props.setErrorMessage(Messages.INVALID_USER_PASSWORD)
         return
   		}
       //send to server
@@ -35,15 +36,16 @@ const component = compose(
 )(SignIn)
 
 function SignIn({userId, password, setUserId, setPassword, signIn, errorMessage}) {
+  
 	return (
     hs(RootView, {[Keys.children]: [
-  		hs(GenericInputText, {[Keys.componentValue]: userId, 
-        keyboardType: "numeric", label: Labels.ENTER_USER_ID,
-        onBlur:{() => setUserId()}}),
-  		hs(GenericInputText, {Keys.componentValue: password, label: Labels.ENTER_PASSWORD
-        onBlur:{() => setPassword()}}),
-  		hs(SubmitButton, {[Keys.buttonTitle]: Labels.SIGN_IN, onPress: signIn}),
-  		hs(GenericText, {[Keys.style]: GenericStyles.errorMessage , [Keys.message]: errorMessage})
+  		hs(GenericInputText, {key:0, value: userId, 
+        keyboardType: "numeric", placeHolder: Labels.ENTER_USER_ID,
+        onChangeText: (userId) => setUserId(userId)}),
+  		hs(GenericInputText, {key:1, value: password, placeHolder: Labels.ENTER_PASSWORD, secureTextEntry:true,
+        onChangeText: (password) => setPassword(password)}),
+  		hs(SubmitButton, {key:2, [Keys.buttonTitle]: Labels.SIGN_IN, onPress: () => signIn}),
+  		hs(GenericText, {key:3, [Keys.style]: GenericStyles.errorMessage, [Keys.message]: errorMessage})
     ]})
   )
 }

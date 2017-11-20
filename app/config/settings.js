@@ -1,4 +1,4 @@
-const Settings = {
+const Urls = {
   API_URL: "https://www.api.com",
 }
 
@@ -28,5 +28,6 @@ const Keys = {
 module.exports = {
 	Urls,
 	Messages,
-	Labels
+	Labels,
+  Keys
 }

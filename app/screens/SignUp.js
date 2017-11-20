@@ -54,15 +54,15 @@ function SignIn({setUserFullName, userId, password, confirmPassword, setUserId,
   setPassword, setConfirmPassword, signUp, errorMessage}) {
   return (
     hs(RootView, {[Keys.children]: [
-      hs(GenericInputText, {value: userFullName, label: Labels.ENTER_FULL_NAME
-        onBlur: {() => setUserFullName}}),
+      hs(GenericInputText, {value: userFullName, label: Labels.ENTER_FULL_NAME,
+        onChange: () => setUserFullName}),
       hs(GenericInputText, {value: userId, 
         keyboardType: "numeric", label: Labels.ENTER_USER_ID,
-        onBlur:{() => setUserId}}),
-      hs(GenericInputText, {value: password, label: Labels.ENTER_PASSWORD
-        onBlur:{() => setPassword}}),
-      hs(GenericInputText, {value: confirmPassword, label: Labels.CONFIRM_PASSWORD
-        onBlur:{() => setConfirmPassword}}),
+        onChange:() => setUserId}),
+      hs(GenericInputText, {value: password, label: Labels.ENTER_PASSWORD,
+        onChange:() => setPassword}),
+      hs(GenericInputText, {value: confirmPassword, label: Labels.CONFIRM_PASSWORD,
+        onChange:() => setConfirmPassword}),
       hs(SubmitButton, {[Keys.buttonTitle]: Labels.SIGN_UP, onPress: signUp}),
       hs(GenericText, {[Keys.style]: GenericStyles.errorMessage , [Keys.message]: errorMessage})
     ]})
@@ -71,4 +71,4 @@ function SignIn({setUserFullName, userId, password, confirmPassword, setUserId,
 
 module.exports = {
   SignIn : component
-}Z
+}
