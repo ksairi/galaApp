@@ -1,6 +1,6 @@
 const React = require('react')
-	   , { Text } = require('react-native')
-     ,{ Keys } = require('../config/settings')
+    , { Text } = require('react-native')
+    , { Keys } = require('../config/settings')
 
 const hs = React.createElement
 

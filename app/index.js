@@ -1,7 +1,7 @@
 const React = require('react')
-const { Text, View } = require('react-native')
-const { AppRoutes } = require('./config/routes')
-const hs = React.createElement
+    , { Text, View } = require('react-native')
+    , { AppRoutes } = require('./config/routes')
+    , hs = React.createElement
 
 
 const App = () => {
