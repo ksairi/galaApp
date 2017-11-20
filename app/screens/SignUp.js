@@ -4,8 +4,7 @@ const React = require ('react')
     , { SubmitButton } = require('../components/Button')
     , { GenericText } = require('../components/Text/')
     , { compose, withHandlers, withReducer } = require('recompose')
-    , { Messages, Labels } = require('../config/settings')
-    , { Labels } = require ('../config/settings')
+    , { Messages, Labels, Keys } = require('../config/settings')
     , { GenericStyles } = require ('../config/styles')
 
 
