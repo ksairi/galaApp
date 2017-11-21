@@ -6,12 +6,12 @@ const React = require('react')
 const hs = React.createElement
 
 
-const GenericInputText = (props) => {
+const GenericTextInput = (props) => {
 	 return ( 
-	 	hs(TextInput, {style: Styles.textInput, ...props})
+	 	hs(TextInput, {style: Styles.textInput, underlineColorAndroid: 'transparent' ,...props})
 	 )
 }
 
 module.exports = {
-	GenericInputText
+	GenericTextInput
 }

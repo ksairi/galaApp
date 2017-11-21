@@ -5,12 +5,12 @@ const React = require('react')
 
 const hs = React.createElement
 
-const RootView = (props) => {
+const TextInputWrapper = (props) => {
   return (
-    hs(View, {style: Styles.container}, props[Keys.children])
+    hs(View, {style: Styles.textInputWrapper}, props[Keys.children])
   )
 }
 
 module.exports = {
-  RootView
+  TextInputWrapper
 }

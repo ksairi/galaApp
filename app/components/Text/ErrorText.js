@@ -1,15 +1,16 @@
 const React = require('react')
     , { Text } = require('react-native')
     , { Keys } = require('../../config/settings')
+    , { Styles } = require('./style')
 
 const hs = React.createElement
 
-const GenericText = (props) => {
+const ErrorText = (props) => {
   return (
-    hs(Text, {style: props[Keys.style]}, props[Keys.message])
+    hs(Text, {style: Styles.errorMessage}, props[Keys.message])
   )
 }
 
 module.exports = {
-  GenericText
+  ErrorText
 }
