@@ -3,7 +3,7 @@ const React = require ('react')
     , { GenericTextInput } = require('../components/TextInput/')
     , { SubmitButton } = require('../components/Button')
     , { ErrorText } = require('../components/Text/')
-    , { compose, withHandlers, withReducer } = require('recompose')
+    , { compose, withHandlers, withReducer, lifecycle } = require('recompose')
     , { Messages, Labels, Keys } = require('../config/settings')
     , { GenericStyles } = require ('../config/styles')
 
@@ -32,7 +32,9 @@ const component = compose(
       //send to server
   		console.log(props.userId)
   		console.log(props.password)
-  	},
+  	}
+  }),
+  withHandlers({
     onSubmitUserId: props => () => {
       if (!props.password) {
         // SET FOCUS ON PASSWORD
@@ -42,15 +44,29 @@ const component = compose(
       }
     }
   })
+  /*withHandlers(() => {
+    let textInput = null
+
+    return {
+        onRef: () => (ref) => (textInput = ref),
+        focus: () => () => console.log(textInput)//textInput.focus()
+    }
+  }),
+  lifecycle({
+    componentDidMount() {
+      console.log(this.props)
+      this.props.focus()
+    }
+  })*/
 )(SignIn)
 
-function SignIn({userId, password, setUserId, setPassword, signIn, onSubmitUserId, errorMessage}) {
+function SignIn({userId, password, setUserId, setPassword, signIn, onSubmitUserId, errorMessage, onRef}) {
   
 	return (
     hs(CentredWrapper, {[Keys.children]: [
       hs(TextInputWrapper, {key:0, [Keys.children]: [
     		hs(GenericTextInput, {key:0, value: userId, 
-          keyboardType: "numeric", placeholder: Labels.ENTER_USER_ID,
+          keyboardType: "numeric", ref: onRef, placeholder: Labels.ENTER_USER_ID,
           autoFocus: true, onChangeText: (userId) => setUserId(userId),
           onSubmitEditing: onSubmitUserId})
         ]}),
