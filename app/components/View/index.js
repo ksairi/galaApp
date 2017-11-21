@@ -1,5 +1,9 @@
-const { RootView } = require('./RootView')
+const { RootWrapper } = require('./RootWrapper')
+    , { CentredWrapper } = require('./CentredWrapper')
+    , { TextInputWrapper } = require('./TextInputWrapper')
 
 module.exports = {
-	RootView
+	RootWrapper,
+  CentredWrapper,
+  TextInputWrapper
 }

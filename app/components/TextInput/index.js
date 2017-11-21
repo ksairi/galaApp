@@ -1,5 +1,5 @@
-const { GenericInputText } = require('./GenericInputText')
+const { GenericTextInput } = require('./GenericTextInput')
 
 module.exports = {
-	GenericInputText
+	GenericTextInput
 }

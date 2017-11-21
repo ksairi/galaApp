@@ -2,7 +2,7 @@ const React = require ('react')
     , { RootView } = require('../components/View/')
     , { GenericInputText} = require('../components/TextInput/')
     , { SubmitButton } = require('../components/Button')
-    , { GenericText } = require('../components/Text/')
+    , { ErrorText } = require('../components/Text/')
     , { compose, withHandlers, withReducer } = require('recompose')
     , { Messages, Labels, Keys } = require('../config/settings')
     , { GenericStyles } = require ('../config/styles')
@@ -64,7 +64,7 @@ function SignIn({setUserFullName, userId, password, confirmPassword, setUserId,
       hs(GenericInputText, {value: confirmPassword, label: Labels.CONFIRM_PASSWORD,
         onChange:() => setConfirmPassword}),
       hs(SubmitButton, {[Keys.buttonTitle]: Labels.SIGN_UP, onPress: signUp}),
-      hs(GenericText, {[Keys.style]: GenericStyles.errorMessage , [Keys.message]: errorMessage})
+      hs(ErrorText, {[Keys.style]: GenericStyles.errorMessage , [Keys.message]: errorMessage})
     ]})
   )
 }

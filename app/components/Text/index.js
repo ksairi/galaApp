@@ -1,5 +1,5 @@
-const { GenericText } = require('./GenericText')
+const { ErrorText } = require('./ErrorText')
 
 module.exports = {
-	GenericText
+	ErrorText
 }
