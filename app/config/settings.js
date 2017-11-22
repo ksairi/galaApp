@@ -1,5 +1,7 @@
+const SERVER_HOSTNAME = "galagym.com"
 const Urls = {
-  API_URL: "https://www.api.com",
+  LOGIN: SERVER_HOSTNAME + "login",
+  REGISTER: SERVER_HOSTNAME + "register",
 }
 
 const Messages = {

@@ -6,6 +6,7 @@ const React = require ('react')
     , { compose, withHandlers, withReducer, lifecycle } = require('recompose')
     , { Messages, Labels, Keys } = require('../config/settings')
     , { GenericStyles } = require ('../config/styles')
+    , { login } = require('../helper/ApiHelper')
 
 
 const hs = React.createElement
@@ -29,7 +30,18 @@ const component = compose(
         return
   		}
       props.setErrorMessage("")
-      //send to server
+      //TODO show loading
+      login(props.userId, props.password, (err, data)=> {
+      //TODO hide loading
+        if(err){
+          props.setErrorMessage(err)
+        }
+        else{
+            //TODO save data in localstorage
+            props.navigation.navigate('Home')
+        }
+
+      })
   		console.log(props.userId)
   		console.log(props.password)
   	}
