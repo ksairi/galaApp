@@ -1,16 +1,17 @@
 const React = require('react')
-const { StackNavigator } = require('react-navigation')
-const { Init }  = require ('../screens/Init')
-const { SignIn } = require('../screens/SignIn')
-const SignUp = require('../screens/SignUp')
-const Profile = require('../screens/Profile')
+    , { StackNavigator } = require('react-navigation')
+    , { Init }  = require ('../screens/Init')
+    , { SignIn } = require('../screens/SignIn')
+    , { SignUp } = require('../screens/SignUp')
+    , { Profile } = require('../screens/Profile')
+    , { Screens } = require('../config/settings')
 
 
 const AppRoutes = StackNavigator({
-  Init: {
+  [Screens.Init]: {
     screen: Init
   },
-  SignIn: {
+  [Screens.SignIn]: {
     screen: SignIn
   }
 })

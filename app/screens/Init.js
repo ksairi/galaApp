@@ -2,6 +2,7 @@ const React = require('react')
 const { Text, View } = require('react-native')
 const { RootWrapper } = require('../components/View/')
 const { compose, lifecycle } = require('recompose')
+const { Screens } = require('../config/settings')
 
 const hs = React.createElement
 
@@ -10,7 +11,7 @@ const component = compose(
 	componentDidMount(){
 	  const timerID = setInterval(()=> {
 	    clearInterval(timerID)
-	    this.props.navigation.navigate('SignIn')
+	    this.props.navigation.navigate(Screens.SignIn)
 	  }
 	  , 1000)
 	}

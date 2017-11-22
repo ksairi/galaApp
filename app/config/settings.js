@@ -27,9 +27,16 @@ const Keys = {
   componentValue: "value"
 }
 
+const Screens = {
+  Init:"Init",
+  SignIn:"SignIn",
+  SignUp:"SignUp",
+}
+
 module.exports = {
 	Urls,
 	Messages,
 	Labels,
-  Keys
+  Keys,
+  Screens
 }
