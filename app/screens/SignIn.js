@@ -10,8 +10,7 @@ const React = require ('react')
 
 
 const hs = React.createElement
-
-const component = compose(
+    , component = compose(
  
   withReducer('userId', 'setUserId', (state, action) => {
     

@@ -1,8 +1,8 @@
 const React = require('react')
-const { Text, View } = require('react-native')
-const { RootWrapper } = require('../components/View/')
-const { compose, lifecycle } = require('recompose')
-const { Screens } = require('../config/settings')
+		, { Text, View } = require('react-native')
+		, { RootWrapper } = require('../components/View/')
+		, { compose, lifecycle } = require('recompose')
+		, { Screens } = require('../config/settings')
 
 const hs = React.createElement
 

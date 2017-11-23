@@ -1,4 +1,4 @@
-const SERVER_HOSTNAME = "galagym.com"
+const SERVER_HOSTNAME = "http://www.galagym.com/"
 const Urls = {
   LOGIN: SERVER_HOSTNAME + "login",
   REGISTER: SERVER_HOSTNAME + "register",
@@ -7,7 +7,9 @@ const Urls = {
 const Messages = {
 	INVALID_USER_PASSWORD: "Ingresá el dni y tu contraseña para continuar",
   INVALID_USER_FULLNAME: "Ingresá tu nombre completo",
-  INVALID_CONFIRM_PASSWORD: "Las contraseñas no coinciden"
+  INVALID_CONFIRM_PASSWORD: "Las contraseñas no coinciden",
+  SERVER_ERROR: "Error de conexión. Por favor intentá en unos minutos.",
+  CHECK_INTERNET_CONNECTION: "Verifica tu conexión de internet",
 }
 
 const Labels = {

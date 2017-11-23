@@ -1,4 +1,5 @@
-const { Urls } = require('../config/routes.js')
+const { Urls, Messages } = require('../config/settings.js')
+    , { isDeviceConnected } = require('./NetworkHelper')
 
 function login(userId, password, cb) {
 
@@ -7,14 +8,9 @@ function login(userId, password, cb) {
   loginParamters.userId = userId
   loginParamters.password = password
   loginParamters.accessHash = getAccessHash()
-
-  if (loginSuccess){
-    cb(data)
-  }
-  else {
-      cb('server string error')  
-  }
-
+  connectToServer(Urls.LOGIN, loginParamters, function(error,  data){
+    return cb(error, data)
+  })
 }
 
 
@@ -26,17 +22,57 @@ function register(fullName, userId, password, cb) {
   loginParamters.userId = userId
   loginParamters.password = password
   loginParamters.accessHash = getAccessHash()
-
-  if (registerSuccess){
-    cb(data)
-  }
-  else {
-      cb('server string error')  
-  }
+  connectToServer(Urls.REGISTER, loginParamters, function(error,  data){
+    return cb(error, data)
+  })
 }
 
-function accessHash () {
+function connectToServer(url, parameters, cb) {
+  fetch(url , {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(parameters)
+  })
+  .then((response) => {
+    if(response.ok){
+      
+      try {
+        const jsonObject = JSON.parse(response)
+        return jsonObject
+      }
+      catch(e){
+        throw new Error(Messages.SERVER_ERROR)
+      }
+    }
+    else{
+        throw new Error(Messages.SERVER_ERROR)
+    }
+  })
+  .then((responseJson) => {
+    if(responseJson.error)
+      return cb(responseJson.error)
+    else{
+      return cb(null, responseJson)
+    }
+  })
+  .catch((error) =>{
+    isDeviceConnected((isConnected) => {
+      if(isConnected){
+        cb(error.message)
+      }
+      else{
+          cb(Messages.CHECK_INTERNET_CONNECTION)
+      }
+    })
+  })
+}
 
+function getAccessHash () {
+
+  return ''
  // TODO see where we store the hashkey
 }
 
