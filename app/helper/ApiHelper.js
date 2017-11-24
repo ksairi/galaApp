@@ -46,16 +46,16 @@ function connectToServer(url, parameters) {
         return jsonObject
       }
       catch(e){
-        throw new Error(Messages.SERVER_ERROR)
+        throw Messages.SERVER_ERROR
       }
     }
     else{
-        throw new Error(Messages.SERVER_ERROR)
+        throw Messages.SERVER_ERROR
     }
   })
   .then((responseJson) => {
     if(responseJson.error)
-      throw new Error(responseJson.error)
+      throw responseJson.error
     else{
       return responseJson
     }
@@ -65,10 +65,10 @@ function connectToServer(url, parameters) {
       isDeviceConnected()
       .then((isConnected)=>{
         if(isConnected){
-          throw new Error(error.message)
+          throw error
         }
         else{
-            throw new Error(Messages.CHECK_INTERNET_CONNECTION)
+            throw Messages.CHECK_INTERNET_CONNECTION
         }
       })
     )

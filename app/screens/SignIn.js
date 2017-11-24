@@ -40,7 +40,7 @@ const hs = React.createElement
           props.navigation.navigate(Screens.Home)
         })
       .catch((error) => {
-        props.setErrorMessage(error.message)
+        props.setErrorMessage(message)
       })
       console.log(props.userId)
 		  console.log(props.password)
