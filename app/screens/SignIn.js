@@ -4,7 +4,7 @@ const React = require ('react')
     , { SubmitButton } = require('../components/Button')
     , { ErrorText } = require('../components/Text/')
     , { compose, withHandlers, withReducer, lifecycle } = require('recompose')
-    , { Messages, Labels, Keys } = require('../config/settings')
+    , { Messages, Labels, Keys, Screens } = require('../config/settings')
     , { GenericStyles } = require ('../config/styles')
     , { login } = require('../helper/ApiHelper')
 
@@ -28,22 +28,24 @@ const hs = React.createElement
   			props.setErrorMessage(Messages.INVALID_USER_PASSWORD)
         return
   		}
-      props.setErrorMessage("")
-      //TODO show loading
-      login(props.userId, props.password, (err, data)=> {
-      //TODO hide loading
-        if(err){
-          props.setErrorMessage(err)
-        }
-        else{
-            //TODO save data in localstorage
-            props.navigation.navigate('Home')
-        }
-
+      props.setErrorMessage("");
+      (async function() {
+        //TODO show loading
+        var promise = await login(props.userId, props.password)
+        //TODO hide loading
+        return promise
+      })()
+      .then((data) =>{
+        //TODO save data in localstorage
+          props.navigation.navigate(Screens.Home)
+        })
+      .catch((error) => {
+        props.setErrorMessage(error.message)
       })
-  		console.log(props.userId)
-  		console.log(props.password)
-  	}
+      console.log(props.userId)
+		  console.log(props.password)
+  	 
+    }
   }),
   withHandlers({
     onSubmitUserId: props => () => {

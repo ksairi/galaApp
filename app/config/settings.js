@@ -9,7 +9,7 @@ const Messages = {
   INVALID_USER_FULLNAME: "Ingresá tu nombre completo",
   INVALID_CONFIRM_PASSWORD: "Las contraseñas no coinciden",
   SERVER_ERROR: "Error de conexión. Por favor intentá en unos minutos.",
-  CHECK_INTERNET_CONNECTION: "Verifica tu conexión de internet",
+  CHECK_INTERNET_CONNECTION: "Verificá tu conexión de internet",
 }
 
 const Labels = {
@@ -33,6 +33,7 @@ const Screens = {
   Init:"Init",
   SignIn:"SignIn",
   SignUp:"SignUp",
+  Home: "Home"
 }
 
 module.exports = {

@@ -1,34 +1,36 @@
 const { Urls, Messages } = require('../config/settings.js')
     , { isDeviceConnected } = require('./NetworkHelper')
 
-function login(userId, password, cb) {
+function login(userId, password) {
 
   const loginParamters = {}
   
   loginParamters.userId = userId
   loginParamters.password = password
   loginParamters.accessHash = getAccessHash()
-  connectToServer(Urls.LOGIN, loginParamters, function(error,  data){
-    return cb(error, data)
+  return connectToServer(Urls.LOGIN, loginParamters)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw new Error(error.message)
   })
 }
 
 
-function register(fullName, userId, password, cb) {
+function register(fullName, userId, password) {
 
   const loginParamters = {}
   
-  loginParamters.fullName = fullName
-  loginParamters.userId = userId
-  loginParamters.password = password
-  loginParamters.accessHash = getAccessHash()
-  connectToServer(Urls.REGISTER, loginParamters, function(error,  data){
-    return cb(error, data)
-  })
+  registerParamters.fullName = fullName
+  registerParamters.userId = userId
+  registerParamters.password = password
+  registerParamters.accessHash = getAccessHash()
+  return connectToServer(Urls.REGISTER, registerParamters)
 }
 
-function connectToServer(url, parameters, cb) {
-  fetch(url , {
+function connectToServer(url, parameters) {
+  return fetch(url , {
     method: 'POST',
     headers: {
       'Accept': 'application/json',
@@ -53,20 +55,23 @@ function connectToServer(url, parameters, cb) {
   })
   .then((responseJson) => {
     if(responseJson.error)
-      return cb(responseJson.error)
+      throw new Error(responseJson.error)
     else{
-      return cb(null, responseJson)
+      return responseJson
     }
   })
   .catch((error) =>{
-    isDeviceConnected((isConnected) => {
-      if(isConnected){
-        cb(error.message)
-      }
-      else{
-          cb(Messages.CHECK_INTERNET_CONNECTION)
-      }
-    })
+    return (
+      isDeviceConnected()
+      .then((isConnected)=>{
+        if(isConnected){
+          throw new Error(error.message)
+        }
+        else{
+            throw new Error(Messages.CHECK_INTERNET_CONNECTION)
+        }
+      })
+    )
   })
 }
 
