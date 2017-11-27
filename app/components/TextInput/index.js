@@ -1,4 +1,4 @@
-const { GenericTextInput } = require('./GenericTextInput')
+import GenericTextInput from './GenericTextInput'
 
 module.exports = {
 	GenericTextInput

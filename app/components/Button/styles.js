@@ -1,9 +1,5 @@
-const { StyleSheet } = require('react-native')
+import { StyleSheet } from 'react-native'
 
-const Styles = StyleSheet.create({
+export default StyleSheet.create({
 
 })
-
-module.exports = {
-  Styles
-}

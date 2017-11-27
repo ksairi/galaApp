@@ -1,6 +1,6 @@
-const { RootWrapper } = require('./RootWrapper')
-    , { CentredWrapper } = require('./CentredWrapper')
-    , { TextInputWrapper } = require('./TextInputWrapper')
+import RootWrapper from './RootWrapper'
+import CentredWrapper from './CentredWrapper'
+import TextInputWrapper from './TextInputWrapper'
 
 module.exports = {
 	RootWrapper,

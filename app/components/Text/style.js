@@ -1,13 +1,9 @@
-const { StyleSheet } = require('react-native')
+import { StyleSheet } from 'react-native'
 
-const Styles = StyleSheet.create({
+export default StyleSheet.create({
   errorMessage: {
     flex: 1,
     color: 'red',
     padding:10
   }
 })
-
-module.exports = {
-  Styles
-}

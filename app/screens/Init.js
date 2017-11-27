@@ -1,10 +1,8 @@
-const React = require('react')
-		, { Text, View } = require('react-native')
-		, { RootWrapper } = require('../components/View/')
-		, { compose, lifecycle } = require('recompose')
-		, { Screens } = require('../config/settings')
-
-const hs = React.createElement
+import React from 'react'
+import { Text, View } from 'react-native'
+import { RootWrapper } from '../components/View/'
+import { compose, lifecycle } from 'recompose'
+import { Screens } from '../config/settings'
 
 const component = compose(
 	lifecycle ({
@@ -20,7 +18,9 @@ const component = compose(
 
 function Init(){
 	return (
-		hs(RootWrapper, {"children" : [hs(Text,{key:'1'},'Open up App.js to start working on your app from app/index.js')]})
+		<RootWrapper>
+			<Text key="1">'Open up App.js to start working on your app from app/index.js'</Text>
+		</RootWrapper>
   )
 }
 

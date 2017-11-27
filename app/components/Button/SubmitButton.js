@@ -1,16 +1,8 @@
-const React = require('react')
-	   , hs = React.createElement
-	   , { Button } = require('react-native')
-     , { Keys } = require('../../config/settings')
+import React from 'react'
+import { Button } from 'react-native'
+import { Keys } from '../../config/settings'
 
-const SubmitButton = (props) => {
-	return (
-    hs(Button, {title: props[Keys.buttonTitle], onPress: props.onPress()})
-  )
-}
-
-module.exports = {
-  SubmitButton
-}
-
+export default ({title, onPress}) => 
+	<Button title={title} onPress={onPress()} />
+  
 

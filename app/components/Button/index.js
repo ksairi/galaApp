@@ -1,4 +1,4 @@
-const { SubmitButton } = require('./SubmitButton')
+import SubmitButton from './SubmitButton'
 
 module.exports = {
 	SubmitButton

@@ -1,7 +1,7 @@
-const { Urls, Messages } = require('../config/settings.js')
-    , { isDeviceConnected } = require('./NetworkHelper')
+import { Urls, Messages } from '../config/settings.js'
+import { isDeviceConnected } from './NetworkHelper'
 
-function login(userId, password) {
+exports.login = function (userId, password) {
 
   const loginParamters = {}
   
@@ -18,7 +18,7 @@ function login(userId, password) {
 }
 
 
-function register(fullName, userId, password) {
+exports.register = function (fullName, userId, password) {
 
   const loginParamters = {}
   
@@ -65,10 +65,11 @@ function connectToServer(url, parameters) {
       isDeviceConnected()
       .then((isConnected)=>{
         if(isConnected){
-          throw error
+          console.log(error)
+          throw new Error(error)
         }
         else{
-            throw Messages.CHECK_INTERNET_CONNECTION
+            throw new Error(Messages.CHECK_INTERNET_CONNECTION)
         }
       })
     )
@@ -79,11 +80,4 @@ function getAccessHash () {
 
   return ''
  // TODO see where we store the hashkey
-}
-
-
-module.exports = {
-
-  login,
-  register
 }

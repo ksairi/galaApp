@@ -1,16 +1,9 @@
-const React = require('react')
-    , { Text } = require('react-native')
-    , { Keys } = require('../../config/settings')
-    , { Styles } = require('./style')
+import React from 'react'
+import { Text } from 'react-native'
+import { Keys } from '../../config/settings'
+import Styles from './style'
 
-const hs = React.createElement
-
-const ErrorText = (props) => {
-  return (
-    hs(Text, {style: Styles.errorMessage}, props[Keys.message])
-  )
-}
-
-module.exports = {
-  ErrorText
-}
+export default ({children}) =>
+  <Text style={Styles.errorMessage}>
+    {children}
+  </Text>

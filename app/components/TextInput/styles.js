@@ -1,6 +1,6 @@
-const { StyleSheet } = require('react-native')
+import { StyleSheet } from 'react-native'
 
-const Styles = StyleSheet.create({
+export default StyleSheet.create({
   textInput: {
     flex:1,
     borderColor: 'gray', 
@@ -9,7 +9,3 @@ const Styles = StyleSheet.create({
 
   }
 })
-
-module.exports = {
-	Styles
-}

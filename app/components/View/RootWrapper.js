@@ -1,16 +1,9 @@
-const React = require('react')
-    , { View, Text } = require('react-native')
-    , { Styles } = require('./styles')
-    , { Keys } = require ('../../config/settings')
+import React from 'react'
+import { View, Text } from 'react-native'
+import Styles from './styles'
+import { Keys } from '../../config/settings'
 
-const hs = React.createElement
-
-const RootWrapper = (props) => {
-  return (
-    hs(View, {style: Styles.rootWrapper}, props[Keys.children])
-  )
-}
-
-module.exports = {
-  RootWrapper
-}
+export default ({children}) =>
+  <View style={Styles.rootWrapper}>
+    {children}
+  </View>

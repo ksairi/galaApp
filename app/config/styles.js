@@ -1,9 +1,12 @@
-const { StyleSheet } = require('react-native')
+import { StyleSheet } from 'react-native'
 
-const GenericStyles = StyleSheet.create({
+export default StyleSheet.create({
   
-})
+  textInput: {
+    flex:1,
+    borderColor: 'gray', 
+    borderWidth: 1,
+    textAlign: 'center',
 
-module.exports = {
-  GenericStyles
-}
+  }
+})

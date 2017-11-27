@@ -1,4 +1,4 @@
-const { AppRegistry } = require('react-native')
-    , { App } = require('./app/index')
+import { AppRegistry } from 'react-native'
+import App from './app/index'
 
 AppRegistry.registerComponent('ESReactNative', () => App)

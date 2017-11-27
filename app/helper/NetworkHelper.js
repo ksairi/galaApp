@@ -1,5 +1,6 @@
-const { NetInfo } = require('react-native')
-function isDeviceConnected(){
+import { NetInfo } from 'react-native'
+
+exports.isDeviceConnected = function (){
   return (
     NetInfo.getConnectionInfo()
     .then((connectionInfo) => {
@@ -7,8 +8,4 @@ function isDeviceConnected(){
         connectionInfo.effectiveType == "3g" || connectionInfo.effectiveType == "4g")
     })
   )
-}
-
-module.exports = {
-  isDeviceConnected
 }

@@ -1,16 +1,9 @@
-const React = require('react')
-    , { View, Text } = require('react-native')
-    , { Styles } = require('./styles')
-    , { Keys } = require ('../../config/settings')
+import React from 'react'
+import { View, Text } from 'react-native'
+import Styles from './styles'
+import { Keys } from '../../config/settings'
 
-const hs = React.createElement
-
-const CentredWrapper = (props) => {
-  return (
-    hs(View, {style: Styles.centredWrapper}, props[Keys.children])
-  )
-}
-
-module.exports = {
-  CentredWrapper
-}
+export default ({children}) =>
+  <View style={Styles.centredWrapper}> 
+    {children}
+  </View>

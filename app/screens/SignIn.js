@@ -1,16 +1,15 @@
-const React = require ('react')
-    , { CentredWrapper, TextInputWrapper } = require('../components/View/')
-    , { GenericTextInput } = require('../components/TextInput/')
-    , { SubmitButton } = require('../components/Button')
-    , { ErrorText } = require('../components/Text/')
-    , { compose, withHandlers, withReducer, lifecycle } = require('recompose')
-    , { Messages, Labels, Keys, Screens } = require('../config/settings')
-    , { GenericStyles } = require ('../config/styles')
-    , { login } = require('../helper/ApiHelper')
+import React from 'react'
+import { CentredWrapper, TextInputWrapper } from '../components/View/'
+import { GenericTextInput } from '../components/TextInput/'
+import { SubmitButton } from '../components/Button'
+import { ErrorText } from '../components/Text/'
+import { compose, withHandlers, withReducer, lifecycle } from 'recompose'
+import { Messages, Labels, Keys, Screens } from '../config/settings'
+import { GenericStyles } from '../config/styles'
+import { login } from '../helper/ApiHelper'
 
 
-const hs = React.createElement
-    , component = compose(
+const component = compose(
  
   withReducer('userId', 'setUserId', (state, action) => {
     
@@ -40,7 +39,8 @@ const hs = React.createElement
           props.navigation.navigate(Screens.Home)
         })
       .catch((error) => {
-        props.setErrorMessage(message)
+        console.log(error)
+        props.setErrorMessage(error.message)
       })
       console.log(props.userId)
 		  console.log(props.password)
@@ -76,22 +76,25 @@ const hs = React.createElement
 function SignIn({userId, password, setUserId, setPassword, signIn, onSubmitUserId, errorMessage, onRef}) {
   
 	return (
-    hs(CentredWrapper, {[Keys.children]: [
-      hs(TextInputWrapper, {key:0, [Keys.children]: [
-    		hs(GenericTextInput, {key:0, value: userId, 
-          keyboardType: "numeric", ref: onRef, placeholder: Labels.ENTER_USER_ID,
-          autoFocus: true, onChangeText: (userId) => setUserId(userId),
-          onSubmitEditing: onSubmitUserId})
-        ]}),
-      hs(TextInputWrapper, {key:1, [Keys.children]: [
-    		hs(GenericTextInput, {key:0, value: password, placeholder: Labels.ENTER_PASSWORD, secureTextEntry:true,
-          onChangeText: (password) => setPassword(password),
-          onSubmitEditing: signIn})
-      ]}),
-
-  		hs(SubmitButton, {key:2, [Keys.buttonTitle]: Labels.SIGN_IN, onPress: () => signIn}),
-  		hs(ErrorText, {key:3, [Keys.message]: errorMessage})
-    ]})
+    <CentredWrapper>
+      <TextInputWrapper key="0">
+        <GenericTextInput key="0" value={userId}
+          keyboardType="numeric" ref={onRef} placeholder={Labels.ENTER_USER_ID}
+          autoFocus onChangeText={(userId) => setUserId(userId)}
+          onSubmitEditing={onSubmitUserId}/>
+      </TextInputWrapper>
+        
+      <TextInputWrapper key="1">
+        <GenericTextInput key="0" value={password} placeholder={Labels.ENTER_PASSWORD}
+          secureTextEntry onChangeText={(password) => setPassword(password)}
+          onSubmitEditing={signIn}/>
+      </TextInputWrapper>
+      <SubmitButton key="2" title={Labels.SIGN_IN} onPress= {() => signIn}/>
+      <ErrorText key="3">
+        {errorMessage}
+      </ErrorText>
+      
+    </CentredWrapper>
   )
 }
 

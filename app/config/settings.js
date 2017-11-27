@@ -1,18 +1,19 @@
 const SERVER_HOSTNAME = "http://www.galagym.com/"
-const Urls = {
+
+exports.Urls = {
   LOGIN: SERVER_HOSTNAME + "login",
   REGISTER: SERVER_HOSTNAME + "register",
 }
 
-const Messages = {
-	INVALID_USER_PASSWORD: "Ingresá el dni y tu contraseña para continuar",
+exports.Messages = {
+	INVALID_USER_PASSWORD: "Ingresá el DNI y tu contraseña para continuar",
   INVALID_USER_FULLNAME: "Ingresá tu nombre completo",
   INVALID_CONFIRM_PASSWORD: "Las contraseñas no coinciden",
   SERVER_ERROR: "Error de conexión. Por favor intentá en unos minutos.",
   CHECK_INTERNET_CONNECTION: "Verificá tu conexión de internet",
 }
 
-const Labels = {
+exports.Labels = {
   ENTER_USER_ID: "DNI",
   ENTER_PASSWORD: "Contraseña",
   SIGN_IN: "Iniciá Sesión",
@@ -22,24 +23,16 @@ const Labels = {
 
 }
 
-const Keys = {
+exports.Keys = {
   children: "children",
   message: "message",
   style: "style",
   componentValue: "value"
 }
 
-const Screens = {
+exports.Screens = {
   Init:"Init",
   SignIn:"SignIn",
   SignUp:"SignUp",
   Home: "Home"
-}
-
-module.exports = {
-	Urls,
-	Messages,
-	Labels,
-  Keys,
-  Screens
 }

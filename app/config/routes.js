@@ -1,13 +1,10 @@
-const React = require('react')
-    , { StackNavigator } = require('react-navigation')
-    , { Init }  = require ('../screens/Init')
-    , { SignIn } = require('../screens/SignIn')
-    , { SignUp } = require('../screens/SignUp')
-    , { Profile } = require('../screens/Profile')
-    , { Screens } = require('../config/settings')
+import { StackNavigator } from 'react-navigation'
+import { Init } from '../screens/Init'
+import { SignIn } from '../screens/SignIn'
+import { Screens } from '../config/settings'
 
 
-const AppRoutes = StackNavigator({
+export default StackNavigator({
   [Screens.Init]: {
     screen: Init
   },
@@ -15,7 +12,3 @@ const AppRoutes = StackNavigator({
     screen: SignIn
   }
 })
-
-module.exports = {
-	AppRoutes
-}

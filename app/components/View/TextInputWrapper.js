@@ -1,16 +1,9 @@
-const React = require('react')
-    , { View, Text } = require('react-native')
-    , { Styles } = require('./styles')
-    , { Keys } = require ('../../config/settings')
+import React from 'react'
+import { View, Text } from 'react-native'
+import Styles from './styles'
+import { Keys } from '../../config/settings'
 
-const hs = React.createElement
-
-const TextInputWrapper = (props) => {
-  return (
-    hs(View, {style: Styles.textInputWrapper}, props[Keys.children])
-  )
-}
-
-module.exports = {
-  TextInputWrapper
-}
+export default ({children}) =>
+  <View style={Styles.textInputWrapper}>
+    {children}
+  </View>
