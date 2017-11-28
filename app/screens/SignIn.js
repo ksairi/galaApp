@@ -3,101 +3,79 @@ import { CentredWrapper, TextInputWrapper } from '../components/View/'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { ErrorText } from '../components/Text/'
-import { compose, withHandlers, withReducer, lifecycle } from 'recompose'
 import { Messages, Labels, Keys, Screens } from '../config/settings'
 import { GenericStyles } from '../config/styles'
 import { login } from '../helper/ApiHelper'
 
+export default class SignIn extends React.Component{
 
-const component = compose(
- 
-  withReducer('userId', 'setUserId', (state, action) => {
-    
-    return action
-  }, ''),
-  withReducer('password', 'setPassword', (state, action) => {
-    return action
-  }, ''),
-  withReducer('errorMessage', 'setErrorMessage', (state, action) => {
-    return action
-  }, ''),
-  withHandlers({
-  	signIn: props => () => {
-  		if (props.userId.length == 0 || props.password.length == 0){
-  			props.setErrorMessage(Messages.INVALID_USER_PASSWORD)
-        return
-  		}
-      props.setErrorMessage("");
-      (async function() {
-        //TODO show loading
-        var promise = await login(props.userId, props.password)
-        //TODO hide loading
-        return promise
-      })()
-      .then((data) =>{
-        //TODO save data in localstorage
-          props.navigation.navigate(Screens.Home)
-        })
-      .catch((error) => {
-        console.log(error)
-        props.setErrorMessage(error.message)
-      })
-      console.log(props.userId)
-		  console.log(props.password)
-  	 
+  constructor(props){
+    super(props)
+    this.state = {
+      userId:'',
+      password:'',
+      errorMessage:'',
+      focusPassword:false
     }
-  }),
-  withHandlers({
-    onSubmitUserId: props => () => {
-      if (!props.password) {
-        // SET FOCUS ON PASSWORD
-      }
-      else{
-        props.signIn()
-      }
-    }
-  })
-  /*withHandlers(() => {
-    let textInput = null
+    this.signIn = this.signIn.bind(this)
+    this.onSubmitUserId = this.onSubmitUserId.bind(this)
+  }
 
-    return {
-        onRef: () => (ref) => (textInput = ref),
-        focus: () => () => console.log(textInput)//textInput.focus()
-    }
-  }),
-  lifecycle({
-    componentDidMount() {
-      console.log(this.props)
-      this.props.focus()
-    }
-  })*/
-)(SignIn)
-
-function SignIn({userId, password, setUserId, setPassword, signIn, onSubmitUserId, errorMessage, onRef}) {
-  
-	return (
+  render(){
+    return (
     <CentredWrapper>
-      <TextInputWrapper key="0">
-        <GenericTextInput key="0" value={userId}
-          keyboardType="numeric" ref={onRef} placeholder={Labels.ENTER_USER_ID}
-          autoFocus onChangeText={(userId) => setUserId(userId)}
-          onSubmitEditing={onSubmitUserId}/>
+      <TextInputWrapper key={Labels.ENTER_USER_ID}>
+        <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+          keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+          autoFocus onChangeText={(userId) => this.setState({userId:userId})}
+          onSubmitEditing={this.onSubmitUserId}/>
       </TextInputWrapper>
         
-      <TextInputWrapper key="1">
-        <GenericTextInput key="0" value={password} placeholder={Labels.ENTER_PASSWORD}
-          secureTextEntry onChangeText={(password) => setPassword(password)}
-          onSubmitEditing={signIn}/>
+      <TextInputWrapper key={Labels.ENTER_PASSWORD}>
+        <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
+          secureTextEntry onChangeText={(password) => this.setState({password})}
+          focus={this.state.focusPassword}
+          onSubmitEditing={this.signIn}
+          inputRef={el => this.passwordInput = el}/>
       </TextInputWrapper>
-      <SubmitButton key="2" title={Labels.SIGN_IN} onPress= {() => signIn}/>
-      <ErrorText key="3">
-        {errorMessage}
+      <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
+      <ErrorText key="ErrorMessage">
+        {this.state.errorMessage}
       </ErrorText>
       
     </CentredWrapper>
   )
-}
 
-module.exports = {
-  SignIn : component
+  }
+
+  signIn(){
+    if (this.state.userId.length == 0 || this.state.password.length == 0){
+        this.setState({errorMessage:Messages.INVALID_USER_PASSWORD})
+        return
+      }
+      this.setState({errorMessage:""});
+      (async function(userId, password) {
+        //TODO show loading
+        var promise = await login(userId, password)
+        //TODO hide loading
+        return promise
+      })(this.state.userId,this.state.password)
+      .then(data =>{
+        //TODO save data in localstorage
+          this.navigation.navigate(Screens.Home)
+        })
+      .catch(error => {
+        
+        this.setState((prevState, props) => ({errorMessage:error.message}))
+      })
+  }
+
+  onSubmitUserId(){
+    if(!this.state.password){
+      this.passwordInput.focus()
+    }
+    else{
+        this.signIn()
+    }
+  }
 }

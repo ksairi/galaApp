@@ -65,7 +65,6 @@ function connectToServer(url, parameters) {
       isDeviceConnected()
       .then((isConnected)=>{
         if(isConnected){
-          console.log(error)
           throw new Error(error)
         }
         else{

@@ -5,5 +5,7 @@ import { Keys } from '../../config/settings'
 
 export default (props) =>
   <TextInput style={Styles.textInput} 
-    underlineColorAndroid='transparent' {...props} />
-	 
+    underlineColorAndroid='transparent' ref={props.inputRef} {...props} />
+    
+  
+   

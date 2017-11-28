@@ -1,6 +1,6 @@
 import { StackNavigator } from 'react-navigation'
-import { Init } from '../screens/Init'
-import { SignIn } from '../screens/SignIn'
+import Init from '../screens/Init'
+import SignIn from '../screens/SignIn'
 import { Screens } from '../config/settings'
 
 
