@@ -3,9 +3,9 @@ import { CentredWrapper, TextInputWrapper } from '../components/View/'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { ErrorText } from '../components/Text/'
-import { Messages, Labels, Keys, Screens } from '../config/settings'
-import { GenericStyles } from '../config/styles'
+import { Messages, Labels, Screens } from '../config/settings'
 import { login } from '../helper/ApiHelper'
+import { LoadingSpinner } from '../components/Spinner'
 
 export default class SignIn extends React.Component{
 
@@ -15,7 +15,8 @@ export default class SignIn extends React.Component{
       userId:'',
       password:'',
       errorMessage:'',
-      focusPassword:false
+      focusPassword:false,
+      spinnerVisible:false
     }
     this.signIn = this.signIn.bind(this)
     this.onSubmitUserId = this.onSubmitUserId.bind(this)
@@ -24,17 +25,17 @@ export default class SignIn extends React.Component{
   render(){
     return (
     <CentredWrapper>
+      <LoadingSpinner visible={this.state.spinnerVisible}/>
       <TextInputWrapper key={Labels.ENTER_USER_ID}>
         <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
           keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-          autoFocus onChangeText={(userId) => this.setState({userId:userId})}
+          autoFocus onChangeText={userId => this.setState({userId})}
           onSubmitEditing={this.onSubmitUserId}/>
       </TextInputWrapper>
         
       <TextInputWrapper key={Labels.ENTER_PASSWORD}>
         <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-          secureTextEntry onChangeText={(password) => this.setState({password})}
-          focus={this.state.focusPassword}
+          secureTextEntry onChangeText={password => this.setState({password})}
           onSubmitEditing={this.signIn}
           inputRef={el => this.passwordInput = el}/>
       </TextInputWrapper>
@@ -54,18 +55,19 @@ export default class SignIn extends React.Component{
         return
       }
       this.setState({errorMessage:""});
-      (async function(userId, password) {
-        //TODO show loading
+      (async function(context, userId, password) {
+        context.setState({spinnerVisible:true})
         var promise = await login(userId, password)
-        //TODO hide loading
+        context.setState({spinnerVisible:false})
         return promise
-      })(this.state.userId,this.state.password)
+      })(this, this.state.userId,this.state.password)
       .then(data =>{
+        this.setState({spinnerVisible:false})
         //TODO save data in localstorage
           this.navigation.navigate(Screens.Home)
         })
       .catch(error => {
-        
+        this.setState({spinnerVisible:false})
         this.setState((prevState, props) => ({errorMessage:error.message}))
       })
   }
