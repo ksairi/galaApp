@@ -6,11 +6,12 @@ exports.Urls = {
 }
 
 exports.Messages = {
-	INVALID_USER_PASSWORD: "Ingresá el DNI y tu contraseña para continuar",
-  INVALID_USER_FULLNAME: "Ingresá tu nombre completo",
-  INVALID_CONFIRM_PASSWORD: "Las contraseñas no coinciden",
-  SERVER_ERROR: "Error de conexión. Por favor intentá en unos minutos.",
-  CHECK_INTERNET_CONNECTION: "Verificá tu conexión de internet",
+	INVALID_USER_PASSWORD:"Ingresá el DNI y tu contraseña para continuar",
+  INVALID_USER_FULLNAME:"Ingresá tu nombre completo",
+  INVALID_CONFIRM_PASSWORD:"Las contraseñas no coinciden",
+  SERVER_ERROR:"Error de conexión. Por favor intentá en unos minutos.",
+  CHECK_INTERNET_CONNECTION:"Verificá tu conexión de internet",
+  LOADING:"Cargando"
 }
 
 exports.Labels = {
@@ -21,13 +22,6 @@ exports.Labels = {
   ENTER_FULL_NAME: "Nombre Completo",
   CONFIRM_PASSWORD: "Confirmá contraseña",
 
-}
-
-exports.Keys = {
-  children: "children",
-  message: "message",
-  style: "style",
-  componentValue: "value"
 }
 
 exports.Screens = {
