@@ -28,45 +28,44 @@ export default class SignUp extends React.Component{
 
   render(){
     return (
-    <RootWrapper>
-      <LoadingSpinner visible={this.state.spinnerVisible}/>
-      <TextInputWrapper key={Labels.ENTER_FULL_NAME}>
-        <GenericTextInput key={Labels.ENTER_FULL_NAME} value={this.state.userFullName}
-          placeholder={Labels.ENTER_FULL_NAME} autoCorrect={false}
-          autoFocus onChangeText={userFullName => this.setState({userFullName})}
-          onSubmitEditing={this.onSubmitUserFullName}/>
-      </TextInputWrapper>
-      <TextInputWrapper key={Labels.ENTER_USER_ID}>
-        <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
-          keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-          onChangeText={userId => this.setState({userId})}
-          onSubmitEditing={this.onSubmitUserId}
-          inputRef={el => this.userIdInput = el}/>
-      </TextInputWrapper>
+      <RootWrapper>
+        <LoadingSpinner visible={this.state.spinnerVisible}/>
+        <TextInputWrapper key={Labels.ENTER_FULL_NAME}>
+          <GenericTextInput key={Labels.ENTER_FULL_NAME} value={this.state.userFullName}
+            placeholder={Labels.ENTER_FULL_NAME} autoCorrect={false}
+            autoFocus onChangeText={userFullName => this.setState({userFullName})}
+            onSubmitEditing={this.onSubmitUserFullName}/>
+        </TextInputWrapper>
+        <TextInputWrapper key={Labels.ENTER_USER_ID}>
+          <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+            keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+            onChangeText={userId => this.setState({userId})}
+            onSubmitEditing={this.onSubmitUserId}
+            inputRef={el => this.userIdInput = el}/>
+        </TextInputWrapper>
+          
+        <TextInputWrapper key={Labels.ENTER_PASSWORD}>
+          <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
+            secureTextEntry onChangeText={password => this.setState({password})}
+            onSubmitEditing={this.onSubmitPassword}
+            inputRef={el => this.passwordInput = el}/>
+        </TextInputWrapper>
+        <TextInputWrapper key={Labels.CONFIRM_PASSWORD}>
+          <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
+            placeholder={Labels.CONFIRM_PASSWORD}
+            secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
+            onSubmitEditing={this.signUp}
+            inputRef={el => this.confirmPasswordInput = el}/>
+        </TextInputWrapper>
+        <SubmitButton key={Labels.SIGN_UP} title={Labels.SIGN_UP} onPress= {() => this.signUp}/>
+        <ErrorText key="ErrorMessage">
+          {this.state.errorMessage}
+        </ErrorText>
         
-      <TextInputWrapper key={Labels.ENTER_PASSWORD}>
-        <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-          secureTextEntry onChangeText={password => this.setState({password})}
-          onSubmitEditing={this.onSubmitPassword}
-          inputRef={el => this.passwordInput = el}/>
-      </TextInputWrapper>
-      <TextInputWrapper key={Labels.CONFIRM_PASSWORD}>
-        <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
-          placeholder={Labels.CONFIRM_PASSWORD}
-          secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
-          onSubmitEditing={this.signUp}
-          inputRef={el => this.confirmPasswordInput = el}/>
-      </TextInputWrapper>
-      <SubmitButton key={Labels.SIGN_UP} title={Labels.SIGN_UP} onPress= {() => this.signUp}/>
-      <ErrorText key="ErrorMessage">
-        {this.state.errorMessage}
-      </ErrorText>
-      
-    </RootWrapper>
-  )
-
+      </RootWrapper>
+    )
   }
-
+  
   signUp(){
     if (this.state.userFullName.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_FULLNAME})
@@ -97,7 +96,7 @@ export default class SignUp extends React.Component{
         this.setState((prevState, props) => ({errorMessage:error.message}))
       })
   }
-
+  
   onSubmitUserFullName(){
     if(!this.state.userId){
       this.userIdInput.focus()
@@ -106,6 +105,7 @@ export default class SignUp extends React.Component{
         this.signUp()
     }
   }
+  
   onSubmitUserId(){
     if(!this.state.password){
       this.passwordInput.focus()
@@ -114,6 +114,7 @@ export default class SignUp extends React.Component{
         this.signUp()
     }
   }
+  
   onSubmitPassword(){
     if(!this.state.confirmPassword){
       this.confirmPasswordInput.focus()

@@ -25,61 +25,59 @@ export default class SignIn extends React.Component{
 
   render(){
     return (
-    <CentredWrapper>
-      <LoadingSpinner visible={this.state.spinnerVisible}/>
-      <TextInputWrapper key={Labels.ENTER_USER_ID}>
-        <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
-          keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-          autoFocus onChangeText={userId => this.setState({userId})}
-          onSubmitEditing={this.onSubmitUserId}/>
-      </TextInputWrapper>
-        
-      <TextInputWrapper key={Labels.ENTER_PASSWORD}>
-        <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-          secureTextEntry onChangeText={password => this.setState({password})}
-          onSubmitEditing={this.signIn}
-          inputRef={el => this.passwordInput = el}/>
-      </TextInputWrapper>
-      <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
-      <GenericLink onPress={() => this.goToSignUp}>
-          {Messages.FORGOT_PASSWORD}
-        </GenericLink>
-      <GenericText>
-        {Messages.NO_ACCOUNT}
+      <CentredWrapper>
+        <LoadingSpinner visible={this.state.spinnerVisible}/>
+        <TextInputWrapper key={Labels.ENTER_USER_ID}>
+          <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+            keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+            autoFocus onChangeText={userId => this.setState({userId})}
+            onSubmitEditing={this.onSubmitUserId}/>
+        </TextInputWrapper>
+          
+        <TextInputWrapper key={Labels.ENTER_PASSWORD}>
+          <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
+            secureTextEntry onChangeText={password => this.setState({password})}
+            onSubmitEditing={this.signIn}
+            inputRef={el => this.passwordInput = el}/>
+        </TextInputWrapper>
+        <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
         <GenericLink onPress={() => this.goToSignUp}>
-          {Labels.SIGN_UP}
-        </GenericLink>
-      </GenericText>
-      <ErrorText key="ErrorMessage">
-        {this.state.errorMessage}
-      </ErrorText>
-      
-    </CentredWrapper>
-  )
-
+            {Messages.FORGOT_PASSWORD}
+          </GenericLink>
+        <GenericText>
+          {Messages.NO_ACCOUNT}
+          <GenericLink onPress={() => this.goToSignUp}>
+            {Labels.SIGN_UP}
+          </GenericLink>
+        </GenericText>
+        <ErrorText key="ErrorMessage">
+          {this.state.errorMessage}
+        </ErrorText>
+      </CentredWrapper>
+    )
   }
 
   signIn(){
     if (this.state.userId.length == 0 || this.state.password.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_PASSWORD})
         return
-      }
-      this.setState({errorMessage:""});
-      (async function(context, userId, password) {
-        context.setState({spinnerVisible:true})
-        var promise = await login(userId, password)
-        context.setState({spinnerVisible:false})
-        return promise
-      })(this, this.state.userId,this.state.password)
-      .then(data =>{
-        this.setState({spinnerVisible:false})
-        //TODO save data in localstorage
-          this.props.navigation.navigate(Screens.Home)
-        })
-      .catch(error => {
-        this.setState({spinnerVisible:false})
-        this.setState((prevState, props) => ({errorMessage:error.message}))
+    }
+    this.setState({errorMessage:""});
+    (async function(context, userId, password) {
+      context.setState({spinnerVisible:true})
+      var promise = await login(userId, password)
+      context.setState({spinnerVisible:false})
+      return promise
+    })(this, this.state.userId,this.state.password)
+    .then(data =>{
+      this.setState({spinnerVisible:false})
+      //TODO save data in localstorage
+        this.props.navigation.navigate(Screens.Home)
       })
+    .catch(error => {
+      this.setState({spinnerVisible:false})
+      this.setState((prevState, props) => ({errorMessage:error.message}))
+    })
   }
 
   onSubmitUserId(){
@@ -90,6 +88,7 @@ export default class SignIn extends React.Component{
         this.signIn()
     }
   }
+  
   goToSignUp(){
     this.props.navigation.navigate(Screens.SignUp)
 
