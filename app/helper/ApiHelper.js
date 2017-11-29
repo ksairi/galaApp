@@ -20,13 +20,19 @@ exports.login = function (userId, password) {
 
 exports.register = function (fullName, userId, password) {
 
-  const loginParamters = {}
+  const registerParamters = {}
   
   registerParamters.fullName = fullName
   registerParamters.userId = userId
   registerParamters.password = password
   registerParamters.accessHash = getAccessHash()
   return connectToServer(Urls.REGISTER, registerParamters)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw new Error(error.message)
+  })
 }
 
 function connectToServer(url, parameters) {
