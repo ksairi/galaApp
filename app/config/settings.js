@@ -11,7 +11,9 @@ exports.Messages = {
   INVALID_CONFIRM_PASSWORD:"Las contraseñas no coinciden",
   SERVER_ERROR:"Error de conexión. Por favor intentá en unos minutos.",
   CHECK_INTERNET_CONNECTION:"Verificá tu conexión de internet",
-  LOADING:"Cargando"
+  LOADING:"Cargando",
+  NO_ACCOUNT:"¿No te registraste?",
+  FORGOT_PASSWORD:"¿Olvidaste la contraseña?"
 }
 
 exports.Labels = {

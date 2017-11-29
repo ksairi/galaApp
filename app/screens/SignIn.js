@@ -2,7 +2,7 @@ import React from 'react'
 import { CentredWrapper, TextInputWrapper } from '../components/View/'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
-import { ErrorText } from '../components/Text/'
+import { ErrorText, GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens } from '../config/settings'
 import { login } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
@@ -20,6 +20,7 @@ export default class SignIn extends React.Component{
     }
     this.signIn = this.signIn.bind(this)
     this.onSubmitUserId = this.onSubmitUserId.bind(this)
+    this.goToSignUp = this.goToSignUp.bind(this)
   }
 
   render(){
@@ -40,6 +41,15 @@ export default class SignIn extends React.Component{
           inputRef={el => this.passwordInput = el}/>
       </TextInputWrapper>
       <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
+      <GenericLink onPress={() => this.goToSignUp}>
+          {Messages.FORGOT_PASSWORD}
+        </GenericLink>
+      <GenericText>
+        {Messages.NO_ACCOUNT}
+        <GenericLink onPress={() => this.goToSignUp}>
+          {Labels.SIGN_UP}
+        </GenericLink>
+      </GenericText>
       <ErrorText key="ErrorMessage">
         {this.state.errorMessage}
       </ErrorText>
@@ -64,7 +74,7 @@ export default class SignIn extends React.Component{
       .then(data =>{
         this.setState({spinnerVisible:false})
         //TODO save data in localstorage
-          this.navigation.navigate(Screens.Home)
+          this.props.navigation.navigate(Screens.Home)
         })
       .catch(error => {
         this.setState({spinnerVisible:false})
@@ -79,5 +89,9 @@ export default class SignIn extends React.Component{
     else{
         this.signIn()
     }
+  }
+  goToSignUp(){
+    this.props.navigation.navigate(Screens.SignUp)
+
   }
 }

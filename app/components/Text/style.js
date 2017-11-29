@@ -5,5 +5,13 @@ export default StyleSheet.create({
     flex: 1,
     color: 'red',
     padding:10
+  },
+  genericText: {
+    flex: 1,
+    color: 'black',
+    padding:10
+  },
+  link: {
+    color:'red',
   }
 })
