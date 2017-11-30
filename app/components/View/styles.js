@@ -1,24 +1,35 @@
 import { StyleSheet } from 'react-native'
+import { genericBackgroundColor, dynamicPaddingTop } from '../../config/styles'
+
+const containerpadding= 20
 
 export default StyleSheet.create({
-  rootWrapper: {
+  startRootContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: genericBackgroundColor,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    padding: 10,
+    padding: containerpadding,
+    paddingTop: dynamicPaddingTop
   },
-  centredWrapper: {
+  centredRootContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: genericBackgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 40,
+    padding: containerpadding,
   },
-  textInputWrapper: {
+  horizontalContainer: {
+    flexDirection: 'row',
+    backgroundColor: genericBackgroundColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10
+  },
+  textInputContainer: {
     flexDirection: 'row',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: 3
   }
 })

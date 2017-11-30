@@ -1,9 +1,5 @@
-import RootWrapper from './RootWrapper'
-import CentredWrapper from './CentredWrapper'
-import TextInputWrapper from './TextInputWrapper'
+import GenericContainer from './GenericContainer'
 
 module.exports = {
-	RootWrapper,
-  CentredWrapper,
-  TextInputWrapper
+	GenericContainer
 }

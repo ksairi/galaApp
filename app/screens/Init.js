@@ -1,6 +1,7 @@
 import React from 'react'
 import { Text, View } from 'react-native'
-import { RootWrapper } from '../components/View/'
+import { GenericContainer } from '../components/View/'
+import containerStyles from '../components/View/styles'
 import { Screens } from '../config/settings'
 
 
@@ -12,9 +13,9 @@ export default class Init extends React.Component {
 
 	render(){
 		return (
-			<RootWrapper>
+			<GenericContainer style={containerStyles.rootConatiner}>
 				<Text key="1">'Open up App.js to start working on your app from app/index.js'</Text>
-			</RootWrapper>
+			</GenericContainer>
   	)
 	}
 

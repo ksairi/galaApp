@@ -1,12 +1,8 @@
-import { StyleSheet } from 'react-native'
+import { Dimensions } from 'react-native'
 
-export default StyleSheet.create({
-  
-  textInput: {
-    flex:1,
-    borderColor: 'gray', 
-    borderWidth: 1,
-    textAlign: 'center',
-
-  }
-})
+const { height, width } = Dimensions.get("window")
+    
+exports.genericBackgroundColor='#fff'
+exports.deviceHeight=height
+exports.deviceWidth= width
+exports.dynamicPaddingTop = height - (height - 70)
