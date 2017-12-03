@@ -1,9 +1,9 @@
 import React from 'react'
 import { GenericContainer } from '../components/View/'
-import containerSyles from '../components/View/styles'
+import ContainerSyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
-import { ErrorText, GenericText, GenericLink } from '../components/Text/'
+import { ErrorText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens } from '../config/settings'
 import { login } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
@@ -26,16 +26,16 @@ export default class SignIn extends React.Component{
 
   render(){
     return (
-      <GenericContainer style={containerSyles.startRootContainer}>
-        <GenericContainer style={containerSyles.horizontalContainer}>
-          <GenericContainer key={Labels.ENTER_USER_ID} style={containerSyles.textInputContainer}>
+      <GenericContainer style={ContainerSyles.startRootContainer}>
+        <GenericContainer style={ContainerSyles.horizontalContainer}>
+          <GenericContainer key={Labels.ENTER_USER_ID} style={ContainerSyles.textInputContainer}>
             <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
               keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
               autoFocus onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId}/>
           </GenericContainer>
             
-          <GenericContainer key={Labels.ENTER_PASSWORD} style={containerSyles.textInputContainer}>
+          <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerSyles.textInputContainer}>
             <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
               secureTextEntry onChangeText={password => this.setState({password})}
               onSubmitEditing={this.signIn}
@@ -59,7 +59,7 @@ export default class SignIn extends React.Component{
 
   signIn(){
     if (this.state.userId.length == 0 || this.state.password.length == 0){
-        this.setState({errorMessage:Messages.INVALID_USER_PASSWORD})
+        this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
     }
     this.setState({errorMessage:""});
