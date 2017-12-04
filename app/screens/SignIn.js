@@ -22,6 +22,7 @@ export default class SignIn extends React.Component{
     this.signIn = this.signIn.bind(this)
     this.onSubmitUserId = this.onSubmitUserId.bind(this)
     this.goToSignUp = this.goToSignUp.bind(this)
+    this.goToResetPassword = this.goToResetPassword.bind(this)
   }
 
   render(){
@@ -43,7 +44,7 @@ export default class SignIn extends React.Component{
           </GenericContainer>
         </GenericContainer>
           <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
-          <GenericLink key={Messages.FORGOT_PASSWORD} onPress={() => this.goToSignUp}>
+          <GenericLink key={Messages.FORGOT_PASSWORD} onPress={() => this.goToResetPassword}>
               {Messages.FORGOT_PASSWORD}
           </GenericLink>
           <GenericLink key={Messages.NO_ACCOUNT} onPress={() => this.goToSignUp}>
@@ -92,5 +93,9 @@ export default class SignIn extends React.Component{
   goToSignUp(){
     this.props.navigation.navigate(Screens.SignUp)
 
+  }
+
+  goToResetPassword(){
+    this.props.navigation.navigate(Screens.ResetPassword)
   }
 }

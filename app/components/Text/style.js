@@ -8,7 +8,7 @@ export default StyleSheet.create({
   genericText: {
     color: 'black',
     padding:10,
-    height:40,
+    flex:0,
   },
   link: {
     color:'green',

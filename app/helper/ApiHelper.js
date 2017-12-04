@@ -35,6 +35,19 @@ exports.register = function (fullName, userId, password) {
   })
 }
 
+exports.resetPassword = function(mail){
+  const resetPasswordParameters = {}
+  resetPasswordParameters.mail = mail
+  resetPasswordParameters.accessHash = getAccessHash()
+  return connectToServer(Urls.RESET_PASSWORD, resetPasswordParameters)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw new Error(error.message) 
+  })
+}
+
 function connectToServer(url, parameters) {
   return fetch(url , {
     method: 'POST',

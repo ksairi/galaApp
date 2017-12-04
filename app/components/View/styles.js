@@ -4,30 +4,44 @@ import { genericBackgroundColor, dynamicPaddingTop } from '../../config/styles'
 const containerpadding= 20
 
 export default StyleSheet.create({
-  startRootContainer: {
+  startRootContainer:{
     flex: 1,
     backgroundColor: genericBackgroundColor,
     alignItems: 'center',
     padding: containerpadding,
     paddingTop: dynamicPaddingTop
   },
-  centredRootContainer: {
+  centredRootContainer:{
     flex: 1,
     backgroundColor: genericBackgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
     padding: containerpadding,
   },
-  horizontalContainer: {
+  verticalContainer:{
+    flexDirection: 'column',
+    backgroundColor: genericBackgroundColor,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10  
+  },
+  horizontalContainer:{
     flexDirection: 'row',
     backgroundColor: genericBackgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: 10
   },
-  textInputContainer: {
+  textInputContainer:{
     flexDirection: 'row',
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 3
+  },
+  textInputSizedContainer:{
+    flexDirection: 'row',
+    flex:0,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 3

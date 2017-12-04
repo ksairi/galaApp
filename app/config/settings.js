@@ -16,7 +16,10 @@ exports.Messages = {
   FORGOT_PASSWORD:"¿Olvidaste la contraseña?",
   USER_ALREADY:"¿Ya tenes una cuenta?",
   INVALID_PASSWORD_LENGTH:"La contraseña debe tener al menos 5 caracteres.",
-  INVALID_USER_ID_LENGTH:"DNI inválido."
+  INVALID_USER_ID_LENGTH:"DNI inválido.",
+  INVALID_MAIL:"E-mail inválido.",
+  SUCCESSFULY_START_RESET_PASSWORD_PROCESS: "Se envió un e-mail con las instrucciones para recuperar tu contraseña.",
+  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el correo electrónico con el que te registraste y enviaremos las instrucciones para continuar."
 }
 
 exports.Labels = {
@@ -26,12 +29,16 @@ exports.Labels = {
   SIGN_UP: "Registrate",
   ENTER_FULL_NAME: "Nombre Completo",
   CONFIRM_PASSWORD: "Confirmá contraseña",
+  SUBMIT:"Enviar",
+  ENTER_MAIL: "E-mail",
+  GO_BACK_TO_SIGN_IN:"Iniciá sesión"
 
 }
 
 exports.Screens = {
   Init:"Init",
   SignIn:"SignIn",
+  ResetPassword:"ResetPassword",  
   SignUp:"SignUp",
   Home: "Home"
 }
@@ -39,4 +46,10 @@ exports.Screens = {
 exports.SignUpConstraints = {
   PASSWORD_MIN_LENGTH:5,
   USER_ID_MIN_LENGTH:7
+}
+
+exports.ServerProtocol = {
+  statusField:"status",
+  OK:"OK",
+  messageField:"message"
 }
