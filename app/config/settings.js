@@ -1,8 +1,9 @@
 const SERVER_HOSTNAME = "http://www.galagym.com/"
 
 exports.Urls = {
-  LOGIN: SERVER_HOSTNAME + "login",
-  REGISTER: SERVER_HOSTNAME + "register",
+  LOGIN:SERVER_HOSTNAME + "login",
+  REGISTER:SERVER_HOSTNAME + "register",
+  RESET_PASSWORD:SERVER_HOSTNAME + "resetPassword",
 }
 
 exports.Messages = {
@@ -19,7 +20,8 @@ exports.Messages = {
   INVALID_USER_ID_LENGTH:"DNI inválido.",
   INVALID_MAIL:"E-mail inválido.",
   SUCCESSFULY_START_RESET_PASSWORD_PROCESS: "Se envió un e-mail con las instrucciones para recuperar tu contraseña.",
-  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el correo electrónico con el que te registraste y enviaremos las instrucciones para continuar."
+  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el correo electrónico con el que te registraste y te enviaremos las instrucciones para continuar.",
+  ACTIVATE_ACCOUNT:`Gracias por registrate con nosotros. Se envió un mail a {mail} para activar la cuenta.`
 }
 
 exports.Labels = {

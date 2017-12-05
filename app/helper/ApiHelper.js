@@ -49,6 +49,7 @@ exports.resetPassword = function(mail){
 }
 
 function connectToServer(url, parameters) {
+  console.log(url, parameters)
   return fetch(url , {
     method: 'POST',
     headers: {

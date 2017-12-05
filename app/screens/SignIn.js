@@ -1,9 +1,9 @@
 import React from 'react'
 import { GenericContainer } from '../components/View/'
-import ContainerSyles from '../components/View/styles'
+import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
-import { ErrorText, GenericLink } from '../components/Text/'
+import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens } from '../config/settings'
 import { login } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
@@ -27,22 +27,22 @@ export default class SignIn extends React.Component{
 
   render(){
     return (
-      <GenericContainer style={ContainerSyles.startRootContainer}>
-        <GenericContainer style={ContainerSyles.horizontalContainer}>
-          <GenericContainer key={Labels.ENTER_USER_ID} style={ContainerSyles.textInputContainer}>
-            <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
-              keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-              autoFocus onChangeText={userId => this.setState({userId})}
-              onSubmitEditing={this.onSubmitUserId}/>
+      <GenericContainer style={ContainerStyles.rootContainer}>
+        <GenericContainer style={ContainerStyles.centredContainer}>
+          <GenericContainer style={ContainerStyles.horizontalContainer}>
+            <GenericContainer key={Labels.ENTER_USER_ID} style={ContainerStyles.textInputContainer}>
+              <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+                keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+                autoFocus onChangeText={userId => this.setState({userId})}
+                onSubmitEditing={this.onSubmitUserId}/>
+            </GenericContainer>
+            <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerStyles.textInputContainer}>
+              <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
+                secureTextEntry onChangeText={password => this.setState({password})}
+                onSubmitEditing={this.signIn}
+                inputRef={el => this.passwordInput = el}/>
+            </GenericContainer>
           </GenericContainer>
-            
-          <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerSyles.textInputContainer}>
-            <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-              secureTextEntry onChangeText={password => this.setState({password})}
-              onSubmitEditing={this.signIn}
-              inputRef={el => this.passwordInput = el}/>
-          </GenericContainer>
-        </GenericContainer>
           <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
           <GenericLink key={Messages.FORGOT_PASSWORD} onPress={() => this.goToResetPassword}>
               {Messages.FORGOT_PASSWORD}
@@ -50,10 +50,11 @@ export default class SignIn extends React.Component{
           <GenericLink key={Messages.NO_ACCOUNT} onPress={() => this.goToSignUp}>
             {Messages.NO_ACCOUNT}
           </GenericLink>
-          <ErrorText key="ErrorMessage">
+          <GenericText key="GenericText" error={this.state.errorMessage ? true : false}>
             {this.state.errorMessage}
-          </ErrorText>
-        <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
+          </GenericText>
+          <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
+        </GenericContainer>
       </GenericContainer>
     )
   }
@@ -91,11 +92,13 @@ export default class SignIn extends React.Component{
   }
   
   goToSignUp(){
+    this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.SignUp)
 
   }
 
   goToResetPassword(){
+    this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.ResetPassword)
   }
 }

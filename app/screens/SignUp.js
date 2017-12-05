@@ -1,9 +1,9 @@
 import React from 'react'
 import { GenericContainer } from '../components/View/'
-import ContainerSyles from '../components/View/styles'
+import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
-import { ErrorText, GenericLink } from '../components/Text/'
+import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, SignUpConstraints } from '../config/settings'
 import { register } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
@@ -18,8 +18,10 @@ export default class SignUp extends React.Component{
       password:'',
       confirmPassword:'',
       errorMessage:'',
+      message:'',
       focusPassword:false,
-      spinnerVisible:false
+      spinnerVisible:false,
+      showBackToSignIn:false
     }
     this.signUp = this.signUp.bind(this)
     this.onSubmitUserFullName = this.onSubmitUserFullName.bind(this)
@@ -30,46 +32,51 @@ export default class SignUp extends React.Component{
 
   render(){
     return (
-      <GenericContainer style={ContainerSyles.startRootContainer}>
-        <GenericContainer style={ContainerSyles.horizontalContainer}>
-          <GenericContainer style={ContainerSyles.textInputContainer} key={Labels.ENTER_FULL_NAME}>
-            <GenericTextInput key={Labels.ENTER_FULL_NAME} value={this.state.userFullName}
-              placeholder={Labels.ENTER_FULL_NAME} autoCorrect={false}
-              autoFocus onChangeText={userFullName => this.setState({userFullName})}
-              onSubmitEditing={this.onSubmitUserFullName}/>
+      <GenericContainer style={ContainerStyles.rootContainer}>
+        <GenericContainer style={ContainerStyles.centredContainer}>
+          <GenericContainer style={ContainerStyles.horizontalContainer}>
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_FULL_NAME}>
+              <GenericTextInput key={Labels.ENTER_FULL_NAME} value={this.state.userFullName}
+                placeholder={Labels.ENTER_FULL_NAME} autoCorrect={false}
+                autoFocus onChangeText={userFullName => this.setState({userFullName})}
+                onSubmitEditing={this.onSubmitUserFullName}/>
+            </GenericContainer>
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_USER_ID}>
+              <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+                keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+                onChangeText={userId => this.setState({userId})}
+                onSubmitEditing={this.onSubmitUserId}
+                inputRef={el => this.userIdInput = el}/>
+            </GenericContainer>
           </GenericContainer>
-          <GenericContainer style={ContainerSyles.textInputContainer} key={Labels.ENTER_USER_ID}>
-            <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
-              keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-              onChangeText={userId => this.setState({userId})}
-              onSubmitEditing={this.onSubmitUserId}
-              inputRef={el => this.userIdInput = el}/>
+          <GenericContainer style={ContainerStyles.horizontalContainer}>
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_PASSWORD}>
+              <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
+                secureTextEntry onChangeText={password => this.setState({password})}
+                onSubmitEditing={this.onSubmitPassword}
+                inputRef={el => this.passwordInput = el}/>
+            </GenericContainer>
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.CONFIRM_PASSWORD}>
+              <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
+                placeholder={Labels.CONFIRM_PASSWORD}
+                secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
+                onSubmitEditing={this.signUp}
+                inputRef={el => this.confirmPasswordInput = el}/>
+            </GenericContainer>
           </GenericContainer>
+          <SubmitButton key={Labels.SIGN_UP} title={Labels.SIGN_UP} onPress= {() => this.signUp}/>
+          <GenericLink key={Messages.USER_ALREADY} onPress={() => this.goToSignIn}>
+              {Messages.USER_ALREADY}
+          </GenericLink>
+          <GenericText key="GenericText" error={this.state.errorMessage ? true : false}>
+            {this.state.errorMessage}
+            {this.state.message}
+          </GenericText>
+          {this.state.showBackToSignIn && 
+            <GenericLink onPress={() => this.goToSignIn}>{Labels.GO_BACK_TO_SIGN_IN} </GenericLink>
+          }
+          <LoadingSpinner visible={this.state.spinnerVisible}/>
         </GenericContainer>
-          
-        <GenericContainer style={ContainerSyles.horizontalContainer}>
-          <GenericContainer style={ContainerSyles.textInputContainer} key={Labels.ENTER_PASSWORD}>
-            <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-              secureTextEntry onChangeText={password => this.setState({password})}
-              onSubmitEditing={this.onSubmitPassword}
-              inputRef={el => this.passwordInput = el}/>
-          </GenericContainer>
-          <GenericContainer style={ContainerSyles.textInputContainer} key={Labels.CONFIRM_PASSWORD}>
-            <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
-              placeholder={Labels.CONFIRM_PASSWORD}
-              secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
-              onSubmitEditing={this.signUp}
-              inputRef={el => this.confirmPasswordInput = el}/>
-          </GenericContainer>
-        </GenericContainer>
-        <SubmitButton key={Labels.SIGN_UP} title={Labels.SIGN_UP} onPress= {() => this.signUp}/>
-        <GenericLink key={Messages.USER_ALREADY} onPress={() => this.goToSignIn}>
-            {Messages.USER_ALREADY}
-        </GenericLink>
-        <ErrorText key="ErrorMessage">
-          {this.state.errorMessage}
-        </ErrorText>
-        <LoadingSpinner visible={this.state.spinnerVisible}/>        
       </GenericContainer>
     )
   }
@@ -104,8 +111,10 @@ export default class SignUp extends React.Component{
       })(this, this.state.userFullName, this.state.userId,this.state.password)
       .then(data =>{
         this.setState({spinnerVisible:false})
-        //TODO save data in localstorage
-          this.navigation.navigate(Screens.Home)
+        var mail = this.state.mail
+        var message = Messages.ACTIVATE_ACCOUNT
+        this.setState({message:message})
+        this.setState({showBackToSignIn:true})
         })
       .catch(error => {
         this.setState({spinnerVisible:false})
@@ -140,6 +149,7 @@ export default class SignUp extends React.Component{
     }
   }
   goToSignIn(){
+    this.setState({message:""})
     this.props.navigation.navigate(Screens.SignIn)
   }
 }

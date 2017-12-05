@@ -6,6 +6,5 @@ export default StyleSheet.create({
     borderColor: 'gray', 
     borderWidth: 1,
     textAlign: 'center',
-
   }
 })
