@@ -19,9 +19,8 @@ exports.Messages = {
   INVALID_PASSWORD_LENGTH:"La contraseña debe tener al menos 5 caracteres.",
   INVALID_USER_ID_LENGTH:"DNI inválido.",
   INVALID_MAIL:"E-mail inválido.",
-  SUCCESSFULY_START_RESET_PASSWORD_PROCESS: "Se envió un e-mail con las instrucciones para recuperar tu contraseña.",
-  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el correo electrónico con el que te registraste y te enviaremos las instrucciones para continuar.",
-  ACTIVATE_ACCOUNT:`Gracias por registrate con nosotros. Se envió un mail a {mail} para activar la cuenta.`
+  SUCCESSFULY_RESET_PASSWORD: "Contraseña actualizada. Por favor logueate nuevamente",
+  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el DNI y la nueva contraseña.",
 }
 
 exports.Labels = {

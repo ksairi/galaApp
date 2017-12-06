@@ -4,7 +4,7 @@ import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { GenericText, GenericLink } from '../components/Text/'
-import { Messages, Labels, Screens } from '../config/settings'
+import { Messages, Labels, Screens, ServerProtocol } from '../config/settings'
 import { login } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
 
@@ -73,9 +73,15 @@ export default class SignIn extends React.Component{
     })(this, this.state.userId,this.state.password)
     .then(data =>{
       this.setState({spinnerVisible:false})
-      //TODO save data in localstorage
-        this.props.navigation.navigate(Screens.Home)
-      })
+      if(data[ServerProtocol.statusField] == ServerProtocol.OK) {
+        //TODO save data in localstorage
+        this.props.navigation.navigate(Screens.Home)  
+      }
+      else{
+        this.setState({errorMessage:data[ServerProtocol.messageField]})  
+      }
+      
+    })
     .catch(error => {
       this.setState({spinnerVisible:false})
       this.setState((prevState, props) => ({errorMessage:error.message}))

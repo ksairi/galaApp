@@ -4,7 +4,7 @@ import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { GenericText, GenericLink } from '../components/Text/'
-import { Messages, Labels, Screens, SignUpConstraints } from '../config/settings'
+import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol } from '../config/settings'
 import { register } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
 
@@ -20,8 +20,7 @@ export default class SignUp extends React.Component{
       errorMessage:'',
       message:'',
       focusPassword:false,
-      spinnerVisible:false,
-      showBackToSignIn:false
+      spinnerVisible:false
     }
     this.signUp = this.signUp.bind(this)
     this.onSubmitUserFullName = this.onSubmitUserFullName.bind(this)
@@ -72,9 +71,6 @@ export default class SignUp extends React.Component{
             {this.state.errorMessage}
             {this.state.message}
           </GenericText>
-          {this.state.showBackToSignIn && 
-            <GenericLink onPress={() => this.goToSignIn}>{Labels.GO_BACK_TO_SIGN_IN} </GenericLink>
-          }
           <LoadingSpinner visible={this.state.spinnerVisible}/>
         </GenericContainer>
       </GenericContainer>
@@ -89,37 +85,39 @@ export default class SignUp extends React.Component{
     if (this.state.userId.length == 0 || this.state.password.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
+    }
+    if (this.state.password !== this.state.confirmPassword){
+      this.setState({errorMessage:Messages.INVALID_CONFIRM_PASSWORD})
+      return
+    }
+    if(this.state.userId.length < SignUpConstraints.USER_ID_MIN_LENGTH){
+      this.setState({errorMessage:Messages.INVALID_USER_ID_LENGTH})
+      return
+    }
+    if(this.state.password.length < SignUpConstraints.PASSWORD_MIN_LENGTH){
+      this.setState({errorMessage:Messages.INVALID_PASSWORD_LENGTH})
+      return
+    }
+    this.setState({errorMessage:""});
+    (async function(context, userFullName, userId, password) {
+      context.setState({spinnerVisible:true})
+      var promise = await register(userFullName, userId, password)
+      context.setState({spinnerVisible:false})
+      return promise
+    })(this, this.state.userFullName, this.state.userId,this.state.password)
+    .then(data =>{
+      this.setState({spinnerVisible:false})
+      if(data[ServerProtocol.statusField] == ServerProtocol.OK) {
+        this.props.navigation.navigate(Screens.Home)
       }
-      if (this.state.password !== this.state.confirmPassword){
-        this.setState({errorMessage:Messages.INVALID_CONFIRM_PASSWORD})
-        return
+      else{
+        this.setState({message:data[ServerProtocol.messageField]})
       }
-      if(this.state.userId.length < SignUpConstraints.USER_ID_MIN_LENGTH){
-        this.setState({errorMessage:Messages.INVALID_USER_ID_LENGTH})
-        return
-      }
-      if(this.state.password.length < SignUpConstraints.PASSWORD_MIN_LENGTH){
-        this.setState({errorMessage:Messages.INVALID_PASSWORD_LENGTH})
-        return
-      }
-      this.setState({errorMessage:""});
-      (async function(context, userFullName, userId, password) {
-        context.setState({spinnerVisible:true})
-        var promise = await register(userFullName, userId, password)
-        context.setState({spinnerVisible:false})
-        return promise
-      })(this, this.state.userFullName, this.state.userId,this.state.password)
-      .then(data =>{
-        this.setState({spinnerVisible:false})
-        var mail = this.state.mail
-        var message = Messages.ACTIVATE_ACCOUNT
-        this.setState({message:message})
-        this.setState({showBackToSignIn:true})
-        })
-      .catch(error => {
-        this.setState({spinnerVisible:false})
-        this.setState((prevState, props) => ({errorMessage:error.message}))
-      })
+    })
+    .catch(error => {
+      this.setState({spinnerVisible:false})
+      this.setState((prevState, props) => ({errorMessage:error.message}))
+    })
   }
   
   onSubmitUserFullName(){
