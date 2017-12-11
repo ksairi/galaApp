@@ -34,7 +34,7 @@ export default class Home extends React.Component {
     return (
       <View>
         <Text>
-          {this.state.name}
+          Home
         </Text>
       </View>
     )

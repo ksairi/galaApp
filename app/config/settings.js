@@ -42,7 +42,13 @@ exports.Screens = {
   SignIn:"SignIn",
   ResetPassword:"ResetPassword",  
   SignUp:"SignUp",
-  Home: "Home"
+  Home: "Home",
+  Contact:"Contact",
+  TimeTable:"TimeTable",
+  Routines:"Routines",
+  Notifications:"Notifications",
+  LoginStack:"loginStack",
+  HomeDrawerStack:"homeDrawerStack"
 }
 
 exports.SignUpConstraints = {

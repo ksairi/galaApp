@@ -63,7 +63,7 @@ export default class SignUp extends React.Component{
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         try{
           await AsyncStorage.setItem(Keys.userData, JSON.stringify(response.data))
-          this.props.navigation.navigate(Screens.Home)  
+          this.props.navigation.navigate(Screens.HomeDrawerStack)
         } catch (error) {
         this.setState({errorMessage:Messages.SYSTEM_ERROR})
         }
