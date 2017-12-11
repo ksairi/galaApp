@@ -1,4 +1,4 @@
-import { Urls, Messages } from '../config/settings.js'
+import { Urls, Messages, ServerProtocol } from '../config/settings.js'
 import { isDeviceConnected } from './NetworkHelper'
 
 exports.login = function (userId, password) {
@@ -7,7 +7,7 @@ exports.login = function (userId, password) {
   
   loginParamters.userId = userId
   loginParamters.password = password
-  loginParamters.accessHash = getAccessHash()
+  loginParamters.hash = getAccessHash()
   return connectToServer(Urls.LOGIN, loginParamters)
   .then((response) => {
     return response
@@ -25,7 +25,7 @@ exports.register = function (fullName, userId, password) {
   registerParamters.fullName = fullName
   registerParamters.userId = userId
   registerParamters.password = password
-  registerParamters.accessHash = getAccessHash()
+  registerParamters.hash = getAccessHash()
   return connectToServer(Urls.REGISTER, registerParamters)
   .then((response) => {
     return response
@@ -39,7 +39,7 @@ exports.resetPassword = function(userId, password){
   const resetPasswordParameters = {}
   resetPasswordParameters.userId = userId
   resetPasswordParameters.password = password
-  resetPasswordParameters.accessHash = getAccessHash()
+  resetPasswordParameters.hash = getAccessHash()
   return connectToServer(Urls.RESET_PASSWORD, resetPasswordParameters)
   .then((response) => {
     return response
@@ -50,7 +50,6 @@ exports.resetPassword = function(userId, password){
 }
 
 function connectToServer(url, parameters) {
-  console.log(url, parameters)
   return fetch(url , {
     method: 'POST',
     headers: {
@@ -63,7 +62,7 @@ function connectToServer(url, parameters) {
     if(response.ok){
       
       try {
-        const jsonObject = JSON.parse(response)
+        const jsonObject = JSON.parse(response._bodyText)
         return jsonObject
       }
       catch(e){
@@ -75,8 +74,9 @@ function connectToServer(url, parameters) {
     }
   })
   .then((responseJson) => {
-    if(responseJson.error)
-      throw responseJson.error
+    if(responseJson[ServerProtocol.statusField] != ServerProtocol.OK){
+      throw responseJson.message
+    }
     else{
       return responseJson
     }
@@ -96,8 +96,8 @@ function connectToServer(url, parameters) {
   })
 }
 
-function getAccessHash () {
+function getAccessHash() {
 
-  return ''
+  return '##GALA2017##'
  // TODO see where we store the hashkey
 }

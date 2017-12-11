@@ -4,10 +4,9 @@ import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
-import { GenericText } from '../components/Text/'
+import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, ServerProtocol, SignUpConstraints } from '../config/settings'
 import { resetPassword } from '../helper/ApiHelper'
-import { isMailValid } from '../helper/StringHelper'
 import { LoadingSpinner } from '../components/Spinner'
 
 export default class ResetPassword extends React.Component {

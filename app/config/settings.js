@@ -1,10 +1,10 @@
-const SERVER_HOSTNAME = "http://www.galagym.com/"
+const SERVER_HOSTNAME = "http://192.168.42.46:3000/"
 
 exports.Urls = {
   LOGIN:SERVER_HOSTNAME + "login",
   REGISTER:SERVER_HOSTNAME + "register",
   RESET_PASSWORD:SERVER_HOSTNAME + "resetPassword",
-}
+} 
 
 exports.Messages = {
 	INVALID_USER_ID_PASSWORD:"Ingresá el DNI y tu contraseña para continuar.",
@@ -21,6 +21,7 @@ exports.Messages = {
   INVALID_MAIL:"E-mail inválido.",
   SUCCESSFULY_RESET_PASSWORD: "Contraseña actualizada. Por favor logueate nuevamente",
   RESET_PASSWORD_EXPLANATION: "Por favor ingresá el DNI y la nueva contraseña.",
+  SYSTEM_ERROR: "Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente"
 }
 
 exports.Labels = {
@@ -51,6 +52,10 @@ exports.SignUpConstraints = {
 
 exports.ServerProtocol = {
   statusField:"status",
-  OK:"OK",
+  OK:"ok",
   messageField:"message"
+}
+
+exports.Keys = {
+  userData:"userData"
 }

@@ -2,6 +2,7 @@ import { StackNavigator } from 'react-navigation'
 import Init from '../screens/Init'
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
+import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 import { Screens } from '../config/settings'
 
@@ -18,5 +19,8 @@ export default StackNavigator({
   },
   [Screens.ResetPassword]: {
     screen: ResetPassword
+  },
+  [Screens.Home]: {
+    screen: Home
   }
 })

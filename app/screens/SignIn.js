@@ -1,10 +1,11 @@
 import React from 'react'
+import { AsyncStorage } from 'react-native'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { GenericText, GenericLink } from '../components/Text/'
-import { Messages, Labels, Screens, ServerProtocol } from '../config/settings'
+import { Messages, Labels, Screens, ServerProtocol, Keys } from '../config/settings'
 import { login } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
 
@@ -71,14 +72,18 @@ export default class SignIn extends React.Component{
       context.setState({spinnerVisible:false})
       return promise
     })(this, this.state.userId,this.state.password)
-    .then(data =>{
+    .then(async response =>{
       this.setState({spinnerVisible:false})
-      if(data[ServerProtocol.statusField] == ServerProtocol.OK) {
-        //TODO save data in localstorage
-        this.props.navigation.navigate(Screens.Home)  
+      if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
+        try{
+          await AsyncStorage.setItem(Keys.userData, JSON.stringify(response.data))
+          this.props.navigation.navigate(Screens.Home)  
+        } catch (error) {
+        this.setState({errorMessage:Messages.SYSTEM_ERROR})
+        }
       }
       else{
-        this.setState({errorMessage:data[ServerProtocol.messageField]})  
+        this.setState({errorMessage:response[ServerProtocol.messageField]})
       }
       
     })
