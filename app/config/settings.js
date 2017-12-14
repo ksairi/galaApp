@@ -33,7 +33,8 @@ exports.Labels = {
   CONFIRM_PASSWORD: "Confirmá contraseña",
   SUBMIT:"Enviar",
   ENTER_MAIL: "E-mail",
-  GO_BACK_TO_SIGN_IN:"Iniciá sesión"
+  GO_BACK_TO_SIGN_IN:"Iniciá sesión",
+  HOME:"Home"
 
 }
 

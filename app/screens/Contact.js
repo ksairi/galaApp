@@ -18,14 +18,4 @@ export default class Contact extends React.Component {
     </View>
     )
   }
-
-  static navigationOptions = {
-    drawerLabel: 'Contacto',
-    /*drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('./notif-icon.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),*/
-  }
 }

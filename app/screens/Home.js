@@ -21,16 +21,7 @@ export default class Home extends React.Component {
       </View>
     )
   }
-
-  static navigationOptions = {
-    drawerLabel: 'Home',
-    /*drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('./notif-icon.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),*/
-  }
+  
   setStateAsync(state) {
     return new Promise((resolve) => {
       this.setState(state, resolve)

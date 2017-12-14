@@ -10,7 +10,7 @@ import TimeTable from '../screens/TimeTable'
 import Routines from '../screens/Routines'
 import Notifications from '../screens/Notifications'
 import Contact from '../screens/Contact'
-import { Screens } from '../config/settings'
+import { Screens, Labels } from '../config/settings'
 
 const LoginStack = StackNavigator({
   [Screens.Init]: {
@@ -29,27 +29,44 @@ const LoginStack = StackNavigator({
 
 const HomeDrawerStack = DrawerNavigator({
   [Screens.Home]:{
-    screen:Home
+    screen:Home,
+    navigationOptions:{
+      headerTitle:Labels.HOME
+    }
   },
   [Screens.TimeTable]:{
-    screen:TimeTable
+    screen:TimeTable,
+    navigationOptions:{
+      title:"Horarios"
+    }
   },
   [Screens.Routines]:{
-    screen:Routines
+    screen:Routines,
+    navigationOptions:{
+      title:"Rutinas"
+    }
   },
   [Screens.Notifications]:{
-    screen:Notifications
+    screen:Notifications,
+    navigationOptions:{
+      title:"Notificaciones"
+    }
   },
   [Screens.Contact]:{
-    screen:Contact
+    screen:Contact,
+    navigationOptions:{
+      title:"Contacto"
+    }
   }
 })
 
 const HomeDrawerNavigation = StackNavigator({
   DrawerStack: { screen: HomeDrawerStack }
   },{
-    navigationOptions: ({navigation}) => ({
+    navigationOptions: ({navigation}) => {
+      return {
       headerStyle: {backgroundColor: 'green'},
+      headerTitleStyle: {color:'white'},
       headerLeft: 
       <HeaderButton
         title={navigation.state.index === 0 ? 'Menu':'<='} 
@@ -61,7 +78,7 @@ const HomeDrawerNavigation = StackNavigator({
           }
         }}
       />
-    })
+    }}
   }
 )
 
@@ -85,7 +102,7 @@ AppNavigator.router.getStateForAction = (action, state) => {
     
     if(stackNavigatorRoutes[currentIndex].routes){
       const drawerRoutes = stackNavigatorRoutes[currentIndex].routes[currentIndex]
-      if (drawerRoutes.routes[drawerRoutes.index].routeName == "Home"){
+      if (drawerRoutes.routes[drawerRoutes.index].routeName == Labels.HOME){
         return null
       }
     }

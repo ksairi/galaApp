@@ -18,14 +18,4 @@ export default class TimeTbale extends React.Component {
     </View>
     )
   }
-
-  static navigationOptions = {
-    drawerLabel: 'Horarios',
-    /*drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('./notif-icon.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),*/
-  }
 }

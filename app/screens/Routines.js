@@ -18,14 +18,4 @@ export default class Routines extends React.Component {
     </View>
     )
   }
-
-  static navigationOptions = {
-    drawerLabel: 'Rutinas',
-    /*drawerIcon: ({ tintColor }) => (
-      <Image
-        source={require('./notif-icon.png')}
-        style={[styles.icon, {tintColor: tintColor}]}
-      />
-    ),*/
-  }
 }
