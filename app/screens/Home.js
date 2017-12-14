@@ -11,6 +11,26 @@ export default class Home extends React.Component {
       name:''
     }
   }
+
+  render(){
+    return (
+      <View>
+        <Text>
+          {this.state.name}
+        </Text>
+      </View>
+    )
+  }
+
+  static navigationOptions = {
+    drawerLabel: 'Home',
+    /*drawerIcon: ({ tintColor }) => (
+      <Image
+        source={require('./notif-icon.png')}
+        style={[styles.icon, {tintColor: tintColor}]}
+      />
+    ),*/
+  }
   setStateAsync(state) {
     return new Promise((resolve) => {
       this.setState(state, resolve)
@@ -28,15 +48,5 @@ export default class Home extends React.Component {
     } catch (error) {
       this.state.name = "error"
     }
-  }
-  
-  render(){
-    return (
-      <View>
-        <Text>
-          Home
-        </Text>
-      </View>
-    )
   }
 }

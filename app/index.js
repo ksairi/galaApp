@@ -1,5 +1,5 @@
 import React from 'react'
-import AppRoutes from './config/Routes'
+import AppRoutes from './config/routes'
     
 
 export default () =>
