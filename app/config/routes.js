@@ -11,6 +11,8 @@ import Routines from '../screens/Routines'
 import Notifications from '../screens/Notifications'
 import Contact from '../screens/Contact'
 import { Screens, Labels } from '../config/settings'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const LoginStack = StackNavigator({
   [Screens.Init]: {
@@ -31,19 +33,40 @@ const HomeDrawerStack = DrawerNavigator({
   [Screens.Home]:{
     screen:Home,
     navigationOptions:{
-      headerTitle:Labels.HOME
+      headerTitle:Labels.HOME,
+      drawerIcon:({ tintColor, focused }) => (
+        <MCIcons
+          name={focused ? 'home-circle' : 'home'}
+          size={26}
+          style={{ color: tintColor }}
+        />
+      )
     }
   },
   [Screens.TimeTable]:{
     screen:TimeTable,
     navigationOptions:{
-      title:"Horarios"
+      title:"Horarios",
+      drawerIcon:({ tintColor, focused }) => (
+        <Ionicons
+          name={focused ? 'ios-time' : 'ios-time-outline'}
+          size={26}
+          style={{ color: tintColor }}
+        />
+      )
     }
   },
   [Screens.Routines]:{
     screen:Routines,
     navigationOptions:{
-      title:"Rutinas"
+      title:"Rutinas",
+      drawerIcon:({ tintColor, focused }) => (
+        <Ionicons
+          name={focused ? 'ios-book' : 'ios-book-outline'}
+          size={26}
+          style={{ color: tintColor }}
+        />
+      )
     }
   },
   [Screens.Notifications]:{
@@ -64,22 +87,20 @@ const HomeDrawerNavigation = StackNavigator({
   DrawerStack: { screen: HomeDrawerStack }
   },{
     navigationOptions: ({navigation}) => {
+      const isMenuClosed = (navigation.state.index === 0)
       return {
       headerStyle: {backgroundColor: 'green'},
       headerTitleStyle: {color:'white'},
       headerLeft: 
-      <HeaderButton
-        title={navigation.state.index === 0 ? 'Menu':'<='} 
-        onPress={() =>{
-          if (navigation.state.index === 0) {
+      <Ionicons name={isMenuClosed ? "md-menu" : "md-close"} size={30} onPress={()=>{
+        if (isMenuClosed) {
             navigation.navigate('DrawerOpen')
           }else {
             navigation.navigate('DrawerClose')
           }
         }}
       />
-    }}
-  }
+  }}}
 )
 
 const AppNavigator = StackNavigator({
