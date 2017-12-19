@@ -86,7 +86,7 @@ function connectToServer(url, parameters) {
       isDeviceConnected()
       .then((isConnected)=>{
         if(isConnected){
-          throw new Error(error)
+          throw new Error(Messages.SERVER_ERROR)
         }
         else{
             throw new Error(Messages.CHECK_INTERNET_CONNECTION)
