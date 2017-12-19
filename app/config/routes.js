@@ -106,7 +106,7 @@ const HomeDrawerNavigation = StackNavigator({
       const isMenuClosed = (navigation.state.index === 0)
       return {
       headerStyle: {backgroundColor: styles.headerBackgroundColor},
-      headerTitleStyle: {color:'white'},
+      headerTitleStyle: {color:'white', alignSelf: 'center'},
       headerLeft: 
         <Ionicons.Button name={isMenuClosed ? "md-menu" : "md-close"} 
         style={{backgroundColor: styles.headerBackgroundColor}} size={30} onPress={()=>{
