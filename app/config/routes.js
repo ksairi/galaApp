@@ -125,7 +125,7 @@ const HomeDrawerNavigation = StackNavigator({
           onPress={()=>
             Alert.alert(
             '',
-            '¿Cerrar sesion?',
+            '¿Cerrar sesión?',
             [
               {text: 'No', style: 'cancel'},
               {text: 'Sí', onPress: async () => {
