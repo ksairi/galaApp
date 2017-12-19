@@ -1,5 +1,5 @@
 import React from 'react'
-import { HeaderButton } from '../components/Button'
+import { Alert, AsyncStorage } from 'react-native'
 import { StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation'
 import Init from '../screens/Init'
 import SignIn from '../screens/SignIn'
@@ -10,9 +10,11 @@ import TimeTable from '../screens/TimeTable'
 import Routines from '../screens/Routines'
 import Notifications from '../screens/Notifications'
 import Contact from '../screens/Contact'
-import { Screens, Labels } from '../config/settings'
+import { Screens, Labels, Keys } from '../config/settings'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MIcons from 'react-native-vector-icons/MaterialIcons'
+import styles from './styles'
 
 const LoginStack = StackNavigator({
   [Screens.Init]: {
@@ -72,13 +74,27 @@ const HomeDrawerStack = DrawerNavigator({
   [Screens.Notifications]:{
     screen:Notifications,
     navigationOptions:{
-      title:"Notificaciones"
+      title:"Notificaciones",
+      drawerIcon:({ tintColor, focused }) => (
+        <MIcons
+          name={focused ? 'notifications-active' : 'notifications'}
+          size={26}
+          style={{ color: tintColor }}
+        />
+      )
     }
   },
   [Screens.Contact]:{
     screen:Contact,
     navigationOptions:{
-      title:"Contacto"
+      title:"Contacto",
+      drawerIcon:({ tintColor, focused }) => (
+        <Ionicons
+          name={focused ? 'ios-contact' : 'ios-contact-outline'}
+          size={26}
+          style={{ color: tintColor }}
+        />
+      )
     }
   }
 })
@@ -89,17 +105,38 @@ const HomeDrawerNavigation = StackNavigator({
     navigationOptions: ({navigation}) => {
       const isMenuClosed = (navigation.state.index === 0)
       return {
-      headerStyle: {backgroundColor: 'green'},
+      headerStyle: {backgroundColor: styles.headerBackgroundColor},
       headerTitleStyle: {color:'white'},
       headerLeft: 
-      <Ionicons name={isMenuClosed ? "md-menu" : "md-close"} size={30} onPress={()=>{
-        if (isMenuClosed) {
-            navigation.navigate('DrawerOpen')
-          }else {
-            navigation.navigate('DrawerClose')
+        <Ionicons.Button name={isMenuClosed ? "md-menu" : "md-close"} 
+        style={{backgroundColor: styles.headerBackgroundColor}} size={30} onPress={()=>{
+          if (isMenuClosed) {
+              navigation.navigate('DrawerOpen')
+            }else {
+              navigation.navigate('DrawerClose')
+            }
+          }}
+        />,
+      headerRight:
+        <MCIcons.Button
+          name={'logout'}
+          size={26}
+          style={{backgroundColor: styles.headerBackgroundColor}}
+          onPress={()=>
+            Alert.alert(
+            '',
+            '¿Cerrar sesion?',
+            [
+              {text: 'No', style: 'cancel'},
+              {text: 'Sí', onPress: async () => {
+                await AsyncStorage.removeItem(Keys.userData)
+                navigation.navigate(Screens.SignIn)
+              }},
+            ],
+            { cancelable: true }
+            )
           }
-        }}
-      />
+        />
   }}}
 )
 
@@ -119,7 +156,7 @@ AppNavigator.router.getStateForAction = (action, state) => {
 
   if(state && state.routes[state.index].routes && action.type === NavigationActions.BACK){
     const stackNavigatorRoutes = state.routes[state.index].routes
-    const currentIndex = state.routes[state.index].index
+        , currentIndex = state.routes[state.index].index
     
     if(stackNavigatorRoutes[currentIndex].routes){
       const drawerRoutes = stackNavigatorRoutes[currentIndex].routes[currentIndex]

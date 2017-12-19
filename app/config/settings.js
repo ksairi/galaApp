@@ -21,7 +21,7 @@ exports.Messages = {
   INVALID_MAIL:"E-mail inválido.",
   SUCCESSFULY_RESET_PASSWORD: "Contraseña actualizada. Por favor logueate nuevamente",
   RESET_PASSWORD_EXPLANATION: "Por favor ingresá el DNI y la nueva contraseña.",
-  SYSTEM_ERROR: "Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente"
+  SYSTEM_ERROR: "Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente",
 }
 
 exports.Labels = {

@@ -13,17 +13,4 @@ export default StyleSheet.create({
     fontSize: 20, 
     color: 'white'
   },
-
-  headerButtonContainerStyle: { 
-    padding:5, 
-    height:30, 
-    overflow:'hidden', 
-    borderRadius:4, 
-    backgroundColor: 'red'
-  },
-
-  headerButtonFontStyle: {
-    fontSize:15,
-    color:'white'
-  }
 })
