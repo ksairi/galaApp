@@ -10,6 +10,7 @@ export default class Home extends React.Component {
     this.state = {
       name:''
     }
+    this.setStateAsync = this.setStateAsync.bind(this)
   }
 
   render(){
@@ -25,12 +26,12 @@ export default class Home extends React.Component {
   setStateAsync(state) {
     return new Promise((resolve) => {
       this.setState(state, resolve)
-    });
+    })
   }
   async componentDidMount() {
 
     try {
-      var userData = await AsyncStorage.getItem(Keys.userData)
+      const userData = await AsyncStorage.getItem(Keys.userData)
       userData = JSON.parse(userData)
       
       if (userData !== null){

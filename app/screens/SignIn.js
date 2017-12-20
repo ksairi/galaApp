@@ -68,7 +68,7 @@ export default class SignIn extends React.Component{
     this.setState({errorMessage:""});
     (async function(context, userId, password) {
       context.setState({spinnerVisible:true})
-      var promise = await login(userId, password)
+      const promise = await login(userId, password)
       context.setState({spinnerVisible:false})
       return promise
     })(this, this.state.userId,this.state.password)
@@ -76,7 +76,9 @@ export default class SignIn extends React.Component{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         try{
-          await AsyncStorage.setItem(Keys.userData, JSON.stringify(response.data))
+          await AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
+            [Keys.timeTable, JSON.stringify(response.data.timeTable)]
+          ])
           this.props.navigation.navigate(Screens.HomeDrawerStack)
         } catch (error) {
         this.setState({errorMessage:Messages.SYSTEM_ERROR})

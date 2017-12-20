@@ -64,5 +64,6 @@ exports.ServerProtocol = {
 }
 
 exports.Keys = {
-  userData:"userData"
+  userData:"userData",
+  timeTable:"timeTable"
 }
