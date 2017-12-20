@@ -13,10 +13,7 @@ exports.login = function (userId, password) {
     return response
   })
   .catch((error) => {
-    return new Promise((resolve, reject)=>{
-      reject(error)
-      }
-    )
+    throw error
   })
 }
 
@@ -34,10 +31,7 @@ exports.register = function (fullName, userId, password) {
     return response
   })
   .catch((error) => {
-    return new Promise((resolve, reject)=>{
-      reject(error)
-      }
-    )
+    throw error
   })
 }
 
@@ -51,11 +45,8 @@ exports.resetPassword = function(userId, password){
     return response
   })
   .catch((error) => {
-    return new Promise((resolve, reject)=>{
-      reject(error)
-    }
-  )
-})
+    throw error
+  })
 }
 
 function connectToServer(url, parameters) {

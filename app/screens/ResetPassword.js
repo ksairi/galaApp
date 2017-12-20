@@ -1,5 +1,6 @@
 //  @flow
 import React from 'react'
+import { Keyboard } from 'react-native'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
@@ -31,50 +32,50 @@ export default class ResetPassword extends React.Component {
 
   render(){
     return (
-      <GenericContainer style={ContainerStyles.rootContainer}>
-        <GenericContainer style={ContainerStyles.centredContainer}>
-          <GenericText>
-            {Messages.RESET_PASSWORD_EXPLANATION}
-          </GenericText>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_USER_ID}>
-              <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
-                autoFocus keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-                onChangeText={userId => this.setState({userId})}
-                onSubmitEditing={this.onSubmitUserId}/>
+        <GenericContainer style={ContainerStyles.rootContainer}>
+          <GenericContainer style={ContainerStyles.centredContainer}>
+            <GenericText>
+              {Messages.RESET_PASSWORD_EXPLANATION}
+            </GenericText>
+            <GenericContainer style={ContainerStyles.horizontalContainer}>
+              <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_USER_ID}>
+                <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+                  autoFocus keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+                  onChangeText={userId => this.setState({userId})}
+                  onSubmitEditing={this.onSubmitUserId}/>
+              </GenericContainer>
             </GenericContainer>
+            <GenericContainer style={ContainerStyles.horizontalContainer}>
+              <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_PASSWORD}>
+                <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
+                  secureTextEntry onChangeText={password => this.setState({password})}
+                  onSubmitEditing={this.onSubmitPassword}
+                  inputRef={el => this.passwordInput = el}/>
+              </GenericContainer>
+              <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.CONFIRM_PASSWORD}>
+                <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
+                  placeholder={Labels.CONFIRM_PASSWORD}
+                  secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
+                  onSubmitEditing={this.doResetPassword}
+                  inputRef={el => this.confirmPasswordInput = el}/>
+              </GenericContainer>
+            </GenericContainer>
+            <SubmitButton key={Labels.SUBMIT} title={Labels.SUBMIT} onPress={() => this.doResetPassword}/>
+            <GenericText key="GenericText" error={this.state.hasErrors}>
+              {this.state.message}
+            </GenericText>
+            {this.state.showBackToSignIn && 
+              <GenericLink onPress={() => this.goToSignIn}>{Labels.GO_BACK_TO_SIGN_IN} </GenericLink>
+            }
+            <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
           </GenericContainer>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_PASSWORD}>
-              <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-                secureTextEntry onChangeText={password => this.setState({password})}
-                onSubmitEditing={this.onSubmitPassword}
-                inputRef={el => this.passwordInput = el}/>
-            </GenericContainer>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.CONFIRM_PASSWORD}>
-              <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
-                placeholder={Labels.CONFIRM_PASSWORD}
-                secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
-                onSubmitEditing={this.doResetPassword}
-                inputRef={el => this.confirmPasswordInput = el}/>
-            </GenericContainer>
-          </GenericContainer>
-          <SubmitButton key={Labels.SUBMIT} title={Labels.SUBMIT} onPress={() => this.doResetPassword}/>
-          <GenericText key="GenericText" error={this.state.hasErrors}>
-            {this.state.message}
-          </GenericText>
-          {this.state.showBackToSignIn && 
-            <GenericLink onPress={() => this.goToSignIn}>{Labels.GO_BACK_TO_SIGN_IN} </GenericLink>
-          }
-          <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
         </GenericContainer>
-      </GenericContainer>
     )
   }
 
   doResetPassword(){
     var message
-    
+    Keyboard.dismiss()
     message = ValidationHelper.userIdWithErrors(this.state.userId)
     if(message){
       this.setState({message, hasErrors:true})
@@ -88,21 +89,17 @@ export default class ResetPassword extends React.Component {
     }
 
     this.setState({message:""});
-    (async function(context, userId, password) {
-      context.setState({spinnerVisible:true})
-      var promise = await resetPassword(userId, password)
-      context.setState({spinnerVisible:false})
-      return promise
-    })(this, this.state.userId, this.state.password)
+    this.setState({spinnerVisible:true})
+    resetPassword(this.state.userId, this.state.password)
     .then(data =>{
       this.setState({spinnerVisible:false})
-        if(data[ServerProtocol.statusField] == ServerProtocol.OK) {
-          this.setState({message:Messages.SUCCESSFULY_RESET_PASSWORD, hasErrors:false,
-            showBackToSignIn:true})
-        }
-        else {
-          this.setState({message:data[ServerProtocol.messageField], hasErrors:true})  
-        }
+      if(data[ServerProtocol.statusField] == ServerProtocol.OK) {
+        this.setState({message:Messages.SUCCESSFULY_RESET_PASSWORD, hasErrors:false,
+          showBackToSignIn:true, userId:'', password:'', confirmPassword:''})
+      }
+      else {
+        this.setState({message:data[ServerProtocol.messageField], hasErrors:true})  
+      }
     })
     .catch(message => {
       this.setState({spinnerVisible:false})

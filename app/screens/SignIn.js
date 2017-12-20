@@ -1,4 +1,5 @@
 import React from 'react'
+import { Keyboard } from 'react-native'
 import { AsyncStorage } from 'react-native'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
@@ -61,34 +62,26 @@ export default class SignIn extends React.Component{
   }
 
   signIn(){
+    Keyboard.dismiss()
     if (this.state.userId.length == 0 || this.state.password.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
     }
     this.setState({errorMessage:""});
-    (async function(context, userId, password) {
-      context.setState({spinnerVisible:true})
-      const promise = await login(userId, password)
-      context.setState({spinnerVisible:false})
-      return promise
-    })(this, this.state.userId,this.state.password)
-    .then(async response =>{
+    this.setState({spinnerVisible:true})
+    login(this.state.userId, this.state.password)
+    .then(response =>{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        try{
-          AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
-            [Keys.timeTable, JSON.stringify(response.data.timeTable)]
-          ])
-          .then(()=>{
-            this.props.navigation.navigate(Screens.HomeDrawerStack)  
-          })
-          .catch(()=>{
-            this.setState({errorMessage:Messages.SYSTEM_ERROR})
-          })
-          
-        }catch(error) {
-        this.setState({errorMessage:Messages.SYSTEM_ERROR})
-        }
+        AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
+          [Keys.timeTable, JSON.stringify(response.data.timeTable)]
+        ])
+        .then(()=>{
+          this.props.navigation.navigate(Screens.HomeDrawerStack)  
+        })
+        .catch(()=>{
+          this.setState({errorMessage:Messages.SYSTEM_ERROR})
+        })
       }
       else{
         this.setState({errorMessage:response[ServerProtocol.messageField]})

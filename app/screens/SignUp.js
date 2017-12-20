@@ -1,4 +1,5 @@
 import React from 'react'
+import { Keyboard } from 'react-native'
 import { AsyncStorage } from 'react-native'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
@@ -32,6 +33,7 @@ export default class SignUp extends React.Component{
   }
 
   signUp(){
+    Keyboard.dismiss()
     var errorMessage
     
     if (this.state.userFullName.length == 0){
@@ -55,23 +57,20 @@ export default class SignUp extends React.Component{
     }
     
     this.setState({errorMessage:""});
-    (async function(context, userFullName, userId, password) {
-      context.setState({spinnerVisible:true})
-      var promise = await register(userFullName, userId, password)
-      context.setState({spinnerVisible:false})
-      return promise
-    })(this, this.state.userFullName, this.state.userId,this.state.password)
-    .then(async response =>{
+    this.setState({spinnerVisible:true})
+    register(this.state.userFullName, this.state.userId, this.state.password)
+    .then(response =>{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        try{
-          await AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
-            [Keys.timeTable, JSON.stringify(response.data.timeTable)]
-          ])
+        AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
+          [Keys.timeTable, JSON.stringify(response.data.timeTable)]
+        ])
+        .then(()=>{
           this.props.navigation.navigate(Screens.HomeDrawerStack)
-        } catch (error) {
-        this.setState({errorMessage:Messages.SYSTEM_ERROR})
-        }
+        })
+        .catch(()=>{
+          this.setState({errorMessage:Messages.SYSTEM_ERROR})    
+        })
       }
       else{
         this.setState({message:response[ServerProtocol.messageField]})
