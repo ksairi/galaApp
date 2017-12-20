@@ -8,6 +8,7 @@ import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol, Keys } from '../config/settings'
 import { register } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
+import ValidationHelper from '../helper/ValidationHelper'
 
 export default class SignUp extends React.Component{
 
@@ -31,6 +32,8 @@ export default class SignUp extends React.Component{
   }
 
   signUp(){
+    var errorMessage
+    
     if (this.state.userFullName.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_FULLNAME})
         return
@@ -39,18 +42,18 @@ export default class SignUp extends React.Component{
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
     }
-    if (this.state.password !== this.state.confirmPassword){
-      this.setState({errorMessage:Messages.INVALID_CONFIRM_PASSWORD})
+    errorMessage = ValidationHelper.userIdWithErrors(this.state.userId)
+    if(errorMessage){
+      this.setState({errorMessage})  
       return
     }
-    if(this.state.userId.length < SignUpConstraints.USER_ID_MIN_LENGTH){
-      this.setState({errorMessage:Messages.INVALID_USER_ID_LENGTH})
+
+    errorMessage = ValidationHelper.passwordsWithErrors(this.state.password, this.state.confirmPassword)
+    if(errorMessage){
+      this.setState({errorMessage})  
       return
     }
-    if(this.state.password.length < SignUpConstraints.PASSWORD_MIN_LENGTH){
-      this.setState({errorMessage:Messages.INVALID_PASSWORD_LENGTH})
-      return
-    }
+    
     this.setState({errorMessage:""});
     (async function(context, userFullName, userId, password) {
       context.setState({spinnerVisible:true})
@@ -74,9 +77,9 @@ export default class SignUp extends React.Component{
         this.setState({message:response[ServerProtocol.messageField]})
       }
     })
-    .catch(error => {
+    .catch(errorMessage => {
       this.setState({spinnerVisible:false})
-      this.setState((prevState, props) => ({errorMessage:error.message}))
+      this.setState((prevState, props) => ({errorMessage:errorMessage}))
     })
   }
   

@@ -8,6 +8,7 @@ import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, ServerProtocol, SignUpConstraints } from '../config/settings'
 import { resetPassword } from '../helper/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
+import ValidationHelper from '../helper/ValidationHelper'
 
 export default class ResetPassword extends React.Component {
 
@@ -72,17 +73,17 @@ export default class ResetPassword extends React.Component {
   }
 
   doResetPassword(){
+    var message
     
-    if(this.state.userId.length < SignUpConstraints.USER_ID_MIN_LENGTH){
-      this.setState({message:Messages.INVALID_USER_ID_LENGTH, hasErrors:true})
+    message = ValidationHelper.userIdWithErrors(this.state.userId)
+    if(message){
+      this.setState({message, hasErrors:true})
       return
     }
-    if(this.state.password.length < SignUpConstraints.PASSWORD_MIN_LENGTH){
-      this.setState({message:Messages.INVALID_PASSWORD_LENGTH, hasErrors:true})
-      return
-    }
-    if (this.state.password !== this.state.confirmPassword){
-      this.setState({message:Messages.INVALID_CONFIRM_PASSWORD, hasErrors:true})
+    
+    message = passwordsWithErrors(this.state.password, this.state.confirmPassword)
+    if(message){
+      this.setState({message, hasErrors:true})
       return
     }
 
@@ -103,9 +104,9 @@ export default class ResetPassword extends React.Component {
           this.setState({message:data[ServerProtocol.messageField], hasErrors:true})  
         }
     })
-    .catch(error => {
+    .catch(message => {
       this.setState({spinnerVisible:false})
-      this.setState((prevState, props) => ({message:error.message, hasErrors:true}))
+      this.setState((prevState, props) => ({message, hasErrors:true}))
     })
   }
 

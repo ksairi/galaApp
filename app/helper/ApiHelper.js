@@ -13,7 +13,10 @@ exports.login = function (userId, password) {
     return response
   })
   .catch((error) => {
-    throw new Error(error.message)
+    return new Promise((resolve, reject)=>{
+      reject(error)
+      }
+    )
   })
 }
 
@@ -31,7 +34,10 @@ exports.register = function (fullName, userId, password) {
     return response
   })
   .catch((error) => {
-    throw new Error(error.message)
+    return new Promise((resolve, reject)=>{
+      reject(error)
+      }
+    )
   })
 }
 
@@ -45,8 +51,11 @@ exports.resetPassword = function(userId, password){
     return response
   })
   .catch((error) => {
-    throw new Error(error.message) 
-  })
+    return new Promise((resolve, reject)=>{
+      reject(error)
+    }
+  )
+})
 }
 
 function connectToServer(url, parameters) {
@@ -59,8 +68,7 @@ function connectToServer(url, parameters) {
     body: JSON.stringify(parameters)
   })
   .then((response) => {
-    if(response.ok){
-      
+    if(response.ok){      
       try {
         const jsonObject = JSON.parse(response._bodyText)
         return jsonObject
@@ -86,10 +94,13 @@ function connectToServer(url, parameters) {
       isDeviceConnected()
       .then((isConnected)=>{
         if(isConnected){
-          throw new Error(Messages.SERVER_ERROR)
+          if(error.message){ //for unified Error:Network request failed
+            throw Messages.SERVER_ERROR
+          }
+          throw error
         }
         else{
-            throw new Error(Messages.CHECK_INTERNET_CONNECTION)
+            throw Messages.CHECK_INTERNET_CONNECTION
         }
       })
     )

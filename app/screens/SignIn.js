@@ -76,11 +76,17 @@ export default class SignIn extends React.Component{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         try{
-          await AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
+          AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
             [Keys.timeTable, JSON.stringify(response.data.timeTable)]
           ])
-          this.props.navigation.navigate(Screens.HomeDrawerStack)
-        } catch (error) {
+          .then(()=>{
+            this.props.navigation.navigate(Screens.HomeDrawerStack)  
+          })
+          .catch(()=>{
+            this.setState({errorMessage:Messages.SYSTEM_ERROR})
+          })
+          
+        }catch(error) {
         this.setState({errorMessage:Messages.SYSTEM_ERROR})
         }
       }
@@ -89,9 +95,9 @@ export default class SignIn extends React.Component{
       }
       
     })
-    .catch(error => {
+    .catch(errorMessage => {
       this.setState({spinnerVisible:false})
-      this.setState((prevState, props) => ({errorMessage:error.message}))
+      this.setState((prevState, props) => ({errorMessage}))
     })
   }
 
