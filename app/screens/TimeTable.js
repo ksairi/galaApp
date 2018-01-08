@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, AsyncStorage } from 'react-native'
+import { ScrollView, View, AsyncStorage } from 'react-native'
 import { Keys, Messages } from '../config/settings'
 import ClassesTimeTable from '../components/Table/ClassesTimeTable'
-import { LoadingText, GenericText } from '../components/Text/'
+import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
 import ContainerStyles from '../components/View/styles'
+import { LoadingSpinner } from '../components/Spinner'
 
 
 export default class TimeTbale extends React.Component {
@@ -41,10 +42,10 @@ export default class TimeTbale extends React.Component {
     }
     if(!this.state.timeTableData){
       return(
-        <LoadingText/>
+        <LoadingSpinner visible={true}/>
       )
     }
-    const tableHead = ['HORA', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO']
+    const tableHead = ['Hora', 'Lun', 'Mar', 'Miér', 'Jue', 'Vier', 'Sáb']
         , timeTableArray = this.state.timeTableData
     var toReturn = []
       , serverReponseError = false
@@ -83,7 +84,13 @@ export default class TimeTbale extends React.Component {
       )
     }
 
-    toReturn = <View>{toReturn}</View>
+    toReturn = 
+    <ScrollView>
+      <GenericContainer style={ContainerStyles.rootContainer}>
+        {toReturn}
+      </GenericContainer>
+    </ScrollView>
+
     return (toReturn)
   } 
 }
