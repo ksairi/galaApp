@@ -10,13 +10,14 @@ export default class TimeTbale extends React.Component {
     this.state = {
       timeTableData:null
     }
+  }
+  componentDidMount() {
 
-    console.log("hola")
     AsyncStorage.getItem(Keys.timeTable)
     .then((timeTableData)=>{
       var timeTableDataJson = JSON.parse(timeTableData)
       if (timeTableDataJson !== null){
-        this.state.timeTableData = timeTableDataJson
+        this.setState({timeTableData:timeTableDataJson})
       }
     })
     .catch((error)=>{
@@ -26,40 +27,41 @@ export default class TimeTbale extends React.Component {
   
 
   render(){
-    
+    if(!this.state.timeTableData){
+      return(
+        <View><Text>Loading...</Text></View>
+      )
+    }
     const tableHead = ['HORA', 'LUNES', 'MARTES', 'MIERCOLES', 'JUEVES', 'VIERNES', 'SABADO']
         , timeTableArray = this.state.timeTableData
-    console.log(timeTableArray)
-    timeTableArray.forEach( venueTimeTable =>{
+    var toReturn = []
+    timeTableArray.forEach( (venueTimeTable, venueTimeTableIndex) =>{
       var dataRows = []
       venueTimeTable.rows.forEach( venueTimeTableRow => {
-        if(venueTimeTableRow.classes.length != 5){
+        if(venueTimeTableRow.classes.length != 6){
           console.log("error")
           return //TODO SHOW ERROR ON DATA FROM SERVER
         }
         const dataRow = [venueTimeTableRow.time, ...venueTimeTableRow.classes]
-        dataRows = dataRows.concat(dataRow)
+        dataRows.push(dataRow)
       })
+      
+      toReturn.push(
+        <View key={venueTimeTableIndex}>
+          <Text>{venueTimeTable.venue}</Text>
+          <Table> 
+            <Row data={tableHead} style={styles.head} textStyle={styles.text}/> 
+            <Rows data={dataRows} style={styles.row} textStyle={styles.text} />
+          </Table> 
+        </View>
+      )
     })
 
-    return (
-      <View> 
-        <View> {venueTimeTable.venue} </View> 
-        <Table> 
-          <Row data={tableHead} style={styles.head} textStyle={styles.text}/> 
-          <Rows data={dataRows} style={styles.row} textStyle={styles.text} />
-        </Table> 
-      </View>
-
-    )
-  }
+    toReturn = <View>{toReturn}</View>
+    return (toReturn)
+  } 
 }
-
-  /*setStateAsync(state) {
-    return new Promise((resolve) => {
-      this.setState(state, resolve)
-    })
-  }*/
+ 
 
 const styles = StyleSheet.create({
   head: { height: 40, backgroundColor: '#f1f8ff' },
