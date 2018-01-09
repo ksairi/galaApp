@@ -7,8 +7,9 @@ import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, ServerProtocol, Keys } from '../config/settings'
-import { login } from '../helper/ApiHelper'
+import { login } from '../helpers/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
+import { saveInitialData } from '../helpers/AsyncStorageHelper'
 
 export default class SignIn extends React.Component{
 
@@ -72,15 +73,12 @@ export default class SignIn extends React.Component{
     .then(response =>{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
-          [Keys.timeTable, JSON.stringify(response.data.timeTable)],
-          [Keys.userId, this.state.userId]
-        ])
+        saveInitialData(response.data, this.state.userId)
         .then(()=>{
-          this.props.navigation.navigate(Screens.HomeDrawerStack)  
+          this.props.navigation.navigate(Screens.HomeDrawerStack)   
         })
-        .catch(()=>{
-          this.setState({errorMessage:Messages.SYSTEM_ERROR})
+        .catch((errorMessage) =>{
+          this.setState({errorMessage}) 
         })
       }
       else{

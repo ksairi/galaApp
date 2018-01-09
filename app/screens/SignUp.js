@@ -7,9 +7,10 @@ import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol, Keys } from '../config/settings'
-import { register } from '../helper/ApiHelper'
+import { register } from '../helpers/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
-import ValidationHelper from '../helper/ValidationHelper'
+import ValidationHelper from '../helpers/ValidationHelper'
+import { saveInitialData } from '../helpers/AsyncStorageHelper'
 
 export default class SignUp extends React.Component{
 
@@ -39,7 +40,7 @@ export default class SignUp extends React.Component{
     if (this.state.userFullName.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_FULLNAME})
         return
-      }
+    }
     if (this.state.userId.length == 0 || this.state.password.length == 0){
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
@@ -61,15 +62,12 @@ export default class SignUp extends React.Component{
     .then(response =>{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
-          [Keys.timeTable, JSON.stringify(response.data.timeTable)],
-          [Keys.userId, this.state.userId]
-        ])
+        saveInitialData(response.data, this.state.userId)
         .then(()=>{
-          this.props.navigation.navigate(Screens.HomeDrawerStack)
+          this.props.navigation.navigate(Screens.HomeDrawerStack)  
         })
-        .catch(()=>{
-          this.setState({errorMessage:Messages.SYSTEM_ERROR})    
+        .catch((errorMessage)=>{
+          this.setState({errorMessage})      
         })
       }
       else{

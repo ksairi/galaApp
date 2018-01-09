@@ -7,9 +7,9 @@ import { GenericTextInput } from '../components/TextInput/'
 import { SubmitButton } from '../components/Button'
 import { GenericText, GenericLink } from '../components/Text/'
 import { Messages, Labels, Screens, ServerProtocol, SignUpConstraints } from '../config/settings'
-import { resetPassword } from '../helper/ApiHelper'
+import { resetPassword } from '../helpers/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
-import ValidationHelper from '../helper/ValidationHelper'
+import ValidationHelper from '../helpers/ValidationHelper'
 
 export default class ResetPassword extends React.Component {
 
