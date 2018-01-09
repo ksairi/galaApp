@@ -67,8 +67,7 @@ export default class SignIn extends React.Component{
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
     }
-    this.setState({errorMessage:""});
-    this.setState({spinnerVisible:true})
+    this.setState({errorMessage:"", spinnerVisible:true})
     login(this.state.userId, this.state.password)
     .then(response =>{
       this.setState({spinnerVisible:false})

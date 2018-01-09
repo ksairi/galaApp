@@ -88,8 +88,7 @@ export default class ResetPassword extends React.Component {
       return
     }
 
-    this.setState({message:""});
-    this.setState({spinnerVisible:true})
+    this.setState({message:"", spinnerVisible:true})
     resetPassword(this.state.userId, this.state.password)
     .then(data =>{
       this.setState({spinnerVisible:false})

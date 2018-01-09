@@ -56,8 +56,7 @@ export default class SignUp extends React.Component{
       return
     }
     
-    this.setState({errorMessage:""});
-    this.setState({spinnerVisible:true})
+    this.setState({errorMessage:"", spinnerVisible:true})
     register(this.state.userFullName, this.state.userId, this.state.password)
     .then(response =>{
       this.setState({spinnerVisible:false})

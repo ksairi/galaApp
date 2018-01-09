@@ -53,8 +53,7 @@ export default class Contact extends React.Component {
         this.setState({message:Messages.INVALID_COMMENTS, error:true})
         return
     }
-    this.setState({message:""});
-    this.setState({spinnerVisible:true})
+    this.setState({message:"", spinnerVisible:true})
     AsyncStorage.getItem(Keys.userId)
     .then((userId)=>{
       if (userId !== null){
