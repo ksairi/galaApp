@@ -129,7 +129,7 @@ const HomeDrawerNavigation = StackNavigator({
             [
               {text: 'No', style: 'cancel'},
               {text: 'Sí', onPress: async () => {
-                await AsyncStorage.removeItem(Keys.userData)
+                await AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timeTable])
                 navigation.navigate(Screens.SignIn)
               }},
             ],

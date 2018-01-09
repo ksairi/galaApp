@@ -1,7 +1,7 @@
 import { Urls, Messages, ServerProtocol } from '../config/settings.js'
 import { isDeviceConnected } from './NetworkHelper'
 
-exports.login = function (userId, password) {
+exports.login = (userId, password) => {
 
   const loginParamters = {}
   
@@ -18,7 +18,7 @@ exports.login = function (userId, password) {
 }
 
 
-exports.register = function (fullName, userId, password) {
+exports.register = (fullName, userId, password) => {
 
   const registerParamters = {}
   
@@ -35,7 +35,7 @@ exports.register = function (fullName, userId, password) {
   })
 }
 
-exports.resetPassword = function(userId, password){
+exports.resetPassword = (userId, password) => {
   const resetPasswordParameters = {}
   resetPasswordParameters.userId = userId
   resetPasswordParameters.password = password
@@ -49,7 +49,21 @@ exports.resetPassword = function(userId, password){
   })
 }
 
-function connectToServer(url, parameters) {
+exports.sendComments = (userId, comments) => {
+  const sendCommentsParameters = {}
+  sendCommentsParameters.userId = userId
+  sendCommentsParameters.comments = comments
+  sendCommentsParameters.hash = getAccessHash()
+  return connectToServer(Urls.SEND_COMMENTS, sendCommentsParameters)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw error
+  })  
+}
+
+connectToServer = (url, parameters) => {
   return fetch(url , {
     method: 'POST',
     headers: {
@@ -98,7 +112,7 @@ function connectToServer(url, parameters) {
   })
 }
 
-function getAccessHash() {
+ getAccessHash = () => {
 
   return '##GALA2017##'
  // TODO see where we store the hashkey

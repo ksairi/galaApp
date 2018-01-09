@@ -63,7 +63,8 @@ export default class SignUp extends React.Component{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         AsyncStorage.multiSet([[Keys.userData, JSON.stringify(response.data.user)],
-          [Keys.timeTable, JSON.stringify(response.data.timeTable)]
+          [Keys.timeTable, JSON.stringify(response.data.timeTable)],
+          [Keys.userId, this.state.userId]
         ])
         .then(()=>{
           this.props.navigation.navigate(Screens.HomeDrawerStack)

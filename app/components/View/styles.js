@@ -20,7 +20,7 @@ export default StyleSheet.create({
     backgroundColor: genericBackgroundColor,
     alignItems: 'center',
     justifyContent: 'center',
-    paddingBottom: 10  
+    paddingBottom: 10,
   },
   horizontalContainer:{
     flexDirection: 'row',

@@ -4,25 +4,28 @@ exports.Urls = {
   LOGIN:SERVER_HOSTNAME + "login",
   REGISTER:SERVER_HOSTNAME + "register",
   RESET_PASSWORD:SERVER_HOSTNAME + "resetPassword",
+  SEND_COMMENTS:SERVER_HOSTNAME + "sendComments",
 } 
 
 exports.Messages = {
-	INVALID_USER_ID_PASSWORD:"Ingresá el DNI y tu contraseña para continuar.",
-  INVALID_USER_FULLNAME:"Ingresá tu nombre completo.",
-  INVALID_CONFIRM_PASSWORD:"Las contraseñas no coinciden.",
-  SERVER_ERROR:"Error de conexión a nuestros servidores. Por favor reintentá en unos minutos.",
-  CHECK_INTERNET_CONNECTION:"Verificá tu conexión de internet.",
+	INVALID_USER_ID_PASSWORD:"Ingresá el DNI y tu contraseña para continuar",
+  INVALID_USER_FULLNAME:"Ingresá tu nombre completo",
+  INVALID_CONFIRM_PASSWORD:"Las contraseñas no coinciden",
+  SERVER_ERROR:"Error de conexión a nuestros servidores. Por favor reintentá en unos minutos",
+  CHECK_INTERNET_CONNECTION:"Verificá tu conexión de internet",
   LOADING:"Cargando...",
   NO_ACCOUNT:"¿No te registraste?",
   FORGOT_PASSWORD:"¿Olvidaste la contraseña?",
   USER_ALREADY:"¿Ya tenes una cuenta?",
-  INVALID_PASSWORD_LENGTH:"La contraseña debe tener al menos 5 caracteres.",
-  INVALID_USER_ID_LENGTH:"DNI inválido.",
-  INVALID_MAIL:"E-mail inválido.",
+  INVALID_PASSWORD_LENGTH:"La contraseña debe tener al menos 5 caracteres",
+  INVALID_USER_ID_LENGTH:"DNI inválido",
+  INVALID_MAIL:"E-mail inválido",
   SUCCESSFULY_RESET_PASSWORD: "Contraseña actualizada. Por favor logueate nuevamente",
-  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el DNI y la nueva contraseña.",
+  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el DNI y la nueva contraseña",
   SYSTEM_ERROR: "Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente",
-  SYSTEM_READ_ERROR:"Error al leer información del dispositivo. Vuelva a intentarlo nuevamente"
+  SYSTEM_READ_ERROR:"Error al leer información del dispositivo. Vuelva a intentarlo nuevamente",
+  INVALID_COMMENTS:"Por favor ingresá un comentario antes de enviar",
+  SEND_COMMENTS_OK:"Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias"
 }
 
 exports.Labels = {
@@ -35,7 +38,8 @@ exports.Labels = {
   SUBMIT:"Enviar",
   ENTER_MAIL: "E-mail",
   GO_BACK_TO_SIGN_IN:"Iniciá sesión",
-  HOME:"Home"
+  HOME:"Home",
+  ENTER_COMMENTS:"Queremos leer lo que tenés para decir"
 
 }
 
@@ -65,6 +69,7 @@ exports.ServerProtocol = {
 }
 
 exports.Keys = {
+  userId:"userId",
   userData:"userData",
   timeTable:"timeTable"
 }
