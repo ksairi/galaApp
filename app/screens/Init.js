@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { GenericContainer } from '../components/View/'
 import containerStyles from '../components/View/styles'
-import { Screens } from '../config/settings'
+import { Screens, Keys } from '../config/settings'
 
 
 export default class Init extends React.Component {
@@ -23,7 +23,11 @@ export default class Init extends React.Component {
 
 		this.timerID = setInterval(()=> {
 	  	clearInterval(this.timerID)
-	    this.props.navigation.navigate(Screens.SignIn)
+	    this.props.navigation.dispatch({
+	      key: Screens.SignIn,
+	      type: Keys.replaceCurrentScreen,
+	      routeName: Screens.SignIn,
+      })
 	  }
 	  , 1000)	
 	}

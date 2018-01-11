@@ -75,7 +75,13 @@ export default class SignIn extends React.Component{
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         saveInitialData(response.data, this.state.userId)
         .then(()=>{
-          this.props.navigation.navigate(Screens.HomeDrawerStack)   
+          //this.props.navigation.navigate(Screens.HomeDrawerStack)
+          this.props.navigation.dispatch({
+            key: Screens.HomeDrawerStack,
+            type: Keys.replaceCurrentScreen,
+            routeName: Screens.HomeDrawerStack,
+            action:this.props.navigation.navigate(Screens.HomeDrawerStack)
+          })
         })
         .catch((errorMessage) =>{
           this.setState({errorMessage}) 
