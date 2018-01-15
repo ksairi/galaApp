@@ -1,6 +1,7 @@
 import React from 'react'
 import { Keyboard } from 'react-native'
 import { AsyncStorage } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { GenericContainer } from '../components/View/'
 import ContainerStyles from '../components/View/styles'
 import { GenericTextInput } from '../components/TextInput/'
@@ -75,13 +76,15 @@ export default class SignIn extends React.Component{
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         saveInitialData(response.data, this.state.userId)
         .then(()=>{
-          //this.props.navigation.navigate(Screens.HomeDrawerStack)
-          this.props.navigation.dispatch({
-            key: Screens.HomeDrawerStack,
-            type: Keys.replaceCurrentScreen,
-            routeName: Screens.HomeDrawerStack,
-            action:this.props.navigation.navigate(Screens.HomeDrawerStack)
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({routeName:Screens.HomeDrawerStack})
+            ],
+            key: null
           })
+          this.props.navigation.dispatch(resetAction)
+
         })
         .catch((errorMessage) =>{
           this.setState({errorMessage}) 

@@ -16,10 +16,14 @@ import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MIcons from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles'
 
-const LoginStack = StackNavigator({
+const InitStack = StackNavigator({
   [Screens.Init]: {
     screen:Init
-  },
+  }
+})
+
+const LoginStack = StackNavigator({
+  
   [Screens.SignIn]:{
     screen:SignIn
   },
@@ -30,23 +34,6 @@ const LoginStack = StackNavigator({
     screen:ResetPassword
   }
 })
-
-const loginStackGetStateForAction = LoginStack.router.getStateForAction
-
-LoginStack.router.getStateForAction = (action, state) => {
-
-  if(state && action.type === Keys.replaceCurrentScreen){
-    var routes = state.routes.slice(0, state.routes.length - 1)
-    routes.push(action)
-    return {
-      ...state,
-      routes,
-      index: routes.length - 1,
-    }
-  }
-
-  return loginStackGetStateForAction(action, state)
-}
 
 const HomeDrawerStack = DrawerNavigator({
   [Screens.Home]:{
@@ -148,7 +135,14 @@ const HomeDrawerNavigation = StackNavigator({
                   {text: 'Sí', onPress: () => {
                     AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timeTable])
                     .then(()=>{
-                      navigation.navigate(Screens.SignIn)
+                      const resetAction = NavigationActions.reset({
+                      index: 0,
+                      actions: [
+                        NavigationActions.navigate({routeName:Screens.LoginStack})
+                      ],
+                      key:null
+                    })
+                    navigation.dispatch(resetAction)
                     })
                   }},
                 ],
@@ -161,60 +155,16 @@ const HomeDrawerNavigation = StackNavigator({
     }
 )
 
-const defaultHomeNavigationGetStateForAction = HomeDrawerNavigation.router.getStateForAction
-HomeDrawerNavigation.router.getStateForAction = (action, state) => {
-  console.log(12)
-  console.log(action)
-  console.log(state)
-  return defaultHomeNavigationGetStateForAction(action, state)
-  
-}
-
 const AppNavigator = StackNavigator({
+  [Screens.InitStack] : {screen:InitStack},
   [Screens.LoginStack]: { screen: LoginStack },
   [Screens.HomeDrawerStack]: { screen: HomeDrawerNavigation }
 }, {
   // Default config for all screens
   headerMode: 'none',
   //title: 'Main',
-  initialRouteName: Screens.LoginStack
+  initialRouteName: Screens.InitStack
 })
-
-/*const defaultGetStateForAction = AppNavigator.router.getStateForAction
-
-AppNavigator.router.getStateForAction = (action, state) => {
-  
-  if(state && state.routes[state.index].routes && action.type === NavigationActions.BACK){
-    const stackNavigatorRoutes = state.routes[state.index].routes
-        , currentIndex = state.routes[state.index].index
-    
-    if(stackNavigatorRoutes[currentIndex] && stackNavigatorRoutes[currentIndex].routes){
-      const drawerRoutes = stackNavigatorRoutes[currentIndex].routes[currentIndex]
-      if (drawerRoutes.routes[drawerRoutes.index].routeName == Labels.HOME){
-        return null
-      }
-    }
-  }
-
-  if(state && action.type === 'ReplaceCurrentScreen'){
-    console.log('ReplaceCurrentScreen')
-    console.log(state.routes)
-    var rootRoutes = state.routes
-    var loginStack = state.routes[state.index].routes
-    var newStackNavigatorRoutes = loginStack.slice(0, loginStack.length - 1)
-    newStackNavigatorRoutes.push(action)
-    rootRoutes[state.index].routes = newStackNavigatorRoutes
-    console.log(rootRoutes)
-    return {
-      ...state,
-      newStackNavigatorRoutes,
-      //index: newStackNavigatorRoutes.length - 1,
-    }
-  }
-  console.log(action)
-  console.log(state)
-  return defaultGetStateForAction(action, state)
-}*/
 
 export default AppNavigator
 

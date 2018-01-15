@@ -53,6 +53,7 @@ exports.Screens = {
   TimeTable:"TimeTable",
   Routines:"Routines",
   Notifications:"Notifications",
+  InitStack:"InitStack",
   LoginStack:"loginStack",
   HomeDrawerStack:"homeDrawerStack"
 }
@@ -72,5 +73,7 @@ exports.Keys = {
   userId:"userId",
   userData:"userData",
   timeTable:"timeTable",
-  replaceCurrentScreen:"ReplaceCurrentScreen"
+  replaceCurrentScreen:"replaceCurrentScreen",
+  emptyLoginStack:"emptyLoginStack",
+  removeHomeStack:"removeHomeStack"
 }

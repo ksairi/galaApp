@@ -1,5 +1,6 @@
 import React from 'react'
 import { Text, View } from 'react-native'
+import { NavigationActions } from 'react-navigation'
 import { GenericContainer } from '../components/View/'
 import containerStyles from '../components/View/styles'
 import { Screens, Keys } from '../config/settings'
@@ -23,11 +24,14 @@ export default class Init extends React.Component {
 
 		this.timerID = setInterval(()=> {
 	  	clearInterval(this.timerID)
-	    this.props.navigation.dispatch({
-	      key: Screens.SignIn,
-	      type: Keys.replaceCurrentScreen,
-	      routeName: Screens.SignIn,
-      })
+      const resetAction = NavigationActions.reset({
+	      index: 0,
+	      actions: [
+	        NavigationActions.navigate({routeName:Screens.LoginStack})
+	      ],
+	      key:null
+    	})
+      this.props.navigation.dispatch(resetAction)
 	  }
 	  , 1000)	
 	}
