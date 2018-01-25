@@ -1,6 +1,6 @@
 import React from 'react'
-import { Alert, AsyncStorage } from 'react-native'
-import { StackNavigator, DrawerNavigator, NavigationActions } from 'react-navigation'
+import { Alert, AsyncStorage, ScrollView } from 'react-native'
+import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems, SafeAreaView  } from 'react-navigation'
 import Init from '../screens/Init'
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
@@ -10,6 +10,7 @@ import TimeTable from '../screens/TimeTable'
 import Routines from '../screens/Routines'
 import Notifications from '../screens/Notifications'
 import Contact from '../screens/Contact'
+import NewMemberPromotions from '../screens/NewMemberPromotions'
 import { Screens, Labels, Keys } from '../config/settings'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -100,14 +101,52 @@ const HomeDrawerStack = DrawerNavigator({
         />
       )
     }
+  },
+  [Screens.NewMemberPromotions]:{
+    screen:NewMemberPromotions,
+    navigationOptions:{
+      title:"Promoción para Socio Nuevo",
+      drawerIcon:({ tintColor, focused }) => (
+        <Ionicons
+          name={focused ? 'ios-contact' : 'ios-contact-outline'}
+          size={26}
+          style={{ color: tintColor }}
+        />
+      )
+    }
   }
-})
+},{
+    contentComponent:(props) => {
+      var filteredItems = props.items
+      if(!props.screenProps || !props.screenProps[Keys.isNewMember]){
+        filteredItems = props.items.filter(item => item.routeName != Screens.NewMemberPromotions)
+      }
+      return (
+        <ScrollView>
+          <SafeAreaView style={{flex:1}} forceInset={{ top: 'always', horizontal: 'never' }}>
+            <DrawerItems {...props} items={filteredItems} />
+          </SafeAreaView>
+        </ScrollView>
+      )
+    }
+  }
+)
+
+class HomeDrawerStackContainer extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return <HomeDrawerStack screenProps={{[Keys.isNewMember]:this.props.navigation.state.params[Keys.isNewMember]}} />
+    
+  }
+}
 
 const HomeDrawerNavigation = StackNavigator({
-  DrawerStack: { screen: HomeDrawerStack }
+  DrawerStack: { screen: HomeDrawerStackContainer }
   },{
       navigationOptions: ({navigation}) => {
-        const isMenuClosed = (navigation.state.index === 0)
+        const isMenuClosed = (navigation.state.params.index === 0)
         return {
           headerStyle: {backgroundColor: styles.headerBackgroundColor},
           headerTitleStyle: {color:'white', alignSelf: 'center'},

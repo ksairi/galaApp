@@ -55,7 +55,8 @@ exports.Screens = {
   Notifications:"Notifications",
   InitStack:"InitStack",
   LoginStack:"loginStack",
-  HomeDrawerStack:"homeDrawerStack"
+  HomeDrawerStack:"homeDrawerStack",
+  NewMemberPromotions:"NewMemberPromotions"
 }
 
 exports.SignUpConstraints = {
@@ -75,5 +76,6 @@ exports.Keys = {
   timeTable:"timeTable",
   replaceCurrentScreen:"replaceCurrentScreen",
   emptyLoginStack:"emptyLoginStack",
-  removeHomeStack:"removeHomeStack"
+  removeHomeStack:"removeHomeStack",
+  isNewMember:"isNewMember"
 }
