@@ -138,7 +138,6 @@ class HomeDrawerStackContainer extends React.Component {
   }
   render() {
     return <HomeDrawerStack screenProps={{[Keys.isNewMember]:this.props.navigation.state.params[Keys.isNewMember]}} />
-    
   }
 }
 
@@ -146,7 +145,7 @@ const HomeDrawerNavigation = StackNavigator({
   DrawerStack: { screen: HomeDrawerStackContainer }
   },{
       navigationOptions: ({navigation}) => {
-        const isMenuClosed = (navigation.state.params.index === 0)
+        const isMenuClosed = (navigation.state.index === 0)
         return {
           headerStyle: {backgroundColor: styles.headerBackgroundColor},
           headerTitleStyle: {color:'white', alignSelf: 'center'},
@@ -193,6 +192,20 @@ const HomeDrawerNavigation = StackNavigator({
       }
     }
 )
+
+const defaultGetStateForAction = HomeDrawerStack.router.getStateForAction
+
+HomeDrawerStack.router.getStateForAction = (action, state) => {
+  if(state && action.type === 'Navigation/NAVIGATE' && action.routeName === 'DrawerClose') {
+    console.log('DrawerClose')
+  }
+
+  if(state && action.type === 'Navigation/NAVIGATE' && action.routeName === 'DrawerOpen') {
+    console.log('DrawerOpen')
+  }
+
+  return defaultGetStateForAction(action, state)
+}
 
 const AppNavigator = StackNavigator({
   [Screens.InitStack] : {screen:InitStack},
