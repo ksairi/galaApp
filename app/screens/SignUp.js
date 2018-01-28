@@ -14,53 +14,45 @@ import ValidationHelper from '../helpers/ValidationHelper'
 import { saveInitialData } from '../helpers/AsyncStorageHelper'
 
 export default class SignUp extends React.Component{
+  static userFullName
+  static userId
+  static password
+  static confirmPassword
 
-  constructor(props){
-    super(props)
-    this.state = {
-      userFullName:'',
-      userId:'',
-      password:'',
-      confirmPassword:'',
-      errorMessage:'',
-      message:'',
-      focusPassword:false,
-      spinnerVisible:false
-    }
-    this.signUp = this.signUp.bind(this)
-    this.onSubmitUserFullName = this.onSubmitUserFullName.bind(this)
-    this.onSubmitUserId = this.onSubmitUserId.bind(this)
-    this.onSubmitPassword = this.onSubmitPassword.bind(this)
-    this.goToSignIn = this.goToSignIn.bind(this)
+  state = {
+    errorMessage:'',
+    message:'',
+    focusPassword:false,
+    spinnerVisible:false
   }
 
-  signUp(){
+  signUp = () =>{
     Keyboard.dismiss()
     var errorMessage
     
-    if (this.state.userFullName.length == 0 || this.state.userId.length == 0 || this.state.password.length == 0){
+    if (!this.userFullName || !this.userId || !this.password){
         this.setState({errorMessage:Messages.INCOMPLETE_INPUT_DATA})
         return
     }
     
-    errorMessage = ValidationHelper.userIdWithErrors(this.state.userId)
+    errorMessage = ValidationHelper.userIdWithErrors(this.userId)
     if(errorMessage){
       this.setState({errorMessage})  
       return
     }
 
-    errorMessage = ValidationHelper.passwordsWithErrors(this.state.password, this.state.confirmPassword)
+    errorMessage = ValidationHelper.passwordsWithErrors(this.password, this.confirmPassword)
     if(errorMessage){
       this.setState({errorMessage})  
       return
     }
     
     this.setState({errorMessage:"", spinnerVisible:true})
-    register(this.state.userFullName, this.state.userId, this.state.password)
+    register(this.userFullName, this.userId, this.password)
     .then(response =>{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        saveInitialData(response.data, this.state.userId)
+        saveInitialData(response.data, this.userId)
         .then(()=>{
           const resetAction = NavigationActions.reset({
             index: 0,
@@ -85,8 +77,8 @@ export default class SignUp extends React.Component{
     })
   }
   
-  onSubmitUserFullName(){
-    if(!this.state.userId){
+  onSubmitUserFullName = ()=>{
+    if(!this.userId){
       this.userIdInput.focus()
     }
     else{
@@ -94,8 +86,8 @@ export default class SignUp extends React.Component{
     }
   }
   
-  onSubmitUserId(){
-    if(!this.state.password){
+  onSubmitUserId = () =>{
+    if(!this.password){
       this.passwordInput.focus()
     }
     else{
@@ -103,15 +95,15 @@ export default class SignUp extends React.Component{
     }
   }
   
-  onSubmitPassword(){
-    if(!this.state.confirmPassword){
+  onSubmitPassword = () =>{
+    if(!this.confirmPassword){
       this.confirmPasswordInput.focus()
     }
     else{
         this.signUp()
     }
   }
-  goToSignIn(){
+  goToSignIn = () =>{
     this.setState({message:""})
     const resetAction = NavigationActions.reset({
       index: 0,
@@ -128,30 +120,30 @@ export default class SignUp extends React.Component{
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_FULL_NAME}>
-              <GenericTextInput key={Labels.ENTER_FULL_NAME} value={this.state.userFullName}
+              <GenericTextInput key={Labels.ENTER_FULL_NAME}
                 placeholder={Labels.ENTER_FULL_NAME} autoCorrect={false} autoCapitalize = 'words'
-                autoFocus onChangeText={userFullName => this.setState({userFullName})}
+                autoFocus onChangeText={pUserFullName => this.userFullName = pUserFullName}
                 onSubmitEditing={this.onSubmitUserFullName}/>
             </GenericContainer>
             <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_USER_ID}>
-              <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+              <GenericTextInput key={Labels.ENTER_USER_ID}
                 keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-                onChangeText={userId => this.setState({userId})}
+                onChangeText={pUserId => this.userId = pUserId}
                 onSubmitEditing={this.onSubmitUserId}
                 inputRef={el => this.userIdInput = el}/>
             </GenericContainer>
           </GenericContainer>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_PASSWORD}>
-              <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-                secureTextEntry onChangeText={password => this.setState({password})}
+              <GenericTextInput key={Labels.ENTER_PASSWORD} placeholder={Labels.ENTER_PASSWORD}
+                secureTextEntry onChangeText={pPassword => this.password = pPassword}
                 onSubmitEditing={this.onSubmitPassword}
                 inputRef={el => this.passwordInput = el}/>
             </GenericContainer>
             <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.CONFIRM_PASSWORD}>
-              <GenericTextInput key={Labels.CONFIRM_PASSWORD} value={this.state.confirmPassword} 
+              <GenericTextInput key={Labels.CONFIRM_PASSWORD} 
                 placeholder={Labels.CONFIRM_PASSWORD}
-                secureTextEntry onChangeText={confirmPassword => this.setState({confirmPassword})}
+                secureTextEntry onChangeText={pConfirmPassword => this.confirmPassword = pConfirmPassword}
                 onSubmitEditing={this.signUp}
                 inputRef={el => this.confirmPasswordInput = el}/>
             </GenericContainer>

@@ -11,29 +11,25 @@ import { sendComments } from '../helpers/ApiHelper'
 
 
 export default class Contact extends React.Component {
+  static comments
 
-  constructor(props){
-    super(props)
-    this.state = {
-      spinnerVisible:false,
-      comments:"",
-      error:false,
-      message:null
-    }
-
-    this.doSendComments = this.doSendComments.bind(this)
+  state = {
+    spinnerVisible:false,
+    error:false,
+    message:''
   }
+  
   render() {
     return(
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.verticalContainer}>
             <GenericContainer style={[ContainerStyles.textInputContainer, {flex: 0}]}>
-              <GenericTextInput key={Labels.ENTER_COMMENTS} value={this.state.comments}
+              <GenericTextInput key={Labels.ENTER_COMMENTS}
                 placeholder={Labels.ENTER_COMMENTS}
                 multiline={true}
                 numberOfLines = {9}
-                autoFocus onChangeText={comments => this.setState({comments})}
+                autoFocus onChangeText={pComments => this.comments = pComments}
                 onSubmitEditing={this.doSendComments}/>
             </GenericContainer>
             <SubmitButton key={Labels.SUBMIT} title={Labels.SUBMIT} onPress= {() => this.doSendComments}/>
@@ -47,17 +43,17 @@ export default class Contact extends React.Component {
     )
   }
 
-  doSendComments() {
+  doSendComments = () =>{
     Keyboard.dismiss()
-    if (this.state.comments.length == 0){
+    if (!this.comments){
         this.setState({message:Messages.INVALID_COMMENTS, error:true})
         return
     }
-    this.setState({message:"", spinnerVisible:true})
+    this.setState({message:'', spinnerVisible:true})
     AsyncStorage.getItem(Keys.userId)
     .then((userId)=>{
       if (userId !== null){
-        sendComments(userId, this.state.comments)
+        sendComments(userId, this.comments)
         .then(response =>{
           this.setState({spinnerVisible:false})
           if(response[ServerProtocol.statusField] == ServerProtocol.OK) {

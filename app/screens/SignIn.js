@@ -13,36 +13,30 @@ import { LoadingSpinner } from '../components/Spinner'
 import { saveInitialData } from '../helpers/AsyncStorageHelper'
 
 export default class SignIn extends React.Component{
+  
+  static userId
+  static password
 
-  constructor(props){
-    super(props)
-    this.state = {
-      userId:'',
-      password:'',
-      errorMessage:'',
-      focusPassword:false,
-      spinnerVisible:false
-    }
-    this.signIn = this.signIn.bind(this)
-    this.onSubmitUserId = this.onSubmitUserId.bind(this)
-    this.goToSignUp = this.goToSignUp.bind(this)
-    this.goToResetPassword = this.goToResetPassword.bind(this)
+  state = {
+    errorMessage:'',
+    focusPassword:false,
+    spinnerVisible:false
   }
-
+  
   render(){
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <GenericContainer key={Labels.ENTER_USER_ID} style={ContainerStyles.textInputContainer}>
-              <GenericTextInput key={Labels.ENTER_USER_ID} value={this.state.userId}
+              <GenericTextInput key={Labels.ENTER_USER_ID} 
                 keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-                autoFocus onChangeText={userId => this.setState({userId})}
+                autoFocus onChangeText={pUserId => this.userId = pUserId}
                 onSubmitEditing={this.onSubmitUserId}/>
             </GenericContainer>
             <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerStyles.textInputContainer}>
-              <GenericTextInput key={Labels.ENTER_PASSWORD} value={this.state.password} placeholder={Labels.ENTER_PASSWORD}
-                secureTextEntry onChangeText={password => this.setState({password})}
+              <GenericTextInput key={Labels.ENTER_PASSWORD} placeholder={Labels.ENTER_PASSWORD}
+                secureTextEntry onChangeText={pPassword => this.password = pPassword}
                 onSubmitEditing={this.signIn}
                 inputRef={el => this.passwordInput = el}/>
             </GenericContainer>
@@ -63,18 +57,18 @@ export default class SignIn extends React.Component{
     )
   }
 
-  signIn(){
+  signIn = () =>{
     Keyboard.dismiss()
-    if (this.state.userId.length == 0 || this.state.password.length == 0){
+    if (!this.userId || !this.password){
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
     }
     this.setState({errorMessage:"", spinnerVisible:true})
-    login(this.state.userId, this.state.password)
+    login(this.userId, this.password)
     .then(response =>{
       this.setState({spinnerVisible:false})
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        saveInitialData(response.data, this.state.userId)
+        saveInitialData(response.data, this.userId)
         .then(()=>{
           const resetAction = NavigationActions.reset({
             index: 0,
@@ -101,8 +95,8 @@ export default class SignIn extends React.Component{
     })
   }
 
-  onSubmitUserId(){
-    if(!this.state.password){
+  onSubmitUserId = () =>{
+    if(!this.password){
       this.passwordInput.focus()
     }
     else{
@@ -110,13 +104,13 @@ export default class SignIn extends React.Component{
     }
   }
   
-  goToSignUp(){
+  goToSignUp = () =>{
     this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.SignUp)
 
   }
 
-  goToResetPassword(){
+  goToResetPassword = () =>{
     this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.ResetPassword)
   }
