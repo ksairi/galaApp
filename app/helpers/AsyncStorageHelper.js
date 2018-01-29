@@ -6,6 +6,7 @@ exports.saveInitialData = (serverData, userId) => {
     AsyncStorage.multiSet([
       [Keys.userData, JSON.stringify(serverData.user)],
       [Keys.timeTable, JSON.stringify(serverData.timeTable)],
+      [Keys.newMember, serverData.newMember ? JSON.stringify(serverData.newMember) : ""],
       [Keys.userId, userId]
     ])
     .catch(()=>{

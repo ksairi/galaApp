@@ -118,7 +118,7 @@ const HomeDrawerStack = DrawerNavigator({
 },{
     contentComponent:(props) => {
       var filteredItems = props.items
-      if(!props.screenProps || !props.screenProps[Keys.isNewMember]){
+      if(!props.screenProps || !props.screenProps[Keys.newMember]){
         filteredItems = props.items.filter(item => item.routeName != Screens.NewMemberPromotions)
       }
       return (
@@ -137,7 +137,7 @@ class HomeDrawerStackContainer extends React.Component {
     super(props)
   }
   render() {
-    return <HomeDrawerStack screenProps={{[Keys.isNewMember]:this.props.navigation.state.params[Keys.isNewMember]}} />
+    return <HomeDrawerStack screenProps={{[Keys.newMember]:this.props.navigation.state.params[Keys.newMember]}} />
   }
 }
 

@@ -70,10 +70,11 @@ export default class SignIn extends React.Component{
       if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
         saveInitialData(response.data, this.userId)
         .then(()=>{
+          console.log(response.data)
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-              NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:{[Keys.isNewMember]:response.data[Keys.isNewMember]}})
+              NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:{[Keys.newMember]:response.data[Keys.newMember]}})
             ],
             key: null
           })
@@ -81,6 +82,7 @@ export default class SignIn extends React.Component{
 
         })
         .catch((errorMessage) =>{
+          console.log(errorMessage)
           this.setState({errorMessage}) 
         })
       }

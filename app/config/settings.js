@@ -77,5 +77,6 @@ exports.Keys = {
   replaceCurrentScreen:"replaceCurrentScreen",
   emptyLoginStack:"emptyLoginStack",
   removeHomeStack:"removeHomeStack",
-  isNewMember:"isNewMember"
+  newMember:"newMember",
+  firstFreeAttendanceCode:"firstFreeAttendanceCode"
 }
