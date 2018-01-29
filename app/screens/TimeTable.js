@@ -10,13 +10,11 @@ import { LoadingSpinner } from '../components/Spinner'
 
 export default class TimeTbale extends React.Component {
 
-  constructor(props){
-    super(props)
-    this.state = {
-      timeTableData:null,
-      hasErrors:false
-    }
+  state = {
+    timeTableData:null,
+    hasErrors:false
   }
+  
   componentDidMount() {
     AsyncStorage.getItem(Keys.timeTable)
     .then((timeTableData)=>{
