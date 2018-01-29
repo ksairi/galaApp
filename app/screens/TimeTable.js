@@ -18,9 +18,13 @@ export default class TimeTbale extends React.Component {
   componentDidMount() {
     AsyncStorage.getItem(Keys.timeTable)
     .then((timeTableData)=>{
-      var timeTableDataJson = JSON.parse(timeTableData)
-      if (timeTableDataJson !== null){
-        this.setState({timeTableData:timeTableDataJson})
+      try{
+        var timeTableDataJson = JSON.parse(timeTableData)
+        if (timeTableDataJson !== null){
+          this.setState({timeTableData:timeTableDataJson})
+        }
+      }catch(error){
+        this.setState({hasErrors:true})  
       }
     })
     .catch((error)=>{
