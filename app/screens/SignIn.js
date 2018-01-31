@@ -67,35 +67,23 @@ export default class SignIn extends React.Component{
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
       const deviceToken = await getDeviceToken()
-      login(this.userId, this.password, deviceToken)
-      .then(response =>{
-        this.setState({spinnerVisible:false})
-        if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-          saveInitialData(response.data, this.userId)
-          .then(()=>{
-            const resetAction = NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:{[Keys.newMember]:response.data[Keys.newMember]}})
-              ],
-              key: null
-            })
-            this.props.navigation.dispatch(resetAction)
+      const httpResponse = await login(this.userId, this.password, deviceToken)
+      this.setState({spinnerVisible:false})
+      if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+        await saveInitialData(httpResponse.data, this.userId)
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:{[Keys.newMember]:httpResponse.data[Keys.newMember]}})
+          ],
+          key: null
+        })
+        this.props.navigation.dispatch(resetAction)
+      }
+      else{
+        this.setState({errorMessage:httResponse[ServerProtocol.messageField]})
+      }
 
-          })
-          .catch((errorMessage) =>{
-            this.setState({errorMessage}) 
-          })
-        }
-        else{
-          this.setState({errorMessage:response[ServerProtocol.messageField]})
-        }
-        
-      })
-      .catch(errorMessage => {
-        this.setState({spinnerVisible:false})
-        this.setState((prevState, props) => ({errorMessage}))
-      })
     }catch(errorMessage){
       this.setState({spinnerVisible:false})
       this.setState((prevState, props) => ({errorMessage})) 

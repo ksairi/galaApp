@@ -51,33 +51,22 @@ export default class SignUp extends React.Component{
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
       const deviceToken = await getDeviceToken()
-      register(this.userFullName, this.userId, this.password, deviceToken)
-      .then(response =>{
+      var httpResponse = await register(this.userFullName, this.userId, this.password, deviceToken)
         this.setState({spinnerVisible:false})
-        if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-          saveInitialData(response.data, this.userId)
-          .then(()=>{
-            const resetAction = NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({routeName:Screens.HomeDrawerStack,params:{[Keys.newMember]:response.data[Keys.newMember]}})
-              ],
-              key: null
-            })
-            this.props.navigation.dispatch(resetAction)
+        if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+          await saveInitialData(httpResponse.data, this.userId)
+          const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+              NavigationActions.navigate({routeName:Screens.HomeDrawerStack,params:{[Keys.newMember]:httpResponse.data[Keys.newMember]}})
+            ],
+            key: null
           })
-          .catch((errorMessage)=>{
-            this.setState({errorMessage})      
-          })
+          this.props.navigation.dispatch(resetAction)
         }
         else{
-          this.setState({message:response[ServerProtocol.messageField]})
+          this.setState({message:httpResponse[ServerProtocol.messageField]})
         }
-      })
-      .catch(errorMessage => {
-        this.setState({spinnerVisible:false})
-        this.setState((prevState, props) => ({errorMessage}))
-      })
     }catch(errorMessage){
       this.setState({spinnerVisible:false})
       this.setState((prevState, props) => ({errorMessage}))
