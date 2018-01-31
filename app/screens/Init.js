@@ -4,6 +4,8 @@ import { NavigationActions } from 'react-navigation'
 import { GenericContainer } from '../components/View/'
 import containerStyles from '../components/View/styles'
 import { Screens, Keys } from '../config/settings'
+import { Notifications } from 'expo'
+import { saveNotifications } from '../helpers/NotificationsHelper'
 
 
 export default class Init extends React.Component {
@@ -19,9 +21,15 @@ export default class Init extends React.Component {
 			</GenericContainer>
   	)
 	}
+	componentWillMount() {
+    this.notificationSubscription = Notifications.addListener(this.handleNotification)
+  }
 
+  handleNotification = (notification) => {
+    saveNotifications(notification.data)
+  }
+	
 	componentDidMount(){
-
 		this.timerID = setInterval(()=> {
 	  	clearInterval(this.timerID)
       const resetAction = NavigationActions.reset({

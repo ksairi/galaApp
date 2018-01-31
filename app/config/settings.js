@@ -5,6 +5,7 @@ exports.Urls = {
   REGISTER:SERVER_HOSTNAME + "register",
   RESET_PASSWORD:SERVER_HOSTNAME + "resetPassword",
   SEND_COMMENTS:SERVER_HOSTNAME + "sendComments",
+  SEND_CLIENT_TOKEN:SERVER_HOSTNAME + "sendClientToken",
 } 
 
 exports.Messages = {
@@ -78,5 +79,7 @@ exports.Keys = {
   emptyLoginStack:"emptyLoginStack",
   removeHomeStack:"removeHomeStack",
   newMember:"newMember",
-  firstFreeAttendanceCode:"firstFreeAttendanceCode"
+  firstFreeAttendanceCode:"firstFreeAttendanceCode",
+  notificationsToken:"notificationsToken",
+  notifications:"notifications"
 }

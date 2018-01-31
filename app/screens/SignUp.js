@@ -12,6 +12,7 @@ import { register } from '../helpers/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
 import ValidationHelper from '../helpers/ValidationHelper'
 import { saveInitialData } from '../helpers/AsyncStorageHelper'
+import { getDeviceToken } from '../helpers/NotificationsHelper'
 
 export default class SignUp extends React.Component{
   static userFullName
@@ -26,7 +27,7 @@ export default class SignUp extends React.Component{
     spinnerVisible:false
   }
 
-  signUp = () =>{
+  signUp = async () =>{
     Keyboard.dismiss()
     var errorMessage
     
@@ -48,33 +49,39 @@ export default class SignUp extends React.Component{
     }
     
     this.setState({errorMessage:"", spinnerVisible:true})
-    register(this.userFullName, this.userId, this.password)
-    .then(response =>{
-      this.setState({spinnerVisible:false})
-      if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
-        saveInitialData(response.data, this.userId)
-        .then(()=>{
-          const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({routeName:Screens.HomeDrawerStack,params:{[Keys.newMember]:response.data[Keys.newMember]}})
-            ],
-            key: null
+    try{
+      const deviceToken = await getDeviceToken()
+      register(this.userFullName, this.userId, this.password, deviceToken)
+      .then(response =>{
+        this.setState({spinnerVisible:false})
+        if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
+          saveInitialData(response.data, this.userId)
+          .then(()=>{
+            const resetAction = NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({routeName:Screens.HomeDrawerStack,params:{[Keys.newMember]:response.data[Keys.newMember]}})
+              ],
+              key: null
+            })
+            this.props.navigation.dispatch(resetAction)
           })
-          this.props.navigation.dispatch(resetAction)
-        })
-        .catch((errorMessage)=>{
-          this.setState({errorMessage})      
-        })
-      }
-      else{
-        this.setState({message:response[ServerProtocol.messageField]})
-      }
-    })
-    .catch(errorMessage => {
+          .catch((errorMessage)=>{
+            this.setState({errorMessage})      
+          })
+        }
+        else{
+          this.setState({message:response[ServerProtocol.messageField]})
+        }
+      })
+      .catch(errorMessage => {
+        this.setState({spinnerVisible:false})
+        this.setState((prevState, props) => ({errorMessage}))
+      })
+    }catch(errorMessage){
       this.setState({spinnerVisible:false})
-      this.setState((prevState, props) => ({errorMessage:errorMessage}))
-    })
+      this.setState((prevState, props) => ({errorMessage}))
+    }
   }
   
   onSubmitUserFullName = ()=>{

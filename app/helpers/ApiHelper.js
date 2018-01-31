@@ -1,12 +1,13 @@
 import { Urls, Messages, ServerProtocol } from '../config/settings.js'
 import { isDeviceConnected } from './NetworkHelper'
 
-exports.login = (userId, password) => {
+exports.login = (userId, password, token) => {
 
   const loginParamters = {}
   
   loginParamters.userId = userId
   loginParamters.password = password
+  loginParamters.token = token
   loginParamters.hash = getAccessHash()
   return connectToServer(Urls.LOGIN, loginParamters)
   .then((response) => {
@@ -18,13 +19,14 @@ exports.login = (userId, password) => {
 }
 
 
-exports.register = (fullName, userId, password) => {
+exports.register = (fullName, userId, password, token) => {
 
   const registerParamters = {}
   
   registerParamters.fullName = fullName
   registerParamters.userId = userId
   registerParamters.password = password
+  registerParamters.token = token
   registerParamters.hash = getAccessHash()
   return connectToServer(Urls.REGISTER, registerParamters)
   .then((response) => {
