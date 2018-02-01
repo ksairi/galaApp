@@ -11,15 +11,12 @@ export default class NewMemberPromotions extends React.Component {
   }
 
   componentDidMount() {
-    AsyncStorage.getItem(Keys.newMember)
-    .then((newMemberJson)=>{
-      try {
-        const newMemberData = JSON.parse(newMemberJson)
-        if (newMemberData != ""){
-          this.setState({freeEntryCode:newMemberData.freeEntryCode})
-        }
-      }catch (error){
-        this.setState({hasErrors:true})
+    AsyncStorage.getItem(Keys.userData)
+    .then((userDataJson)=>{
+      const userData = JSON.parse(userDataJson)
+      const newMemberData = userData[Keys.newMember]
+      if (newMemberData){
+        this.setState({freeEntryCode:newMemberData.freeEntryCode})
       }
     })
     .catch((error)=>{

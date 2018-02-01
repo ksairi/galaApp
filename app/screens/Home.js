@@ -41,8 +41,4 @@ export default class Home extends React.Component {
       this.state.name = "error"
     }
   }
-
-  componentWillMount() {
-    this.props.navigation.setParams({ isNewMember: true })
-  }
 }

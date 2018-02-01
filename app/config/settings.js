@@ -72,7 +72,6 @@ exports.ServerProtocol = {
 }
 
 exports.Keys = {
-  userId:"userId",
   userData:"userData",
   timeTable:"timeTable",
   replaceCurrentScreen:"replaceCurrentScreen",

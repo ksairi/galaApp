@@ -1,7 +1,6 @@
 import React from 'react'
 import { Alert, AsyncStorage, ScrollView } from 'react-native'
 import { StackNavigator, DrawerNavigator, NavigationActions, DrawerItems, SafeAreaView  } from 'react-navigation'
-import Init from '../screens/Init'
 import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
 import ResetPassword from '../screens/ResetPassword'
@@ -16,12 +15,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MIcons from 'react-native-vector-icons/MaterialIcons'
 import styles from './styles'
-
-const InitStack = StackNavigator({
-  [Screens.Init]: {
-    screen:Init
-  }
-})
 
 const LoginStack = StackNavigator({
   
@@ -171,7 +164,7 @@ const HomeDrawerNavigation = StackNavigator({
                 [
                   {text: 'No', style: 'cancel'},
                   {text: 'Sí', onPress: () => {
-                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timeTable])
+                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timeTable, Keys.newMember])
                     .then(()=>{
                       const resetAction = NavigationActions.reset({
                       index: 0,
@@ -208,14 +201,13 @@ HomeDrawerStack.router.getStateForAction = (action, state) => {
 }
 
 const AppNavigator = StackNavigator({
-  [Screens.InitStack] : {screen:InitStack},
   [Screens.LoginStack]: { screen: LoginStack },
   [Screens.HomeDrawerStack]: { screen: HomeDrawerNavigation }
 }, {
   // Default config for all screens
   headerMode: 'none',
   //title: 'Main',
-  initialRouteName: Screens.InitStack
+  initialRouteName: Screens.LoginStack
 })
 
 export default AppNavigator

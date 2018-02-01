@@ -74,7 +74,7 @@ export default class SignIn extends React.Component{
         const resetAction = NavigationActions.reset({
           index: 0,
           actions: [
-            NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:{[Keys.newMember]:httpResponse.data[Keys.newMember]}})
+            NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:{[Keys.newMember]:httpResponse.data[Keys.userData][Keys.newMember]}})
           ],
           key: null
         })
