@@ -1,5 +1,5 @@
 import React from 'react'
-import { ScrollView, View, AsyncStorage } from 'react-native'
+import { ScrollView, AsyncStorage } from 'react-native'
 import { Keys, Messages } from '../config/settings'
 import ClassesTimeTable from '../components/Table/ClassesTimeTable'
 import { GenericText } from '../components/Text/'
