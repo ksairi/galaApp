@@ -80,5 +80,6 @@ exports.Keys = {
   newMember:"newMember",
   firstFreeAttendanceCode:"firstFreeAttendanceCode",
   notificationsToken:"notificationsToken",
-  notifications:"notifications"
+  notifications:"notifications",
+  routines:"routines"
 }

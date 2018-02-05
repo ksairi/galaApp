@@ -8,6 +8,7 @@ exports.saveInitialData = (serverData, userId) => {
     AsyncStorage.multiSet([
       [Keys.userData, JSON.stringify(serverData[Keys.userData])],
       [Keys.timeTable, JSON.stringify(serverData[Keys.timeTable])],
+      [Keys.routines, JSON.stringify(serverData[Keys.routines])],
     ])
     .catch(()=>{
       throw Messages.SYSTEM_ERROR
