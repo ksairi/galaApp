@@ -1,10 +1,11 @@
 import React from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, AsyncStorage } from 'react-native'
+import { Keys, Messages } from '../config/settings'
 import ContainerStyles from '../components/View/styles'
 import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
-import ContainerStyles from '../components/View/styles'
 import { LoadingSpinner } from '../components/Spinner'
+import { RoutineItemList } from '../components/ListItem'
 
 
 export default class Routines extends React.Component {
@@ -14,16 +15,16 @@ export default class Routines extends React.Component {
   
   state = {
     hasErrors:false,
-    routinesData:[]
+    routinesData:null
   }
   
   componentDidMount() {
     AsyncStorage.getItem(Keys.routines)
-    .then((routinesData)=>{
+    .then((routinesDataJson)=>{
       try{
-        var routinesDataJson = JSON.parse(routinesData)
-        if (routinesDataJson !== null){
-          this.setState({routinesData:routinesDataJson})
+        var routinesData = JSON.parse(routinesDataJson)
+        if (routinesData !== null){
+          this.setState({routinesData})
         }
         else {
           this.setState({routinesData:[]})
@@ -38,7 +39,7 @@ export default class Routines extends React.Component {
   }
 
   render() {
-    if(this.hasErrors){
+    if(this.state.hasErrors){
       return(
         <GenericText error={true}>
           {Messages.SYSTEM_READ_ERROR}
@@ -50,10 +51,10 @@ export default class Routines extends React.Component {
         <LoadingSpinner visible={true}/>
       )
     }
-    if(this.state.routinesData.isEmpty){
+    if(this.state.routinesData.length == 0){
       return(
         <GenericText error={true}>
-          {this.Messages.NO_ROUTINES}
+          {Messages.NO_ROUTINES}
         </GenericText>
       )  
     }
@@ -64,15 +65,13 @@ export default class Routines extends React.Component {
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
               data={this.state.routinesData}
-              renderItem={({routine}) => this.showRoutine(routine)}
+              renderItem={({item}) =>
+                <RoutineItemList description={item.description} active={item.isActive} dateFrom={item.dateFrom} dateTo={item.dateTo} /> 
+              }
             />
           </GenericContainer>
         </GenericContainer>
       </GenericContainer>
     )
-  }
-
-  showRoutine = (routine) =>{
-    console.log(routine)
   }
 }

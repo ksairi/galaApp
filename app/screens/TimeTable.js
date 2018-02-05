@@ -34,7 +34,7 @@ export default class TimeTbale extends React.Component {
   
 
   render(){
-    if(this.hasErrors){
+    if(this.state.hasErrors){
       return(
         <GenericText error={true}>
           {Messages.SYSTEM_READ_ERROR}
