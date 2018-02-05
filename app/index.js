@@ -19,7 +19,6 @@ export default class index extends React.Component{
 
     if(notification.origin === "selected"){
       this.notification = notification
-      console.log(this.notification)
       AsyncStorage.getItem(Keys.userData)
       .then((userDataJson)=>{
         if(userDataJson){
@@ -30,7 +29,7 @@ export default class index extends React.Component{
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [
-                NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:Screens.TimeTable})
+                NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.TimeTable)})
               ],
               key: null
             })
@@ -39,23 +38,19 @@ export default class index extends React.Component{
                 resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [
-                    NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:Screens.Notifications})
+                    NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Notifications)})
                   ],
                   key: null
                 })
               }
         }
-        this.navigator.dispatch(resetAction)
-        /*else{
-              resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                  NavigationActions.navigate({routeName:Screens.LoginStack})
-                ],
-                key: null
-              })
-            }*/
-        
+          this.navigator.dispatch(resetAction)
+          
+      })
+
+      .catch((error)=>{
+       //user has logged out
+       // log in screen is being shown, no need to redirect anywhere       
       })
     }
   }
