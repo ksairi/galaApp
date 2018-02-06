@@ -34,4 +34,14 @@ export default StyleSheet.create({
     flex: 1,
     padding: 3
   },
+  modalTitle:{
+    fontWeight:'bold', 
+    color:'green',
+    fontSize:15
+  },
+  modalBody:{
+    fontWeight:'bold', 
+    color:'blue',
+    fontSize:13
+  }
 })

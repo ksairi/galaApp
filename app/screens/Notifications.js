@@ -1,11 +1,12 @@
 import React from 'react'
-import { FlatList, AsyncStorage } from 'react-native'
+import { FlatList, AsyncStorage} from 'react-native'
 import { Keys, Messages } from '../config/settings'
 import ContainerStyles from '../components/View/styles'
 import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
 import { NotificationListItem } from '../components/ListItem'
+import { ModalNotificationDetail } from '../components/View'
 
 export default class Notifications extends React.Component {
   static LocalMessages = {
@@ -14,7 +15,16 @@ export default class Notifications extends React.Component {
   
   state = {
     hasErrors:false,
-    notificationsData:null
+    notificationsData:null,
+    selectedNotification:null
+  }
+
+  openModal = (selectedNotification)=> {
+    this.setState({selectedNotification})
+  }
+
+  closeModal = ()=> {
+    this.setState({selectedNotification:null})
   }
   
   componentDidMount() {
@@ -58,6 +68,13 @@ export default class Notifications extends React.Component {
       )  
     }
 
+    if(this.state.selectedNotification != null){
+      return (
+        <ModalNotificationDetail modalVisible={this.state.modalVisible} 
+          notification={this.state.selectedNotification} closeModal={()=>this.closeModal}/>
+      )
+    }
+
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
@@ -65,7 +82,10 @@ export default class Notifications extends React.Component {
             <FlatList
               data={this.state.notificationsData}
               renderItem={({item}) =>
-                <NotificationListItem title={item.title} onPress={() => console.log(item)}/> 
+                <NotificationListItem title={item.title} onPress={() => 
+                  this.openModal(item)
+                  }
+                /> 
               }
             />
           </GenericContainer>
@@ -74,3 +94,18 @@ export default class Notifications extends React.Component {
     )
   }
 }
+
+/*const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'grey',
+  },
+  innerContainer: {
+    alignItems: 'center',
+  },
+});*/
