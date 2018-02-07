@@ -70,8 +70,8 @@ export default class Notifications extends React.Component {
 
     if(this.state.selectedNotification != null){
       return (
-        <ModalNotificationDetail modalVisible={this.state.modalVisible} 
-          notification={this.state.selectedNotification} closeModal={()=>this.closeModal}/>
+        <ModalNotificationDetail notification={this.state.selectedNotification} 
+        closeModal={()=>this.closeModal}/>
       )
     }
 

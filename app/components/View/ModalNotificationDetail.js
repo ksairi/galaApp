@@ -2,41 +2,23 @@ import React from 'react'
 import { Modal, Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import styles from './styles'
 
-export default ({modalVisible, notification, closeModal}) =>
+export default ({notification, closeModal}) =>
   <Modal
-    visible={modalVisible}
+    visible={true}
     animationType={'slide'}
     onRequestClose={closeModal()}
     transparent={true}>
     <TouchableOpacity 
-      style={[styles.rootContainer,{backgroundColor:'yellow'}]} 
+      style={[styles.rootContainer, styles.modalRootContainer]} 
       activeOpacity={1} 
       onPressOut={closeModal()}>
       <ScrollView 
         directionalLockEnabled={true} 
-        contentContainerStyle={styles.rootContainer}>
-
-      <View style={styles.rootContainer}>
-        <View style={styles.verticalContainer}>
+        contentContainerStyle={[styles.centredContainer,styles.modalContainer]}>
+        <View style={[styles.verticalContainer,styles.modalWrapper,{backgroundColor:'yellow'}]}>
           <Text style={styles.modalTitle}>{notification.title}</Text>
           <Text style={styles.modalBody}>{notification.body}</Text>
         </View>
-      </View>
-    </ScrollView>
-  </TouchableOpacity>
+      </ScrollView>
+    </TouchableOpacity>
   </Modal>
-
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  modalContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'grey',
-  },
-  innerContainer: {
-    alignItems: 'center',
-  },
-});*/

@@ -34,6 +34,15 @@ export default StyleSheet.create({
     flex: 1,
     padding: 3
   },
+  modalRootContainer:{
+    backgroundColor:'rgba(0, 0, 0, 0.5)'
+  },
+  modalContainer:{
+    justifyContent: 'center'
+  },
+  modalWrapper:{
+    padding:10
+  },
   modalTitle:{
     fontWeight:'bold', 
     color:'green',

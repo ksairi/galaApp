@@ -45,7 +45,7 @@ export default class index extends React.Component{
               }
         }
           this.navigator.dispatch(resetAction)
-          
+          //https://github.com/react-navigation/react-navigation/issues/1620
       })
 
       .catch((error)=>{

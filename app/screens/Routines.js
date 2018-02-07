@@ -6,6 +6,7 @@ import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
 import { RoutineListItem } from '../components/ListItem'
+import { ModalRoutinesDetail } from '../components/View'
 
 export default class Routines extends React.Component {
   static LocalMessages = {
@@ -14,7 +15,16 @@ export default class Routines extends React.Component {
   
   state = {
     hasErrors:false,
-    routinesData:null
+    routinesData:null,
+    selectedRoutine:null
+  }
+
+  openModal = (selectedRoutine)=> {
+    this.setState({selectedRoutine})
+  }
+
+  closeModal = ()=> {
+    this.setState({selectedRoutine:null})
   }
   
   componentDidMount() {
@@ -58,6 +68,13 @@ export default class Routines extends React.Component {
       )  
     }
 
+    if(this.state.selectedRoutine != null){
+      return (
+        <ModalRoutinesDetail routine={this.state.selectedRoutine} 
+        closeModal={()=>this.closeModal}/>
+      )
+    }
+
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
@@ -65,7 +82,8 @@ export default class Routines extends React.Component {
             <FlatList
               data={this.state.routinesData}
               renderItem={({item}) =>
-                <RoutineListItem description={item.description} active={item.isActive} dateFrom={item.dateFrom} dateTo={item.dateTo} onPress={() => console.log(item)}/> 
+                <RoutineListItem description={item.description} active={item.isActive} 
+                  dateFrom={item.dateFrom} dateTo={item.dateTo} onPress={() => this.openModal(item)}/> 
               }
             />
           </GenericContainer>
