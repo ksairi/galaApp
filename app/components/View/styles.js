@@ -52,5 +52,21 @@ export default StyleSheet.create({
     fontWeight:'bold', 
     color:'blue',
     fontSize:13
+  },
+  exerciseDetailTitle:{
+    fontWeight:'bold',
+    color:'green',
+    fontSize:15,
+    width:95
+  },
+  exerciseDetailData:{
+    fontWeight:'bold',
+    color:'blue',
+    fontSize:13,
+    width:10
+  },
+  exerciseDetailWrapper:{
+    flexDirection:'row', 
+  
   }
 })

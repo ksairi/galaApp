@@ -11,7 +11,7 @@ export default class modalRoutinesDetail extends React.Component{
 
   getExercisesList = () =>{
     const exercisesItems = this.props.routine.exercises.map((exercise, index)=>{
-      return <Picker.Item key={index} label={exercise.type} value={exercise.type} />
+      return <Picker.Item key={index} label={exercise.name} value={exercise.name} />
     })
     return exercisesItems
   }
@@ -20,12 +20,18 @@ export default class modalRoutinesDetail extends React.Component{
     const selectedExercise = this.props.routine.exercises[this.state.selectedExerciseIndex]
     return(
       <View>
-        <Text>Series</Text>
-        <Text>{selectedExercise.series}</Text>
-        <Text>Repeticiones</Text>
-        <Text>{selectedExercise.repetitions}</Text>
-        <Text>Minutos</Text>
-        <Text>{selectedExercise.minutes}</Text>
+        <View style={styles.exerciseDetailWrapper}>
+          <Text style={styles.exerciseDetailTitle}>Series</Text>
+          <Text style={styles.exerciseDetailData}>{selectedExercise.series}</Text>
+        </View>
+        <View style={styles.exerciseDetailWrapper}>
+          <Text style={styles.exerciseDetailTitle}>Repeticiones</Text>
+          <Text style={styles.exerciseDetailData}>{selectedExercise.repetitions}</Text>
+        </View>
+        <View style={styles.exerciseDetailWrapper}>
+          <Text style={styles.exerciseDetailTitle}>Minutos</Text>
+          <Text style={styles.exerciseDetailData}>{selectedExercise.minutes}</Text>
+        </View>
       </View>
     )
   }
@@ -51,18 +57,19 @@ export default class modalRoutinesDetail extends React.Component{
                 <Text style={styles.modalBody}>{this.props.routine.dateTo}</Text>
                 <Text>Profesor</Text>
                 <Text style={styles.modalBody}>{this.props.routine.professor}</Text>
-                <Text>Ejericios</Text>
-                <View>
-                  <Picker
-                    selectedValue={this.state.selectedExerciseText}
-                    onValueChange={(itemValue, itemIndex) => {
-                      this.setState({selectedExerciseIndex: itemIndex, selectedExerciseText:itemValue})}
-                    }
-                    style={{width:100}}>
-                    {this.getExercisesList()}
-                  </Picker>
+                <View style={{marginTop:10, alignItems: 'center'}}>
+                  <Text>Ejericios</Text>
+                  
+                    <Picker
+                      selectedValue={this.state.selectedExerciseText}
+                      onValueChange={(itemValue, itemIndex) => {
+                        this.setState({selectedExerciseIndex: itemIndex, selectedExerciseText:itemValue})}
+                      }
+                      style={{width:100}}>
+                      {this.getExercisesList()}
+                    </Picker>
+                  {selectedExerciseJSX}
                 </View>
-                {selectedExerciseJSX}
               </View>
             </View>
           </ScrollView>
