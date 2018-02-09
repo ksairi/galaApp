@@ -126,9 +126,7 @@ const HomeDrawerStack = DrawerNavigator({
 )
 
 class HomeDrawerStackContainer extends React.Component {
-  constructor(props) {
-    super(props)
-  }
+  
   render() {
     return <HomeDrawerStack screenProps={{[Keys.newMember]:this.props.navigation.state.params[Keys.newMember]}} />
   }
@@ -138,6 +136,7 @@ const HomeDrawerNavigation = StackNavigator({
   DrawerStack: { screen: HomeDrawerStackContainer }
   },{
       navigationOptions: ({navigation}) => {
+        console.log(navigation)
         const isMenuClosed = (navigation.state.index === 0)
         return {
           headerStyle: {backgroundColor: styles.headerBackgroundColor},
@@ -173,7 +172,12 @@ const HomeDrawerNavigation = StackNavigator({
                       ],
                       key:null
                     })
+                    /*const setParamsAction = NavigationActions.setParams({
+                      params: { title: 'Hello' },
+                      key: "DrawerStack",
+                    });  */
                     navigation.dispatch(resetAction)
+                    //navigation.dispatch(setParamsAction)
                     })
                   }},
                 ],
