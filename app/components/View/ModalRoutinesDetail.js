@@ -7,6 +7,11 @@ export default class modalRoutinesDetail extends React.Component{
   state = {
     selectedExerciseText:null,
     selectedExerciseIndex:0
+  };
+
+  exerciseType = {
+    byRepetitions:1,
+    byTime:2
   }
 
   getExercisesList = () =>{
@@ -21,17 +26,30 @@ export default class modalRoutinesDetail extends React.Component{
     return(
       <View>
         <View style={styles.exerciseDetailWrapper}>
-          <Text style={styles.exerciseDetailTitle}>Series</Text>
-          <Text style={styles.exerciseDetailData}>{selectedExercise.series}</Text>
+              <Text style={styles.exerciseDetailTitle}>Orden</Text>
+              <Text style={styles.exerciseDetailData}>{selectedExercise.order}º</Text>
         </View>
-        <View style={styles.exerciseDetailWrapper}>
-          <Text style={styles.exerciseDetailTitle}>Repeticiones</Text>
-          <Text style={styles.exerciseDetailData}>{selectedExercise.repetitions}</Text>
-        </View>
-        <View style={styles.exerciseDetailWrapper}>
-          <Text style={styles.exerciseDetailTitle}>Minutos</Text>
-          <Text style={styles.exerciseDetailData}>{selectedExercise.minutes}</Text>
-        </View>
+        { this.exerciseType.byRepetitions == selectedExercise.type && 
+          <View>
+            <View style={styles.exerciseDetailWrapper}>
+              <Text style={styles.exerciseDetailTitle}>Series</Text>
+              <Text style={styles.exerciseDetailData}>{selectedExercise.series}</Text>
+            </View>
+          
+            <View style={styles.exerciseDetailWrapper}>
+              <Text style={styles.exerciseDetailTitle}>Repeticiones</Text>
+              <Text style={styles.exerciseDetailData}>{selectedExercise.repetitions}</Text>
+            </View>
+          </View>
+        }
+
+        { this.exerciseType.byTime == selectedExercise.type && 
+          <View style={styles.exerciseDetailWrapper}>
+            <Text style={styles.exerciseDetailTitle}>Minutos</Text>
+            <Text style={styles.exerciseDetailData}>{selectedExercise.minutes}</Text>
+          </View>
+        }
+
       </View>
     )
   }

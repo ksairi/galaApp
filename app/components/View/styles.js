@@ -63,10 +63,9 @@ export default StyleSheet.create({
     fontWeight:'bold',
     color:'blue',
     fontSize:13,
-    width:10
+    width:15
   },
   exerciseDetailWrapper:{
     flexDirection:'row', 
-  
   }
 })
