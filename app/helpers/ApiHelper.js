@@ -65,6 +65,20 @@ exports.sendComments = (userId, comments) => {
   })  
 }
 
+exports.hasReadNotification = (userId, notificationId) => {
+  const hasReadNotification = {}
+  hasReadNotification.userId = userId
+  hasReadNotification.notificationId = notificationId
+  hasReadNotification.hash = getAccessHash()
+  return connectToServer(Urls.HAS_READ_NOTIFICATION, hasReadNotification)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw error
+  })  
+}
+
 connectToServer = (url, parameters) => {
   return fetch(url , {
     method: 'POST',

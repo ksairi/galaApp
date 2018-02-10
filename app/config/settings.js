@@ -6,6 +6,7 @@ exports.Urls = {
   RESET_PASSWORD:SERVER_HOSTNAME + "resetPassword",
   SEND_COMMENTS:SERVER_HOSTNAME + "sendComments",
   SEND_CLIENT_TOKEN:SERVER_HOSTNAME + "sendClientToken",
+  HAS_READ_NOTIFICATION:SERVER_HOSTNAME + "hasReadNotifications",
 } 
 
 exports.Messages = {

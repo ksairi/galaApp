@@ -12,15 +12,16 @@ export default class index extends React.Component{
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
   }
 
-  handleNotification = (notification) => {
+  handleNotification = async (notification) => {
     if(notification.origin === "received"){
-      saveNotifications(notification.data)
+      notification.unRead = true
+      saveNotifications(notification)
     }
 
     if(notification.origin === "selected"){
       this.notification = notification
-      AsyncStorage.getItem(Keys.userData)
-      .then((userDataJson)=>{
+      try{
+        const userDataJson = await AsyncStorage.getItem(Keys.userData)
         if(userDataJson){
           const userData = JSON.parse(userDataJson)
           var resetAction
@@ -35,6 +36,8 @@ export default class index extends React.Component{
             })
           }
           else{
+                await saveNotifications(notification)
+                
                 resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [
@@ -44,14 +47,11 @@ export default class index extends React.Component{
                 })
               }
         }
-          this.navigator.dispatch(resetAction)
-          //https://github.com/react-navigation/react-navigation/issues/1620
-      })
-
-      .catch((error)=>{
-       //user has logged out
-       // log in screen is being shown, no need to redirect anywhere       
-      })
+        this.navigator.dispatch(resetAction)
+        //https://github.com/react-navigation/react-navigation/issues/1620
+      }catch(error){
+        //no need to redirect, we are in loggin screen already
+      }
     }
   }
 

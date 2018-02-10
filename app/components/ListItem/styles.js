@@ -16,5 +16,11 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width:200  
+  },
+  unReadNotification:{
+    color:'green'
+  },
+  reeadNotification:{
+    color:'black'
   }
 })

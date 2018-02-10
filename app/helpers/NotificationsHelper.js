@@ -36,13 +36,30 @@ exports.getDeviceToken = async ()=> {
   }
 }
 
-exports.saveNotifications = async (notificationData) => {
+exports.saveNotifications = async (notification) => {
   try{
-    if(notificationData[Keys.timeTable]){
-      await AsyncStorage.setItem(Keys.timeTable, JSON.stringify(notificationData[Keys.timeTable]))
+    if(notification.data[Keys.timeTable]){
+      await AsyncStorage.setItem(Keys.timeTable, JSON.stringify(notification[Keys.timeTable]))
     }
     else{
-      await AsyncStorage.setItem(Keys.notifications, JSON.stringify(notificationData))
+      
+      var notificationsArray = await AsyncStorage.getItem(Keys.notifications)
+        if(!notificationsArray){
+          notificationsArray = []
+        }
+        else{
+          notificationsArray = JSON.parse(notificationsArray)
+        }
+
+        const notificationObj = {}
+        notificationObj.key = notification.data.key
+        notificationObj.title = notification.data.title
+        notificationObj.body = notification.data.body
+        notificationObj.unRead = notification.unRead
+              
+        notificationsArray = [notificationObj, ...notificationsArray]
+        
+        await AsyncStorage.setItem(Keys.notifications, JSON.stringify(notificationsArray))
     }
   }catch(error){
     //throw Messages.SYSTEM_ERROR

@@ -7,6 +7,7 @@ import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
 import { NotificationListItem } from '../components/ListItem'
 import { ModalNotificationDetail } from '../components/View'
+import { hasReadNotification } from '../helpers/ApiHelper'
 
 export default class Notifications extends React.Component {
   static LocalMessages = {
@@ -81,10 +82,26 @@ export default class Notifications extends React.Component {
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
               data={this.state.notificationsData}
-              renderItem={({item}) =>
-                <NotificationListItem title={item.title} onPress={() => 
-                  this.openModal(item)
+              renderItem={({item, index}) =>
+                <NotificationListItem title={item.title} unRead={item.unRead} onPress={async () =>{
+                    if(item.unRead){
+                      const readItem = item
+                      readItem.unRead = false
+                      const notificationsData = this.state.notificationsData
+                      notificationsData[index] = readItem
+                      this.setState({notificationsData}, async ()=>{
+                        await AsyncStorage.setItem(Keys.notifications, JSON.stringify(this.state.notificationsData))
+                        var userData = await AsyncStorage.getItem(Keys.userData)
+                        userData = JSON.parse(userData)
+                        hasReadNotification(userData.userId, readItem.key)
+                        this.openModal(item)
+                      })
+                    }
+                    else{
+                      this.openModal(item)
+                    }
                   }
+                }
                 /> 
               }
             />

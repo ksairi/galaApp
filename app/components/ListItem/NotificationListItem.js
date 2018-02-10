@@ -5,9 +5,9 @@ import { GenericContainer } from '../View'
 import { ListItemButton } from '../Button'
 import styles from './styles'
 
-export default ({title, onPress}) =>
+export default ({title, onPress, unRead}) =>
 
-<GenericContainer style={ContainerStyles.horizontalContainer}>
-  <Text style={styles.notificationListItemText}>{title}</Text>
-  <ListItemButton title="Ver" onPress={()=>onPress} />
-</GenericContainer>
+  <GenericContainer style={ContainerStyles.horizontalContainer}>
+    <Text style={[styles.notificationListItemText, unRead && styles.unReadNotification]}>{title}</Text>
+    <ListItemButton title="Ver" onPress={()=>onPress} />
+  </GenericContainer>
