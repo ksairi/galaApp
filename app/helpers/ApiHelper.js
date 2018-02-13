@@ -65,12 +65,26 @@ exports.sendComments = (userId, comments) => {
   })  
 }
 
-exports.hasReadNotification = (userId, notificationId) => {
+exports.sendHasReadNotification = (userId, notificationId) => {
   const hasReadNotification = {}
   hasReadNotification.userId = userId
   hasReadNotification.notificationId = notificationId
   hasReadNotification.hash = getAccessHash()
   return connectToServer(Urls.HAS_READ_NOTIFICATION, hasReadNotification)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw error
+  })  
+}
+
+exports.sendHasReceivedNotification = (userId, notificationId) => {
+  const hasReceivedNotification = {}
+  hasReceivedNotification.userId = userId
+  hasReceivedNotification.notificationId = notificationId
+  hasReceivedNotification.hash = getAccessHash()
+  return connectToServer(Urls.HAS_RECEIVED_NOTIFICATION, hasReceivedNotification)
   .then((response) => {
     return response
   })

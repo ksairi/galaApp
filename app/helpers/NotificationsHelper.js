@@ -36,30 +36,32 @@ exports.getDeviceToken = async ()=> {
   }
 }
 
-exports.saveNotifications = async (notification) => {
+exports.saveNotifications = async (newNotification) => {
   try{
-    if(notification.data[Keys.timeTable]){
-      await AsyncStorage.setItem(Keys.timeTable, JSON.stringify(notification[Keys.timeTable]))
+    if(newNotification[Keys.timeTable]){
+      await AsyncStorage.setItem(Keys.timeTable, JSON.stringify(newNotification[Keys.timeTable]))
     }
     else{
       
+      var alreadySavedNotification = false      
       var notificationsArray = await AsyncStorage.getItem(Keys.notifications)
         if(!notificationsArray){
           notificationsArray = []
         }
         else{
           notificationsArray = JSON.parse(notificationsArray)
+          alreadySavedNotification = notificationsArray.filter(
+            notification => notification.key == newNotification.key).length > 0
+          
+          if(!alreadySavedNotification){
+            if(newNotification.unRead == null){
+              newNotification.unRead = true    
+            }
+            notificationsArray = [newNotification, ...notificationsArray]
+            
+            await AsyncStorage.setItem(Keys.notifications, JSON.stringify(notificationsArray))
+          }
         }
-
-        const notificationObj = {}
-        notificationObj.key = notification.data.key
-        notificationObj.title = notification.data.title
-        notificationObj.body = notification.data.body
-        notificationObj.unRead = notification.unRead
-              
-        notificationsArray = [notificationObj, ...notificationsArray]
-        
-        await AsyncStorage.setItem(Keys.notifications, JSON.stringify(notificationsArray))
     }
   }catch(error){
     //throw Messages.SYSTEM_ERROR
