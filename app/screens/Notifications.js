@@ -8,7 +8,10 @@ import { LoadingSpinner } from '../components/Spinner'
 import { NotificationListItem } from '../components/ListItem'
 import { ModalNotificationDetail } from '../components/View'
 import { sendHasReadNotification } from '../helpers/ApiHelper'
+import { observer, inject } from "mobx-react"
 
+@inject("notificationsStore")
+@observer
 export default class Notifications extends React.Component {
   static LocalMessages = {
     NO_NOTIFICATIONS:"Sin Notificaciones"
@@ -75,13 +78,13 @@ export default class Notifications extends React.Component {
         closeModal={()=>this.closeModal}/>
       )
     }
-
+    console.log(this.props.notificationsStore.notificationsArray)
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
-              data={this.state.notificationsData}
+              data={this.props.notificationsStore.notificationsArray ? this.props.notificationsStore.notificationsArray : this.state.notificationsData}
               renderItem={({item, index}) =>
                 <NotificationListItem title={item.title} unRead={item.unRead} onPress={async () =>{
                     if(item.unRead){

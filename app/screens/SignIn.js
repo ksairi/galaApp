@@ -11,7 +11,7 @@ import { Messages, Labels, Screens, ServerProtocol, Keys } from '../config/setti
 import { login } from '../helpers/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
 import { saveInitialData } from '../helpers/AsyncStorageHelper'
-import { getDeviceToken } from '../helpers/NotificationsHelper'
+import NotificationsHelper from '../helpers/NotificationsHelper'
 
 export default class SignIn extends React.Component{
   
@@ -66,7 +66,7 @@ export default class SignIn extends React.Component{
     }
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
-      const deviceToken = await getDeviceToken()
+      const deviceToken = await NotificationsHelper.getDeviceToken()
       const httpResponse = await login(this.userId, this.password, deviceToken)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
