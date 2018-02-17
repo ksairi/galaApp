@@ -3,10 +3,11 @@ import { AsyncStorage } from 'react-native'
 import AppRoutes from './config/routes'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
-import NotificationsHelper from './helpers/NotificationsHelper'
 import { sendHasReceivedNotification } from './helpers/ApiHelper'
 import { Screens, Keys } from './config/settings'
 import { Provider } from "mobx-react"
+import NotificationsStore from './stores/NotificationsStore'
+import stores from './stores'
 
 export default class index extends React.Component{
 
@@ -22,7 +23,7 @@ export default class index extends React.Component{
     }catch(error){
 
     }
-    await NotificationsHelper.saveNotifications(notification.data)
+    await new NotificationsStore().saveNotifications(notification.data)
 
     if(notification.origin === "received"){
       if(userData){
@@ -65,7 +66,7 @@ export default class index extends React.Component{
   render() {
 
     return(
-      <Provider notificationsStore = {new NotificationsHelper()}>
+      <Provider {...stores}>
         <AppRoutes ref={nav => { this.navigator = nav }} />
       </Provider>
     )
