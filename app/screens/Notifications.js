@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, AsyncStorage} from 'react-native'
+import { FlatList, AsyncStorage, Text } from 'react-native'
 import { Keys, Messages } from '../config/settings'
 import ContainerStyles from '../components/View/styles'
 import { GenericText } from '../components/Text/'
@@ -78,11 +78,13 @@ export default class Notifications extends React.Component {
         closeModal={()=>this.closeModal}/>
       )
     }
-    console.log(this.props.notificationsStore.notificationsArray)
+    console.log(this.props.notificationsStore)
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
+            <Text>mariano</Text>
+            <Text>{this.props.notificationsStore.marianoSurname}</Text>
             <FlatList
               data={this.props.notificationsStore.notificationsArray ? this.props.notificationsStore.notificationsArray : this.state.notificationsData}
               renderItem={({item, index}) =>

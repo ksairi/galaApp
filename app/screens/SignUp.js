@@ -11,7 +11,7 @@ import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol, Keys } fr
 import { register } from '../helpers/ApiHelper'
 import { LoadingSpinner } from '../components/Spinner'
 import ValidationHelper from '../helpers/ValidationHelper'
-import NotificationsHelper from '../helpers/AsyncStorageHelper'
+import { saveInitialData } from '../helpers/AsyncStorageHelper'
 import { getDeviceToken } from '../helpers/NotificationsHelper'
 
 export default class SignUp extends React.Component{
@@ -50,7 +50,7 @@ export default class SignUp extends React.Component{
     
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
-      const deviceToken = await NotificationsHelper.getDeviceToken()
+      const deviceToken = await getDeviceToken()
       var httpResponse = await register(this.userFullName, this.userId, this.password, deviceToken)
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
