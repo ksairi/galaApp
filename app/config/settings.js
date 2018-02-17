@@ -1,4 +1,4 @@
-const SERVER_HOSTNAME = "http://192.168.42.46:3000/"
+const SERVER_HOSTNAME = "http://192.168.42.1:3000/"
 
 exports.Urls = {
   LOGIN:SERVER_HOSTNAME + "login",
