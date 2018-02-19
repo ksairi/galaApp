@@ -4,18 +4,13 @@ import { observable, action } from "mobx"
 
 export default class NotificationsStore {
 
-  //@observable static notificationsArray = [];
-  @observable marianoSurname = "";
+  @observable static notificationsArray = [];
+  
+  @action static updateNotificationsArray(newNotification) {
+    NotificationsStore.notificationsArray = [newNotification, ...NotificationsStore.notificationsArray]
+  }
 
-  //@action static updateNotificationsArray(newNotification) {
-  //  this.notificationsArray = [newNotification, ...this.notificationsArray]
-  //};
-
-  /*@action changeSurname() {
-    this.marianoSurname = "ksairi"
-  };*/
-
-  async saveNotifications(newNotification){
+  static async saveNotifications(newNotification){
 
     try{
       if(newNotification[Keys.timeTable]){
@@ -24,25 +19,21 @@ export default class NotificationsStore {
       else{
         
         var alreadySavedNotification = false      
-        this.notificationsArray = await AsyncStorage.getItem(Keys.notifications)
-          if(!this.notificationsArray){
-            this.notificationsArray = []
+        NotificationsStore.notificationsArray = await AsyncStorage.getItem(Keys.notifications)
+          if(!NotificationsStore.notificationsArray){
+            NotificationsStore.notificationsArray = []
           }
           else{
-            this.notificationsArray = JSON.parse(this.notificationsArray)
-            alreadySavedNotification = this.notificationsArray.filter(
+            NotificationsStore.notificationsArray = JSON.parse(NotificationsStore.notificationsArray)
+            alreadySavedNotification = NotificationsStore.notificationsArray.filter(
               notification => notification.key == newNotification.key).length > 0
             
             if(!alreadySavedNotification){
               if(newNotification.unRead == null){
                 newNotification.unRead = true    
               }
-              //notificationsArray = [newNotification, ...notificationsArray]
-              //this.updateNotificationsArray(newNotification)
-              //this.changeSurname()
-              this.marianoSurname = "ksairi"
-              console.log(this.marianoSurname)
-              await AsyncStorage.setItem(Keys.notifications, JSON.stringify(this.notificationsArray))
+              NotificationsStore.updateNotificationsArray(newNotification)              
+              await AsyncStorage.setItem(Keys.notifications, JSON.stringify(NotificationsStore.notificationsArray))
             }
           }
       }

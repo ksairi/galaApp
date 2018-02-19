@@ -23,7 +23,7 @@ export default class index extends React.Component{
     }catch(error){
 
     }
-    await new NotificationsStore().saveNotifications(notification.data)
+    await NotificationsStore.saveNotifications(notification.data)
 
     if(notification.origin === "received"){
       if(userData){
