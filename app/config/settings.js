@@ -53,7 +53,7 @@ exports.Screens = {
   SignUp:"SignUp",
   Home: "Home",
   Contact:"Contact",
-  TimeTable:"TimeTable",
+  Timetable:"Timetable",
   Routines:"Routines",
   Notifications:"Notifications",
   InitStack:"InitStack",
@@ -75,7 +75,7 @@ exports.ServerProtocol = {
 
 exports.Keys = {
   userData:"userData",
-  timeTable:"timeTable",
+  timetable:"timetable",
   replaceCurrentScreen:"replaceCurrentScreen",
   emptyLoginStack:"emptyLoginStack",
   removeHomeStack:"removeHomeStack",

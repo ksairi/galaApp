@@ -13,17 +13,12 @@ export default class NotificationsStore {
   static async saveNotifications(newNotification){
 
     try{
-      if(newNotification[Keys.timeTable]){
-        await AsyncStorage.setItem(Keys.timeTable, JSON.stringify(newNotification[Keys.timeTable]))
-      }
-      else{
-        
         var alreadySavedNotification = false      
         NotificationsStore.notificationsArray = await AsyncStorage.getItem(Keys.notifications)
-          if(!NotificationsStore.notificationsArray){
-            NotificationsStore.notificationsArray = []
-          }
-          else{
+        if(!NotificationsStore.notificationsArray){
+          NotificationsStore.notificationsArray = []
+        }
+        else{
             NotificationsStore.notificationsArray = JSON.parse(NotificationsStore.notificationsArray)
             alreadySavedNotification = NotificationsStore.notificationsArray.filter(
               notification => notification.key == newNotification.key).length > 0
@@ -36,7 +31,7 @@ export default class NotificationsStore {
               await AsyncStorage.setItem(Keys.notifications, JSON.stringify(NotificationsStore.notificationsArray))
             }
           }
-      }
+      
     }catch(error){
       console.log(error)
       //throw Messages.SYSTEM_ERROR

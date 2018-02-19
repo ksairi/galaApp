@@ -6,8 +6,10 @@ import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
 import ContainerStyles from '../components/View/styles'
 import { LoadingSpinner } from '../components/Spinner'
+import { observer, inject } from "mobx-react"
 
-
+@inject("notificationsStore")
+@observer
 export default class TimeTbale extends React.Component {
 
   state = {

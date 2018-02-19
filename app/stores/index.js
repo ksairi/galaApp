@@ -1,5 +1,7 @@
 import NotificationsStore from './NotificationsStore'
+import RoutinesStore from './RoutinesStore'
+import TimetableStore from './TimetableStore'
 
 export default {
-  notificationsStore: new NotificationsStore(),
+  routinesStore: new RoutinesStore(),
 };

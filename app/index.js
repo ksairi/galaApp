@@ -23,8 +23,7 @@ export default class index extends React.Component{
     }catch(error){
 
     }
-    await NotificationsStore.saveNotifications(notification.data)
-
+    
     if(notification.origin === "received"){
       if(userData){
         sendHasReceivedNotification(userData.userId, notification.data.key)
@@ -39,27 +38,45 @@ export default class index extends React.Component{
         var resetAction
         const params = {[Keys.newMember]:userData[Keys.newMember]}
         
-        if(notification.data[Keys.timeTable]){
+        if(notification.data[Keys.timetable]){
+
+          await TimetableStore.saveTimetable(notification.data)
+
           resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-              NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.TimeTable)})
+              NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Timetable)})
             ],
             key: null
           })
         }
         else{
-              resetAction = NavigationActions.reset({
-                index: 0,
-                actions: [
-                  NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Notifications)})
-                ],
-                key: null
-              })
+              if(notification.data[Keys.routines]){
+                
+                await RoutinesStore.saveRoutine(notification.data)
+                resetAction = NavigationActions.reset({
+                  index: 0,
+                  actions: [
+                    NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Routines)})
+                  ],
+                  key: null
+                })    
+              }
+              else{
+
+                    await NotificationsStore.saveNotifications(notification.data)
+                    resetAction = NavigationActions.reset({
+                      index: 0,
+                      actions: [
+                        NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Notifications)})
+                      ],
+                      key: null
+                    })
+                  }
             }
+        this.navigator.dispatch(resetAction)
+        //https://github.com/react-navigation/react-navigation/issues/1620
       }
-      this.navigator.dispatch(resetAction)
-      //https://github.com/react-navigation/react-navigation/issues/1620
     }
   }
 

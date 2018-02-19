@@ -7,7 +7,10 @@ import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
 import { RoutineListItem } from '../components/ListItem'
 import { ModalRoutinesDetail } from '../components/View'
+import { observer, inject } from "mobx-react"
 
+@inject("notificationsStore")
+@observer
 export default class Routines extends React.Component {
   static LocalMessages = {
     NO_ROUTINES:"Sin rutinas"

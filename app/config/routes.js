@@ -5,7 +5,7 @@ import SignIn from '../screens/SignIn'
 import SignUp from '../screens/SignUp'
 import ResetPassword from '../screens/ResetPassword'
 import Home from '../screens/Home'
-import TimeTable from '../screens/TimeTable'
+import Timetable from '../screens/Timetable'
 import Routines from '../screens/Routines'
 import Notifications from '../screens/Notifications'
 import Contact from '../screens/Contact'
@@ -43,8 +43,8 @@ const HomeDrawerStack = DrawerNavigator({
       )
     }
   },
-  [Screens.TimeTable]:{
-    screen:TimeTable,
+  [Screens.Timetable]:{
+    screen:Timetable,
     navigationOptions:{
       title:"Horarios",
       drawerIcon:({ tintColor, focused }) => (
