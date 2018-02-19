@@ -7,6 +7,8 @@ import { sendHasReceivedNotification } from './helpers/ApiHelper'
 import { Screens, Keys } from './config/settings'
 import { Provider } from "mobx-react"
 import NotificationsStore from './stores/NotificationsStore'
+import RoutinesStore from './stores/RoutinesStore'
+import TimetableStore from './stores/TimetableStore'
 import stores from './stores'
 
 export default class index extends React.Component{
@@ -25,10 +27,26 @@ export default class index extends React.Component{
     }
     
     if(notification.origin === "received"){
+      console.log(notification)
       if(userData){
         sendHasReceivedNotification(userData.userId, notification.data.key)
       }
+      if(notification.data[Keys.timetable]){
+        console.log(notification.data[Keys.timetable])
+        await TimetableStore.saveTimetable(notification.data)
+      }
+      else{
+          if(notification.data[Keys.routines]){
+            console.log(notification.data[Keys.routines])
+            await RoutinesStore.saveRoutines(notification.data)
+          }
+          else{
+             console.log(notification.data)
+              await NotificationsStore.saveNotifications(notification.data)
+          }
+        }
     }
+
     if(notification.origin === "selected"){
       if(userData){
         if(notification.notificationId && notification.message && notification.experienceId){
@@ -39,9 +57,6 @@ export default class index extends React.Component{
         const params = {[Keys.newMember]:userData[Keys.newMember]}
         
         if(notification.data[Keys.timetable]){
-
-          await TimetableStore.saveTimetable(notification.data)
-
           resetAction = NavigationActions.reset({
             index: 0,
             actions: [
@@ -52,8 +67,6 @@ export default class index extends React.Component{
         }
         else{
               if(notification.data[Keys.routines]){
-                
-                await RoutinesStore.saveRoutine(notification.data)
                 resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [
@@ -63,8 +76,6 @@ export default class index extends React.Component{
                 })    
               }
               else{
-
-                    await NotificationsStore.saveNotifications(notification.data)
                     resetAction = NavigationActions.reset({
                       index: 0,
                       actions: [

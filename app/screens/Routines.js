@@ -9,7 +9,7 @@ import { RoutineListItem } from '../components/ListItem'
 import { ModalRoutinesDetail } from '../components/View'
 import { observer, inject } from "mobx-react"
 
-@inject("notificationsStore")
+@inject("routinesStore")
 @observer
 export default class Routines extends React.Component {
   static LocalMessages = {

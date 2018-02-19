@@ -13,21 +13,18 @@ export default class RoutinesStore {
   static async saveRoutines(newRoutines){
 
     try{
-        var alreadySavedNotification = false      
+        var alreadySavedRoutine = false      
         RoutinesStore.updateRoutinesArray = await AsyncStorage.getItem(Keys.routines)
         if(!RoutinesStore.updateRoutinesArray){
           RoutinesStore.updateRoutinesArray = []
         }
         else{
             RoutinesStore.updateRoutinesArray = JSON.parse(RoutinesStore.updateRoutinesArray)
-            alreadySavedNotification = RoutinesStore.updateRoutinesArray.filter(
-              notification => notification.key == newNotification.key).length > 0
+            alreadySavedRoutine = RoutinesStore.updateRoutinesArray.filter(
+              routine => routine.key == routine.key).length > 0
             
-            if(!alreadySavedNotification){
-              if(newNotification.unRead == null){
-                newNotification.unRead = true    
-              }
-              RoutinesStore.updateNotificationsArray(newNotification)              
+            if(!alreadySavedRoutine){
+              RoutinesStore.updateRoutinesArray(newRoutines)              
               await AsyncStorage.setItem(Keys.routines, JSON.stringify(RoutinesStore.updateRoutinesArray))
             }
           }

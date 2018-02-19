@@ -163,7 +163,7 @@ const HomeDrawerNavigation = StackNavigator({
                 [
                   {text: 'No', style: 'cancel'},
                   {text: 'Sí', onPress: () => {
-                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timeTable, Keys.newMember, Keys.notifications])
+                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timetable, Keys.newMember, Keys.notifications])
                     .then(()=>{
                       const resetAction = NavigationActions.reset({
                       index: 0,

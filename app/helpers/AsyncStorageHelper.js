@@ -7,7 +7,7 @@ exports.saveInitialData = (serverData, userId) => {
   return( 
     AsyncStorage.multiSet([
       [Keys.userData, JSON.stringify(serverData[Keys.userData])],
-      [Keys.timeTable, JSON.stringify(serverData[Keys.timeTable])],
+      [Keys.timetable, JSON.stringify(serverData[Keys.timetable])],
       [Keys.routines, JSON.stringify(serverData[Keys.routines])],
       [Keys.notifications, JSON.stringify(serverData[Keys.notifications])],
     ])
