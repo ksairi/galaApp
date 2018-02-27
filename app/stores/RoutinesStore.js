@@ -1,12 +1,11 @@
 import { AsyncStorage } from 'react-native'
 import { Keys, Messages } from '../config/settings'
-import { observable, action } from "mobx"
 
 export default class RoutinesStore {
 
-  @observable static routinesArray = [];
+  static routinesArray = [];
   
-  @action static updateRoutinesArray(newRoutines) {
+  static updateRoutinesArray(newRoutines) {
     RoutinesStore.routinesArray = [newRoutines, ...RoutinesStore.routinesArray]
   }
 

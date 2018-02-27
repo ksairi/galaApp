@@ -1,12 +1,11 @@
 import { AsyncStorage } from 'react-native'
 import { Keys, Messages } from '../config/settings'
-import { observable, action } from "mobx"
 
 export default class NotificationsStore {
 
-  @observable static notificationsArray = [];
+  static notificationsArray = [];
   
-  @action static updateNotificationsArray(newNotification) {
+  static updateNotificationsArray(newNotification) {
     NotificationsStore.notificationsArray = [newNotification, ...NotificationsStore.notificationsArray]
   }
 

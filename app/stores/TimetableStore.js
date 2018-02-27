@@ -1,12 +1,11 @@
 import { AsyncStorage } from 'react-native'
 import { Keys, Messages } from '../config/settings'
-import { observable, action } from "mobx"
 
 export default class TimetableStore {
 
-  @observable static timeTableData = null;
+  static timeTableData = null;
   
-  @action static updateNotificationsArray(timeTableData) {
+  static updateNotificationsArray(timeTableData) {
     TimetableStore.timeTableData = timeTableData
   }
 

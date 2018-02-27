@@ -85,3 +85,9 @@ exports.Keys = {
   notifications:"notifications",
   routines:"routines"
 }
+
+exports.ActionsTypes = {
+
+  // Notifications
+  SET_NEW_NOTIFICATIONS : 'SET_NEW_NOTIFICATIONS'
+}
