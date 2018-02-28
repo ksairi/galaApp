@@ -81,7 +81,7 @@ class Notifications extends React.Component {
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
-              data={this.props.newNotifications ? this.props.newNotifications : this.state.notificationsData}
+              data={this.props.newNotifications.length > 0 ? this.props.newNotifications : this.state.notificationsData}
               renderItem={({item, index}) =>
                 <NotificationListItem title={item.title} unRead={item.unRead} onPress={async () =>{
                     if(item.unRead){

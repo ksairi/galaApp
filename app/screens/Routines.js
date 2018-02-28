@@ -7,8 +7,9 @@ import { GenericContainer } from '../components/View'
 import { LoadingSpinner } from '../components/Spinner'
 import { RoutineListItem } from '../components/ListItem'
 import { ModalRoutinesDetail } from '../components/View'
+import { connect } from 'react-redux'
 
-export default class Routines extends React.Component {
+class Routines extends React.Component {
   static LocalMessages = {
     NO_ROUTINES:"Sin rutinas"
   }
@@ -80,7 +81,7 @@ export default class Routines extends React.Component {
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
-              data={this.state.routinesData}
+              data={this.props.newRoutines.length > 0 ? this.props.newRoutines : this.state.routinesData}
               renderItem={({item}) =>
                 <RoutineListItem description={item.description} active={item.isActive} 
                   dateFrom={item.dateFrom} dateTo={item.dateTo} onPress={() => this.openModal(item)}/> 
@@ -92,3 +93,11 @@ export default class Routines extends React.Component {
     )
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    newRoutines: state.newRoutines
+  }
+}
+
+export default connect(mapStateToProps)(Routines) 

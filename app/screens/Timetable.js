@@ -6,20 +6,22 @@ import { GenericText } from '../components/Text/'
 import { GenericContainer } from '../components/View'
 import ContainerStyles from '../components/View/styles'
 import { LoadingSpinner } from '../components/Spinner'
-export default class TimeTbale extends React.Component {
+import { connect } from 'react-redux'
+
+class TimeTbale extends React.Component {
 
   state = {
-    timeTableData:null,
+    timetableData:null,
     hasErrors:false
   }
   
   componentDidMount() {
-    AsyncStorage.getItem(Keys.timeTable)
-    .then((timeTableData)=>{
+    AsyncStorage.getItem(Keys.timetable)
+    .then((timetableData)=>{
       try{
-        var timeTableDataJson = JSON.parse(timeTableData)
-        if (timeTableDataJson !== null){
-          this.setState({timeTableData:timeTableDataJson})
+        var timetableDataJson = JSON.parse(timetableData)
+        if (timetableDataJson !== null){
+          this.setState({timetableData:timetableDataJson})
         }
       }catch(error){
         this.setState({hasErrors:true})  
@@ -39,13 +41,13 @@ export default class TimeTbale extends React.Component {
         </GenericText>
       )
     }
-    if(!this.state.timeTableData){
+    if(!this.state.timetableData){
       return(
         <LoadingSpinner visible={true}/>
       )
     }
     const tableHead = ['Hora', 'Lun', 'Mar', 'Miér', 'Jue', 'Vier', 'Sáb']
-        , timeTableArray = this.state.timeTableData
+        , timeTableArray = this.props.newTimetableData.length > 0 ? this.props.newTimetableData : this.state.timetableData
     var toReturn = []
       , serverReponseError = false
 
@@ -94,3 +96,10 @@ export default class TimeTbale extends React.Component {
   } 
 }
 
+function mapStateToProps(state) {
+  return {
+    newTimetableData: state.newTimetable
+  }
+}
+
+export default connect(mapStateToProps)(TimeTbale) 

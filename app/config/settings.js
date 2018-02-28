@@ -89,5 +89,9 @@ exports.Keys = {
 exports.ActionsTypes = {
 
   // Notifications
-  SET_NEW_NOTIFICATIONS : 'SET_NEW_NOTIFICATIONS'
+  SET_NEW_NOTIFICATIONS :'SET_NEW_NOTIFICATIONS',
+  // Routines
+  SET_NEW_ROUTINES:'SET_NEW_ROUTINES',
+  // Timetable
+  SET_NEW_TIMETABLE: 'SET_NEW_TIMETABLE'
 }

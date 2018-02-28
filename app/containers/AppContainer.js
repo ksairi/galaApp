@@ -27,23 +27,21 @@ class AppContainer extends React.Component{
     }
     
     if(notification.origin === "received"){
-      console.log(notification)
+      
       if(userData){
         sendHasReceivedNotification(userData.userId, notification.data.key)
       }
       if(notification.data[Keys.timetable]){
-        console.log(notification.data[Keys.timetable])
-        //await TimetableStore.saveTimetable(notification.data)
+        this.props.saveTimetable(notification.data[Keys.timetable])
       }
       else{
           if(notification.data[Keys.routines]){
-            console.log(notification.data[Keys.routines])
-            //await RoutinesStore.saveRoutines(notification.data)
+            this.props.saveRoutines(notification.data[Keys.routines])
           }
           else{
-             console.log(notification.data)
-              //await NotificationsStore.saveNotifications(notification.data)
-              this.props.saveNotifications(notification.data)
+              if(notification.data[Keys.notifications]){
+                this.props.saveNotifications(notification.data[Keys.notifications])
+              }
           }
         }
     }
