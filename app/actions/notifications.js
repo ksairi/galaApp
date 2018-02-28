@@ -38,7 +38,7 @@ export function saveNotifications (newNotifications){
 	}
  }
 
-export function setNewNotifications(notifications){
+function setNewNotifications(notifications){
   return {
     type: ActionsTypes.SET_NEW_NOTIFICATIONS,
     notifications,

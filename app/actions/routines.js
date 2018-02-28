@@ -35,7 +35,7 @@ export function saveRoutines(newRoutines){
 	}
  }
 
-export function setNewRoutines(routines){
+function setNewRoutines(routines){
   return {
     type: ActionsTypes.SET_NEW_ROUTINES,
     routines,

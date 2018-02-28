@@ -13,7 +13,7 @@ export function saveTimetable(newTimetable){
 	}
 }
 
-export function setNewTimetable(timetable){
+function setNewTimetable(timetable){
 	return {
     type: ActionsTypes.SET_NEW_TIMETABLE,
     timetable,
