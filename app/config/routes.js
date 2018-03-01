@@ -136,9 +136,7 @@ const HomeDrawerNavigation = StackNavigator({
   DrawerStack: { screen: HomeDrawerStackContainer }
   },{
       navigationOptions: ({navigation}) => {
-        console.log(navigation)
-        //const isMenuClosed = (navigation.state.index === 0)
-        const isMenuClosed = true
+        const isMenuClosed = (navigation.state.index === 0)
         return {
           headerStyle: {backgroundColor: styles.headerBackgroundColor},
           headerTitleStyle: {color:'white', alignSelf: 'center'},
@@ -164,7 +162,7 @@ const HomeDrawerNavigation = StackNavigator({
                 [
                   {text: 'No', style: 'cancel'},
                   {text: 'Sí', onPress: () => {
-                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timetable, Keys.newMember, Keys.notifications])
+                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timetable, Keys.newMember, Keys.notifications, Keys.routines])
                     .then(()=>{
                       const resetAction = NavigationActions.reset({
                       index: 0,
@@ -173,12 +171,7 @@ const HomeDrawerNavigation = StackNavigator({
                       ],
                       key:null
                     })
-                    /*const setParamsAction = NavigationActions.setParams({
-                      params: { title: 'Hello' },
-                      key: "DrawerStack",
-                    });  */
                     navigation.dispatch(resetAction)
-                    //navigation.dispatch(setParamsAction)
                     })
                   }},
                 ],

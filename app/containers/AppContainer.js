@@ -129,8 +129,7 @@ function mapStateToProps(state, props) {
 // Doing this merges our actions into the component’s props,
 // while wrapping them in dispatch() so that they immediately dispatch an Action.
 function mapDispatchToProps(dispatch) {
-  //return bindActionCreators(ActionsCreators, dispatch)
-  return Object.assign({dispatch: dispatch}, bindActionCreators(ActionsCreators, dispatch))
+  return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
 }
 
 //Connect everything
