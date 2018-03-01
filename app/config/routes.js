@@ -137,7 +137,8 @@ const HomeDrawerNavigation = StackNavigator({
   },{
       navigationOptions: ({navigation}) => {
         console.log(navigation)
-        const isMenuClosed = (navigation.state.index === 0)
+        //const isMenuClosed = (navigation.state.index === 0)
+        const isMenuClosed = true
         return {
           headerStyle: {backgroundColor: styles.headerBackgroundColor},
           headerTitleStyle: {color:'white', alignSelf: 'center'},

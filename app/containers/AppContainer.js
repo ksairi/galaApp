@@ -8,8 +8,8 @@ import { Screens, Keys } from '../config/settings'
 import { connect } from 'react-redux'
 import { ActionsCreators } from '../actions'
 import { bindActionCreators } from 'redux'
-
-
+import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
+import { addNavigationHelpers } from 'react-navigation'
 
 class AppContainer extends React.Component{
 
@@ -91,8 +91,14 @@ class AppContainer extends React.Component{
   }
 
   render() {
+    const addListener = createReduxBoundAddListener("root")
     return(
-      <AppRoutes />
+      <AppRoutes 
+        navigation={addNavigationHelpers({
+        dispatch: this.props.dispatch,
+        state: this.props.nav,
+        addListener})}
+      />
     )
   }
 }
@@ -101,14 +107,16 @@ class AppContainer extends React.Component{
 // and insert/links it into the props of our component.
 // This function makes Redux know that this component needs to be passed a piece of the state
 function mapStateToProps(state, props) {
-  return {}
+  return {
+    nav: state.nav
+  }
 }
 
 // Doing this merges our actions into the component’s props,
 // while wrapping them in dispatch() so that they immediately dispatch an Action.
-// Just by doing this, we will have access to the actions defined in out actions file (action/home.js)
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators(ActionsCreators, dispatch)
+  //return bindActionCreators(ActionsCreators, dispatch)
+  return Object.assign({dispatch: dispatch}, bindActionCreators(ActionsCreators, dispatch))
 }
 
 //Connect everything
