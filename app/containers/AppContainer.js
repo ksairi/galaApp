@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage } from 'react-native'
+import { AsyncStorage, BackHandler } from 'react-native'
 import AppRoutes from '../config/routes'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
@@ -15,7 +15,21 @@ class AppContainer extends React.Component{
 
   componentDidMount() {
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
+
+    BackHandler.addEventListener('backPress', () => {
+      const { dispatch, nav } = this.props
+      const activeRoute = nav.routes[nav.index]
+      if (activeRoute.index === 0) {
+        return false
+      }
+      dispatch(NavigationActions.back())
+      return true
+    })
   }
+
+  componentWillUnmount() {
+      BackHandler.removeEventListener('backPress')
+    }
 
   handleNotification = async (notification) => {
     var userData
