@@ -6,4 +6,4 @@ export const newNotifications = createReducer({}, {
     return action.notifications
   },
 
-});
+})

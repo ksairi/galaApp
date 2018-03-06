@@ -6,4 +6,4 @@ export const newTimetable = createReducer({}, {
     return action.timetable
   },
 
-});
+})

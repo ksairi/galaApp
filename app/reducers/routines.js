@@ -6,4 +6,4 @@ export const newRoutines = createReducer({}, {
     return action.routines
   },
 
-});
+})

@@ -13,8 +13,11 @@ import { LoadingSpinner } from '../components/Spinner'
 import ValidationHelper from '../helpers/ValidationHelper'
 import { saveInitialData } from '../helpers/AsyncStorageHelper'
 import { getDeviceToken } from '../helpers/NotificationsHelper'
+import { connect } from 'react-redux'
+import { ActionsCreators } from '../actions'
+import { bindActionCreators } from 'redux'
 
-export default class SignUp extends React.Component{
+class SignUp extends React.Component{
   static userFullName
   static userId
   static password
@@ -55,10 +58,12 @@ export default class SignUp extends React.Component{
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
           await saveInitialData(httpResponse.data, this.userId)
+          const isNewMember = httpResponse.data[Keys.userData][Keys.newMember]
+          this.props.setIsNewMember((isNewMember || isNewMember != null)? true : false)
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-              NavigationActions.navigate({routeName:Screens.HomeDrawerStack,params:{[Keys.newMember]:httpResponse.data[Keys.userData][Keys.newMember]}})
+              NavigationActions.navigate({routeName:Screens.HomeStack})
             ],
             key: null
           })
@@ -158,3 +163,10 @@ export default class SignUp extends React.Component{
     )
   }
 }
+
+
+function mapDispatchToProps(dispatch) {
+  return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
+}
+
+export default connect( ()=>({}), mapDispatchToProps )(SignUp)

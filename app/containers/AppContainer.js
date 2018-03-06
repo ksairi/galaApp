@@ -1,6 +1,6 @@
 import React from 'react'
 import { AsyncStorage, BackHandler } from 'react-native'
-import AppRoutes from '../config/routes'
+import AppRoutes from '../navigation/'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
 import { sendHasReceivedNotification } from '../helpers/ApiHelper'

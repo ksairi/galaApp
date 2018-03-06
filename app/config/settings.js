@@ -58,7 +58,7 @@ exports.Screens = {
   Notifications:"Notifications",
   InitStack:"InitStack",
   LoginStack:"loginStack",
-  HomeDrawerStack:"homeDrawerStack",
+  HomeStack:"homeStack",
   NewMemberPromotions:"NewMemberPromotions"
 }
 
@@ -93,5 +93,7 @@ exports.ActionsTypes = {
   // Routines
   SET_NEW_ROUTINES:'SET_NEW_ROUTINES',
   // Timetable
-  SET_NEW_TIMETABLE: 'SET_NEW_TIMETABLE'
+  SET_NEW_TIMETABLE: 'SET_NEW_TIMETABLE',
+  // Navigation
+  SET_IS_NEW_MEMBER: 'SET_IS_NEW_MEMBER'
 }
