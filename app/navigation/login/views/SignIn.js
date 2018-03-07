@@ -14,7 +14,7 @@ import { login } from '/helpers/ApiHelper'
 import { LoadingSpinner } from '/components/Spinner'
 import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { ActionsCreators } from '/actions'
+import { ActionsCreators } from '/redux/actions'
 
 class SignIn extends React.Component{
   

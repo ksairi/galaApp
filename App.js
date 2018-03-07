@@ -1,7 +1,7 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import AppContainer from './app/containers/AppContainer'
-import store from './app/store'
+import AppContainer from './app/redux/AppContainer'
+import store from './app/redux/store'
 
 
 export default App = () => (

@@ -8,7 +8,7 @@ import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
 import { addNavigationHelpers } from 'react-navigation'
 import { sendHasReceivedNotification } from '/helpers/ApiHelper'
 import { Screens, Keys } from '/config/settings'
-import { ActionsCreators } from '/actions'
+import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
 
 class AppContainer extends React.Component{
@@ -117,20 +117,14 @@ class AppContainer extends React.Component{
   }
 }
 
-// The function takes data from the app current state,
-// and insert/links it into the props of our component.
-// This function makes Redux know that this component needs to be passed a piece of the state
 function mapStateToProps(state, props) {
   return {
     nav: state.nav
   }
 }
 
-// Doing this merges our actions into the component’s props,
-// while wrapping them in dispatch() so that they immediately dispatch an Action.
 function mapDispatchToProps(dispatch) {
   return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
 }
 
-//Connect everything
 export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)

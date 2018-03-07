@@ -15,7 +15,7 @@ import { LoadingSpinner } from '/components/Spinner'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { ActionsCreators } from '/actions'
+import { ActionsCreators } from '/redux/actions'
 
 class SignUp extends React.Component{
   static userFullName
