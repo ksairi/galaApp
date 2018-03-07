@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import { DrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
-import { Screens } from '../../../config/settings'
+import { Screens } from '/config/settings'
 
 function DrawerContentComponent(props){
 
