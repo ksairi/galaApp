@@ -1,4 +1,4 @@
-import { Urls, Messages, ServerProtocol } from '../config/settings.js'
+import { Urls, Messages, ServerProtocol } from '/config/settings.js'
 import { isDeviceConnected } from './NetworkHelper'
 
 exports.login = (userId, password, token) => {

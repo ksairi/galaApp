@@ -1,6 +1,6 @@
 import { Permissions, Notifications } from 'expo'
 import { AsyncStorage } from 'react-native'
-import { Keys, Messages } from '../config/settings'
+import { Keys, Messages } from '/config/settings'
 
 exports.getDeviceToken = async () => {
 

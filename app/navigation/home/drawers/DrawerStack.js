@@ -2,16 +2,16 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { DrawerNavigator, DrawerItems, SafeAreaView  } from 'react-navigation'
 import { Screens, Keys, Labels } from '../../../config/settings'
-import Home from '../../../screens/Home'
-import Timetable from '../../../screens/Timetable'
-import Routines from '../../../screens/Routines'
-import Notifications from '../../../screens/Notifications'
-import Contact from '../../../screens/Contact'
-import NewMemberPromotions from '../../../screens/NewMemberPromotions'
+import Home from '../views/Home'
+import Timetable from '../views/Timetable'
+import Routines from '../views/Routines'
+import Notifications from '../views/Notifications'
+import Contact from '../views/Contact'
+import NewMemberPromotions from '../views/NewMemberPromotions'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MIcons from 'react-native-vector-icons/MaterialIcons'
-import SideDrawer from './SideDrawer'
+import DrawerContentComponent from './DrawerContentComponent'
 
 export default DrawerNavigator({
   [Screens.Home]:{
@@ -94,7 +94,7 @@ export default DrawerNavigator({
   }
 },
 {
-  contentComponent:SideDrawer      
+  contentComponent:DrawerContentComponent      
 }
   
 )

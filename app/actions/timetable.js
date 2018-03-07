@@ -1,5 +1,5 @@
-import { ActionsTypes, Keys } from '../config/settings'
 import { AsyncStorage } from 'react-native'
+import { ActionsTypes, Keys } from '../config/settings'
 
 export function saveTimetable(newTimetable){
 	return async (dispatch, getState) => {

@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native'
-import { Messages, Labels, Keys } from '../config/settings'
+import { Messages, Labels, Keys } from '/config/settings'
 
 exports.saveInitialData = (serverData, userId) => {
   const userData = serverData[Keys.userData]

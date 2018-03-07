@@ -1,4 +1,4 @@
-import { ActionsTypes } from '../config/settings'
+import { ActionsTypes } from '/config/settings'
 
 
 export function setIsNewMember (isNewMember){

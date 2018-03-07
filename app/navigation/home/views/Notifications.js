@@ -1,14 +1,14 @@
 import React from 'react'
 import { FlatList, AsyncStorage, Text } from 'react-native'
-import { Keys, Messages } from '../config/settings'
-import ContainerStyles from '../components/View/styles'
-import { GenericText } from '../components/Text/'
-import { GenericContainer } from '../components/View'
-import { LoadingSpinner } from '../components/Spinner'
-import { NotificationListItem } from '../components/ListItem'
-import { ModalNotificationDetail } from '../components/View'
-import { sendHasReadNotification } from '../helpers/ApiHelper'
 import { connect } from 'react-redux'
+import { Keys, Messages } from '/config/settings'
+import ContainerStyles from '/components/View/styles'
+import { GenericText } from '/components/Text/'
+import { GenericContainer } from '/components/View'
+import { LoadingSpinner } from '/components/Spinner'
+import { NotificationListItem } from '/components/ListItem'
+import { ModalNotificationDetail } from '/components/View'
+import { sendHasReadNotification } from '/helpers/ApiHelper'
 
 class Notifications extends React.Component {
   static LocalMessages = {

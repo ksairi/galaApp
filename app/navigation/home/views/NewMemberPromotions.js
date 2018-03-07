@@ -1,7 +1,7 @@
 import React from 'react'
 import { Text, View, AsyncStorage } from 'react-native'
-import { Keys, Messages } from '../config/settings'
-import { GenericText } from '../components/Text'
+import { Keys, Messages } from '/config/settings'
+import { GenericText } from '/components/Text'
 
 export default class NewMemberPromotions extends React.Component {
   

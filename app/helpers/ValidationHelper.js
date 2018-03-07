@@ -1,4 +1,4 @@
-import { Messages, SignUpConstraints } from '../config/settings'
+import { Messages, SignUpConstraints } from '/config/settings'
 
 passwordsWithErrors = (password, confirmPassword) => {
   if(password.length < SignUpConstraints.PASSWORD_MIN_LENGTH){

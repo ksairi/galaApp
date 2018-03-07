@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "babel-root-slash-import": "^1.1.0",
     "flow-bin": "^0.60.1",
     "jest-expo": "^25.0.0",
     "react-devtools": "^3.0.0",

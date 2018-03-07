@@ -1,15 +1,15 @@
 import React from 'react'
 import { AsyncStorage, BackHandler } from 'react-native'
-import AppRoutes from '../navigation/'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
-import { sendHasReceivedNotification } from '../helpers/ApiHelper'
-import { Screens, Keys } from '../config/settings'
 import { connect } from 'react-redux'
-import { ActionsCreators } from '../actions'
 import { bindActionCreators } from 'redux'
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
 import { addNavigationHelpers } from 'react-navigation'
+import { sendHasReceivedNotification } from '/helpers/ApiHelper'
+import { Screens, Keys } from '/config/settings'
+import { ActionsCreators } from '/actions'
+import AppRoutes from '/navigation/'
 
 class AppContainer extends React.Component{
 

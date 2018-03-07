@@ -1,5 +1,5 @@
 import createReducer from './lib/createReducer'
-import { ActionsTypes } from '../config/settings'
+import { ActionsTypes } from '/config/settings'
 
 export const newRoutines = createReducer({}, {
   [ActionsTypes.SET_NEW_ROUTINES](state, action) {

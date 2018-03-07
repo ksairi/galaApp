@@ -1,13 +1,13 @@
 import React from 'react'
 import { Keyboard, AsyncStorage } from 'react-native'
-import { GenericContainer } from '../components/View'
-import ContainerStyles from '../components/View/styles'
-import { GenericText } from '../components/Text'
-import { GenericTextInput } from '../components/TextInput'
-import { SubmitButton } from '../components/Button'
-import { LoadingSpinner } from '../components/Spinner'
-import { Messages, Labels, Screens, ServerProtocol, Keys } from '../config/settings'
-import { sendComments } from '../helpers/ApiHelper'
+import { GenericContainer } from '/components/View'
+import ContainerStyles from '/components/View/styles'
+import { GenericText } from '/components/Text'
+import { GenericTextInput } from '/components/TextInput'
+import { SubmitButton } from '/components/Button'
+import { LoadingSpinner } from '/components/Spinner'
+import { Messages, Labels, Screens, ServerProtocol, Keys } from '/config/settings'
+import { sendComments } from '/helpers/ApiHelper'
 
 
 export default class Contact extends React.Component {

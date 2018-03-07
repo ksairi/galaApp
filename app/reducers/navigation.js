@@ -1,5 +1,5 @@
-import { Screens } from '../config/settings'
-import AppNavigator from '../navigation'
+import { Screens } from '/config/settings'
+import AppNavigator from '/navigation'
 
 const initialState = AppNavigator.router.getStateForAction(AppNavigator.router.getActionForPathAndParams(Screens.LoginStack))
 

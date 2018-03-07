@@ -2,14 +2,13 @@ import React from 'react'
 import { AsyncStorage, Alert } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import styles from '../../config/styles'
-import { StackNavigator } from 'react-navigation'
-import { Screens, Keys } from '../../config/settings'
-import HomeDrawerStack from './views/HomeDrawerStack'
-import { NavigationActions } from 'react-navigation'
+import { StackNavigator, NavigationActions } from 'react-navigation'
+import { Screens, Keys } from '/config/settings'
+import DrawerStack from './drawers/DrawerStack'
+import styles from '/config/styles'
 
-export default HomeDrawerNavigation = StackNavigator({
-  DrawerStack: { screen: HomeDrawerStack }
+export default StackNavigator({
+  DrawerStack: { screen: DrawerStack }
   },{
       navigationOptions: ({navigation}) => {
         const isMenuClosed = (navigation.state.index === 0)
