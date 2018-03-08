@@ -169,4 +169,4 @@ function mapDispatchToProps(dispatch) {
   return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
 }
 
-export default connect( ()=>({}), mapDispatchToProps )(SignUp)
+export default connect(()=>({}), mapDispatchToProps)(SignUp)
