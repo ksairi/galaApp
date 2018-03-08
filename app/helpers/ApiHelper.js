@@ -1,14 +1,14 @@
 import { Urls, Messages, ServerProtocol } from '/config/settings.js'
 import { isDeviceConnected } from './NetworkHelper'
+import API_ACCESS_TOKEN from '/config/apiAccessToken'
 
-exports.login = (userId, password, token) => {
+exports.login = (userId, password, notificationsToken) => {
 
   const loginParamters = {}
   
   loginParamters.userId = userId
   loginParamters.password = password
-  loginParamters.token = token
-  loginParamters.hash = getAccessHash()
+  loginParamters.notificationsToken = notificationsToken
   return connectToServer(Urls.LOGIN, loginParamters)
   .then((response) => {
     return response
@@ -19,15 +19,14 @@ exports.login = (userId, password, token) => {
 }
 
 
-exports.register = (fullName, userId, password, token) => {
+exports.register = (fullName, userId, password, notificationsToken) => {
 
   const registerParamters = {}
   
   registerParamters.fullName = fullName
   registerParamters.userId = userId
   registerParamters.password = password
-  registerParamters.token = token
-  registerParamters.hash = getAccessHash()
+  registerParamters.notificationsToken = notificationsToken
   return connectToServer(Urls.REGISTER, registerParamters)
   .then((response) => {
     return response
@@ -41,7 +40,6 @@ exports.resetPassword = (userId, password) => {
   const resetPasswordParameters = {}
   resetPasswordParameters.userId = userId
   resetPasswordParameters.password = password
-  resetPasswordParameters.hash = getAccessHash()
   return connectToServer(Urls.RESET_PASSWORD, resetPasswordParameters)
   .then((response) => {
     return response
@@ -55,7 +53,6 @@ exports.sendComments = (userId, comments) => {
   const sendCommentsParameters = {}
   sendCommentsParameters.userId = userId
   sendCommentsParameters.comments = comments
-  sendCommentsParameters.hash = getAccessHash()
   return connectToServer(Urls.SEND_COMMENTS, sendCommentsParameters)
   .then((response) => {
     return response
@@ -69,7 +66,6 @@ exports.sendHasReadNotification = (userId, notificationId) => {
   const hasReadNotification = {}
   hasReadNotification.userId = userId
   hasReadNotification.notificationId = notificationId
-  hasReadNotification.hash = getAccessHash()
   return connectToServer(Urls.HAS_READ_NOTIFICATION, hasReadNotification)
   .then((response) => {
     return response
@@ -83,7 +79,6 @@ exports.sendHasReceivedNotification = (userId, notificationId) => {
   const hasReceivedNotification = {}
   hasReceivedNotification.userId = userId
   hasReceivedNotification.notificationId = notificationId
-  hasReceivedNotification.hash = getAccessHash()
   return connectToServer(Urls.HAS_RECEIVED_NOTIFICATION, hasReceivedNotification)
   .then((response) => {
     return response
@@ -99,6 +94,7 @@ connectToServer = (url, parameters) => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
+      'Authorization':  'Bearer ' + API_ACCESS_TOKEN
     },
     body: JSON.stringify(parameters)
   })
@@ -140,10 +136,4 @@ connectToServer = (url, parameters) => {
       })
     )
   })
-}
-
- getAccessHash = () => {
-
-  return '##GALA2017##'
- // TODO see where we store the hashkey
 }
