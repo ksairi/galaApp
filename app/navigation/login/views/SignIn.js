@@ -14,7 +14,7 @@ import { login } from '/helpers/ApiHelper'
 import { LoadingSpinner } from '/components/Spinner'
 import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { ActionsCreators } from '/redux/actions'
+import { setIsNewMember } from '/redux/actions/member'
 
 class SignIn extends React.Component{
   
@@ -28,6 +28,7 @@ class SignIn extends React.Component{
   }
   
   render(){
+    console.log(this.props)
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
@@ -75,7 +76,7 @@ class SignIn extends React.Component{
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
         await saveInitialData(httpResponse.data, this.userId)
         const isNewMember = httpResponse.data[Keys.userData][Keys.newMember]
-        this.props.setIsNewMember((isNewMember || isNewMember != null)? true : false)            
+        this.props.dispatch(setIsNewMember((isNewMember || isNewMember != null)? true : false))            
         const resetAction = NavigationActions.reset({
           index: 0,
           actions: [
@@ -116,9 +117,4 @@ class SignIn extends React.Component{
   }
 }
 
-
-function mapDispatchToProps(dispatch) {
-  return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
-}
-
-export default connect(()=>({}), mapDispatchToProps)(SignIn)
+export default connect()(SignIn)

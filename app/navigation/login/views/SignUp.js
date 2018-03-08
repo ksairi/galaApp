@@ -15,7 +15,7 @@ import { LoadingSpinner } from '/components/Spinner'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { ActionsCreators } from '/redux/actions'
+import { setIsNewMember } from '/redux/actions/member'
 
 class SignUp extends React.Component{
   static userFullName
@@ -59,7 +59,7 @@ class SignUp extends React.Component{
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
           await saveInitialData(httpResponse.data, this.userId)
           const isNewMember = httpResponse.data[Keys.userData][Keys.newMember]
-          this.props.setIsNewMember((isNewMember || isNewMember != null)? true : false)
+          this.props.dispatch(setIsNewMember((isNewMember || isNewMember != null)? true : false))
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [
@@ -164,9 +164,4 @@ class SignUp extends React.Component{
   }
 }
 
-
-function mapDispatchToProps(dispatch) {
-  return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
-}
-
-export default connect(()=>({}), mapDispatchToProps)(SignUp)
+export default connect()(SignUp)
