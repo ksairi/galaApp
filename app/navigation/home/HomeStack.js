@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { StackNavigator, NavigationActions } from 'react-navigation'
 import { Screens, Keys } from '/config/settings'
-import DrawerStack from './drawers/DrawerStack'
+import DrawerStack from './DrawerStack'
 import styles from '/config/styles'
 
 export default StackNavigator({

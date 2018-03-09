@@ -2,11 +2,11 @@ import React from 'react'
 import { ScrollView, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import { Keys, Messages } from '/config/settings'
-import ClassesTimeTable from '/components/Table/ClassesTimeTable'
-import { GenericText } from '/components/Text/'
-import { GenericContainer } from '/components/View'
-import ContainerStyles from '/components/View/styles'
-import { LoadingSpinner } from '/components/Spinner'
+import ClassesTimeTable from '/components/presentationals/Table/ClassesTimeTable'
+import { GenericText } from '/components/presentationals/Text/'
+import { GenericContainer } from '/components/presentationals/View'
+import ContainerStyles from '/components/presentationals/View/styles'
+import { LoadingSpinner } from '/components/presentationals/Spinner'
 
 class TimeTbale extends React.Component {
 

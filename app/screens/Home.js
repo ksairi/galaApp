@@ -2,7 +2,7 @@ import React from 'react'
 import { AsyncStorage } from 'react-native'
 import { Text, View } from 'react-native'
 import { Keys } from '/config/settings'
-import { GenericContainer } from '/components/View/'
+import { GenericContainer } from '/components/presentationals/View/'
 
 export default class Home extends React.Component {
   constructor(props){

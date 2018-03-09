@@ -1,7 +1,7 @@
 import { StackNavigator } from 'react-navigation'
-import SignIn from './views/SignIn'
-import SignUp from './views/SignUp'
-import ResetPassword from './views/ResetPassword'
+import SignIn from '/screens/SignIn'
+import SignUp from '/screens/SignUp'
+import ResetPassword from '/screens//ResetPassword'
 import { Screens, Labels, Keys } from '/config/settings'
 
 export default StackNavigator({

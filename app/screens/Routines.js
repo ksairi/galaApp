@@ -2,12 +2,12 @@ import React from 'react'
 import { FlatList, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import { Keys, Messages } from '/config/settings'
-import ContainerStyles from '/components/View/styles'
-import { GenericText } from '/components/Text/'
-import { GenericContainer } from '/components/View'
-import { LoadingSpinner } from '/components/Spinner'
-import { RoutineListItem } from '/components/ListItem'
-import { ModalRoutinesDetail } from '/components/View'
+import ContainerStyles from '/components/presentationals/View/styles'
+import { GenericText } from '/components/presentationals/Text/'
+import { GenericContainer } from '/components/presentationals/View'
+import { LoadingSpinner } from '/components/presentationals/Spinner'
+import { RoutineListItem } from '/components/presentationals/ListItem'
+import { ModalRoutinesDetail } from '/components/presentationals/View'
 
 class Routines extends React.Component {
   static LocalMessages = {
