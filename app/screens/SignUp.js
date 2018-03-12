@@ -15,7 +15,6 @@ import { register } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { setIsNewMember } from '/redux/actions/member'
 
 @connect()
 export default class SignUp extends React.Component{
@@ -59,8 +58,8 @@ export default class SignUp extends React.Component{
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
           await saveInitialData(httpResponse.data, this.userId)
-          const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
-          this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
+          //const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
+          //this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [

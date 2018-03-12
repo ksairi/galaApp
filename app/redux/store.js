@@ -1,8 +1,10 @@
 import { createStore, applyMiddleware, compose } from 'redux'
+import { AsyncStorage } from 'react-native'
 import thunkMiddleware from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers'
-import reducer from './reducers'
+import { REHYDRATE, PURGE, persistCombineReducers, persistStore } from 'redux-persist'
+import reducers from './reducers'
 
 const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  })
 
@@ -19,4 +21,14 @@ const enhancer = compose(
 	)
 )
 
-export default createStore(reducer, enhancer)
+const reduxPresistConfig = {
+  key: 'primary',
+  storage: AsyncStorage
+}
+
+const presistReducers = persistCombineReducers(reduxPresistConfig, reducers)
+const store = createStore(presistReducers, enhancer)
+
+persistStore(store, null, () => { store.getState })
+
+export default store

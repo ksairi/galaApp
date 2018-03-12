@@ -1,8 +1,8 @@
 import createReducer from './lib/createReducer'
 import { ActionsTypes } from '/config/settings'
 
-export const newTimetable = createReducer({}, {
-  [ActionsTypes.SET_NEW_TIMETABLE](state, action) {
+export const timetable = createReducer([], {
+  [ActionsTypes.SET_TIMETABLE](state, action) {
     return action.timetable
   },
 

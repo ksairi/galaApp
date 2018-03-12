@@ -2,9 +2,8 @@ import { Permissions, Notifications } from 'expo'
 import { AsyncStorage } from 'react-native'
 import { Keys, Messages } from '/config/settings'
 
-exports.getDeviceToken = async () => {
+exports.getDeviceToken = async (savedToken, dispatch) => {
 
-  const savedToken = await AsyncStorage.getItem(Keys.notificationsToken)
   if(savedToken !== null){
     return savedToken
   }
@@ -29,9 +28,10 @@ exports.getDeviceToken = async () => {
   // Get the token that uniquely identifies this device
   const token = await Notifications.getExpoPushTokenAsync()
   try{
-    AsyncStorage.setItem(Keys.notificationsToken, token)
+    dispatch(ActionsCreators.setNotificationsToken(token))
     return token
   }catch(error){
+    console.log(error)
     throw Messages.SYSTEM_ERROR
   }
 }

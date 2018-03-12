@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native'
 import { ActionsTypes, Keys } from '/config/settings'
 
-export function saveRoutines(newRoutines){
+export function setRoutines(newRoutines){
 	return async (dispatch, getState) => {
 		try{
 		    var routinesArray = await AsyncStorage.getItem(Keys.routines)
@@ -23,7 +23,7 @@ export function saveRoutines(newRoutines){
 	        	
 	        	routinesArray = [...newRoutinesToApply ,...routinesArray]  
           		await AsyncStorage.setItem(Keys.routines, JSON.stringify(routinesArray))
-          		dispatch(setNewRoutines(routinesArray))
+          		dispatch({type: ActionsTypes.SET_NEW_ROUTINES, routines:routinesArray})
           	}
 	        
 		    
@@ -34,10 +34,3 @@ export function saveRoutines(newRoutines){
 		}
 	}
  }
-
-function setNewRoutines(routines){
-  return {
-    type: ActionsTypes.SET_NEW_ROUTINES,
-    routines,
-  }
-}

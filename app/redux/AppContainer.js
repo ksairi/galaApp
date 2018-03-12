@@ -14,15 +14,18 @@ import ValidationHelper from '/helpers/ValidationHelper'
 
 
 @connect(
-  state => ({nav:state.nav}),
-  (dispatch) => Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
+  state => 
+  ({
+    nav:state.nav,
+    userData: state.userData
+  }),
+  dispatch => 
+  Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
 )
 
 export default class AppContainer extends React.Component{
 
   componentDidMount() {
-        console.log(this.props)
-
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
 
     BackHandler.addEventListener('backPress', () => {
@@ -43,8 +46,9 @@ export default class AppContainer extends React.Component{
   handleNotification = async (notification) => {
     var userData
     try{
-      userData = await AsyncStorage.getItem(Keys.userData)
-      userData = JSON.parse(userData)
+      //userData = await AsyncStorage.getItem(Keys.userData)
+      //userData = JSON.parse(userData)
+      userData = this.props.userData
     }catch(error){
 
     }
@@ -55,15 +59,15 @@ export default class AppContainer extends React.Component{
         sendHasReceivedNotification(userData.userId, notification.data.key)
       }
       if(notification.data[Keys.timetable]){
-        this.props.saveTimetable(notification.data[Keys.timetable])
+        this.props.setTimetable(notification.data[Keys.timetable])
       }
       else{
           if(notification.data[Keys.routines]){
-            this.props.saveRoutines(notification.data[Keys.routines])
+            this.props.setRoutines(notification.data[Keys.routines])
           }
           else{
               if(notification.data[Keys.notifications]){
-                this.props.saveNotifications(notification.data[Keys.notifications])
+                this.props.setNotifications(notification.data[Keys.notifications])
               }
           }
         }
@@ -75,10 +79,8 @@ export default class AppContainer extends React.Component{
           // when the app is opened by selecting the notification and origin=="received" is not received
           sendHasReceivedNotification(userData.userId, notification.data.key)
         }
-        var resetAction
         this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(userData[Keys.newMember]))
-        
-        
+        var resetAction
         if(notification.data[Keys.timetable]){
           resetAction = NavigationActions.reset({
             index: 0,

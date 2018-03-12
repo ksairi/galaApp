@@ -12,9 +12,8 @@ import { LoadingSpinner } from '/components/presentationals/Spinner'
 import { GenericText, GenericLink } from '/components/presentationals/Text/'
 import { Messages, Labels, Screens, ServerProtocol, Keys } from '/config/settings'
 import { login } from '/helpers/ApiHelper'
-import { saveInitialData } from '/helpers/AsyncStorageHelper'
+import { setInitialData } from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { setIsNewMember } from '/redux/actions/member'
 import ValidationHelper from '/helpers/ValidationHelper'
 
 @connect()
@@ -71,13 +70,13 @@ export default class SignIn extends React.Component{
     }
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
-      const deviceToken = await getDeviceToken()
+      const deviceToken = await getDeviceToken(this.props.notificationToken, this.props.dispatch)
       const httpResponse = await login(this.userId, this.password, deviceToken)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-        await saveInitialData(httpResponse.data, this.userId)
-        const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
-        this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
+        setInitialData(httpResponse.data, this.userId, this.props.dispatch)
+        //const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
+        //this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
         const resetAction = NavigationActions.reset({
           index: 0,
           actions: [
@@ -92,6 +91,7 @@ export default class SignIn extends React.Component{
       }
 
     }catch(errorMessage){
+      console.log(errorMessage)
       this.setState({spinnerVisible:false})
       this.setState((prevState, props) => ({errorMessage})) 
     }

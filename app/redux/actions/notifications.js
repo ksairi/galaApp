@@ -1,46 +1,24 @@
-import { AsyncStorage } from 'react-native'
 import { ActionsTypes, Keys } from '/config/settings'
 
-export function saveNotifications (newNotifications){
+export function setNotifications (newNotifications){
 	return async (dispatch, getState) => {
 		try{
-		         
-		    var notificationsArray = await AsyncStorage.getItem(Keys.notifications)
-		    if(!notificationsArray){
-		      notificationsArray = []
-		    }
-		    else{
-		        notificationsArray = JSON.parse(notificationsArray)
-		    	}
+		    var notifications = getState().notifications
 		    var newNotificationsToApply = []
-	        newNotifications.forEach(newNotification =>{
-	        	const found = notificationsArray.find(notification=> notification.key == newNotification.key)
-	        	if(!found){
-	        		if(newNotification.unRead == null){
-	            		newNotification.unRead = true    
-	          		}
-	        		newNotificationsToApply = [newNotification, ...newNotificationsToApply]
-	        	}
-	        })
-	        
-	        if(newNotificationsToApply.length > 0){
-	          
-	          notificationsArray = [...newNotificationsToApply, ...notificationsArray]
-	          await AsyncStorage.setItem(Keys.notifications, JSON.stringify(notificationsArray))
-	          dispatch(setNewNotifications(notificationsArray))
-	        
-		     }
-		  
+	      newNotifications.forEach(newNotification =>{
+	      	const found = notifications.find(notification=> notification.key == newNotification.key)
+	      	if(!found){
+	      		if(newNotification.unRead == null){
+	          		newNotification.unRead = true    
+	        		}
+	      		newNotificationsToApply = [newNotification, ...newNotificationsToApply]
+	      	}
+	      })
+	      notifications = [...newNotificationsToApply, ...notifications]
+	      dispatch({type: ActionsTypes.SET_NOTIFICATIONS, notifications})
 		}catch(error){
 		  //throw Messages.SYSTEM_ERROR
 		  //TODO show error on potential sliding frame from top
 		}
 	}
  }
-
-function setNewNotifications(notifications){
-  return {
-    type: ActionsTypes.SET_NEW_NOTIFICATIONS,
-    notifications,
-  }
-}

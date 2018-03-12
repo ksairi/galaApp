@@ -1,5 +1,5 @@
 import React from 'react'
-import { FlatList, AsyncStorage, Text } from 'react-native'
+import { FlatList, AsyncStorage } from 'react-native'
 import { connect } from 'react-redux'
 import { Keys, Messages } from '/config/settings'
 import ContainerStyles from '/components/presentationals/View/styles'
@@ -10,7 +10,11 @@ import { NotificationListItem } from '/components/presentationals/ListItem'
 import { ModalNotificationDetail } from '/components/presentationals/View'
 import { sendHasReadNotification } from '/helpers/ApiHelper'
 
-class Notifications extends React.Component {
+@connect(
+  state =>
+  ({notifications:state.notifications})
+)
+export default class Notifications extends React.Component {
   static LocalMessages = {
     NO_NOTIFICATIONS:"Sin Notificaciones"
   }
@@ -30,7 +34,7 @@ class Notifications extends React.Component {
   }
   
   componentDidMount() {
-    AsyncStorage.getItem(Keys.notifications)
+    /*AsyncStorage.getItem(Keys.notifications)
     .then((notificationsDataJson)=>{
       try{
         var notificationsData = JSON.parse(notificationsDataJson)
@@ -46,7 +50,7 @@ class Notifications extends React.Component {
     })
     .catch((error)=>{
       this.setState({hasErrors:true})
-    })
+    })*/
   }
 
   render() {
@@ -57,12 +61,12 @@ class Notifications extends React.Component {
         </GenericText>
       )
     }
-    if(!this.state.notificationsData){
+    /*if(!this.state.notificationsData){
       return(
         <LoadingSpinner visible={true}/>
       )
-    }
-    if(this.state.notificationsData.length == 0){
+    }*/
+    if(this.props.notifications.length == 0){
       return(
         <GenericText error={true}>
           {Notifications.LocalMessages.NO_NOTIFICATIONS}
@@ -81,7 +85,7 @@ class Notifications extends React.Component {
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
-              data={this.props.newNotifications.length > 0 ? this.props.newNotifications : this.state.notificationsData}
+              data={this.props.notifications}
               renderItem={({item, index}) =>
                 <NotificationListItem title={item.title} unRead={item.unRead} onPress={async () =>{
                     if(item.unRead){
@@ -111,11 +115,3 @@ class Notifications extends React.Component {
     )
   }
 }
-
-function mapStateToProps(state) {
-  return {
-    newNotifications: state.newNotifications
-  }
-}
-
-export default connect(mapStateToProps)(Notifications)
