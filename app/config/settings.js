@@ -56,7 +56,6 @@ exports.Screens = {
   Timetable:"Timetable",
   Routines:"Routines",
   Notifications:"Notifications",
-  InitStack:"InitStack",
   LoginStack:"loginStack",
   HomeStack:"homeStack",
   NewMemberPromotions:"NewMemberPromotions"

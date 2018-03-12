@@ -10,10 +10,14 @@ import { sendHasReceivedNotification } from '/helpers/ApiHelper'
 import { Screens, Keys } from '/config/settings'
 import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
+import ValidationHelper from '/helpers/ValidationHelper'
+
 
 class AppContainer extends React.Component{
 
   componentDidMount() {
+        console.log(this.props)
+
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
 
     BackHandler.addEventListener('backPress', () => {
@@ -67,13 +71,14 @@ class AppContainer extends React.Component{
           sendHasReceivedNotification(userData.userId, notification.data.key)
         }
         var resetAction
-        const params = {[Keys.newMember]:userData[Keys.newMember]}
+        this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(userData[Keys.newMember]))
+        
         
         if(notification.data[Keys.timetable]){
           resetAction = NavigationActions.reset({
             index: 0,
             actions: [
-              NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Timetable)})
+              NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Timetable})})
             ],
             key: null
           })
@@ -83,7 +88,7 @@ class AppContainer extends React.Component{
                 resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [
-                    NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Routines)})
+                    NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Routines})})
                   ],
                   key: null
                 })    
@@ -92,14 +97,16 @@ class AppContainer extends React.Component{
                     resetAction = NavigationActions.reset({
                       index: 0,
                       actions: [
-                        NavigationActions.navigate({routeName:Screens.HomeDrawerStack, params:params, action:NavigationActions.navigate(Screens.Notifications)})
+                        NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Notifications})})
                       ],
                       key: null
                     })
                   }
             }
-        this.navigator.dispatch(resetAction)
+
+        this.props.dispatch(resetAction)
         //https://github.com/react-navigation/react-navigation/issues/1620
+        //https://github.com/react-navigation/react-navigation/issues/1715
       }
     }
   }

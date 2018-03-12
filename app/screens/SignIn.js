@@ -15,6 +15,8 @@ import { login } from '/helpers/ApiHelper'
 import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
 import { setIsNewMember } from '/redux/actions/member'
+import ValidationHelper from '/helpers/ValidationHelper'
+
 
 class SignIn extends React.Component{
   
@@ -28,7 +30,6 @@ class SignIn extends React.Component{
   }
   
   render(){
-    console.log(this.props)
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
@@ -75,8 +76,8 @@ class SignIn extends React.Component{
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
         await saveInitialData(httpResponse.data, this.userId)
-        const isNewMember = httpResponse.data[Keys.userData][Keys.newMember]
-        this.props.dispatch(setIsNewMember((isNewMember || isNewMember != null)? true : false))            
+        const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
+        this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
         const resetAction = NavigationActions.reset({
           index: 0,
           actions: [

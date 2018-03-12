@@ -1,6 +1,6 @@
 import { Messages, SignUpConstraints } from '/config/settings'
 
-passwordsWithErrors = (password, confirmPassword) => {
+exports.passwordsWithErrors = (password, confirmPassword) => {
   if(password.length < SignUpConstraints.PASSWORD_MIN_LENGTH){
       return Messages.INVALID_PASSWORD_LENGTH
   }
@@ -10,14 +10,13 @@ passwordsWithErrors = (password, confirmPassword) => {
   return null
 }
 
-userIdWithErrors = (userId) => {
+exports.userIdWithErrors = (userId) => {
   if(userId.length < SignUpConstraints.USER_ID_MIN_LENGTH){
     return Messages.INVALID_USER_ID_LENGTH
   }
   return null
 }
+exports.isObjectEmpty = (obj) => {
 
-module.exports = {
-  passwordsWithErrors,
-  userIdWithErrors
+  return (obj == null || (Object.getOwnPropertyNames(obj).length == 0))
 }
