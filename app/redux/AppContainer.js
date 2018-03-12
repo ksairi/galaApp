@@ -13,7 +13,12 @@ import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
 
 
-class AppContainer extends React.Component{
+@connect(
+  state => ({nav:state.nav}),
+  (dispatch) => Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
+)
+
+export default class AppContainer extends React.Component{
 
   componentDidMount() {
         console.log(this.props)
@@ -123,15 +128,3 @@ class AppContainer extends React.Component{
     )
   }
 }
-
-function mapStateToProps(state, props) {
-  return {
-    nav: state.nav
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(AppContainer)

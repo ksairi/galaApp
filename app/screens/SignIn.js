@@ -17,8 +17,8 @@ import { getDeviceToken } from '/helpers/NotificationsHelper'
 import { setIsNewMember } from '/redux/actions/member'
 import ValidationHelper from '/helpers/ValidationHelper'
 
-
-class SignIn extends React.Component{
+@connect()
+export default class SignIn extends React.Component{
   
   static userId
   static password
@@ -117,5 +117,3 @@ class SignIn extends React.Component{
     this.props.navigation.navigate(Screens.ResetPassword)
   }
 }
-
-export default connect()(SignIn)

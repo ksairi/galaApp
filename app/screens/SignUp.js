@@ -17,7 +17,8 @@ import { saveInitialData } from '/helpers/AsyncStorageHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
 import { setIsNewMember } from '/redux/actions/member'
 
-class SignUp extends React.Component{
+@connect()
+export default class SignUp extends React.Component{
   static userFullName
   static userId
   static password
@@ -163,5 +164,3 @@ class SignUp extends React.Component{
     )
   }
 }
-
-export default connect()(SignUp)
