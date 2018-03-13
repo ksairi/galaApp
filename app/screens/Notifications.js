@@ -1,18 +1,20 @@
 import React from 'react'
-import { FlatList, AsyncStorage } from 'react-native'
+import { FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import { Keys, Messages } from '/config/settings'
+import { Messages } from '/config/settings'
 import ContainerStyles from '/components/presentationals/View/styles'
 import { GenericText } from '/components/presentationals/Text/'
 import { GenericContainer } from '/components/presentationals/View'
-import { LoadingSpinner } from '/components/presentationals/Spinner'
 import { NotificationListItem } from '/components/presentationals/ListItem'
 import { ModalNotificationDetail } from '/components/presentationals/View'
 import { sendHasReadNotification } from '/helpers/ApiHelper'
 
 @connect(
   state =>
-  ({notifications:state.notifications})
+  ({
+    notifications:state.notifications,
+    userData: state.userData
+  })
 )
 export default class Notifications extends React.Component {
   static LocalMessages = {
@@ -21,7 +23,6 @@ export default class Notifications extends React.Component {
   
   state = {
     hasErrors:false,
-    notificationsData:null,
     selectedNotification:null
   }
 
@@ -33,26 +34,6 @@ export default class Notifications extends React.Component {
     this.setState({selectedNotification:null})
   }
   
-  componentDidMount() {
-    /*AsyncStorage.getItem(Keys.notifications)
-    .then((notificationsDataJson)=>{
-      try{
-        var notificationsData = JSON.parse(notificationsDataJson)
-        if (notificationsData !== null && notificationsData.length > 0){
-          this.setState({notificationsData})
-        }
-        else {
-          this.setState({notificationsData:[]})
-        }
-      }catch(error){
-        this.setState({hasErrors:true})  
-      }
-    })
-    .catch((error)=>{
-      this.setState({hasErrors:true})
-    })*/
-  }
-
   render() {
     if(this.state.hasErrors){
       return(
@@ -61,11 +42,6 @@ export default class Notifications extends React.Component {
         </GenericText>
       )
     }
-    /*if(!this.state.notificationsData){
-      return(
-        <LoadingSpinner visible={true}/>
-      )
-    }*/
     if(this.props.notifications.length == 0){
       return(
         <GenericText error={true}>
@@ -91,15 +67,10 @@ export default class Notifications extends React.Component {
                     if(item.unRead){
                       const readItem = item
                       readItem.unRead = false
-                      const notificationsData = this.state.notificationsData
-                      notificationsData[index] = readItem
-                      this.setState({notificationsData}, async ()=>{
-                        await AsyncStorage.setItem(Keys.notifications, JSON.stringify(this.state.notificationsData))
-                        var userData = await AsyncStorage.getItem(Keys.userData)
-                        userData = JSON.parse(userData)
-                        sendHasReadNotification(userData.userId, readItem.key)
-                        this.openModal(item)
-                      })
+                      const notificationsData = this.props.notifications
+                      this.props.notifications[index] = readItem
+                      sendHasReadNotification(this.props.userData.userId, readItem.key)
+                      this.openModal(item)
                     }
                     else{
                       this.openModal(item)

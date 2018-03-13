@@ -1,12 +1,7 @@
 import { Permissions, Notifications } from 'expo'
-import { AsyncStorage } from 'react-native'
-import { Keys, Messages } from '/config/settings'
+import { ActionsCreators } from '/redux/actions'
 
-exports.getDeviceToken = async (savedToken, dispatch) => {
-
-  if(savedToken !== null){
-    return savedToken
-  }
+exports.getDeviceToken = async (dispatch) => {
 
   const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS)
   var finalStatus = existingStatus
@@ -27,11 +22,6 @@ exports.getDeviceToken = async (savedToken, dispatch) => {
 
   // Get the token that uniquely identifies this device
   const token = await Notifications.getExpoPushTokenAsync()
-  try{
-    dispatch(ActionsCreators.setNotificationsToken(token))
-    return token
-  }catch(error){
-    console.log(error)
-    throw Messages.SYSTEM_ERROR
-  }
+  dispatch(ActionsCreators.setNotificationsToken(token))
+  return token
 }

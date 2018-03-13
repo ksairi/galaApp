@@ -79,7 +79,7 @@ export default class ResetPassword extends React.Component {
       return
     }
     
-    message = passwordsWithErrors(this.password, this.confirmPassword)
+    message = ValidationHelper.passwordsWithErrors(this.password, this.confirmPassword)
     if(message){
       this.setState({message, hasErrors:true})
       return

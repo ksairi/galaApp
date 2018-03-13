@@ -1,6 +1,5 @@
 import React from 'react'
 import { Keyboard } from 'react-native'
-import { AsyncStorage } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
@@ -10,13 +9,15 @@ import { GenericTextInput } from '/components/presentationals/TextInput/'
 import { SubmitButton } from '/components/presentationals/Button'
 import { LoadingSpinner } from '/components/presentationals/Spinner'
 import { GenericText, GenericLink } from '/components/presentationals/Text/'
-import { Messages, Labels, Screens, ServerProtocol, Keys } from '/config/settings'
+import { Messages, Labels, Screens, ServerProtocol } from '/config/settings'
 import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 
-@connect()
+@connect(
+state => ({notificationsToken:state.notificationsToken})
+)
 export default class SignIn extends React.Component{
   
   static userId
@@ -29,6 +30,7 @@ export default class SignIn extends React.Component{
   }
   
   render(){
+    console.log(this.props.notificationsToken)
     return (
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
@@ -70,13 +72,11 @@ export default class SignIn extends React.Component{
     }
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
-      const deviceToken = await getDeviceToken(this.props.notificationToken, this.props.dispatch)
+      const deviceToken = this.props.notificationsToken ? this.props.notificationsToken : await getDeviceToken(this.props.dispatch)
       const httpResponse = await login(this.userId, this.password, deviceToken)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
         setInitialData(httpResponse.data, this.userId, this.props.dispatch)
-        //const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
-        //this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
         const resetAction = NavigationActions.reset({
           index: 0,
           actions: [
@@ -91,7 +91,6 @@ export default class SignIn extends React.Component{
       }
 
     }catch(errorMessage){
-      console.log(errorMessage)
       this.setState({spinnerVisible:false})
       this.setState((prevState, props) => ({errorMessage})) 
     }

@@ -21,7 +21,7 @@ function DrawerContentComponent(props){
 
 const mapStateToProps = (state) => {
  return {
-    isNewMember: state.isNewMember
+    isNewMember: state.userData.newMember != null
   }
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage, BackHandler } from 'react-native'
+import { BackHandler } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
 import { connect } from 'react-redux'
@@ -7,11 +7,10 @@ import { bindActionCreators } from 'redux'
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
 import { addNavigationHelpers } from 'react-navigation'
 import { sendHasReceivedNotification } from '/helpers/ApiHelper'
-import { Screens, Keys } from '/config/settings'
+import { Screens, ServerProtocol } from '/config/settings'
 import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
-
 
 @connect(
   state => 
@@ -44,44 +43,36 @@ export default class AppContainer extends React.Component{
     }
 
   handleNotification = async (notification) => {
-    var userData
-    try{
-      //userData = await AsyncStorage.getItem(Keys.userData)
-      //userData = JSON.parse(userData)
-      userData = this.props.userData
-    }catch(error){
-
-    }
     
     if(notification.origin === "received"){
       
-      if(userData){
-        sendHasReceivedNotification(userData.userId, notification.data.key)
+      if(this.props.userData){
+        sendHasReceivedNotification(this.props.userData.userId, notification.data.key)
       }
-      if(notification.data[Keys.timetable]){
-        this.props.setTimetable(notification.data[Keys.timetable])
+      if(notification.data[ServerProtocol.timetable]){
+        this.props.setTimetable(notification.data[ServerProtocol.timetable])
       }
       else{
-          if(notification.data[Keys.routines]){
-            this.props.setRoutines(notification.data[Keys.routines])
+          if(notification.data[ServerProtocol.routines]){
+            this.props.setRoutines(notification.data[ServerProtocol.routines])
           }
           else{
-              if(notification.data[Keys.notifications]){
-                this.props.setNotifications(notification.data[Keys.notifications])
+              if(notification.data[ServerProtocol.notifications]){
+                this.props.setNotifications(notification.data[ServerProtocol.notifications])
               }
           }
         }
     }
 
     if(notification.origin === "selected"){
-      if(userData){
+      if(this.props.userData){
         if(notification.notificationId && notification.message && notification.experienceId){
           // when the app is opened by selecting the notification and origin=="received" is not received
-          sendHasReceivedNotification(userData.userId, notification.data.key)
+          sendHasReceivedNotification(this.props.userData.userId, notification.data.key)
         }
-        this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(userData[Keys.newMember]))
+        this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(this.props.userData[ServerProtocol.newMember]))
         var resetAction
-        if(notification.data[Keys.timetable]){
+        if(notification.data[ServerProtocol.timetable]){
           resetAction = NavigationActions.reset({
             index: 0,
             actions: [
@@ -91,7 +82,7 @@ export default class AppContainer extends React.Component{
           })
         }
         else{
-              if(notification.data[Keys.routines]){
+              if(notification.data[ServerProtocol.routines]){
                 resetAction = NavigationActions.reset({
                   index: 0,
                   actions: [

@@ -1,15 +1,18 @@
 import React from 'react'
-import { Keyboard, AsyncStorage } from 'react-native'
+import { Keyboard } from 'react-native'
+import { connect } from 'react-redux'
 import { GenericContainer } from '/components/presentationals/View'
 import ContainerStyles from '/components/presentationals/View/styles'
 import { GenericText } from '/components/presentationals/Text'
 import { GenericTextInput } from '/components/presentationals/TextInput'
 import { SubmitButton } from '/components/presentationals/Button'
 import { LoadingSpinner } from '/components/presentationals/Spinner'
-import { Messages, Labels, Screens, ServerProtocol, Keys } from '/config/settings'
+import { Messages, Labels, Screens, ServerProtocol } from '/config/settings'
 import { sendComments } from '/helpers/ApiHelper'
 
-
+@connect(
+  state => ({userId: state.userData.userId})
+)
 export default class Contact extends React.Component {
   static comments
 
@@ -50,10 +53,8 @@ export default class Contact extends React.Component {
         return
     }
     this.setState({message:'', spinnerVisible:true})
-    AsyncStorage.getItem(Keys.userId)
-    .then((userId)=>{
-      if (userId !== null){
-        sendComments(userId, this.comments)
+      if (this.props.userId !== null){
+        sendComments(this.props.userId, this.comments)
         .then(response =>{
           this.setState({spinnerVisible:false})
           if(response[ServerProtocol.statusField] == ServerProtocol.OK) {
@@ -71,9 +72,5 @@ export default class Contact extends React.Component {
       else {
           this.setState({message:Messages.SYSTEM_READ_ERROR, error:true, spinnerVisible:false})
       }
-    })
-    .catch((error)=>{
-      this.setState({error:true, message:Messages.SYSTEM_READ_ERROR})
-    })
   }
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { AsyncStorage, Text, View } from 'react-native'
+import { Text, View } from 'react-native'
 import { Table, Row, Rows} from 'react-native-table-component'
 import styles from './styles'
 import { GenericContainer } from '../View'

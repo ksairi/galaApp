@@ -69,18 +69,10 @@ exports.SignUpConstraints = {
 exports.ServerProtocol = {
   statusField:"status",
   OK:"ok",
-  messageField:"message"
-}
-
-exports.Keys = {
+  messageField:"message",
   userData:"userData",
   timetable:"timetable",
-  replaceCurrentScreen:"replaceCurrentScreen",
-  emptyLoginStack:"emptyLoginStack",
-  removeHomeStack:"removeHomeStack",
   newMember:"newMember",
-  firstFreeAttendanceCode:"firstFreeAttendanceCode",
-  notificationsToken:"notificationsToken",
   notifications:"notifications",
   routines:"routines"
 }

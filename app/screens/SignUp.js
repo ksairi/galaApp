@@ -1,6 +1,5 @@
 import React from 'react'
 import { Keyboard } from 'react-native'
-import { AsyncStorage } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -10,13 +9,15 @@ import { GenericTextInput } from '/components/presentationals//TextInput/'
 import { SubmitButton } from '/components/presentationals//Button'
 import { GenericText, GenericLink } from '/components/presentationals//Text/'
 import { LoadingSpinner } from '/components/presentationals//Spinner'
-import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol, Keys } from '/config/settings'
+import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol } from '/config/settings'
 import { register } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
-import { saveInitialData } from '/helpers/AsyncStorageHelper'
+import { setInitialData } from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
 
-@connect()
+@connect(
+state => ({notificationsToken:state.notificationsToken})
+)
 export default class SignUp extends React.Component{
   static userFullName
   static userId
@@ -53,13 +54,11 @@ export default class SignUp extends React.Component{
     
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
-      const deviceToken = await getDeviceToken()
+      const deviceToken = this.props.notificationsToken ? this.props.notificationsToken : await getDeviceToken(this.props.dispatch)
       var httpResponse = await register(this.userFullName, this.userId, this.password, deviceToken)
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-          await saveInitialData(httpResponse.data, this.userId)
-          //const newMemberObj = httpResponse.data[Keys.userData][Keys.newMember]
-          //this.props.dispatch(setIsNewMember(!ValidationHelper.isObjectEmpty(newMemberObj)))
+          setInitialData(httpResponse.data, this.userId, this.props.dispatch)
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [

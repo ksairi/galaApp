@@ -7,8 +7,8 @@ export const userData = createReducer({}, {
   },
 })
 
-export const notificationToken = createReducer({}, {
-  [ActionsTypes.SET_NOTIFICATION_TOKEN](state, action) {
-    return action.notificationToken
+export const notificationsToken = createReducer(null, {
+  [ActionsTypes.SET_NOTIFICATIONS_TOKEN](state, action) {
+    return action.notificationsToken
   },
 })

@@ -1,11 +1,16 @@
 import React from 'react'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/integration/react'
 import AppContainer from './app/redux/AppContainer'
-import store from './app/redux/store'
+import configureStore from './app/redux/configureStore'
+import { LoadingSpinner } from './app/components/presentationals/Spinner'
 
+const { store, persistor } = configureStore()
 
 export default App = () => (
   <Provider store={store}>
-    <AppContainer />
+    <PersistGate loading={<LoadingSpinner visible={true}/>} persistor={persistor}>
+      <AppContainer />
+    </PersistGate>
   </Provider>
 )

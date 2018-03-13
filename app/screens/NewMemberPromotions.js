@@ -1,27 +1,16 @@
 import React from 'react'
-import { Text, View, AsyncStorage } from 'react-native'
-import { Keys, Messages } from '/config/settings'
+import { View } from 'react-native'
+import { connect } from 'react-redux'
+import { Messages } from '/config/settings'
 import { GenericText } from '/components/presentationals/Text'
 
+@connect(
+state => ({newMember:state.userData.newMember})
+)
 export default class NewMemberPromotions extends React.Component {
   
   state = {
-    freeEntryCode:null,
     hasErrors: false 
-  }
-
-  componentDidMount() {
-    AsyncStorage.getItem(Keys.userData)
-    .then((userDataJson)=>{
-      const userData = JSON.parse(userDataJson)
-      const newMemberData = userData[Keys.newMember]
-      if (newMemberData){
-        this.setState({freeEntryCode:newMemberData.freeEntryCode})
-      }
-    })
-    .catch((error)=>{
-      this.setState({hasErrors:true})
-    })
   }
 
   render() {
@@ -35,9 +24,9 @@ export default class NewMemberPromotions extends React.Component {
     else{
       return(
         <View>
-          <Text>
-            {this.state.freeEntryCode}
-          </Text>
+          <GenericText>
+            {this.props.newMember && this.props.newMember.freeEntryCode}
+          </GenericText>
         </View>
       )
     }

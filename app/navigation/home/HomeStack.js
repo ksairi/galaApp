@@ -1,11 +1,12 @@
 import React from 'react'
-import { AsyncStorage, Alert } from 'react-native'
+import { Alert } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { StackNavigator, NavigationActions } from 'react-navigation'
-import { Screens, Keys } from '/config/settings'
+import { Screens } from '/config/settings'
 import DrawerStack from './DrawerStack'
 import styles from '/config/styles'
+import { clearStore } from '/helpers/StoreHelper'
 
 export default StackNavigator({
   DrawerStack: { screen: DrawerStack }
@@ -37,8 +38,7 @@ export default StackNavigator({
                 [
                   {text: 'No', style: 'cancel'},
                   {text: 'Sí', onPress: () => {
-                    AsyncStorage.multiRemove([Keys.userId, Keys.userData, Keys.timetable, Keys.newMember, Keys.notifications, Keys.routines])
-                    .then(()=>{
+                      clearStore(navigation.dispatch)
                       const resetAction = NavigationActions.reset({
                       index: 0,
                       actions: [
@@ -47,7 +47,6 @@ export default StackNavigator({
                       key:null
                     })
                     navigation.dispatch(resetAction)
-                    })
                   }},
                 ],
                 { cancelable: true }
@@ -58,6 +57,3 @@ export default StackNavigator({
       }
     }
 )
-
-
-

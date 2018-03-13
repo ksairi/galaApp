@@ -1,38 +1,24 @@
 import React from 'react'
-import { ScrollView, AsyncStorage } from 'react-native'
+import { ScrollView } from 'react-native'
 import { connect } from 'react-redux'
-import { Keys, Messages } from '/config/settings'
+import { Messages } from '/config/settings'
 import ClassesTimeTable from '/components/presentationals/Table/ClassesTimeTable'
 import { GenericText } from '/components/presentationals/Text/'
 import { GenericContainer } from '/components/presentationals/View'
 import ContainerStyles from '/components/presentationals/View/styles'
 import { LoadingSpinner } from '/components/presentationals/Spinner'
 
-class TimeTbale extends React.Component {
+
+@connect(
+  state=>({timetable:state.timetable})
+) 
+export default class TimeTbale extends React.Component {
 
   state = {
     timetableData:null,
     hasErrors:false
   }
   
-  componentDidMount() {
-    AsyncStorage.getItem(Keys.timetable)
-    .then((timetableData)=>{
-      try{
-        var timetableDataJson = JSON.parse(timetableData)
-        if (timetableDataJson !== null){
-          this.setState({timetableData:timetableDataJson})
-        }
-      }catch(error){
-        this.setState({hasErrors:true})  
-      }
-    })
-    .catch((error)=>{
-      this.setState({hasErrors:true})
-    })
-  }
-  
-
   render(){
     if(this.state.hasErrors){
       return(
@@ -41,13 +27,8 @@ class TimeTbale extends React.Component {
         </GenericText>
       )
     }
-    if(!this.state.timetableData){
-      return(
-        <LoadingSpinner visible={true}/>
-      )
-    }
     const tableHead = ['Hora', 'Lun', 'Mar', 'Miér', 'Jue', 'Vier', 'Sáb']
-        , timeTableArray = this.props.newTimetableData.length > 0 ? this.props.newTimetableData : this.state.timetableData
+        , timeTableArray = this.props.timetable
     var toReturn = []
       , serverReponseError = false
 
@@ -95,11 +76,3 @@ class TimeTbale extends React.Component {
     return (toReturn)
   } 
 }
-
-function mapStateToProps(state) {
-  return {
-    newTimetableData: state.newTimetable
-  }
-}
-
-export default connect(mapStateToProps)(TimeTbale) 

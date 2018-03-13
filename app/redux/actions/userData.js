@@ -7,8 +7,8 @@ export function setUserData (userData){
   }
 }
 
-export function setNotificationToken (notificationToken){
+export function setNotificationsToken (notificationsToken){
   return (dispatch, getState) => {
-    dispatch({type:ActionsTypes.SET_NOTIFICATION_TOKEN, notificationToken})
+    dispatch({type:ActionsTypes.SET_NOTIFICATIONS_TOKEN, notificationsToken})
   }
 }
