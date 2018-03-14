@@ -7,6 +7,7 @@ export function setUserData (userData){
   }
 }
 
+//http://www.curbitssoftware.com/2017/08/25/react-redux-immutable-update-cheat-sheet/
 export function setNewMemberData (newMemberData){
   return (dispatch, getState) => {
     var userData = {...getState().userData, [ServerProtocol.newMember]: { ...getState().userData[ServerProtocol.newMember], freeEntryDaysLeft:newMemberData[ServerProtocol.freeEntryDaysLeft] }}
