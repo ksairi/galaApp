@@ -1,64 +1,64 @@
-const SERVER_HOSTNAME = "http://192.168.42.1:3000/"
+const SERVER_HOSTNAME = 'http://192.168.42.1:3000/'
 
 exports.Urls = {
-  LOGIN:SERVER_HOSTNAME + "login",
-  REGISTER:SERVER_HOSTNAME + "register",
-  RESET_PASSWORD:SERVER_HOSTNAME + "resetPassword",
-  SEND_COMMENTS:SERVER_HOSTNAME + "sendComments",
-  SEND_CLIENT_TOKEN:SERVER_HOSTNAME + "sendClientToken",
-  HAS_READ_NOTIFICATION:SERVER_HOSTNAME + "hasReadNotification",
-  HAS_RECEIVED_NOTIFICATION:SERVER_HOSTNAME + "hasReceivedNotification",
+  LOGIN:SERVER_HOSTNAME + 'login',
+  REGISTER:SERVER_HOSTNAME + 'register',
+  RESET_PASSWORD:SERVER_HOSTNAME + 'resetPassword',
+  SEND_COMMENTS:SERVER_HOSTNAME + 'sendComments',
+  SEND_CLIENT_TOKEN:SERVER_HOSTNAME + 'sendClientToken',
+  HAS_READ_NOTIFICATION:SERVER_HOSTNAME + 'hasReadNotification',
+  HAS_RECEIVED_NOTIFICATION:SERVER_HOSTNAME + 'hasReceivedNotification',
 } 
 
 exports.Messages = {
-	INVALID_USER_ID_PASSWORD:"Ingresá el DNI y tu contraseña para continuar",
-  INVALID_CONFIRM_PASSWORD:"Las contraseñas no coinciden",
-  SERVER_ERROR:"Error de conexión a nuestros servidores. Por favor reintentá en unos minutos",
-  CHECK_INTERNET_CONNECTION:"Verificá tu conexión de internet",
-  LOADING:"Cargando...",
-  NO_ACCOUNT:"¿No te registraste?",
-  FORGOT_PASSWORD:"¿Olvidaste la contraseña?",
-  USER_ALREADY:"¿Ya tenes una cuenta?",
-  INVALID_PASSWORD_LENGTH:"La contraseña debe tener al menos 5 caracteres",
-  INVALID_USER_ID_LENGTH:"DNI inválido",
-  INVALID_MAIL:"E-mail inválido",
-  SUCCESSFULY_RESET_PASSWORD: "Contraseña actualizada. Por favor logueate nuevamente",
-  RESET_PASSWORD_EXPLANATION: "Por favor ingresá el DNI y la nueva contraseña",
-  SYSTEM_ERROR: "Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente",
-  SYSTEM_READ_ERROR:"Error al leer información del dispositivo. Vuelva a intentarlo nuevamente",
-  INVALID_COMMENTS:"Por favor ingresá un comentario antes de enviar",
-  SEND_COMMENTS_OK:"Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias",
-  INCOMPLETE_INPUT_DATA:"Completá todos los campos antes de continuar"
+	INVALID_USER_ID_PASSWORD:'Ingresá el DNI y tu contraseña para continuar',
+  INVALID_CONFIRM_PASSWORD:'Las contraseñas no coinciden',
+  SERVER_ERROR:'Error de conexión a nuestros servidores. Por favor reintentá en unos minutos',
+  CHECK_INTERNET_CONNECTION:'Verificá tu conexión de internet',
+  LOADING:'Cargando...',
+  NO_ACCOUNT:'¿No te registraste?',
+  FORGOT_PASSWORD:'¿Olvidaste la contraseña?',
+  USER_ALREADY:'¿Ya tenes una cuenta?',
+  INVALID_PASSWORD_LENGTH:'La contraseña debe tener al menos 5 caracteres',
+  INVALID_USER_ID_LENGTH:'DNI inválido',
+  INVALID_MAIL:'E-mail inválido',
+  SUCCESSFULY_RESET_PASSWORD: 'Contraseña actualizada. Por favor logueate nuevamente',
+  RESET_PASSWORD_EXPLANATION: 'Por favor ingresá el DNI y la nueva contraseña',
+  SYSTEM_ERROR: 'Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente',
+  SYSTEM_READ_ERROR:'Error al leer información del dispositivo. Vuelva a intentarlo nuevamente',
+  INVALID_COMMENTS:'Por favor ingresá un comentario antes de enviar',
+  SEND_COMMENTS_OK:'Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias',
+  INCOMPLETE_INPUT_DATA:'Completá todos los campos antes de continuar'
 }
 
 exports.Labels = {
-  ENTER_USER_ID: "DNI",
-  ENTER_PASSWORD: "Contraseña",
-  SIGN_IN: "Iniciá Sesión",
-  SIGN_UP: "Registrate",
-  ENTER_FULL_NAME: "Nombre Completo",
-  CONFIRM_PASSWORD: "Confirmá contraseña",
-  SUBMIT:"Enviar",
-  ENTER_MAIL: "E-mail",
-  GO_BACK_TO_SIGN_IN:"Iniciá sesión",
-  HOME:"Home",
-  ENTER_COMMENTS:"Queremos leer lo que tenés para decir"
+  ENTER_USER_ID: 'DNI',
+  ENTER_PASSWORD: 'Contraseña',
+  SIGN_IN: 'Iniciá Sesión',
+  SIGN_UP: 'Registrate',
+  ENTER_FULL_NAME: 'Nombre Completo',
+  CONFIRM_PASSWORD: 'Confirmá contraseña',
+  SUBMIT:'Enviar',
+  ENTER_MAIL: 'E-mail',
+  GO_BACK_TO_SIGN_IN:'Iniciá sesión',
+  HOME:'Home',
+  ENTER_COMMENTS:'Queremos leer lo que tenés para decir'
 
 }
 
 exports.Screens = {
-  Init:"Init",
-  SignIn:"SignIn",
-  ResetPassword:"ResetPassword",  
-  SignUp:"SignUp",
-  Home: "Home",
-  Contact:"Contact",
-  Timetable:"Timetable",
-  Routines:"Routines",
-  Notifications:"Notifications",
-  LoginStack:"loginStack",
-  HomeStack:"homeStack",
-  NewMemberPromotions:"NewMemberPromotions"
+  Init:'Init',
+  SignIn:'SignIn',
+  ResetPassword:'ResetPassword',  
+  SignUp:'SignUp',
+  Home: 'Home',
+  Contact:'Contact',
+  Timetable:'Timetable',
+  Routines:'Routines',
+  Notifications:'Notifications',
+  LoginStack:'loginStack',
+  HomeStack:'homeStack',
+  NewMemberPromotions:'NewMemberPromotions'
 }
 
 exports.SignUpConstraints = {
@@ -67,20 +67,23 @@ exports.SignUpConstraints = {
 }
 
 exports.ServerProtocol = {
-  statusField:"status",
-  OK:"ok",
-  messageField:"message",
-  userData:"userData",
-  timetable:"timetable",
-  newMember:"newMember",
-  notifications:"notifications",
-  routines:"routines"
+  statusField:'status',
+  OK:'ok',
+  messageField:'message',
+  userData:'userData',
+  timetable:'timetable',
+  newMember:'newMember',
+  notifications:'notifications',
+  routines:'routines',
+  freeEntryCode:'freeEntryCode',
+  freeEntryDaysLeft:'freeEntryDaysLeft'
 }
 
 exports.ActionsTypes = {
 
   // Notifications
   SET_NOTIFICATIONS :'SET_NOTIFICATIONS',
+  SET_NOTIFICATIONS_TOKEN: 'SET_NOTIFICATIONS_TOKEN',
   SET_READ_NOTIFICATION:'SET_READ_NOTIFICATION',
   // Routines
   SET_ROUTINES:'SET_ROUTINES',
@@ -88,5 +91,5 @@ exports.ActionsTypes = {
   SET_TIMETABLE: 'SET_TIMETABLE',
   // User Data
   SET_USER_DATA: 'SET_USER_DATA',
-  SET_NOTIFICATIONS_TOKEN: 'SET_NOTIFICATIONS_TOKEN'
+  SET_NEW_MEMBER_DATA: 'SET_NEW_MEMBER_DATA'
 }

@@ -1,4 +1,4 @@
-import { ActionsTypes } from '/config/settings'
+import { ActionsTypes, ServerProtocol } from '/config/settings'
 
 
 export function setUserData (userData){
@@ -7,8 +7,9 @@ export function setUserData (userData){
   }
 }
 
-export function setNotificationsToken (notificationsToken){
+export function setNewMemberData (newMemberData){
   return (dispatch, getState) => {
-    dispatch({type:ActionsTypes.SET_NOTIFICATIONS_TOKEN, notificationsToken})
+    var userData = {...getState().userData, [ServerProtocol.newMember]: { ...getState().userData[ServerProtocol.newMember], freeEntryDaysLeft:newMemberData[ServerProtocol.freeEntryDaysLeft] }}
+    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, userData})
   }
 }

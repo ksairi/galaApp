@@ -11,3 +11,9 @@ export const notifications = createReducer([], {
     return notifications
   }
 })
+
+export const notificationsToken = createReducer(null, {
+  [ActionsTypes.SET_NOTIFICATIONS_TOKEN](state, action) {
+    return action.notificationsToken
+  },
+})

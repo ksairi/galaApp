@@ -12,7 +12,7 @@ import { LoadingSpinner } from '/components/presentationals//Spinner'
 import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol } from '/config/settings'
 import { register } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
-import { setInitialData } from '/helpers/StoreHelper'
+import StoreHelper from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
 
 @connect(
@@ -58,7 +58,8 @@ export default class SignUp extends React.Component{
       var httpResponse = await register(this.userFullName, this.userId, this.password, deviceToken)
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-          setInitialData(httpResponse.data, this.userId, this.props.dispatch)
+          StoreHelper.clearStore(this.props.dispatch)
+          StoreHelper.setInitialData(httpResponse.data, this.userId, this.props.dispatch)
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [

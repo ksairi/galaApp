@@ -39,8 +39,8 @@ export default class AppContainer extends React.Component{
   }
 
   componentWillUnmount() {
-      BackHandler.removeEventListener('backPress')
-    }
+    BackHandler.removeEventListener('backPress')
+  }
 
   handleNotification = async (notification) => {
     
@@ -60,6 +60,11 @@ export default class AppContainer extends React.Component{
               if(notification.data[ServerProtocol.notifications]){
                 this.props.setNotifications(notification.data[ServerProtocol.notifications])
               }
+              else{
+                if(notification.data[ServerProtocol.newMember]){
+                this.props.setNewMemberData(notification.data[ServerProtocol.newMember])
+              }  
+              }
           }
         }
     }
@@ -70,7 +75,10 @@ export default class AppContainer extends React.Component{
           // when the app is opened by selecting the notification and origin=="received" is not received
           sendHasReceivedNotification(this.props.userData.userId, notification.data.key)
         }
+        
+        //prepares HomeDrawer
         this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(this.props.userData[ServerProtocol.newMember]))
+        
         var resetAction
         if(notification.data[ServerProtocol.timetable]){
           resetAction = NavigationActions.reset({
