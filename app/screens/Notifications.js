@@ -8,7 +8,7 @@ import { GenericContainer } from '/components/presentationals/View'
 import { NotificationListItem } from '/components/presentationals/ListItem'
 import { ModalNotificationDetail } from '/components/presentationals/View'
 import { sendHasReadNotification } from '/helpers/ApiHelper'
-
+import { ActionsCreators } from '/redux/actions'
 @connect(
   state =>
   ({
@@ -67,8 +67,7 @@ export default class Notifications extends React.Component {
                     if(item.unRead){
                       const readItem = item
                       readItem.unRead = false
-                      const notificationsData = this.props.notifications
-                      this.props.notifications[index] = readItem
+                      this.props.dispatch(ActionsCreators.setReadNotification(index))
                       sendHasReadNotification(this.props.userData.userId, readItem.key)
                       this.openModal(item)
                     }

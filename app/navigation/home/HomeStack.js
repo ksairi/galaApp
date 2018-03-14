@@ -6,7 +6,6 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import { Screens } from '/config/settings'
 import DrawerStack from './DrawerStack'
 import styles from '/config/styles'
-import { clearStore } from '/helpers/StoreHelper'
 
 export default StackNavigator({
   DrawerStack: { screen: DrawerStack }
@@ -38,7 +37,6 @@ export default StackNavigator({
                 [
                   {text: 'No', style: 'cancel'},
                   {text: 'Sí', onPress: () => {
-                      clearStore(navigation.dispatch)
                       const resetAction = NavigationActions.reset({
                       index: 0,
                       actions: [

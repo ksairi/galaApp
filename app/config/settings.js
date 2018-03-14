@@ -81,6 +81,7 @@ exports.ActionsTypes = {
 
   // Notifications
   SET_NOTIFICATIONS :'SET_NOTIFICATIONS',
+  SET_READ_NOTIFICATION:'SET_READ_NOTIFICATION',
   // Routines
   SET_ROUTINES:'SET_ROUTINES',
   // Timetable

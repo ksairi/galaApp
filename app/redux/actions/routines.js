@@ -1,7 +1,7 @@
 import { ActionsTypes } from '/config/settings'
 
 export function setRoutines(newRoutines){
-	return async (dispatch, getState) => {
+	return (dispatch, getState) => {
 		if(newRoutines == null){
 			dispatch({type: ActionsTypes.SET_ROUTINES, routines:[]})
 			return

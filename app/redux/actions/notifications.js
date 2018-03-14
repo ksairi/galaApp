@@ -1,12 +1,13 @@
 import { ActionsTypes } from '/config/settings'
 
 export function setNotifications (newNotifications){
-	return async (dispatch, getState) => {
+	return (dispatch, getState) => {
 		if(newNotifications == null){
 			dispatch({type: ActionsTypes.SET_NOTIFICATIONS, notifications:[]})
 			return
 		}
 	    var notifications = getState().notifications
+	    console.log(notifications)
 	    var newNotificationsToApply = []
 	    newNotifications.forEach(newNotification =>{
 	    	const found = notifications.find(notification=> notification.key == newNotification.key)
@@ -20,4 +21,10 @@ export function setNotifications (newNotifications){
 	    notifications = [...newNotificationsToApply, ...notifications]
 	    dispatch({type: ActionsTypes.SET_NOTIFICATIONS, notifications})
 	}
+ }
+
+ export function setReadNotification(index){
+ 	return (dispatch, getState) =>{
+ 		dispatch({type:ActionsTypes.SET_READ_NOTIFICATION, index})
+ 	}
  }
