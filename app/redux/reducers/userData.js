@@ -6,6 +6,9 @@ export const userData = createReducer({}, {
     return action[ServerProtocol.userData]
   },
   [ActionsTypes.SET_NEW_MEMBER_DATA](state, action) {
-    return action[ServerProtocol.userData]
+    var userData = {...state, [ServerProtocol.newMember]: { ...state[ServerProtocol.newMember]
+      , [ServerProtocol.freeEntryDaysLeft]: action.newMemberData[ServerProtocol.freeEntryDaysLeft]}
+    }
+    return userData
   }
 })
