@@ -11,7 +11,7 @@ import { Messages, Labels, Screens, ServerProtocol } from '/config/settings'
 import { sendComments } from '/helpers/ApiHelper'
 
 @connect(
-  state => ({userId: state.userData.userId})
+  state => ({userId: state[ServerProtocol.userData].userId})
 )
 export default class Contact extends React.Component {
   static comments

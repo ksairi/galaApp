@@ -2,7 +2,7 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import { DrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
-import { Screens } from '/config/settings'
+import { Screens, ServerProtocol } from '/config/settings'
 
 function DrawerContentComponent(props){
 
@@ -21,7 +21,7 @@ function DrawerContentComponent(props){
 
 const mapStateToProps = (state) => {
  return {
-    isNewMember: state.userData.newMember != null
+    isNewMember: state[ServerProtocol.userData][ServerProtocol.newMember] != null
   }
 }
 

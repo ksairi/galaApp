@@ -16,7 +16,7 @@ import ValidationHelper from '/helpers/ValidationHelper'
   state => 
   ({
     nav:state.nav,
-    userData: state.userData
+    userData: state[ServerProtocol.userData]
   }),
   dispatch => 
   Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
