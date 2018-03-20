@@ -4,7 +4,10 @@ import { connect } from 'react-redux'
 import { GenericContainer } from '/components/presentationals/View/'
 import { ServerProtocol } from '/config/settings'
 @connect(
-  state => ({userData:state[ServerProtocol.userData]})
+  state => ({
+    userData:state[ServerProtocol.userData],
+    isUsingCache:state.isUsingCache
+  })
 )
 export default class Home extends React.Component {
   
@@ -13,7 +16,13 @@ export default class Home extends React.Component {
       <View>
         <Text>
           {this.props.userData.name}
+          {this.props.isUsingCache}
         </Text>
+        { this.props.isUsingCache &&
+          <Text>
+            Estas usando informacion local
+          </Text>
+        }
       </View>
     )
   }  

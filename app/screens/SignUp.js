@@ -59,7 +59,7 @@ export default class SignUp extends React.Component{
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
           StoreHelper.clearStore(this.props.dispatch)
-          StoreHelper.setInitialData(httpResponse.data, this.userId, this.props.dispatch)
+          StoreHelper.setInitialData(httpResponse.data, this.userId, this.password, this.props.dispatch)
           const resetAction = NavigationActions.reset({
             index: 0,
             actions: [

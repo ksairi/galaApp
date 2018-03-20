@@ -1,6 +1,5 @@
 import React from 'react'
 import { Keyboard } from 'react-native'
-import { bindActionCreators } from 'redux'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { GenericContainer } from '/components/presentationals/View/'
@@ -14,9 +13,12 @@ import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
-
+import { ActionsCreators } from '/redux/actions'
 @connect(
-state => ({notificationsToken:state.notificationsToken})
+state => ({
+  notificationsToken:state.notificationsToken,
+  userData: state.userData
+  })
 )
 export default class SignIn extends React.Component{
   
@@ -75,23 +77,22 @@ export default class SignIn extends React.Component{
       const httpResponse = await login(this.userId, this.password, deviceToken)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-        setInitialData(httpResponse.data, this.userId, this.props.dispatch)
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({routeName:Screens.HomeStack})
-          ],
-          key: null
-        })
-        this.props.navigation.dispatch(resetAction)
+        setInitialData(httpResponse.data, this.userId, this.password, this.props.dispatch)
+        this.props.navigation.dispatch(this.getNextAction())
       }
       else{
-        this.setState({errorMessage:httResponse[ServerProtocol.messageField]})
+        this.setState({errorMessage:httpResponse[ServerProtocol.messageField]})
       }
 
     }catch(errorMessage){
       this.setState({spinnerVisible:false})
-      this.setState((prevState, props) => ({errorMessage})) 
+      if(Messages.CHECK_INTERNET_CONNECTION == errorMessage && this.password == this.props.userData.password){ //offline login
+        this.props.dispatch(ActionsCreators.setIsUsingCache(true))
+        this.props.navigation.dispatch(this.getNextAction())
+      }
+      else{
+        this.setState((prevState, props) => ({errorMessage})) 
+      }
     }
   }
 
@@ -113,5 +114,17 @@ export default class SignIn extends React.Component{
   goToResetPassword = () =>{
     this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.ResetPassword)
+  }
+
+  getNextAction = () =>{
+    return( 
+      NavigationActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({routeName:Screens.HomeStack})
+        ],
+        key: null
+      })
+    )
   }
 }
