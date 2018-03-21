@@ -86,7 +86,7 @@ export default class SignIn extends React.Component{
 
     }catch(errorMessage){
       this.setState({spinnerVisible:false})
-      if(Messages.CHECK_INTERNET_CONNECTION == errorMessage && this.password == this.props.userData.password){ //offline login
+      if(Messages.CHECK_INTERNET_CONNECTION == errorMessage && this.userId == this.props.userData.userId && this.password == this.props.userData.password){ //offline login
         this.props.dispatch(ActionsCreators.setIsUsingCache(true))
         this.props.navigation.dispatch(this.getNextAction())
       }
