@@ -1,6 +1,7 @@
 import React from 'react'
 import { Keyboard } from 'react-native'
 import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
 import { GenericContainer } from '/components/presentationals/View/'
 import ContainerStyles from '/components/presentationals/View/styles'
 import { GenericTextInput } from '/components/presentationals/TextInput/'
@@ -10,7 +11,8 @@ import { LoadingSpinner } from '/components/presentationals/Spinner'
 import { Messages, Labels, Screens, ServerProtocol, SignUpConstraints } from '/config/settings'
 import { resetPassword } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
-
+import { ActionsCreators } from '/redux/actions'
+@connect()
 export default class ResetPassword extends React.Component {
   static userId
   static password
@@ -90,8 +92,10 @@ export default class ResetPassword extends React.Component {
     .then(data =>{
       this.setState({spinnerVisible:false})
       if(data[ServerProtocol.statusField] == ServerProtocol.OK) {
+        this.props.dispatch(ActionsCreators.setUserNewPassword(this.password))
         this.setState({message:Messages.SUCCESSFULY_RESET_PASSWORD, hasErrors:false,
           showBackToSignIn:true, userId:'', password:'', confirmPassword:''})
+
       }
       else {
         this.setState({message:data[ServerProtocol.messageField], hasErrors:true})  

@@ -35,3 +35,9 @@ export function fetchUserStore(){
     
   }
 }
+
+export function setUserNewPassword(password){
+  return(dispatch, getState) => {
+    dispatch({type:ActionsTypes.SET_NEW_PASSWORD, password})
+  }
+}
