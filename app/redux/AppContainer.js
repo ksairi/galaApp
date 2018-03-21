@@ -1,5 +1,5 @@
 import React from 'react'
-import { BackHandler } from 'react-native'
+import { BackHandler, NetInfo } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
 import { connect } from 'react-redux'
@@ -11,6 +11,7 @@ import { Screens, ServerProtocol } from '/config/settings'
 import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
+import NetworkHelper from '/helpers/NetworkHelper'
 
 @connect(
   state => 
@@ -25,6 +26,7 @@ import ValidationHelper from '/helpers/ValidationHelper'
 export default class AppContainer extends React.Component{
 
   componentDidMount() {
+    
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
 
     BackHandler.addEventListener('backPress', () => {
@@ -36,10 +38,22 @@ export default class AppContainer extends React.Component{
       dispatch(NavigationActions.back())
       return true
     })
+
+    NetInfo.addEventListener(
+    'connectionChange',
+    this.handleConnectivityChange
+    )
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener('backPress')
+    
+    this.notificationSubscription.remove()
+    
+    NetInfo.removeEventListener(
+      'connectionChange',
+      this.handleConnectivityChange
+    )
   }
 
   handleNotification = async (notification) => {
@@ -114,6 +128,16 @@ export default class AppContainer extends React.Component{
         //https://github.com/react-navigation/react-navigation/issues/1620
         //https://github.com/react-navigation/react-navigation/issues/1715
       }
+    }
+  }
+
+  handleConnectivityChange = (connectionInfo) => {
+    if(NetworkHelper.isDeviceConnected(connectionInfo)){
+      this.props.dispatch(ActionsCreators.setIsUsingCache(false))
+      this.props.dispatch(ActionsCreators.fetchUserStore())
+    }
+    else{
+      this.props.dispatch(ActionsCreators.setIsUsingCache(true))
     }
   }
 

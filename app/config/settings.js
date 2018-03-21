@@ -8,6 +8,7 @@ exports.Urls = {
   SEND_CLIENT_TOKEN:SERVER_HOSTNAME + 'sendClientToken',
   HAS_READ_NOTIFICATION:SERVER_HOSTNAME + 'hasReadNotification',
   HAS_RECEIVED_NOTIFICATION:SERVER_HOSTNAME + 'hasReceivedNotification',
+  FETCH_USER_DATA:SERVER_HOSTNAME + 'fetchUserData'
 } 
 
 exports.Messages = {
@@ -76,7 +77,8 @@ exports.ServerProtocol = {
   notifications:'notifications',
   routines:'routines',
   freeEntryCode:'freeEntryCode',
-  freeEntryDaysLeft:'freeEntryDaysLeft'
+  freeEntryDaysLeft:'freeEntryDaysLeft',
+  userId: 'userId'
 }
 
 exports.ActionsTypes = {

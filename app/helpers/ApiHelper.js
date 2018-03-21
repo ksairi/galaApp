@@ -88,6 +88,20 @@ exports.sendHasReceivedNotification = (userId, notificationId) => {
   })  
 }
 
+exports.fetchUserData = (userId) => {
+
+  const fetchUserDataParameters = {}
+  
+  fetchUserDataParameters.userId = userId
+  return connectToServer(Urls.FETCH_USER_DATA, fetchUserDataParameters)
+  .then((response) => {
+    return response
+  })
+  .catch((error) => {
+    throw error
+  })
+}
+
 connectToServer = (url, parameters) => {
   return fetch(url , {
     method: 'POST',

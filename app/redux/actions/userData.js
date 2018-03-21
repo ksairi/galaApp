@@ -1,5 +1,5 @@
 import { ActionsTypes, ServerProtocol } from '/config/settings'
-
+import { fetchUserData } from '/helpers/ApiHelper'
 
 export function setUserData(userData){
   return (dispatch, getState) => {
@@ -13,8 +13,25 @@ export function setNewMemberData(newMemberData){
   }
 }
 
-export function setIsUsingCache(isUsingCache) {
+export function setIsUsingCache(isUsingCache){
   return (dispatch, getState) => {
     dispatch({type:ActionsTypes.SET_IS_USING_CACHE, isUsingCache})
+  }
+}
+
+export function fetchUserStore(){
+  return (dispatch, getState) => {
+    fetchUserData(getState()[ServerProtocol.userData][ServerProtocol.userId])
+    .then(response =>{
+      response = response.data
+      dispatch({type: ActionsTypes.SET_NOTIFICATIONS, [ServerProtocol.notifications]:response.notifications})
+      dispatch({type: ActionsTypes.SET_ROUTINES, [ServerProtocol.routines]:response.routines})
+      dispatch({type: ActionsTypes.SET_TIMETABLE, [ServerProtocol.timetable]:response.timetable})
+    },
+    error =>{
+      console.log(error)
+      //TODO SHOW AN ERROR SOMEWHERE IN THE SCREEN
+    })
+    
   }
 }
