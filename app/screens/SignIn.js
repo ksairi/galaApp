@@ -22,9 +22,6 @@ state => ({
 )
 export default class SignIn extends React.Component{
   
-  static userId
-  static password
-
   state = {
     errorMessage:'',
     focusPassword:false,

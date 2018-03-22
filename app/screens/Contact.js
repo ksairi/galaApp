@@ -14,8 +14,7 @@ import { sendComments } from '/helpers/ApiHelper'
   state => ({userId: state[ServerProtocol.userData].userId})
 )
 export default class Contact extends React.Component {
-  static comments
-
+  
   state = {
     spinnerVisible:false,
     error:false,

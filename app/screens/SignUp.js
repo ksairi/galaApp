@@ -19,11 +19,7 @@ import { getDeviceToken } from '/helpers/NotificationsHelper'
 state => ({notificationsToken:state.notificationsToken})
 )
 export default class SignUp extends React.Component{
-  static userFullName
-  static userId
-  static password
-  static confirmPassword
-
+  
   state = {
     errorMessage:'',
     message:'',
