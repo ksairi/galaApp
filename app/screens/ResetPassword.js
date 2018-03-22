@@ -14,10 +14,7 @@ import ValidationHelper from '/helpers/ValidationHelper'
 import { ActionsCreators } from '/redux/actions'
 @connect()
 export default class ResetPassword extends React.Component {
-  static userId
-  static password
-  static confirmPassword
-
+  
   state = {
     hasErrors:false,
     message:'',
