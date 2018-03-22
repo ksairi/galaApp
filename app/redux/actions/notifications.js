@@ -17,3 +17,9 @@ export function setNotifications (notifications){
  		dispatch({type:ActionsTypes.SET_READ_NOTIFICATION, index})
  	}
  }
+
+  export function setNotificationsSyncFlags(receivedNotificationsKeys, readNotificationsKeys){
+    return(dispatch, getState)=>{
+      dispatch({type:ActionsTypes.SET_NOTIFICATIONS_SYNC_FLAGS, receivedNotificationsKeys, readNotificationsKeys})
+    }
+ }

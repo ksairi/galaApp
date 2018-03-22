@@ -62,24 +62,12 @@ exports.sendComments = (userId, comments) => {
   })  
 }
 
-exports.sendHasReadNotification = (userId, notificationId) => {
-  const hasReadNotification = {}
-  hasReadNotification.userId = userId
-  hasReadNotification.notificationId = notificationId
-  return connectToServer(Urls.HAS_READ_NOTIFICATION, hasReadNotification)
-  .then((response) => {
-    return response
-  })
-  .catch((error) => {
-    throw error
-  })  
-}
-
-exports.sendHasReceivedNotification = (userId, notificationId) => {
-  const hasReceivedNotification = {}
-  hasReceivedNotification.userId = userId
-  hasReceivedNotification.notificationId = notificationId
-  return connectToServer(Urls.HAS_RECEIVED_NOTIFICATION, hasReceivedNotification)
+exports.syncLocalStorage = (userId, receivedNotificationsKeys, readNotificationsKeys ) => {
+  const syncLocalStorageParameters = {}
+  syncLocalStorageParameters.userId = userId
+  syncLocalStorageParameters.receivedNotificationsKeys = receivedNotificationsKeys
+  syncLocalStorageParameters.readNotificationsKeys = readNotificationsKeys
+  return connectToServer(Urls.SYN_LOCAL_STORAGE, syncLocalStorageParameters)
   .then((response) => {
     return response
   })

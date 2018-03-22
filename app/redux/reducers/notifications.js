@@ -22,11 +22,39 @@ export const notifications = createReducer([], {
     return notifications
   },
 
-  [ActionsTypes.SET_READ_NOTIFICATION](state, action) {
-    const notifications = state
-    notifications[action.index].unRead = false
+  [ActionsTypes.SET_READ_NOTIFICATION](state, action){
+    return Object.assign([...state], {[action.index]:Object.assign({}, state[action.index], {unRead:false})})
+  },
+
+  [ActionsTypes.SET_NOTIFICATIONS_SYNC_FLAGS](state, action){
+    
+    var notifications = [...state]
+    action.receivedNotificationsKeys.forEach(key =>{
+      const index = notifications.findIndex(notification =>{
+        return notification.key == key
+      })
+      if(index >= 0){
+        notifications = Object.assign(
+       [...notifications], 
+       {[index]:
+         Object.assign({}, notifications[index], {receivedFlagSynched : true})})
+      }
+    })
+
+    action.readNotificationsKeys.forEach(key =>{
+      const index = notifications.findIndex(notification =>{
+        return notification.key == key
+      })
+      if(index >= 0){          
+        notifications = Object.assign(
+        [...notifications], 
+        {[index]:
+         Object.assign({}, notifications[index], {unReadFlagSynched : true})})
+      }
+    })
+
     return notifications
-  }
+  } 
 })
 
 export const notificationsToken = createReducer(null, {

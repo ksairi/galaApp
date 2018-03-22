@@ -6,24 +6,28 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
 import { addNavigationHelpers } from 'react-navigation'
-import { sendHasReceivedNotification } from '/helpers/ApiHelper'
 import { Screens, ServerProtocol } from '/config/settings'
 import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
 import NetworkHelper from '/helpers/NetworkHelper'
+import { syncStoreWithServer } from '/helpers/StoreHelper'
 
 @connect(
   state => 
   ({
     nav:state.nav,
-    userData: state[ServerProtocol.userData]
+    userData: state[ServerProtocol.userData],
+    notifications: state[ServerProtocol.notifications]
   }),
   dispatch => 
   Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
 )
 
 export default class AppContainer extends React.Component{
+
+  static BATCH_PROCESS_INTERVAL = 50000;
+  static intervalId
 
   componentDidMount() {
     
@@ -43,6 +47,8 @@ export default class AppContainer extends React.Component{
     'connectionChange',
     this.handleConnectivityChange
     )
+
+    AppContainer.intervalId = setInterval(this.startBatchProcess, AppContainer.BATCH_PROCESS_INTERVAL)
   }
 
   componentWillUnmount() {
@@ -54,15 +60,14 @@ export default class AppContainer extends React.Component{
       'connectionChange',
       this.handleConnectivityChange
     )
+
+    clearInterval(AppContainer.intervalId)
   }
 
   handleNotification = async (notification) => {
     
     if(notification.origin === "received"){
       
-      if(this.props.userData){
-        sendHasReceivedNotification(this.props.userData.userId, notification.data.key)
-      }
       if(notification.data[ServerProtocol.timetable]){
         this.props.setTimetable(notification.data[ServerProtocol.timetable])
       }
@@ -85,10 +90,6 @@ export default class AppContainer extends React.Component{
 
     if(notification.origin === "selected"){
       if(this.props.userData){
-        if(notification.notificationId && notification.message && notification.experienceId){
-          // when the app is opened by selecting the notification and origin=="received" is not received
-          sendHasReceivedNotification(this.props.userData.userId, notification.data.key)
-        }
         
         //prepares HomeDrawer
         this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(this.props.userData[ServerProtocol.newMember]))
@@ -151,5 +152,9 @@ export default class AppContainer extends React.Component{
         addListener})}
       />
     )
+  }
+
+  startBatchProcess = () => {
+    //syncStoreWithServer(this.props.userData.userId, this.props.notifications, this.props.dispatch)
   }
 }
