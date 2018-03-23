@@ -48,7 +48,7 @@ export default class AppContainer extends React.Component{
     this.handleConnectivityChange
     )
 
-    this.startBatchProcess()
+    this.startBatchProcess() //to execute without delay
     AppContainer.intervalId = setInterval(this.startBatchProcess, AppContainer.BATCH_PROCESS_INTERVAL)
   }
 
