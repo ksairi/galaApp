@@ -26,7 +26,7 @@ import { syncStoreWithServer } from '/helpers/StoreHelper'
 
 export default class AppContainer extends React.Component{
 
-  static BATCH_PROCESS_INTERVAL = 50000;
+  static BATCH_PROCESS_INTERVAL = 300000;
   static intervalId
 
   componentDidMount() {
@@ -48,6 +48,7 @@ export default class AppContainer extends React.Component{
     this.handleConnectivityChange
     )
 
+    this.startBatchProcess()
     AppContainer.intervalId = setInterval(this.startBatchProcess, AppContainer.BATCH_PROCESS_INTERVAL)
   }
 
@@ -155,6 +156,7 @@ export default class AppContainer extends React.Component{
   }
 
   startBatchProcess = () => {
-    //syncStoreWithServer(this.props.userData.userId, this.props.notifications, this.props.dispatch)
+    console.log(new Date())
+    syncStoreWithServer(this.props.userData.userId, this.props.notifications, this.props.dispatch)
   }
 }
