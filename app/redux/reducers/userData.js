@@ -7,6 +7,9 @@ export const userData = createReducer({}, {
   },
   //http://www.curbitssoftware.com/2017/08/25/react-redux-immutable-update-cheat-sheet/
   [ActionsTypes.SET_NEW_MEMBER_DATA](state, action){
+    if(!state[ServerProtocol.newMember]){
+      return state
+    }
     var userData = {...state, [ServerProtocol.newMember]: { ...state[ServerProtocol.newMember]
       , [ServerProtocol.freeEntryDaysLeft]: action.newMemberData[ServerProtocol.freeEntryDaysLeft]}
     }

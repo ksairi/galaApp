@@ -12,6 +12,7 @@ import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
 import NetworkHelper from '/helpers/NetworkHelper'
 import { syncStoreWithServer } from '/helpers/StoreHelper'
+import createNotificationsHanlder from './lib/createHandler'
 
 @connect(
   state => 
@@ -69,63 +70,61 @@ export default class AppContainer extends React.Component{
     
     if(notification.origin === "received"){
       
-      if(notification.data[ServerProtocol.timetable]){
-        this.props.setTimetable(notification.data[ServerProtocol.timetable])
-      }
-      else{
-          if(notification.data[ServerProtocol.routines]){
-            this.props.setRoutines(notification.data[ServerProtocol.routines])
-          }
-          else{
-              if(notification.data[ServerProtocol.notifications]){
-                this.props.setNotifications(notification.data[ServerProtocol.notifications])
-              }
-              else{
-                if(notification.data[ServerProtocol.newMember]){
-                this.props.setNewMemberData(notification.data[ServerProtocol.newMember])
-              }  
-              }
-          }
+      const props = this.props
+      
+      createNotificationsHanlder({
+        [ServerProtocol.timetable](){
+          props.setTimetable(notification.data[ServerProtocol.timetable])
+        },
+        [ServerProtocol.routines](){
+          props.setRoutines(notification.data[ServerProtocol.routines])  
+        },
+        [ServerProtocol.notifications](){
+          props.setNotifications(notification.data[ServerProtocol.notifications])  
+        },
+        [ServerProtocol.newMember](){
+          props.setNewMemberData(notification.data[ServerProtocol.newMember])
         }
+      })(notification.data)
     }
 
     if(notification.origin === "selected"){
       if(this.props.userData){
         
         //prepares HomeDrawer
-        this.props.setIsNewMember(!ValidationHelper.isObjectEmpty(this.props.userData[ServerProtocol.newMember]))
+        this.props.setNewMemberData(this.props.userData[ServerProtocol.newMember])
         
         var resetAction
-        if(notification.data[ServerProtocol.timetable]){
-          resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-              NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Timetable})})
-            ],
-            key: null
-          })
-        }
-        else{
-              if(notification.data[ServerProtocol.routines]){
-                resetAction = NavigationActions.reset({
-                  index: 0,
-                  actions: [
-                    NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Routines})})
-                  ],
-                  key: null
-                })    
-              }
-              else{
-                    resetAction = NavigationActions.reset({
-                      index: 0,
-                      actions: [
-                        NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Notifications})})
-                      ],
-                      key: null
-                    })
-                  }
-            }
-
+        createNotificationsHanlder({
+          [ServerProtocol.timetable](){
+            resetAction = NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Timetable})})
+              ],
+              key: null
+            })
+          },
+          [ServerProtocol.routines](){
+            resetAction = NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Routines})})
+              ],
+              key: null
+            })  
+          },
+          [ServerProtocol.notifications](){
+            console.log("notif")
+            resetAction = NavigationActions.reset({
+              index: 0,
+              actions: [
+                NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Notifications})})
+              ],
+              key: null
+            })
+          }
+        })(notification.data)
         this.props.dispatch(resetAction)
         //https://github.com/react-navigation/react-navigation/issues/1620
         //https://github.com/react-navigation/react-navigation/issues/1715
@@ -156,7 +155,6 @@ export default class AppContainer extends React.Component{
   }
 
   startBatchProcess = () => {
-    console.log(new Date())
     syncStoreWithServer(this.props.userData.userId, this.props.notifications, this.props.dispatch)
   }
 }
