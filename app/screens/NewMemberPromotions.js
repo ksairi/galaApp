@@ -7,7 +7,7 @@ import { ServerProtocol } from '/config/settings'
 
 @connect(
 state => ({
-  newMember:state[ServerProtocol.userData][ServerProtocol.newMember],
+  newMember:state[ServerProtocol.newMember][state[ServerProtocol.userData].newMember],
 })
 )
 export default class NewMemberPromotions extends React.Component {

@@ -5,20 +5,29 @@ export const userData = createReducer({}, {
   [ActionsTypes.SET_USER_DATA](state, action) {
     return action[ServerProtocol.userData]
   },
-  //http://www.curbitssoftware.com/2017/08/25/react-redux-immutable-update-cheat-sheet/
-  [ActionsTypes.SET_NEW_MEMBER_DATA](state, action){
-    if(!state[ServerProtocol.newMember]){
-      return state
-    }
-    var userData = {...state, [ServerProtocol.newMember]: { ...state[ServerProtocol.newMember]
-      , [ServerProtocol.freeEntryDaysLeft]: action.newMemberData[ServerProtocol.freeEntryDaysLeft]}
-    }
-    return userData
-  },
   [ActionsTypes.SET_NEW_PASSWORD](state, action){
     return { ...state, password:action.password }
-
   }
+})
+
+export const newMember = createReducer({}, {
+  [ActionsTypes.SET_NEW_MEMBER_DATA](state, action){
+    if(action[ServerProtocol.newMember]){
+      return action[ServerProtocol.newMember]
+    }
+    else{
+      return {}
+    }    
+  },
+  [ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action){
+    if(action[ServerProtocol.notificationsNewMemberData]){
+      return Object.assign({}, state, {[action.id]:{ ...state[action.id], 
+        [ServerProtocol.freeEntryDaysLeft]: action[ServerProtocol.notificationsNewMemberData][ServerProtocol.freeEntryDaysLeft]}}) 
+    }
+    else{
+      return state
+    }
+  }  
 })
 
 export const isUsingCache = createReducer(false, {

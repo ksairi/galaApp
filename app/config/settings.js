@@ -77,7 +77,8 @@ exports.ServerProtocol = {
   routines:'routines',
   freeEntryCode:'freeEntryCode',
   freeEntryDaysLeft:'freeEntryDaysLeft',
-  userId: 'userId'
+  userId: 'userId',
+  notificationsNewMemberData:'notificationsNewMemberData'
 }
 
 exports.ActionsTypes = {
@@ -95,5 +96,6 @@ exports.ActionsTypes = {
   SET_USER_DATA:'SET_USER_DATA',
   SET_NEW_MEMBER_DATA:'SET_NEW_MEMBER_DATA',
   SET_IS_USING_CACHE:'SET_IS_USING_CACHE',
-  SET_NEW_PASSWORD:'SET_NEW_PASSWORD'
+  SET_NEW_PASSWORD:'SET_NEW_PASSWORD',
+  SET_NOTIFICATIONS_NEW_MEMBER_DATA:'SET_NOTIFICATIONS_NEW_MEMBER_DATA'
 }

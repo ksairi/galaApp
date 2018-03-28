@@ -82,8 +82,10 @@ export default class AppContainer extends React.Component{
         [ServerProtocol.notifications](){
           props.setNotifications(notification.data[ServerProtocol.notifications])  
         },
-        [ServerProtocol.newMember](){
-          props.setNewMemberData(notification.data[ServerProtocol.newMember])
+        [ServerProtocol.notificationsNewMemberData](){
+          if(props.userData && props.userData[ServerProtocol.newMember]){
+            props.setNotificationsNewMemberData(props.userData[ServerProtocol.newMember], notification.data[ServerProtocol.notificationsNewMemberData])
+          }
         }
       })(notification.data)
     }
@@ -115,7 +117,6 @@ export default class AppContainer extends React.Component{
             })  
           },
           [ServerProtocol.notifications](){
-            console.log("notif")
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [

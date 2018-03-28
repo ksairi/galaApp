@@ -1,15 +1,20 @@
 import { ActionsTypes, ServerProtocol } from '/config/settings'
 import { fetchUserData } from '/helpers/ApiHelper'
+import { normalize } from 'normalizr'
+import * as schema from './schema'
 
 export function setUserData(userData){
+  
   return (dispatch, getState) => {
-    dispatch({type:ActionsTypes.SET_USER_DATA, userData})
+    const normalizeUserData = normalize(userData, schema)
+    dispatch({type:ActionsTypes.SET_USER_DATA, [ServerProtocol.userData]:normalizeUserData.result})
+    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, [ServerProtocol.newMember]:normalizeUserData.entities[ServerProtocol.newMember]})
   }
 }
 
-export function setNewMemberData(newMemberData){
+export function setNotificationsNewMemberData(newMemeberDataId, notificationsNewMemberData){
   return (dispatch, getState) => {
-    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, newMemberData})
+    dispatch({type:ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA, [ServerProtocol.notificationsNewMemberData]:notificationsNewMemberData, id:newMemeberDataId})
   }
 }
 
