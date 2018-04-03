@@ -61,6 +61,7 @@ export default class Routines extends React.Component {
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
               data={this.props.routines}
+              keyExtractor = {(item, index) => `key-${index}`}
               renderItem={({item}) =>
                 <RoutineListItem description={item.description} active={item.isActive} 
                   dateFrom={item.dateFrom} dateTo={item.dateTo} onPress={() => this.openModal(item)}/> 

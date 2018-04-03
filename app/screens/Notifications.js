@@ -62,6 +62,7 @@ export default class Notifications extends React.Component {
           <GenericContainer style={ContainerStyles.horizontalContainer}>
             <FlatList
               data={this.props.notifications}
+              keyExtractor = {(item, index) => `key-${index}`}
               renderItem={({item, index}) =>
                 <NotificationListItem title={item.title} unRead={item.unRead} onPress={async () =>{
                     if(item.unRead){

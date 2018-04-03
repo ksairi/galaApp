@@ -103,8 +103,7 @@ connectToServer = (url, parameters) => {
   .then((response) => {
     if(response.ok){      
       try {
-        const jsonObject = JSON.parse(response._bodyText)
-        return jsonObject
+        return response.json()
       }
       catch(e){
         throw Messages.SERVER_ERROR

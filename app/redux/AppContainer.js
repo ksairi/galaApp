@@ -93,9 +93,6 @@ export default class AppContainer extends React.Component{
     if(notification.origin === "selected"){
       if(this.props.userData){
         
-        //prepares HomeDrawer
-        this.props.setNewMemberData(this.props.userData[ServerProtocol.newMember])
-        
         var resetAction
         createNotificationsHanlder({
           [ServerProtocol.timetable](){
