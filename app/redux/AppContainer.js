@@ -84,7 +84,7 @@ export default class AppContainer extends React.Component{
         },
         [ServerProtocol.notificationsNewMemberData](){
           if(props.userData && props.userData[ServerProtocol.newMember]){
-            props.setNotificationsNewMemberData(props.userData[ServerProtocol.newMember], notification.data[ServerProtocol.notificationsNewMemberData])
+            props.setNotificationsNewMemberData(notification.data[ServerProtocol.notificationsNewMemberData])
           }
         }
       })(notification.data)

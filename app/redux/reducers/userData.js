@@ -21,8 +21,7 @@ export const newMember = createReducer({}, {
   },
   [ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action){
     if(action[ServerProtocol.notificationsNewMemberData]){
-      return Object.assign({}, state, {[action.id]:{ ...state[action.id], 
-        [ServerProtocol.freeEntryDaysLeft]: action[ServerProtocol.notificationsNewMemberData][ServerProtocol.freeEntryDaysLeft]}}) 
+      return {...state, [ServerProtocol.freeEntryDaysLeft]: action[ServerProtocol.notificationsNewMemberData][ServerProtocol.freeEntryDaysLeft]}
     }
     else{
       return state
