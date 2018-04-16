@@ -21,7 +21,6 @@ function DrawerContentComponent(props){
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.newMemberData)
  return {
     isNewMember: !isObjectEmpty(state.newMemberData)
   }

@@ -2,10 +2,12 @@ import * as NotificationsActions from './notifications'
 import * as RoutinesActions from './routines'
 import * as TimetableActions from './timetable'
 import * as UserDataActions from './userData'
+import * as SessionActions from './session'
 
 export const ActionsCreators = Object.assign({},
   NotificationsActions,
   RoutinesActions,
   TimetableActions,
-  UserDataActions
+  UserDataActions,
+  SessionActions
 )

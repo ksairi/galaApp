@@ -6,6 +6,7 @@ import { StackNavigator, NavigationActions } from 'react-navigation'
 import { Screens } from '/config/settings'
 import DrawerStack from './DrawerStack'
 import styles from '/config/styles'
+import { ActionsCreators } from '/redux/actions'
 
 export default StackNavigator({
   DrawerStack: { screen: DrawerStack }
@@ -45,6 +46,7 @@ export default StackNavigator({
                       key:null
                     })
                     navigation.dispatch(resetAction)
+                    navigation.dispatch(ActionsCreators.logOut())
                   }},
                 ],
                 { cancelable: true }

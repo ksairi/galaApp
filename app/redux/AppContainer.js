@@ -19,8 +19,9 @@ import createNotificationsHanlder from './lib/createHandler'
   ({
     nav:state.nav,
     userData: state.userData,
-    newMemberData: state.newMemberData,
-    notifications: state.notifications
+    newMemberData:state.newMemberData,
+    notifications:state.notifications,
+    isLoggedIn:state.isLoggedIn
   }),
   dispatch => 
   Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
@@ -52,6 +53,7 @@ export default class AppContainer extends React.Component{
 
     this.startBatchProcess() //to execute without delay
     AppContainer.intervalId = setInterval(this.startBatchProcess, AppContainer.BATCH_PROCESS_INTERVAL)
+    this.props.dispatch(ActionsCreators.logOut()) // if app was closed when it was logged in
   }
 
   componentWillUnmount() {
@@ -92,7 +94,7 @@ export default class AppContainer extends React.Component{
     }
 
     if(notification.origin === "selected"){
-      if(this.props.userData){
+      if(this.props.isLoggedIn){
         
         var resetAction
         createNotificationsHanlder({

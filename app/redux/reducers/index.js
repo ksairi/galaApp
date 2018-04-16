@@ -5,7 +5,8 @@ import { persistReducer } from 'redux-persist'
 import * as notificationsReducer from './notifications'
 import * as routinesReducer from './routines'
 import * as timetableReducer from './timetable'
-import * as userDataReducer from './userData' 
+import * as userDataReducer from './userData'
+import * as SessionReducer from './session'
 import nav from './navigation'
 
 
@@ -21,6 +22,7 @@ const rootReducer = combineReducers(Object.assign(
   routinesReducer, 
   timetableReducer,   
   userDataReducer,
+  SessionReducer,
   {nav},
 ))
 

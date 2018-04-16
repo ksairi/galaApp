@@ -74,10 +74,12 @@ export default class SignIn extends React.Component{
       const httpResponse = await login(this.userId, this.password, deviceToken)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+        console.log(httpResponse)
         setInitialData(httpResponse.data, this.userId, this.password, this.props.dispatch)
         this.props.navigation.dispatch(this.getNextAction())
       }
       else{
+        console.log(httpResponse)
         this.setState({errorMessage:httpResponse[ServerProtocol.messageField]})
       }
 
