@@ -69,16 +69,7 @@ exports.SignUpConstraints = {
 exports.ServerProtocol = {
   statusField:'status',
   OK:'ok',
-  messageField:'message',
-  userData:'userData',
-  timetable:'timetable',
-  newMemberData:'newMemberData',
-  notifications:'notifications',
-  routines:'routines',
-  freeEntryCode:'freeEntryCode',
-  freeEntryDaysLeft:'freeEntryDaysLeft',
-  userId: 'userId',
-  notificationsNewMemberData:'notificationsNewMemberData'
+  messageField:'message'
 }
 
 exports.ActionsTypes = {

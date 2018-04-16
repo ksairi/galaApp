@@ -2,10 +2,9 @@ import React from 'react'
 import { Text, View } from 'react-native'
 import { connect } from 'react-redux'
 import { GenericContainer } from '/components/presentationals/View/'
-import { ServerProtocol } from '/config/settings'
 @connect(
   state => ({
-    userData:state[ServerProtocol.userData],
+    userData:state.userData,
     isUsingCache:state.isUsingCache
   })
 )

@@ -1,27 +1,27 @@
 import createReducer from './lib/createReducer'
-import { ActionsTypes, ServerProtocol } from '/config/settings'
+import { ActionsTypes } from '/config/settings'
 
 export const userData = createReducer({}, {
   [ActionsTypes.SET_USER_DATA](state, action) {
-    return action[ServerProtocol.userData]
+    return action.userData
   },
   [ActionsTypes.SET_NEW_PASSWORD](state, action){
     return { ...state, password:action.password }
   }
 })
 
-export const newMemberData = createReducer({}, {
+export const newMemberData = createReducer(null, {
   [ActionsTypes.SET_NEW_MEMBER_DATA](state, action){
-    if(action[ServerProtocol.newMemberData]){
-      return action[ServerProtocol.newMemberData]
+    if(action.newMemberData == null){
+      return {}
     }
     else{
-      return state
+      return action.newMemberData
     }    
   },
   [ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action){
-    if(action[ServerProtocol.notificationsNewMemberData]){
-      return {...state, [ServerProtocol.freeEntryDaysLeft]: action[ServerProtocol.notificationsNewMemberData][ServerProtocol.freeEntryDaysLeft]}
+    if(action.notificationsNewMemberData){
+      return {...state, freeEntryDaysLeft: action.notificationsNewMemberData.freeEntryDaysLeft}
     }
     else{
       return state

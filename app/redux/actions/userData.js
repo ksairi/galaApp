@@ -1,23 +1,23 @@
-import { ActionsTypes, ServerProtocol } from '/config/settings'
+import { ActionsTypes } from '/config/settings'
 import { fetchUserData } from '/helpers/ApiHelper'
 
 export function setUserData(userData){
   
   return (dispatch, getState) => {
     
-    dispatch({type:ActionsTypes.SET_USER_DATA, [ServerProtocol.userData]:userData})
+    dispatch({type:ActionsTypes.SET_USER_DATA, userData})
   }
 }
 
 export function setNewMemberData(newMemberData){
   return(dispatch, getState) => {
-    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, [ServerProtocol.newMemberData]:newMemberData})
+    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, newMemberData})
   }
 }
 
 export function setNotificationsNewMemberData(notificationsNewMemberData){
   return (dispatch, getState) => {
-    dispatch({type:ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA, [ServerProtocol.notificationsNewMemberData]:notificationsNewMemberData})
+    dispatch({type:ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA, notificationsNewMemberData})
   }
 }
 
@@ -29,12 +29,12 @@ export function setIsUsingCache(isUsingCache){
 
 export function fetchUserStore(){
   return (dispatch, getState) => {
-    fetchUserData(getState()[ServerProtocol.userData][ServerProtocol.userId])
+    fetchUserData(getState().userData.userId)
     .then(response =>{
-      response = response.data
-      dispatch({type: ActionsTypes.SET_NOTIFICATIONS, [ServerProtocol.notifications]:response.notifications})
-      dispatch({type: ActionsTypes.SET_ROUTINES, [ServerProtocol.routines]:response.routines})
-      dispatch({type: ActionsTypes.SET_TIMETABLE, [ServerProtocol.timetable]:response.timetable})
+      const { notifications, routines, timetable } = response.data
+      dispatch({type: ActionsTypes.SET_NOTIFICATIONS, notifications})
+      dispatch({type: ActionsTypes.SET_ROUTINES, routines})
+      dispatch({type: ActionsTypes.SET_TIMETABLE, timetable})
     },
     error =>{
       console.log(error)

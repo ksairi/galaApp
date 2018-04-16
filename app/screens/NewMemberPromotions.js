@@ -3,11 +3,10 @@ import { View } from 'react-native'
 import { connect } from 'react-redux'
 import { Messages } from '/config/settings'
 import { GenericText } from '/components/presentationals/Text'
-import { ServerProtocol } from '/config/settings'
 
 @connect(
 state => ({
-  newMemberData:state[ServerProtocol.newMemberData],
+  newMemberData:state.newMemberData,
 })
 )
 export default class NewMemberPromotions extends React.Component {
@@ -28,10 +27,10 @@ export default class NewMemberPromotions extends React.Component {
       return(
         <View>
           <GenericText>
-            {this.props.newMemberData && this.props.newMemberData[ServerProtocol.freeEntryCode]}
+            {this.props.newMemberData && this.props.newMemberData.freeEntryCode}
           </GenericText>
-          { this.props.newMemberData[ServerProtocol.freeEntryDaysLeft] &&
-            <GenericText> Te quedan {this.props.newMemberData[ServerProtocol.freeEntryDaysLeft]} dias </GenericText> 
+          { this.props.newMemberData.freeEntryDaysLeft &&
+            <GenericText> Te quedan {this.props.newMemberData.freeEntryDaysLeft} dias </GenericText> 
           }
         </View>
       )

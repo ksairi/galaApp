@@ -7,11 +7,11 @@ import { GenericText } from '/components/presentationals/Text'
 import { GenericTextInput } from '/components/presentationals/TextInput'
 import { SubmitButton } from '/components/presentationals/Button'
 import { LoadingSpinner } from '/components/presentationals/Spinner'
-import { Messages, Labels, Screens, ServerProtocol } from '/config/settings'
+import { Messages, Labels, Screens } from '/config/settings'
 import { sendComments } from '/helpers/ApiHelper'
 
 @connect(
-  state => ({userId: state[ServerProtocol.userData].userId})
+  state => ({userId: state.userData.userId})
 )
 export default class Contact extends React.Component {
   

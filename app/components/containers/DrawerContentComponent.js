@@ -2,7 +2,8 @@ import React from 'react'
 import { ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import { DrawerNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
-import { Screens, ServerProtocol } from '/config/settings'
+import { Screens } from '/config/settings'
+import { isObjectEmpty } from '/helpers/ValidationHelper'
 
 function DrawerContentComponent(props){
 
@@ -20,8 +21,9 @@ function DrawerContentComponent(props){
 }
 
 const mapStateToProps = (state) => {
+  console.log(state.newMemberData)
  return {
-    isNewMember: state[ServerProtocol.newMemberData] != null
+    isNewMember: !isObjectEmpty(state.newMemberData)
   }
 }
 

@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
 import { addNavigationHelpers } from 'react-navigation'
-import { Screens, ServerProtocol } from '/config/settings'
+import { Screens } from '/config/settings'
 import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
@@ -18,9 +18,9 @@ import createNotificationsHanlder from './lib/createHandler'
   state => 
   ({
     nav:state.nav,
-    userData: state[ServerProtocol.userData],
-    newMemberData: state[ServerProtocol.newMemberData],
-    notifications: state[ServerProtocol.notifications]
+    userData: state.userData,
+    newMemberData: state.newMemberData,
+    notifications: state.notifications
   }),
   dispatch => 
   Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
@@ -74,18 +74,18 @@ export default class AppContainer extends React.Component{
       const props = this.props
       
       createNotificationsHanlder({
-        [ServerProtocol.timetable](){
-          props.setTimetable(notification.data[ServerProtocol.timetable])
+        timetable(){
+          props.setTimetable(notification.data.timetable)
         },
-        [ServerProtocol.routines](){
-          props.setRoutines(notification.data[ServerProtocol.routines])  
+        routines(){
+          props.setRoutines(notification.data.routines)  
         },
-        [ServerProtocol.notifications](){
-          props.setNotifications(notification.data[ServerProtocol.notifications])  
+        notifications(){
+          props.setNotifications(notification.data.notifications)  
         },
-        [ServerProtocol.notificationsNewMemberData](){
+        notificationsNewMemberData(){
           if(props.newMemberData){
-            props.setNotificationsNewMemberData(notification.data[ServerProtocol.notificationsNewMemberData])
+            props.setNotificationsNewMemberData(notification.data.notificationsNewMemberData)
           }
         }
       })(notification.data)
@@ -96,7 +96,7 @@ export default class AppContainer extends React.Component{
         
         var resetAction
         createNotificationsHanlder({
-          [ServerProtocol.timetable](){
+          timetable(){
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [
@@ -105,7 +105,7 @@ export default class AppContainer extends React.Component{
               key: null
             })
           },
-          [ServerProtocol.routines](){
+          routines(){
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [
@@ -114,7 +114,7 @@ export default class AppContainer extends React.Component{
               key: null
             })  
           },
-          [ServerProtocol.notifications](){
+          notifications(){
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [

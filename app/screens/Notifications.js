@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList } from 'react-native'
 import { connect } from 'react-redux'
-import { Messages, ServerProtocol } from '/config/settings'
+import { Messages } from '/config/settings'
 import ContainerStyles from '/components/presentationals/View/styles'
 import { GenericText } from '/components/presentationals/Text/'
 import { GenericContainer } from '/components/presentationals/View'
@@ -12,8 +12,8 @@ import { ActionsCreators } from '/redux/actions'
 @connect(
   state =>
   ({
-    notifications:state[ServerProtocol.notifications],
-    userData: state[ServerProtocol.userData]
+    notifications:state.notifications,
+    userData: state.userData
   })
 )
 export default class Notifications extends React.Component {
