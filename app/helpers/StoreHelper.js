@@ -4,18 +4,20 @@ import { syncLocalStorage } from '/helpers/ApiHelper'
 
 
 exports.setInitialData = (serverData, userId, password, dispatch) => {
-  const userData = serverData[ServerProtocol.userData]
+  const { userData, newMemberData, timetable, routines, notifications } = serverData
   userData.userId = userId
   userData.password = password
   dispatch(ActionsCreators.setUserData(userData))
+  dispatch(ActionsCreators.setNewMemberData(newMemberData))
   dispatch(ActionsCreators.setIsUsingCache(false))
-  dispatch(ActionsCreators.setTimetable(serverData[ServerProtocol.timetable]))
-  dispatch(ActionsCreators.setRoutines(serverData[ServerProtocol.routines]))
-  dispatch(ActionsCreators.setNotifications(serverData[ServerProtocol.notifications]))  
+  dispatch(ActionsCreators.setTimetable(timetable))
+  dispatch(ActionsCreators.setRoutines(routines))
+  dispatch(ActionsCreators.setNotifications(notifications))  
 }
 
 exports.clearStore = (dispatch) => {
   dispatch(ActionsCreators.setUserData({}))
+  dispatch(ActionsCreators.setNewMemberData({}))
   dispatch(ActionsCreators.setTimetable(null))
   dispatch(ActionsCreators.setRoutines(null))
   dispatch(ActionsCreators.setNotifications(null))  

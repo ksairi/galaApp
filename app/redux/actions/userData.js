@@ -1,18 +1,17 @@
 import { ActionsTypes, ServerProtocol } from '/config/settings'
 import { fetchUserData } from '/helpers/ApiHelper'
-import { normalize } from 'normalizr'
-import * as schema from './schema'
 
-export function setUserData(_userData){
+export function setUserData(userData){
   
   return (dispatch, getState) => {
-    const normalizeUserData = normalize(_userData, schema)
     
-    const userData = normalizeUserData.result
     dispatch({type:ActionsTypes.SET_USER_DATA, [ServerProtocol.userData]:userData})
+  }
+}
 
-    const newMemberData = normalizeUserData.entities[ServerProtocol.newMember] ? normalizeUserData.entities[ServerProtocol.newMember][userData[ServerProtocol.newMember]] : normalizeUserData.entities[ServerProtocol.newMember] 
-    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, [ServerProtocol.newMember]:newMemberData})
+export function setNewMemberData(newMemberData){
+  return(dispatch, getState) => {
+    dispatch({type:ActionsTypes.SET_NEW_MEMBER_DATA, [ServerProtocol.newMemberData]:newMemberData})
   }
 }
 

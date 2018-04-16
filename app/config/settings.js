@@ -72,7 +72,7 @@ exports.ServerProtocol = {
   messageField:'message',
   userData:'userData',
   timetable:'timetable',
-  newMember:'newMember',
+  newMemberData:'newMemberData',
   notifications:'notifications',
   routines:'routines',
   freeEntryCode:'freeEntryCode',

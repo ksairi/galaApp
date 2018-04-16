@@ -7,7 +7,7 @@ import { ServerProtocol } from '/config/settings'
 
 @connect(
 state => ({
-  newMember:state[ServerProtocol.newMember],
+  newMemberData:state[ServerProtocol.newMemberData],
 })
 )
 export default class NewMemberPromotions extends React.Component {
@@ -28,10 +28,10 @@ export default class NewMemberPromotions extends React.Component {
       return(
         <View>
           <GenericText>
-            {this.props.newMember && this.props.newMember[ServerProtocol.freeEntryCode]}
+            {this.props.newMemberData && this.props.newMemberData[ServerProtocol.freeEntryCode]}
           </GenericText>
-          { this.props.newMember[ServerProtocol.freeEntryDaysLeft] &&
-            <GenericText> Te quedan {this.props.newMember[ServerProtocol.freeEntryDaysLeft]} dias </GenericText> 
+          { this.props.newMemberData[ServerProtocol.freeEntryDaysLeft] &&
+            <GenericText> Te quedan {this.props.newMemberData[ServerProtocol.freeEntryDaysLeft]} dias </GenericText> 
           }
         </View>
       )

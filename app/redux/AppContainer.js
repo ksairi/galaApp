@@ -19,6 +19,7 @@ import createNotificationsHanlder from './lib/createHandler'
   ({
     nav:state.nav,
     userData: state[ServerProtocol.userData],
+    newMemberData: state[ServerProtocol.newMemberData],
     notifications: state[ServerProtocol.notifications]
   }),
   dispatch => 
@@ -83,7 +84,7 @@ export default class AppContainer extends React.Component{
           props.setNotifications(notification.data[ServerProtocol.notifications])  
         },
         [ServerProtocol.notificationsNewMemberData](){
-          if(props.userData && props.userData[ServerProtocol.newMember]){
+          if(props.newMemberData){
             props.setNotificationsNewMemberData(notification.data[ServerProtocol.notificationsNewMemberData])
           }
         }

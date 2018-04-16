@@ -10,13 +10,13 @@ export const userData = createReducer({}, {
   }
 })
 
-export const newMember = createReducer({}, {
+export const newMemberData = createReducer({}, {
   [ActionsTypes.SET_NEW_MEMBER_DATA](state, action){
-    if(action[ServerProtocol.newMember]){
-      return action[ServerProtocol.newMember]
+    if(action[ServerProtocol.newMemberData]){
+      return action[ServerProtocol.newMemberData]
     }
     else{
-      return {}
+      return state
     }    
   },
   [ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action){
