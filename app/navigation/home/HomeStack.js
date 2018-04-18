@@ -11,7 +11,7 @@ import { ActionsCreators } from '/redux/actions'
 export default StackNavigator({
   DrawerStack: { screen: DrawerStack }
   },{
-      navigationOptions: ({navigation}) => {
+      navigationOptions: ({navigation},props) => {
         const isMenuClosed = (navigation.state.index === 0)
         return {
           headerStyle: {backgroundColor: styles.headerBackgroundColor},
@@ -45,8 +45,8 @@ export default StackNavigator({
                       ],
                       key:null
                     })
-                    navigation.dispatch(resetAction)
                     navigation.dispatch(ActionsCreators.logOut())
+                    navigation.dispatch(resetAction)
                   }},
                 ],
                 { cancelable: true }

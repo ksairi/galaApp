@@ -21,7 +21,7 @@ import createNotificationsHanlder from './lib/createHandler'
     userData: state.userData,
     newMemberData:state.newMemberData,
     notifications:state.notifications,
-    isLoggedIn:state.isLoggedIn
+    currentHomeDrawerOption:state.currentHomeDrawerOption
   }),
   dispatch => 
   Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
@@ -33,7 +33,6 @@ export default class AppContainer extends React.Component{
   static intervalId
 
   componentDidMount() {
-    
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
 
     BackHandler.addEventListener('backPress', () => {
@@ -53,7 +52,6 @@ export default class AppContainer extends React.Component{
 
     this.startBatchProcess() //to execute without delay
     AppContainer.intervalId = setInterval(this.startBatchProcess, AppContainer.BATCH_PROCESS_INTERVAL)
-    this.props.dispatch(ActionsCreators.logOut()) // if app was closed when it was logged in
   }
 
   componentWillUnmount() {
@@ -69,6 +67,7 @@ export default class AppContainer extends React.Component{
     clearInterval(AppContainer.intervalId)
   }
 
+  
   handleNotification = async (notification) => {
     
     if(notification.origin === "received"){
@@ -94,41 +93,57 @@ export default class AppContainer extends React.Component{
     }
 
     if(notification.origin === "selected"){
-      if(this.props.isLoggedIn){
-        
-        var resetAction
+      var resetAction
+      const currentStackIndex = this.props.nav.index
+      if(this.props.nav.routes[currentStackIndex].routeName == Screens.HomeStack){
         createNotificationsHanlder({
           timetable(){
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [
-                NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Timetable})})
+                NavigationActions.navigate({routeName:Screens.HomeStack})
               ],
-              key: null
+              key:null
             })
+            this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Screens.Timetable))
           },
           routines(){
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [
-                NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Routines})})
+                NavigationActions.navigate({routeName:Screens.HomeStack})
               ],
-              key: null
-            })  
+              key:null
+            })
+            this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Screens.Routines))  
           },
           notifications(){
             resetAction = NavigationActions.reset({
               index: 0,
               actions: [
-                NavigationActions.navigate({routeName:Screens.HomeStack, action:NavigationActions.navigate({routeName:Screens.Notifications})})
+                NavigationActions.navigate({routeName:Screens.HomeStack})
               ],
-              key: null
+              key:null
             })
+            this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Screens.Notifications))
           }
         })(notification.data)
+      }
+      else{
+        const currentStackIndex = this.props.nav.index
+        const currentScreenIndex = this.props.nav.routes[currentStackIndex].index 
+        if(this.props.nav.routes[currentStackIndex].routes[currentScreenIndex].routeName != Screens.SignIn)
+          resetAction = NavigationActions.reset({
+            index:0,
+            actions:[
+              NavigationActions.navigate({routeName:Screens.LoginStack})
+            ],
+            key:null
+          })
+          this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Object.keys(notification.data)[0].charAt(0).toUpperCase() + Object.keys(notification.data)[0].slice(1)))
+      }
+      if(resetAction){
         this.props.dispatch(resetAction)
-        //https://github.com/react-navigation/react-navigation/issues/1620
-        //https://github.com/react-navigation/react-navigation/issues/1715
       }
     }
   }
@@ -150,7 +165,8 @@ export default class AppContainer extends React.Component{
         navigation={addNavigationHelpers({
         dispatch: this.props.dispatch,
         state: this.props.nav,
-        addListener})}
+        addListener
+        })}
       />
     )
   }

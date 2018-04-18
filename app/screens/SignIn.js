@@ -17,7 +17,8 @@ import { ActionsCreators } from '/redux/actions'
 @connect(
 state => ({
   notificationsToken:state.notificationsToken,
-  userData: state.userData
+  userData: state.userData,
+  isLoggedIn:state.isLoggedIn
   })
 )
 export default class SignIn extends React.Component{
@@ -25,7 +26,19 @@ export default class SignIn extends React.Component{
   state = {
     errorMessage:'',
     focusPassword:false,
-    spinnerVisible:false
+    spinnerVisible:false,
+    userId:'',
+    password:''
+  }
+
+  componentDidMount() {
+    if(this.props.isLoggedIn){
+      this.setState({userId:this.props.userData.userId}, ()=>{
+        this.setState({password:this.props.userData.password}, ()=>{
+          this.signIn()    
+        })
+      })  
+    }
   }
   
   render(){
@@ -36,14 +49,17 @@ export default class SignIn extends React.Component{
             <GenericContainer key={Labels.ENTER_USER_ID} style={ContainerStyles.textInputContainer}>
               <GenericTextInput key={Labels.ENTER_USER_ID} 
                 keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-                autoFocus onChangeText={pUserId => this.userId = pUserId}
-                onSubmitEditing={this.onSubmitUserId}/>
+                autoFocus onChangeText={userId => this.setState({userId})}
+                onSubmitEditing={this.onSubmitUserId}
+                value={this.state.userId}
+              />
             </GenericContainer>
             <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerStyles.textInputContainer}>
               <GenericTextInput key={Labels.ENTER_PASSWORD} placeholder={Labels.ENTER_PASSWORD}
-                secureTextEntry onChangeText={pPassword => this.password = pPassword}
+                secureTextEntry onChangeText={password => this.setState({password})}
                 onSubmitEditing={this.signIn}
-                inputRef={el => this.passwordInput = el}/>
+                inputRef={el => this.passwordInput = el}
+                value={this.state.password}/>
             </GenericContainer>
           </GenericContainer>
           <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
@@ -64,28 +80,26 @@ export default class SignIn extends React.Component{
 
   signIn = async () =>{
     Keyboard.dismiss()
-    if (!this.userId || !this.password){
+    if (!this.state.userId || !this.state.password){
         this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
         return
     }
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
       const deviceToken = this.props.notificationsToken ? this.props.notificationsToken : await getDeviceToken(this.props.dispatch)
-      const httpResponse = await login(this.userId, this.password, deviceToken)
+      const httpResponse = await login(this.state.userId, this.state.password, deviceToken)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-        console.log(httpResponse)
-        setInitialData(httpResponse.data, this.userId, this.password, this.props.dispatch)
+        setInitialData(httpResponse.data, this.state.userId, this.state.password, this.props.dispatch)
         this.props.navigation.dispatch(this.getNextAction())
       }
       else{
-        console.log(httpResponse)
         this.setState({errorMessage:httpResponse[ServerProtocol.messageField]})
       }
 
     }catch(errorMessage){
       this.setState({spinnerVisible:false})
-      if(Messages.CHECK_INTERNET_CONNECTION == errorMessage && this.userId == this.props.userData.userId && this.password == this.props.userData.password){ //offline login
+      if(Messages.CHECK_INTERNET_CONNECTION == errorMessage && this.state.userId == this.props.userData.userId && this.state.password == this.props.userData.password){ //offline login
         this.props.dispatch(ActionsCreators.setIsUsingCache(true))
         this.props.navigation.dispatch(this.getNextAction())
       }
@@ -96,7 +110,7 @@ export default class SignIn extends React.Component{
   }
 
   onSubmitUserId = () =>{
-    if(!this.password){
+    if(!this.sate.password){
       this.passwordInput.focus()
     }
     else{

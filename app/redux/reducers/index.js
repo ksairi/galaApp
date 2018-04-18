@@ -7,7 +7,7 @@ import * as routinesReducer from './routines'
 import * as timetableReducer from './timetable'
 import * as userDataReducer from './userData'
 import * as SessionReducer from './session'
-import nav from './navigation'
+import { nav, currentHomeDrawerOption } from './navigation'
 
 
 const rootPresistConfig = {
@@ -23,6 +23,7 @@ const rootReducer = combineReducers(Object.assign(
   timetableReducer,   
   userDataReducer,
   SessionReducer,
+  {currentHomeDrawerOption},
   {nav},
 ))
 
