@@ -1,5 +1,4 @@
-const SERVER_HOSTNAME = 'http://192.168.42.1:3000/'
-
+const SERVER_HOSTNAME = (__DEV__) ? 'http://192.168.42.1:3000/' : 'https://aqueous-harbor-62651.herokuapp.com/'
 exports.Urls = {
   LOGIN:SERVER_HOSTNAME + 'login',
   REGISTER:SERVER_HOSTNAME + 'register',
