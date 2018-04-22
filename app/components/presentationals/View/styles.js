@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { genericBackgroundColor, dynamicPaddingTop } from '/config/styles'
+import { genericBackgroundColor, dynamicPaddingTop, deviceWidth } from '/config/styles'
 
 const containerpadding= 20
 
@@ -8,7 +8,8 @@ export default StyleSheet.create({
     backgroundColor: genericBackgroundColor,
     flex:1,
     padding: containerpadding,
-    paddingTop:dynamicPaddingTop
+    paddingTop:dynamicPaddingTop,
+    width:deviceWidth
   },
   centredContainer:{
     flex: 2/3,

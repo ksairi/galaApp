@@ -1006,6 +1006,16 @@ babel-plugin-module-resolver@^2.3.0, babel-plugin-module-resolver@^2.7.1:
     glob "^7.1.1"
     resolve "^1.2.0"
 
+babel-plugin-module-resolver@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-module-resolver/-/babel-plugin-module-resolver-3.1.1.tgz#881cf67e3d4b8400d5eaaefc1be44d2dc1fe404f"
+  dependencies:
+    find-babel-config "^1.1.0"
+    glob "^7.1.2"
+    pkg-up "^2.0.0"
+    reselect "^3.0.1"
+    resolve "^1.4.0"
+
 babel-plugin-react-transform@2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/babel-plugin-react-transform/-/babel-plugin-react-transform-2.0.2.tgz#515bbfa996893981142d90b1f9b1635de2995109"
@@ -1455,12 +1465,6 @@ babel-register@^6.24.1, babel-register@^6.26.0:
     mkdirp "^0.5.1"
     source-map-support "^0.4.15"
 
-babel-root-slash-import@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/babel-root-slash-import/-/babel-root-slash-import-1.1.0.tgz#27db03489f99669c520a1486dd4ad75d55dad7d8"
-  dependencies:
-    babel "^6.1.18"
-
 babel-runtime@^6.0.0, babel-runtime@^6.18.0, babel-runtime@^6.2.0, babel-runtime@^6.22.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0, babel-runtime@^6.9.2:
   version "6.26.0"
   resolved "https://registry.yarnpkg.com/babel-runtime/-/babel-runtime-6.26.0.tgz#965c7058668e82b55d7bfe04ff2337bc8b5647fe"
@@ -1500,10 +1504,6 @@ babel-types@^6.18.0, babel-types@^6.19.0, babel-types@^6.24.1, babel-types@^6.26
     esutils "^2.0.2"
     lodash "^4.17.4"
     to-fast-properties "^1.0.3"
-
-babel@^6.1.18:
-  version "6.23.0"
-  resolved "https://registry.yarnpkg.com/babel/-/babel-6.23.0.tgz#d0d1e7d803e974765beea3232d4e153c0efb90f4"
 
 babylon@7.0.0-beta.44, babylon@^7.0.0-beta:
   version "7.0.0-beta.44"
@@ -2683,7 +2683,7 @@ finalhandler@1.1.0:
     statuses "~1.3.1"
     unpipe "~1.0.0"
 
-find-babel-config@^1.0.1:
+find-babel-config@^1.0.1, find-babel-config@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/find-babel-config/-/find-babel-config-1.1.0.tgz#acc01043a6749fec34429be6b64f542ebb5d6355"
   dependencies:
@@ -3124,7 +3124,7 @@ hoek@4.x.x:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/hoek/-/hoek-4.2.1.tgz#9634502aa12c445dd5a7c5734b572bb8738aacbb"
 
-hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.0.0, hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.3.1, hoist-non-react-statics@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
@@ -4764,10 +4764,6 @@ normalize-path@^2.0.0, normalize-path@^2.0.1:
   dependencies:
     remove-trailing-separator "^1.0.1"
 
-normalizr@^3.2.4:
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/normalizr/-/normalizr-3.2.4.tgz#16aafc540ca99dc1060ceaa1933556322eac4429"
-
 npm-run-path@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-2.0.2.tgz#35a9232dfa35d7067b4cb2ddf2357b1871536c5f"
@@ -5125,6 +5121,12 @@ pkg-dir@^2.0.0:
   dependencies:
     find-up "^2.1.0"
 
+pkg-up@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/pkg-up/-/pkg-up-2.0.0.tgz#c819ac728059a461cab1c3889a2be3c49a004d7f"
+  dependencies:
+    find-up "^2.1.0"
+
 plist@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/plist/-/plist-2.0.1.tgz#0a32ca9481b1c364e92e18dc55c876de9d01da8b"
@@ -5235,7 +5237,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.10, prop-types@^15.5.8, prop-types@^15.6.0:
+prop-types@^15.5.10, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0:
   version "15.6.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.1.tgz#36644453564255ddda391191fb3a125cbdf654ca"
   dependencies:
@@ -5416,6 +5418,12 @@ react-native-loading-spinner-overlay@^0.5.2:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
 
+react-native-parallax-swiper@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/react-native-parallax-swiper/-/react-native-parallax-swiper-1.1.7.tgz#0810e679d280c6e6a82f422592d9f2f2833b4d03"
+  dependencies:
+    prop-types "^15.5.7"
+
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
@@ -5465,6 +5473,17 @@ react-native-svg@6.2.2:
 react-native-table-component@^1.1.2:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/react-native-table-component/-/react-native-table-component-1.1.3.tgz#5369365b456063444fccaeeada9360a7fd405330"
+
+react-native-timeline-listview@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/react-native-timeline-listview/-/react-native-timeline-listview-0.2.3.tgz#e46b7f0fd2c2206329eee6194795e03899afe882"
+
+react-native-ui-kitten@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-ui-kitten/-/react-native-ui-kitten-3.0.0.tgz#2265393b57c6e637e55d7b7b5e5a214816b90ed6"
+  dependencies:
+    hoist-non-react-statics "^2.0.0"
+    prop-types "^15.5.10"
 
 react-native-vector-icons@4.5.0:
   version "4.5.0"
@@ -5894,6 +5913,10 @@ reqwest@2.0.5:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/reqwest/-/reqwest-2.0.5.tgz#00fb15ac4918c419ca82b43f24c78882e66039a1"
 
+reselect@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
+
 resolve-cwd@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-2.0.0.tgz#00a9f7387556e27038eae232caa372a6a59b665a"
@@ -5917,6 +5940,12 @@ resolve@^1.2.0:
 resolve@^1.3.2:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.6.0.tgz#0fbd21278b27b4004481c395349e7aba60a9ff5c"
+  dependencies:
+    path-parse "^1.0.5"
+
+resolve@^1.4.0:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.7.1.tgz#aadd656374fd298aee895bc026b8297418677fd3"
   dependencies:
     path-parse "^1.0.5"
 

@@ -46,7 +46,7 @@ exports.Labels = {
 }
 
 exports.Screens = {
-  Init:'Init',
+  Initial:'Initial',
   SignIn:'SignIn',
   ResetPassword:'ResetPassword',  
   SignUp:'SignUp',
