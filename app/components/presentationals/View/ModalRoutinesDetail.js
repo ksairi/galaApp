@@ -39,6 +39,7 @@ export default class modalRoutinesDetail extends React.Component{
             <View style={styles.exerciseDetailWrapper}>
               <Text style={styles.exerciseDetailTitle}>Repeticiones</Text>
               <Text style={styles.exerciseDetailData}>{selectedExercise.repetitions}</Text>
+              <Text style={styles.exerciseDetailData}>{selectedExercise.descripcion}</Text>
             </View>
           </View>
         }
@@ -47,6 +48,7 @@ export default class modalRoutinesDetail extends React.Component{
           <View style={styles.exerciseDetailWrapper}>
             <Text style={styles.exerciseDetailTitle}>Minutos</Text>
             <Text style={styles.exerciseDetailData}>{selectedExercise.minutes}</Text>
+            <Text style={styles.exerciseDetailData}>{selectedExercise.descripcion}</Text>
           </View>
         }
 
