@@ -19,7 +19,8 @@ RkTheme.setType('RkText', 'welcome-description', {
   fontSize:welcomeTextSize,
   color:welcomeTextColor,
   paddingLeft:25,
-  paddingRight:25
+  paddingRight:25,
+  fontFamily:'gamja-flower-regular'
 })
 
 RkTheme.setType('RkButton', 'goToLoginButton', {
@@ -48,7 +49,7 @@ export default (props)=>
       <RkText rkType='welcome-description'>
         Dentro de la app vas podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más
       </RkText>
-      <RkText style={{fontSize:welcomeTextSize, color:welcomeTextColor, paddingBottom:40}}>tu gimnasio</RkText>
+      <RkText style={{fontFamily:'gamja-flower-regular', fontSize:welcomeTextSize, color:welcomeTextColor, paddingBottom:40}}>tu gimnasio</RkText>
       
       <View style={{flexDirection:'row'}}>
         <RkButton  
