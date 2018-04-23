@@ -17,6 +17,7 @@ export default class App extends React.Component {
   async _cacheResourcesAsync(){
     await Font.loadAsync({
       'gamja-flower-regular': require('./assets/fonts/GamjaFlower-Regular.ttf'),
+      'icomoon': require('./assets/fonts/icomoon.ttf'),
     })
   }
   render(){

@@ -1,0 +1,117 @@
+{
+  "IcoMoonType": "selection",
+  "icons": [
+    {
+      "icon": {
+        "paths": [
+          "M612.392 20.078c-33.18-7.939-71.274-12.492-110.431-12.492-273.035 0-494.374 221.339-494.374 494.374 0 233.878 162.404 429.824 380.592 481.217l3.351 0.665c-301.176-190.745-291.137-742.902 60.235-732.863 271.059-10.039 200.784 501.961 50.196 501.961 431.686 40.157 411.608-542.118 120.471-732.863z",
+          "M391.529 983.843c33.18 7.939 71.274 12.492 110.431 12.492 273.035 0 494.374-221.339 494.374-494.374 0-233.878-162.404-429.824-380.592-481.217l-3.351-0.665c301.176 190.745 291.137 742.902-60.235 732.863-271.059 10.039-200.784-501.961-50.196-501.961-431.686-40.157-411.608 542.118-120.471 732.863z"
+        ],
+        "attrs": [
+          {},
+          {}
+        ],
+        "width": 1004,
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 0,
+        "tags": [
+          "json"
+        ]
+      },
+      "attrs": [
+        {},
+        {}
+      ],
+      "properties": {
+        "order": 10,
+        "id": 2,
+        "name": "json",
+        "prevSize": 20,
+        "code": 59649
+      },
+      "setIdx": 0,
+      "setId": 2,
+      "iconIdx": 0
+    },
+    {
+      "icon": {
+        "paths": [
+          "M512 307.2c0 94.257-76.41 170.667-170.667 170.667s-170.667-76.41-170.667-170.667c0-94.257 76.41-170.667 170.667-170.667s170.667 76.41 170.667 170.667z"
+        ],
+        "attrs": [
+          {
+            "fill": "rgb(92, 184, 92)",
+            "stroke": "rgb(92, 184, 92)",
+            "strokeLinejoin": "miter",
+            "strokeLinecap": "butt",
+            "strokeMiterlimit": "4",
+            "strokeWidth": 20.48
+          }
+        ],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 0,
+        "tags": [
+          "example"
+        ]
+      },
+      "attrs": [
+        {
+          "fill": "rgb(92, 184, 92)",
+          "stroke": "rgb(92, 184, 92)",
+          "strokeLinejoin": "miter",
+          "strokeLinecap": "butt",
+          "strokeMiterlimit": "4",
+          "strokeWidth": 20.48
+        }
+      ],
+      "properties": {
+        "order": 11,
+        "id": 0,
+        "name": "example",
+        "prevSize": 20,
+        "code": 59648
+      },
+      "setIdx": 0,
+      "setId": 2,
+      "iconIdx": 1
+    }
+  ],
+  "height": 1024,
+  "metadata": {
+    "name": "icomoon"
+  },
+  "preferences": {
+    "showGlyphs": true,
+    "showQuickUse": true,
+    "showQuickUse2": true,
+    "showSVGs": true,
+    "fontPref": {
+      "prefix": "icon-",
+      "metadata": {
+        "fontFamily": "icomoon",
+        "majorVersion": 1,
+        "minorVersion": 0
+      },
+      "metrics": {
+        "emSize": 1024,
+        "baseline": 6.25,
+        "whitespace": 50
+      },
+      "embed": false
+    },
+    "imagePref": {
+      "prefix": "icon-",
+      "png": true,
+      "useClassSelector": true,
+      "color": 0,
+      "bgColor": 16777215,
+      "classSelector": ".icon"
+    },
+    "historySize": 50,
+    "showCodes": false,
+    "gridSize": 16,
+    "showLiga": false
+  }
+}
