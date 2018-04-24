@@ -73,9 +73,14 @@ export default class SignIn extends React.Component{
             {this.state.errorMessage}
           </GenericText>
           <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
+          <SubmitButton key='RESET' title='RESET FIRST TIME' onPress= {() => this.resetFirstTime}/>
         </GenericContainer>
       </GenericContainer>
     )
+  }
+
+  resetFirstTime = () => {
+    this.props.dispatch(ActionsCreators.setIsAppsFirstTime(true))
   }
 
   signIn = async () =>{
@@ -110,7 +115,7 @@ export default class SignIn extends React.Component{
   }
 
   onSubmitUserId = () =>{
-    if(!this.sate.password){
+    if(!this.state.password){
       this.passwordInput.focus()
     }
     else{

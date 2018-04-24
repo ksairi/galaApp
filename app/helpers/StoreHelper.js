@@ -7,7 +7,6 @@ exports.setInitialData = (serverData, userId, password, dispatch) => {
   const { userData, newMemberData, timetable, routines, notifications } = serverData
   userData.userId = userId
   userData.password = password
-  dispatch(ActionsCreators.logIn())
   dispatch(ActionsCreators.setUserData(userData))
   dispatch(ActionsCreators.setNewMemberData(newMemberData))
   dispatch(ActionsCreators.setIsUsingCache(false))

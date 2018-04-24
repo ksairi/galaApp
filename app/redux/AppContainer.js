@@ -1,14 +1,12 @@
 import React from 'react'
-import { BackHandler, NetInfo } from 'react-native'
+import { NetInfo } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { Notifications } from 'expo'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { createReduxBoundAddListener } from 'react-navigation-redux-helpers'
-import { addNavigationHelpers } from 'react-navigation'
 import { Screens } from '/config/settings'
 import { ActionsCreators } from './actions'
-import AppRoutes from '/navigation/'
+import { FirstTimeRoutes, RegularUserRoutes } from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
 import NetworkHelper from '/helpers/NetworkHelper'
 import { syncStoreWithServer } from '/helpers/StoreHelper'
@@ -17,11 +15,13 @@ import createNotificationsHanlder from './lib/createHandler'
 @connect(
   state => 
   ({
-    nav:state.nav,
     userData: state.userData,
     newMemberData:state.newMemberData,
     notifications:state.notifications,
-    currentHomeDrawerOption:state.currentHomeDrawerOption
+    currentHomeDrawerOption:state.currentHomeDrawerOption,
+    isLoggedIn:state.isLoggedIn,
+    isAppsFirstTime:state.isAppsFirstTime
+
   }),
   dispatch => 
   Object.assign({}, {dispatch}, bindActionCreators(ActionsCreators, dispatch))  
@@ -35,16 +35,6 @@ export default class AppContainer extends React.Component{
   componentDidMount() {
     this.notificationSubscription = Notifications.addListener(this.handleNotification)
 
-    BackHandler.addEventListener('backPress', () => {
-      const { dispatch, nav } = this.props
-      const activeRoute = nav.routes[nav.index]
-      if (activeRoute.index === 0) {
-        return false
-      }
-      dispatch(NavigationActions.back())
-      return true
-    })
-
     NetInfo.addEventListener(
     'connectionChange',
     this.handleConnectivityChange
@@ -55,25 +45,18 @@ export default class AppContainer extends React.Component{
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('backPress')
-    
     this.notificationSubscription.remove()
     
     NetInfo.removeEventListener(
       'connectionChange',
       this.handleConnectivityChange
     )
-
     clearInterval(AppContainer.intervalId)
   }
-
   
   handleNotification = async (notification) => {
-    
     if(notification.origin === "received"){
-      
-      const props = this.props
-      
+      const props = this.props  
       createNotificationsHanlder({
         timetable(){
           props.setTimetable(notification.data.timetable)
@@ -93,58 +76,31 @@ export default class AppContainer extends React.Component{
     }
 
     if(notification.origin === "selected"){
-      var resetAction
-      const currentStackIndex = this.props.nav.index
-      if(this.props.nav.routes[currentStackIndex].routeName == Screens.HomeStack){
+      if(this.props.isLoggedIn){
+        const navigator = this.navigator  
         createNotificationsHanlder({
           timetable(){
-            resetAction = NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({routeName:Screens.HomeStack})
-              ],
-              key:null
-            })
-            this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Screens.Timetable))
+            navigator.navigate(Screens.Timetable)
           },
           routines(){
-            resetAction = NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({routeName:Screens.HomeStack})
-              ],
-              key:null
-            })
-            this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Screens.Routines))  
+            navigator.navigate(Screens.Routines)
           },
           notifications(){
-            resetAction = NavigationActions.reset({
-              index: 0,
-              actions: [
-                NavigationActions.navigate({routeName:Screens.HomeStack})
-              ],
-              key:null
-            })
-            this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Screens.Notifications))
+            navigator.navigate(Screens.Notifications)
           }
         })(notification.data)
       }
       else{
-        const currentStackIndex = this.props.nav.index
-        const currentScreenIndex = this.props.nav.routes[currentStackIndex].index 
-        if(this.props.nav.routes[currentStackIndex].routes[currentScreenIndex].routeName != Screens.SignIn)
-          resetAction = NavigationActions.reset({
+          this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Object.keys(notification.data)[0].charAt(0).toUpperCase() + Object.keys(notification.data)[0].slice(1)))
+          const resetAction = NavigationActions.reset({
             index:0,
             actions:[
               NavigationActions.navigate({routeName:Screens.LoginStack})
             ],
             key:null
           })
-          this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Object.keys(notification.data)[0].charAt(0).toUpperCase() + Object.keys(notification.data)[0].slice(1)))
-      }
-      if(resetAction){
-        this.props.dispatch(resetAction)
-      }
+          this.navigator.dispatch(resetAction)
+        }
     }
   }
 
@@ -159,16 +115,18 @@ export default class AppContainer extends React.Component{
   }
 
   render() {
-    const addListener = createReduxBoundAddListener("root")
-    return(
-      <AppRoutes 
-        navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.nav,
-        addListener
-        })}
-      />
-    )
+    if(this.props.isAppsFirstTime){
+      return(
+        <FirstTimeRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}
+        />
+      )
+    }
+    else{
+      return(
+        <RegularUserRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}
+        />
+      )
+    }
   }
 
   startBatchProcess = () => {

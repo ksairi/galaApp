@@ -9,3 +9,9 @@ export const isLoggedIn = createReducer(false, {
     return false
   }
 })
+
+export const isAppsFirstTime = createReducer(true, {
+  [ActionsTypes.SET_IS_APPS_FIRST_TIME](state, action){
+    return action.state
+  }
+})

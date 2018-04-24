@@ -6,15 +6,14 @@ import * as notificationsReducer from './notifications'
 import * as routinesReducer from './routines'
 import * as timetableReducer from './timetable'
 import * as userDataReducer from './userData'
-import * as SessionReducer from './session'
-import { nav, currentHomeDrawerOption } from './navigation'
+import * as sessionReducer from './session'
+import * as navigationReducer  from './navigation'
 
 
 const rootPresistConfig = {
   key: 'root',
   storage : createSecureStore(),
-  stateReconciler: autoMergeLevel2,
-  blacklist:['nav']
+  stateReconciler: autoMergeLevel2
 }
 
 const rootReducer = combineReducers(Object.assign(
@@ -22,9 +21,8 @@ const rootReducer = combineReducers(Object.assign(
   routinesReducer, 
   timetableReducer,   
   userDataReducer,
-  SessionReducer,
-  {currentHomeDrawerOption},
-  {nav},
+  sessionReducer,
+  navigationReducer
 ))
 
 export default persistReducer(rootPresistConfig, rootReducer)

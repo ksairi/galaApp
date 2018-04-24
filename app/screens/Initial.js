@@ -1,10 +1,11 @@
 import React from 'react'
 import { View, ScrollView } from 'react-native'
 import { RkTheme, RkText, RkButton } from 'react-native-ui-kitten'
+import { connect } from 'react-redux'
 import { GenericContainer } from '/components/presentationals/View/'
 import ContainerStyles from '/components/presentationals/View/styles'
 import Header from '/components/presentationals/Header' 
-import { Screens } from '/config/settings'
+import { ActionsCreators } from '/redux/actions'
 
 const welcomeTextSize=16
     , welcomeTextColor='green'
@@ -34,28 +35,30 @@ RkTheme.setType('RkButton', 'goToLoginButton', {
 })
 
 
-function goToLogin(navigation){
-  
-  navigation.navigate(Screens.SignIn)
+function goToLogin(dispatch, navigation){
+  dispatch(ActionsCreators.setIsAppsFirstTime(false))
 }
 
-export default (props)=>
-  <ScrollView contentContainerStyle={ContainerStyles.rootContainer}>
-    <GenericContainer style={ContainerStyles.centredContainer}>
-      <Header />
-      <RkText rkType='welcome'> 
-        ¡Bienvenido!
-      </RkText>
-      <RkText rkType='welcome-description'>
-        Dentro de la app vas podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más
-      </RkText>
-      <RkText style={{fontFamily:'gamja-flower-regular', fontSize:welcomeTextSize, color:welcomeTextColor, paddingBottom:40}}>tu gimnasio</RkText>
-      
-      <View style={{flexDirection:'row'}}>
-        <RkButton  
-         rkType='rounded goToLoginButton' onPress={() => goToLogin(props.navigation)}>EXPLORÁ LA APP
-        </RkButton>
-      </View>
-      
-    </GenericContainer>
-  </ScrollView>
+ function Initial ({dispatch, navigation}){
+  return(
+    <ScrollView contentContainerStyle={ContainerStyles.rootContainer}>
+      <GenericContainer style={ContainerStyles.centredContainer}>
+        <Header />
+        <RkText rkType='welcome'> 
+          ¡Bienvenido!
+        </RkText>
+        <RkText rkType='welcome-description'>
+          Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más
+        </RkText>
+        <RkText style={{fontFamily:'gamja-flower-regular', fontSize:welcomeTextSize, color:welcomeTextColor, paddingBottom:40}}>tu gimnasio</RkText>
+        
+        <View style={{flexDirection:'row'}}>
+          <RkButton  rkType='rounded goToLoginButton' onPress={() => goToLogin(dispatch, navigation)}>
+           EXPLORÁ LA APP
+          </RkButton>
+        </View>
+      </GenericContainer>
+    </ScrollView>
+  )
+}
+export default connect()(Initial)

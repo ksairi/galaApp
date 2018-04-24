@@ -55,9 +55,11 @@ exports.Screens = {
   Timetable:'Timetable',
   Routines:'Routines',
   Notifications:'Notifications',
+  NewMemberPromotions:'NewMemberPromotions',
+  WelcomeStack:'welcomeStack',
   LoginStack:'loginStack',
   HomeStack:'homeStack',
-  NewMemberPromotions:'NewMemberPromotions'
+  
 }
 
 exports.SignUpConstraints = {
@@ -91,6 +93,7 @@ exports.ActionsTypes = {
   //Session
   LOG_IN:'LOG_IN',
   LOG_OUT:'LOG_OUT',
+  SET_IS_APPS_FIRST_TIME:'SET_IS_APPS_FIRST_TIME',
   //Navigation
   SET_CURRENT_HOME_DRAWER_OPTION:'SET_CURRENT_HOME_DRAWER_OPTION'
 

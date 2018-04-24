@@ -34,7 +34,6 @@
     "react-native-timeline-listview": "^0.2.3",
     "react-native-ui-kitten": "^3.0.0",
     "react-navigation": "^1.5.9",
-    "react-navigation-redux-helpers": "^1.0.1",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
