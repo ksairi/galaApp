@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import { RkTheme, RkText, RkButton } from 'react-native-ui-kitten'
 import { GenericContainer } from '/components/presentationals/View/'
 import ContainerStyles from '/components/presentationals/View/styles'
@@ -40,7 +40,7 @@ function goToLogin(navigation){
 }
 
 export default (props)=>
-  <GenericContainer style={ContainerStyles.rootContainer}>
+  <ScrollView contentContainerStyle={ContainerStyles.rootContainer}>
     <GenericContainer style={ContainerStyles.centredContainer}>
       <Header />
       <RkText rkType='welcome'> 
@@ -58,4 +58,4 @@ export default (props)=>
       </View>
       
     </GenericContainer>
-  </GenericContainer>
+  </ScrollView>
