@@ -8,6 +8,7 @@ exports.setInitialData = (serverData, userId, password, dispatch) => {
   userData.userId = userId
   userData.password = password
   dispatch(ActionsCreators.logIn())
+  dispatch(ActionsCreators.setAutoLoginErrorMessage(''))
   dispatch(ActionsCreators.setUserData(userData))
   dispatch(ActionsCreators.setNewMemberData(newMemberData))
   dispatch(ActionsCreators.setIsUsingCache(false))

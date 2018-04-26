@@ -15,3 +15,9 @@ export const isAppsFirstTime = createReducer(true, {
     return action.state
   }
 })
+
+export const autoLoginErrorMessage = createReducer('', {
+  [ActionsTypes.SET_AUTO_LOGIN_ERROR_MESSAGE](state, action){
+    return action.autoLoginErrorMessage
+  }
+})

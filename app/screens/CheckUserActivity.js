@@ -1,7 +1,11 @@
 import React from 'react'
-import { ActivityIndicator, StatusBar, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { LoadingSpinner } from '/components/presentationals/Spinner'
 import { connect } from 'react-redux'
-import { Screens } from '/config/settings'
+import { Screens, ServerProtocol } from '/config/settings'
+import { login } from '/helpers/ApiHelper'
+import { setInitialData } from '/helpers/StoreHelper'
+import { ActionsCreators } from '/redux/actions'
 
 const styles = StyleSheet.create({
   container: {
@@ -15,23 +19,60 @@ const styles = StyleSheet.create({
   }
 })
 
-function CheckUserActivity(props){
+@connect(state=>({
+  isAppsFirstTime:state.isAppsFirstTime,
+  isLoggedIn:state.isLoggedIn,
+  userId:state.userData.userId,
+  password:state.userData.password
+  })
+)
 
-  props.navigation.navigate(props.isAppsFirstTime ? Screens.Welcome : Screens.LoginStack)
-  //props.navigation.navigate(1==1 ? Screens.Welcome : Screens.LoginStack)
+export default class CheckUserActivity extends React.Component {
 
-  return(
-    <View style={styles.container}>
-      <ActivityIndicator />
-      <StatusBar barStyle="default" />
-    </View>
-  )
-}
+  static isInLoggingProcess = false
+  
+  constructor(props){
+    super(props)
+    this.checkUserStatus()
+  }
 
-const mapStateToProps = (state) => {
- return {
-  isAppsFirstTime:state.isAppsFirstTime
- }
-}
+  async checkUserStatus(){
+    
+    if(this.props.isAppsFirstTime){
+    //if(1==1){
+      this.props.navigation.navigate(Screens.Welcome)
+    }
+    else{
+        if(this.props.isLoggedIn){
+          try{
+            CheckUserActivity.isInLoggingProcess = true
+            const httpResponse = await login(this.props.userId, this.props.password)
+            if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+              setInitialData(httpResponse.data, this.props.userId, this.props.password, this.props.dispatch)
+              this.props.navigation.navigate(Screens.HomeStack)
+            }
+            else{
+              this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(httpResponse[ServerProtocol.messageField]))
+              this.props.navigation.navigate(Screens.LoginStack) 
+            }
+          }
+            catch(error){
+              this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(error))
+              this.props.navigation.navigate(Screens.LoginStack)
+            }
+        }
+        else{
+          this.props.navigation.navigate(Screens.LoginStack)
+        }
+    }   
+  }
 
-export default connect(mapStateToProps)(CheckUserActivity)
+  render(){
+    
+    return(
+      <View style={styles.container}>
+        { CheckUserActivity.isInLoggingProcess && <LoadingSpinner visible={true} message={ 'Loguiando' }/>  }
+      </View>
+    )
+  }
+} 

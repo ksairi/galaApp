@@ -10,15 +10,14 @@ import { GenericText, GenericLink } from '/components/presentationals/Text/'
 import { Messages, Labels, Screens, ServerProtocol } from '/config/settings'
 import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
-import { getDeviceToken } from '/helpers/NotificationsHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { ActionsCreators } from '/redux/actions'
 
 @connect(
 state => ({
-  notificationsToken:state.notificationsToken,
   userData: state.userData,
-  isLoggedIn:state.isLoggedIn
+  isLoggedIn:state.isLoggedIn,
+  autoLoginErrorMessage:state.autoLoginErrorMessage
   })
 )
 export default class SignIn extends React.Component{
@@ -33,13 +32,11 @@ export default class SignIn extends React.Component{
 
   componentDidMount() {
     if(this.props.isLoggedIn){
-      this.setState({userId:this.props.userData.userId}, ()=>{
-        this.setState({password:this.props.userData.password}, ()=>{
-          this.signIn()    
-        })
-      })  
+      this.setState({userId:this.props.userData.userId})
+      this.setState({password:this.props.userData.password})          
     }
   }
+
   
   render(){
     return (
@@ -51,7 +48,7 @@ export default class SignIn extends React.Component{
                 keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
                 autoFocus onChangeText={userId => this.setState({userId})}
                 onSubmitEditing={this.onSubmitUserId}
-                value={this.state.userId}
+                value={this.props.isLoggedIn ? this.state.userId : null}
               />
             </GenericContainer>
             <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerStyles.textInputContainer}>
@@ -59,7 +56,7 @@ export default class SignIn extends React.Component{
                 secureTextEntry onChangeText={password => this.setState({password})}
                 onSubmitEditing={this.signIn}
                 inputRef={el => this.passwordInput = el}
-                value={this.state.password}/>
+                value={this.props.isLoggedIn ? this.state.password : null}/>
             </GenericContainer>
           </GenericContainer>
           <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
@@ -69,8 +66,9 @@ export default class SignIn extends React.Component{
           <GenericLink key={Messages.NO_ACCOUNT} onPress={() => this.goToSignUp}>
             {Messages.NO_ACCOUNT}
           </GenericLink>
-          <GenericText key="GenericText" error={this.state.errorMessage ? true : false}>
+          <GenericText key="GenericText" error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
             {this.state.errorMessage}
+            {this.props.autoLoginErrorMessage}
           </GenericText>
           <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
         </GenericContainer>
@@ -86,8 +84,7 @@ export default class SignIn extends React.Component{
     }
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
-      const deviceToken = this.props.notificationsToken ? this.props.notificationsToken : await getDeviceToken(this.props.dispatch)
-      const httpResponse = await login(this.state.userId, this.state.password, deviceToken)
+      const httpResponse = await login(this.state.userId, this.state.password)
       this.setState({spinnerVisible:false})
       if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
         setInitialData(httpResponse.data, this.state.userId, this.state.password, this.props.dispatch)
