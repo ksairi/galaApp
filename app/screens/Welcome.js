@@ -2,6 +2,7 @@ import React from 'react'
 import { View, ScrollView } from 'react-native'
 import { RkTheme, RkText, RkButton } from 'react-native-ui-kitten'
 import { connect } from 'react-redux'
+import { Screens } from '/config/settings'
 import { GenericContainer } from '/components/presentationals/View/'
 import ContainerStyles from '/components/presentationals/View/styles'
 import Header from '/components/presentationals/Header' 
@@ -37,9 +38,10 @@ RkTheme.setType('RkButton', 'goToLoginButton', {
 
 function goToLogin(dispatch, navigation){
   dispatch(ActionsCreators.setIsAppsFirstTime(false))
+  navigation.navigate(Screens.LoginStack)
 }
 
- function Initial ({dispatch, navigation}){
+ function Welcome({dispatch, navigation}){
   return(
     <ScrollView contentContainerStyle={ContainerStyles.rootContainer}>
       <GenericContainer style={ContainerStyles.centredContainer}>
@@ -61,4 +63,4 @@ function goToLogin(dispatch, navigation){
     </ScrollView>
   )
 }
-export default connect()(Initial)
+export default connect()(Welcome)

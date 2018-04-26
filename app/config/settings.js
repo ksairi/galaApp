@@ -46,7 +46,8 @@ exports.Labels = {
 }
 
 exports.Screens = {
-  Initial:'Initial',
+  CheckUserActivity:'CheckUserActivity',
+  Welcome:'Welcome',
   SignIn:'SignIn',
   ResetPassword:'ResetPassword',  
   SignUp:'SignUp',
@@ -56,10 +57,8 @@ exports.Screens = {
   Routines:'Routines',
   Notifications:'Notifications',
   NewMemberPromotions:'NewMemberPromotions',
-  WelcomeStack:'welcomeStack',
   LoginStack:'loginStack',
-  HomeStack:'homeStack',
-  
+  HomeStack:'homeStack'  
 }
 
 exports.SignUpConstraints = {

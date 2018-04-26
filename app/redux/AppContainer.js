@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Screens } from '/config/settings'
 import { ActionsCreators } from './actions'
-import { FirstTimeRoutes, RegularUserRoutes } from '/navigation/'
+import AppRoutes from '/navigation/'
 import ValidationHelper from '/helpers/ValidationHelper'
 import NetworkHelper from '/helpers/NetworkHelper'
 import { syncStoreWithServer } from '/helpers/StoreHelper'
@@ -92,14 +92,7 @@ export default class AppContainer extends React.Component{
       }
       else{
           this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(Object.keys(notification.data)[0].charAt(0).toUpperCase() + Object.keys(notification.data)[0].slice(1)))
-          const resetAction = NavigationActions.reset({
-            index:0,
-            actions:[
-              NavigationActions.navigate({routeName:Screens.LoginStack})
-            ],
-            key:null
-          })
-          this.navigator.dispatch(resetAction)
+          navigator.navigate(Screens.LoginStack)          
         }
     }
   }
@@ -115,18 +108,9 @@ export default class AppContainer extends React.Component{
   }
 
   render() {
-    if(this.props.isAppsFirstTime){
-      return(
-        <FirstTimeRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}
-        />
-      )
-    }
-    else{
-      return(
-        <RegularUserRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}
-        />
-      )
-    }
+    return(
+      <AppRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}/>
+    )
   }
 
   startBatchProcess = () => {

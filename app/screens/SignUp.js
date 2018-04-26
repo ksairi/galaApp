@@ -14,7 +14,6 @@ import { register } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import StoreHelper from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
-import { ActionsCreators } from '/redux/actions'
 
 
 @connect(
@@ -57,16 +56,8 @@ export default class SignUp extends React.Component{
         this.setState({spinnerVisible:false})
         if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
           StoreHelper.clearStore(this.props.dispatch)
-          this.props.dispatch(ActionsCreators.logIn())
           StoreHelper.setInitialData(httpResponse.data, this.userId, this.password, this.props.dispatch)
-          const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [
-            NavigationActions.navigate({routeName:Screens.HomeStack})
-            ],
-            key: null
-          })
-          this.props.navigation.dispatch(resetAction)
+          this.props.navigation.navigate(Screens.HomeStack)
         }
         else{
           this.setState({message:httpResponse[ServerProtocol.messageField]})
