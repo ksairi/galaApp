@@ -1,4 +1,3 @@
-import { Screens } from '/config/settings'
 import { ActionsTypes } from '/config/settings'
 import createReducer from './lib/createReducer'
 

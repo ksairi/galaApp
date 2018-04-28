@@ -22,7 +22,7 @@ RkTheme.setType('RkText', 'welcome-description', {
   color:welcomeTextColor,
   paddingLeft:25,
   paddingRight:25,
-  fontFamily:'gamja-flower-regular'
+  fontFamily:'gamja-flower-regular',
 })
 
 RkTheme.setType('RkButton', 'goToLoginButton', {
@@ -43,17 +43,15 @@ function goToLogin(dispatch, navigation){
 
  function Welcome({dispatch, navigation}){
   return(
-    <ScrollView contentContainerStyle={ContainerStyles.rootContainer}>
+    <ScrollView contentContainerStyle={ContainerStyles.scrollViewContainer}>
       <GenericContainer style={ContainerStyles.centredContainer}>
         <Header />
         <RkText rkType='welcome'> 
           ¡Bienvenido!
         </RkText>
-        <RkText rkType='welcome-description'>
-          Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más
+        <RkText rkType='welcome-description' style={{paddingBottom:40}}>
+          Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio
         </RkText>
-        <RkText style={{fontFamily:'gamja-flower-regular', fontSize:welcomeTextSize, color:welcomeTextColor, paddingBottom:40}}>tu gimnasio</RkText>
-        
         <View style={{flexDirection:'row'}}>
           <RkButton  rkType='rounded goToLoginButton' onPress={() => goToLogin(dispatch, navigation)}>
            EXPLORÁ LA APP

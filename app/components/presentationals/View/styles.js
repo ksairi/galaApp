@@ -4,12 +4,18 @@ import { genericBackgroundColor, dynamicPaddingTop, deviceWidth } from '/config/
 const containerpadding= 20
 
 export default StyleSheet.create({
+  scrollViewContainer:{
+    backgroundColor: genericBackgroundColor,
+    padding: containerpadding,
+    paddingTop:dynamicPaddingTop
+  },
+
   rootContainer:{
     backgroundColor: genericBackgroundColor,
     flex:1,
     padding: containerpadding,
     paddingTop:dynamicPaddingTop,
-    width:deviceWidth
+    //width:deviceWidth
   },
   centredContainer:{
     flex: 2/3,
