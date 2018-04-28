@@ -14,7 +14,7 @@ function DrawerContentComponent(props){
   return (
     <ScrollView>
       <SafeAreaView style={{flex:1}} forceInset={{ top: 'always', horizontal: 'never' }}>
-        <DrawerItems {...props} items={filteredItems} />
+        <DrawerItems {...props} items={filteredItems} itemStyle={{height:70}} iconContainerStyle={{paddingLeft:3, height:100, width:100, marginTop:20}} />
       </SafeAreaView>
     </ScrollView>
   )

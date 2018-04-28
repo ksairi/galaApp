@@ -1,9 +1,7 @@
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { DrawerNavigator, DrawerItems, SafeAreaView  } from 'react-navigation'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import MCIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import MIcons from 'react-native-vector-icons/MaterialIcons'
+import { createIconSetFromIcoMoon } from '@expo/vector-icons'
 import { Screens, Labels } from '/config/settings'
 import Home from '/screens/Home'
 import Timetable from '/screens/Timetable'
@@ -12,6 +10,11 @@ import Notifications from '/screens/Notifications'
 import Contact from '/screens/Contact'
 import NewMemberPromotions from '/screens/NewMemberPromotions'
 import DrawerContentComponent from '/components/containers/DrawerContentComponent'
+import icomoonConfig from '/icomoonConfig.json'
+
+
+const Icon = createIconSetFromIcoMoon(icomoonConfig)
+
 
 export default DrawerNavigator({
   [Screens.Home]:{
@@ -19,9 +22,9 @@ export default DrawerNavigator({
     navigationOptions:{
       headerTitle:Labels.HOME,
       drawerIcon:({ tintColor, focused }) => (
-        <MCIcons
-          name={focused ? 'home-circle' : 'home'}
-          size={26}
+        <Icon
+          name={focused ? 'user-icon-white' : 'user-icon'}
+          size={100}
           style={{ color: tintColor }}
         />
       )
@@ -32,9 +35,9 @@ export default DrawerNavigator({
     navigationOptions:{
       title:"Horarios",
       drawerIcon:({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-time' : 'ios-time-outline'}
-          size={26}
+        <Icon
+          name={focused ? 'timetable' : 'timetable-white'}
+          size={80}
           style={{ color: tintColor }}
         />
       )
@@ -45,9 +48,9 @@ export default DrawerNavigator({
     navigationOptions:{
       title:"Rutinas",
       drawerIcon:({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-book' : 'ios-book-outline'}
-          size={26}
+        <Icon
+          name={focused ? 'routines' : 'routines-white'}
+          size={80}
           style={{ color: tintColor }}
         />
       )
@@ -58,9 +61,9 @@ export default DrawerNavigator({
     navigationOptions:{
       title:"Notificaciones",
       drawerIcon:({ tintColor, focused }) => (
-        <MIcons
-          name={focused ? 'notifications-active' : 'notifications'}
-          size={26}
+        <Icon
+          name={focused ? 'message-icon' : 'message-icon-white'}
+          size={80}
           style={{ color: tintColor }}
         />
       )
@@ -71,9 +74,9 @@ export default DrawerNavigator({
     navigationOptions:{
       title:"Contacto",
       drawerIcon:({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-contact' : 'ios-contact-outline'}
-          size={26}
+        <Icon
+          name={focused ? 'referrals' : 'referrals-white'}
+          size={80}
           style={{ color: tintColor }}
         />
       )
@@ -84,9 +87,9 @@ export default DrawerNavigator({
     navigationOptions:{
       title:"Promoción para Socio Nuevo",
       drawerIcon:({ tintColor, focused }) => (
-        <Ionicons
-          name={focused ? 'ios-contact' : 'ios-contact-outline'}
-          size={26}
+        <Icon
+          name={focused ? 'referrals' : 'referrals-white'}
+          size={80}
           style={{ color: tintColor }}
         />
       )

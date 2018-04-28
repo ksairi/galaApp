@@ -8,6 +8,6 @@ const Icon = createIconSetFromIcoMoon(icomoonConfig)
 
 export default () =>
   <View>
-  <Icon name="example" size={80} />
-  <Icon name="json" size={80} /> 
+  <Icon name="timetable" size={80} />
+  <Icon name="referrals" size={80} /> 
 </View>

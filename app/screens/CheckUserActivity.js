@@ -38,8 +38,8 @@ export default class CheckUserActivity extends React.Component {
 
   async checkUserStatus(){
     
-    //if(this.props.isAppsFirstTime){
-    if(1==1){
+    if(this.props.isAppsFirstTime){
+    //if(1==1){
       this.props.navigation.navigate(Screens.Welcome)
     }
     else{
