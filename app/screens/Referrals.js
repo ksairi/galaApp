@@ -13,7 +13,7 @@ import { sendComments } from '/helpers/ApiHelper'
 @connect(
   state => ({userId: state.userData.userId})
 )
-export default class Contact extends React.Component {
+export default class Referrals extends React.Component {
   
   state = {
     spinnerVisible:false,

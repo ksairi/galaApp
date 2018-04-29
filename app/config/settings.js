@@ -40,7 +40,6 @@ exports.Labels = {
   SUBMIT:'Enviar',
   ENTER_MAIL: 'E-mail',
   GO_BACK_TO_SIGN_IN:'Iniciá sesión',
-  HOME:'Home',
   ENTER_COMMENTS:'Queremos leer lo que tenés para decir'
 
 }
@@ -51,12 +50,12 @@ exports.Screens = {
   SignIn:'SignIn',
   ResetPassword:'ResetPassword',  
   SignUp:'SignUp',
-  Home: 'Home',
-  Contact:'Contact',
-  Timetable:'Timetable',
+  Profile: 'Profile',
   Routines:'Routines',
-  Notifications:'Notifications',
-  NewMemberPromotions:'NewMemberPromotions',
+  Classes: 'Classes',
+  Timetable:'Timetable',
+  Messages:'Messages',
+  Referrals:'Referrals',
   LoginStack:'loginStack',
   HomeStack:'homeStack'  
 }

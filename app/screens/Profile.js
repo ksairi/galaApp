@@ -12,7 +12,7 @@ import { Screens } from '/config/settings'
     currentHomeDrawerOption:state.currentHomeDrawerOption
   })
 )
-export default class Home extends React.Component {
+export default class Profile extends React.Component {
   
   componentDidMount(){
     if(this.props.currentHomeDrawerOption != ''){
