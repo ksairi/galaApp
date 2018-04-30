@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, ScrollView } from 'react-native'
+import { View } from 'react-native'
 import { RkTheme, RkText, RkButton } from 'react-native-ui-kitten'
 import { connect } from 'react-redux'
 import { Screens } from '/config/settings'
@@ -7,6 +7,7 @@ import { GenericContainer } from '/components/presentationals/View/'
 import ContainerStyles from '/components/presentationals/View/styles'
 import Header from '/components/presentationals/Header' 
 import { ActionsCreators } from '/redux/actions'
+import RootContainer from '/components/presentationals/RootContainer'
 
 const welcomeTextSize=16
     , welcomeTextColor='green'
@@ -43,8 +44,8 @@ function goToLogin(dispatch, navigation){
 
  function Welcome({dispatch, navigation}){
   return(
-    <ScrollView contentContainerStyle={ContainerStyles.scrollViewContainer}>
-      <GenericContainer style={ContainerStyles.centredContainer}>
+    <RootContainer>
+      <GenericContainer style={[ContainerStyles.centredContainer, {flex:1}]}>
         <Header />
         <RkText rkType='welcome'> 
           ¡Bienvenido!
@@ -58,7 +59,7 @@ function goToLogin(dispatch, navigation){
           </RkButton>
         </View>
       </GenericContainer>
-    </ScrollView>
+    </RootContainer>
   )
 }
 export default connect()(Welcome)

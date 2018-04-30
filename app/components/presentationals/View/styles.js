@@ -1,27 +1,17 @@
 import { StyleSheet } from 'react-native'
-import { genericBackgroundColor, dynamicPaddingTop, deviceWidth } from '/config/styles'
-
-const containerpadding= 20
+import { genericBackgroundColor, dynamicPaddingTop, containerPadding } from '/config/styles'
 
 export default StyleSheet.create({
-  scrollViewContainer:{
-    backgroundColor: genericBackgroundColor,
-    padding: containerpadding,
-    paddingTop:dynamicPaddingTop
-  },
-
   rootContainer:{
     backgroundColor: genericBackgroundColor,
     flex:1,
-    padding: containerpadding,
+    padding: containerPadding,
     paddingTop:dynamicPaddingTop,
-    //width:deviceWidth
   },
   centredContainer:{
     flex: 2/3,
     alignItems: 'center'
   },
-  
   verticalContainer:{
     flexDirection: 'column',
     backgroundColor: genericBackgroundColor,
