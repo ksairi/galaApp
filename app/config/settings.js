@@ -15,7 +15,6 @@ exports.Messages = {
   SERVER_ERROR:'Error de conexión a nuestros servidores. Por favor reintentá en unos minutos',
   CHECK_INTERNET_CONNECTION:'Verificá tu conexión de internet',
   LOADING:'Cargando...',
-  NO_ACCOUNT:'¿No te registraste?',
   FORGOT_PASSWORD:'¿Olvidaste la contraseña?',
   USER_ALREADY:'¿Ya tenes una cuenta?',
   INVALID_PASSWORD_LENGTH:'La contraseña debe tener al menos 5 caracteres',
@@ -31,9 +30,6 @@ exports.Messages = {
 }
 
 exports.Labels = {
-  ENTER_USER_ID: 'DNI',
-  ENTER_PASSWORD: 'Contraseña',
-  SIGN_IN: 'Iniciá Sesión',
   SIGN_UP: 'Registrate',
   ENTER_FULL_NAME: 'Nombre Completo',
   CONFIRM_PASSWORD: 'Confirmá contraseña',
@@ -41,7 +37,6 @@ exports.Labels = {
   ENTER_MAIL: 'E-mail',
   GO_BACK_TO_SIGN_IN:'Iniciá sesión',
   ENTER_COMMENTS:'Queremos leer lo que tenés para decir'
-
 }
 
 exports.Screens = {
@@ -94,6 +89,8 @@ exports.ActionsTypes = {
   SET_IS_APPS_FIRST_TIME:'SET_IS_APPS_FIRST_TIME',
   SET_AUTO_LOGIN_ERROR_MESSAGE:'SET_AUTO_LOGIN_ERROR_MESSAGE',
   //Navigation
-  SET_CURRENT_HOME_DRAWER_OPTION:'SET_CURRENT_HOME_DRAWER_OPTION'
+  SET_CURRENT_HOME_DRAWER_OPTION:'SET_CURRENT_HOME_DRAWER_OPTION',
+  //DEVICE
+  SET_CURRENT_ORIENTATION:'SET_CURRENT_ORIENTATION'
 
 }

@@ -1,17 +1,54 @@
 import React from 'react'
-import { Keyboard } from 'react-native'
+import { Keyboard, View, StyleSheet, TouchableOpacity } from 'react-native'
 import { connect } from 'react-redux'
-import { GenericContainer } from '/components/presentationals/View/'
-import ContainerStyles from '/components/presentationals/View/styles'
-import { GenericTextInput } from '/components/presentationals/TextInput/'
-import { SubmitButton } from '/components/presentationals/Button_old'
-import { LoadingSpinner } from '/components/presentationals/Spinner'
-import { GenericText, GenericLink } from '/components/presentationals/Text/'
-import { Messages, Labels, Screens, ServerProtocol } from '/config/settings'
+import { RkTheme, RkTextInput, RkText } from 'react-native-ui-kitten'
+import { Messages, Screens, ServerProtocol } from '/config/settings'
+import genericStyles from '/config/styles'
 import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { ActionsCreators } from '/redux/actions'
+import RootWrapper from '/components/containers/RootWrapper'
+import CentredWrapper from '/components/presentationals/CentredWrapper'
+import Button from '/components/presentationals/Button'
+import Header from '/components/presentationals/Header'
+import GenericText from '/components/presentationals/GenericText'
+import LoadingSpinner from '/components/presentationals/LoadingSpinner'
+
+
+
+RkTheme.setType('RkTextInput', 'inputText', {
+  backgroundColor: '#12194d',
+  color: 'white',
+  input:{
+    placeholderTextColor:'white',
+    fontSize:20,
+    paddingTop:10,
+    paddingBottom:10
+  }
+})
+
+RkTheme.setType('RkButton', 'signIn', {
+  backgroundColor: genericStyles.genericButtonBackgroundColor,
+  flex:1,
+  content:{
+    color:'white',
+    fontSize:19,
+    fontWeight:'bold',  
+  }
+})
+
+RkTheme.setType('RkText', 'no-account', {
+  fontSize:16,
+  color:'white',
+  paddingLeft:40,
+  paddingRight:25,
+  fontFamily:'gamja-flower-regular',
+})
+
+const styles = StyleSheet.create({
+
+})
 
 @connect(
 state => ({
@@ -39,40 +76,38 @@ export default class SignIn extends React.Component{
 
   
   render(){
-    return (
-      <GenericContainer style={ContainerStyles.rootContainer}>
-        <GenericContainer style={ContainerStyles.centredContainer}>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer key={Labels.ENTER_USER_ID} style={ContainerStyles.textInputContainer}>
-              <GenericTextInput key={Labels.ENTER_USER_ID} 
-                keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
-                autoFocus onChangeText={userId => this.setState({userId})}
-                onSubmitEditing={this.onSubmitUserId}
-                value={this.props.isLoggedIn ? this.state.userId : null}
-              />
-            </GenericContainer>
-            <GenericContainer key={Labels.ENTER_PASSWORD} style={ContainerStyles.textInputContainer}>
-              <GenericTextInput key={Labels.ENTER_PASSWORD} placeholder={Labels.ENTER_PASSWORD}
-                secureTextEntry onChangeText={password => this.setState({password})}
-                onSubmitEditing={this.signIn}
-                inputRef={el => this.passwordInput = el}
-                value={this.props.isLoggedIn ? this.state.password : null}/>
-            </GenericContainer>
-          </GenericContainer>
-          <SubmitButton key={Labels.SIGN_IN} title={Labels.SIGN_IN} onPress= {() => this.signIn}/>
-          <GenericLink key={Messages.FORGOT_PASSWORD} onPress={() => this.goToResetPassword}>
-              {Messages.FORGOT_PASSWORD}
-          </GenericLink>
-          <GenericLink key={Messages.NO_ACCOUNT} onPress={() => this.goToSignUp}>
-            {Messages.NO_ACCOUNT}
-          </GenericLink>
-          <GenericText key="GenericText" error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
+    return(
+      <RootWrapper>
+        <CentredWrapper>
+        <Header />
+        <RkTextInput rkType='rounded inputText' placeholder='DNI' keyboardType='numeric'
+          autoFocus onChangeText={userId => this.setState({userId})}
+          onSubmitEditing={this.onSubmitUserId}
+          value={this.props.isLoggedIn ? this.state.userId : null}/>
+
+          <RkTextInput rkType='rounded inputText' placeholder='Contraseña'
+            secureTextEntry onChangeText={password => this.setState({password})}
+            autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
+            onSubmitEditing={this.signIn}
+            value={this.props.isLoggedIn ? this.state.password : null}/>
+
+          <View style={{flexDirection:'row'}}>
+            <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
+          </View>
+
+          <TouchableOpacity onPress={() => this.goToSignUp()}>
+            <RkText rkType='no-account' style={{marginTop:10}}>
+              ¿No tenés una cuenta? Creá una nueva 
+            </RkText>
+          </TouchableOpacity>
+
+          <GenericText error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
             {this.state.errorMessage}
             {this.props.autoLoginErrorMessage}
           </GenericText>
-          <LoadingSpinner key="spinner" visible={this.state.spinnerVisible}/>
-        </GenericContainer>
-      </GenericContainer>
+          <LoadingSpinner visible={this.state.spinnerVisible}/>
+        </CentredWrapper>
+      </RootWrapper>
     )
   }
 
@@ -108,7 +143,7 @@ export default class SignIn extends React.Component{
 
   onSubmitUserId = () =>{
     if(!this.state.password){
-      this.passwordInput.focus()
+      this.refs.passwordInput._focusInput()
     }
     else{
         this.signIn()

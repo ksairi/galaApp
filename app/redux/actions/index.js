@@ -4,6 +4,7 @@ import * as TimetableActions from './timetable'
 import * as UserDataActions from './userData'
 import * as SessionActions from './session'
 import * as NavigationActions from './navigation'
+import * as DeviceActions from './device'
 
 export const ActionsCreators = Object.assign({},
   NotificationsActions,
@@ -11,5 +12,6 @@ export const ActionsCreators = Object.assign({},
   TimetableActions,
   UserDataActions,
   SessionActions,
-  NavigationActions
+  NavigationActions,
+  DeviceActions
 )

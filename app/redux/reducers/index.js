@@ -8,12 +8,14 @@ import * as timetableReducer from './timetable'
 import * as userDataReducer from './userData'
 import * as sessionReducer from './session'
 import * as navigationReducer  from './navigation'
+import * as devicenReducer  from './device'
 
 
 const rootPresistConfig = {
   key: 'root',
   storage : createSecureStore(),
-  stateReconciler: autoMergeLevel2
+  stateReconciler: autoMergeLevel2,
+  blacklist:['currentOrientation']
 }
 
 const rootReducer = combineReducers(Object.assign(
@@ -22,7 +24,8 @@ const rootReducer = combineReducers(Object.assign(
   timetableReducer,   
   userDataReducer,
   sessionReducer,
-  navigationReducer
+  navigationReducer,
+  devicenReducer
 ))
 
 export default persistReducer(rootPresistConfig, rootReducer)
