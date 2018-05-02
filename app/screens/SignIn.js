@@ -13,6 +13,7 @@ import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/Button'
 import Header from '/components/presentationals/Header'
 import GenericText from '/components/presentationals/GenericText'
+import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 
 import { createIconSetFromIcoMoon } from '@expo/vector-icons'
@@ -29,8 +30,6 @@ RkTheme.setType('RkTextInput', 'inputText', {
   input:{
     placeholderTextColor:'white',
     fontSize:20,
-    //paddingTop:10,
-    //paddingBottom:10
   }
 })
 
@@ -44,16 +43,11 @@ RkTheme.setType('RkButton', 'signIn', {
   }
 })
 
-RkTheme.setType('RkText', 'no-account', {
-  fontSize:16,
-  color:'white',
-  paddingLeft:40,
-  paddingRight:25,
-  fontFamily:'gamja-flower-regular',
-})
-
 const styles = StyleSheet.create({
-
+  noAccount: {
+    fontSize:16,
+    fontFamily:'gamja-flower-regular'
+  }
 })
 
 @connect(
@@ -86,8 +80,8 @@ export default class SignIn extends React.Component{
   render(){
     return(
       <RootWrapper>
-        <CentredWrapper>
-          <KeyboardAvoidingView style={{flex:1, alignItems: 'center'}} behavior='padding'> 
+        <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
+          <CentredWrapper>
             <Header />
             <View style={{flex:1}}>
               <Icon name="referrals" size={80} color='white'/>
@@ -107,19 +101,17 @@ export default class SignIn extends React.Component{
               <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
-            <TouchableOpacity style={{flex:1}} onPress={() => this.goToSignUp()}>
-              <RkText rkType='no-account' style={{marginTop:10}}>
-                ¿No tenés una cuenta? Creá una nueva 
-              </RkText>
-            </TouchableOpacity>
+            <GenericLink style={styles.noAccount} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>
 
             <GenericText error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
               {this.state.errorMessage}
               {this.props.autoLoginErrorMessage}
             </GenericText>
-          </KeyboardAvoidingView>
+          
           <LoadingSpinner visible={this.state.spinnerVisible}/>
+
         </CentredWrapper>
+        </KeyboardAvoidingView>
       </RootWrapper>
     )
   }

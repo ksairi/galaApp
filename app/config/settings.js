@@ -30,11 +30,13 @@ exports.Messages = {
 }
 
 exports.Labels = {
+  USER_ID:'DNI',
+  PASSWORD:'Contraseña',
   SIGN_UP: 'Registrate',
-  ENTER_FULL_NAME: 'Nombre Completo',
+  FULL_NAME: 'Nombre Completo',
   CONFIRM_PASSWORD: 'Confirmá contraseña',
   SUBMIT:'Enviar',
-  ENTER_MAIL: 'E-mail',
+  MAIL: 'E-mail',
   GO_BACK_TO_SIGN_IN:'Iniciá sesión',
   ENTER_COMMENTS:'Queremos leer lo que tenés para decir'
 }
