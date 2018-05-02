@@ -1,5 +1,5 @@
 import React from 'react'
-import { Keyboard, View, StyleSheet, TouchableOpacity } from 'react-native'
+import { Keyboard, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import { RkTheme, RkTextInput, RkText } from 'react-native-ui-kitten'
 import { Messages, Screens, ServerProtocol } from '/config/settings'
@@ -15,16 +15,22 @@ import Header from '/components/presentationals/Header'
 import GenericText from '/components/presentationals/GenericText'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 
+import { createIconSetFromIcoMoon } from '@expo/vector-icons'
+import icomoonConfig from '/icomoonConfig.json'
+
+
+const Icon = createIconSetFromIcoMoon(icomoonConfig)
 
 
 RkTheme.setType('RkTextInput', 'inputText', {
   backgroundColor: '#12194d',
   color: 'white',
+  flex:1,
   input:{
     placeholderTextColor:'white',
     fontSize:20,
-    paddingTop:10,
-    paddingBottom:10
+    //paddingTop:10,
+    //paddingBottom:10
   }
 })
 
@@ -58,7 +64,9 @@ state => ({
   })
 )
 export default class SignIn extends React.Component{
-  
+    
+  static navigationOptions = { header: null }
+
   state = {
     errorMessage:'',
     focusPassword:false,
@@ -79,32 +87,37 @@ export default class SignIn extends React.Component{
     return(
       <RootWrapper>
         <CentredWrapper>
-        <Header />
-        <RkTextInput rkType='rounded inputText' placeholder='DNI' keyboardType='numeric'
-          autoFocus onChangeText={userId => this.setState({userId})}
-          onSubmitEditing={this.onSubmitUserId}
-          value={this.props.isLoggedIn ? this.state.userId : null}/>
+          <KeyboardAvoidingView style={{flex:1, alignItems: 'center'}} behavior='padding'> 
+            <Header />
+            <View style={{flex:1}}>
+              <Icon name="referrals" size={80} color='white'/>
+            </View>
+            <RkTextInput rkType='rounded inputText' placeholder='DNI' keyboardType='numeric'
+              autoFocus onChangeText={userId => this.setState({userId})}
+              onSubmitEditing={this.onSubmitUserId}
+              value={this.props.isLoggedIn ? this.state.userId : null}/>
 
-          <RkTextInput rkType='rounded inputText' placeholder='Contraseña'
-            secureTextEntry onChangeText={password => this.setState({password})}
-            autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
-            onSubmitEditing={this.signIn}
-            value={this.props.isLoggedIn ? this.state.password : null}/>
+            <RkTextInput rkType='rounded inputText' placeholder='Contraseña'
+              secureTextEntry onChangeText={password => this.setState({password})}
+              autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
+              onSubmitEditing={this.signIn}
+              value={this.props.isLoggedIn ? this.state.password : null}/>
 
-          <View style={{flexDirection:'row'}}>
-            <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
-          </View>
+            <View style={{flexDirection:'row', flex:1}}>
+              <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
+            </View>
 
-          <TouchableOpacity onPress={() => this.goToSignUp()}>
-            <RkText rkType='no-account' style={{marginTop:10}}>
-              ¿No tenés una cuenta? Creá una nueva 
-            </RkText>
-          </TouchableOpacity>
+            <TouchableOpacity style={{flex:1}} onPress={() => this.goToSignUp()}>
+              <RkText rkType='no-account' style={{marginTop:10}}>
+                ¿No tenés una cuenta? Creá una nueva 
+              </RkText>
+            </TouchableOpacity>
 
-          <GenericText error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
-            {this.state.errorMessage}
-            {this.props.autoLoginErrorMessage}
-          </GenericText>
+            <GenericText error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
+              {this.state.errorMessage}
+              {this.props.autoLoginErrorMessage}
+            </GenericText>
+          </KeyboardAvoidingView>
           <LoadingSpinner visible={this.state.spinnerVisible}/>
         </CentredWrapper>
       </RootWrapper>

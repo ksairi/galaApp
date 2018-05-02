@@ -11,8 +11,6 @@ export default SwitchNavigator({
   [Screens.LoginStack]: { screen: LoginStack },
   [Screens.HomeStack]: { screen: HomeStack }
 }, {
-  // Default config for all screens
-  headerMode: 'none',
-  //title: 'Main',
+  headerMode: 'screen',
   initialRouteName: Screens.CheckUserActivity
 })

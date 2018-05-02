@@ -3,6 +3,7 @@ import {View, StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({
   centredWrapper:{
+    flex:1,
     alignItems: 'center'
   },
 })

@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
   genericText: {
     color: 'white',
     padding:10,
-    textAlign:'center'
+    textAlign:'center',
+    flex:1
   },
   link: {
     color:'green',
