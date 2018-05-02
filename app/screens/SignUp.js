@@ -110,23 +110,23 @@ export default class SignUp extends React.Component{
       <GenericContainer style={ContainerStyles.rootContainer}>
         <GenericContainer style={ContainerStyles.centredContainer}>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_FULL_NAME}>
-              <GenericTextInput key={Labels.ENTER_FULL_NAME}
-                placeholder={Labels.ENTER_FULL_NAME} autoCorrect={false} autoCapitalize = 'words'
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.FULL_NAME}>
+              <GenericTextInput key={Labels.FULL_NAME}
+                placeholder={Labels.FULL_NAME} autoCorrect={false} autoCapitalize = 'words'
                 autoFocus onChangeText={pUserFullName => this.userFullName = pUserFullName}
                 onSubmitEditing={this.onSubmitUserFullName}/>
             </GenericContainer>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_USER_ID}>
-              <GenericTextInput key={Labels.ENTER_USER_ID}
-                keyboardType="numeric" placeholder={Labels.ENTER_USER_ID}
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.USER_ID}>
+              <GenericTextInput key={Labels.USER_ID}
+                keyboardType="numeric" placeholder={Labels.USER_ID}
                 onChangeText={pUserId => this.userId = pUserId}
                 onSubmitEditing={this.onSubmitUserId}
                 inputRef={el => this.userIdInput = el}/>
             </GenericContainer>
           </GenericContainer>
           <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.ENTER_PASSWORD}>
-              <GenericTextInput key={Labels.ENTER_PASSWORD} placeholder={Labels.ENTER_PASSWORD}
+            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.PASSWORD}>
+              <GenericTextInput key={Labels.PASSWORD} placeholder={Labels.PASSWORD}
                 secureTextEntry onChangeText={pPassword => this.password = pPassword}
                 onSubmitEditing={this.onSubmitPassword}
                 inputRef={el => this.passwordInput = el}/>
