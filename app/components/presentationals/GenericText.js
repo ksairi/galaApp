@@ -8,16 +8,12 @@ const styles = StyleSheet.create({
   },
   genericText: {
     color: 'white',
-    padding:10,
     textAlign:'center',
     flex:1
-  },
-  link: {
-    color:'green',
   }
 })
 
-export default ({children, error}) =>
-  <Text style={[styles.genericText, error ? styles.errorMessage : null]}>
+export default ({children, style, error}) =>
+  <Text style={[styles.genericText, style, error ? styles.errorMessage : null]}>
     {children}
   </Text>
