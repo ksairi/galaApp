@@ -89,7 +89,8 @@ export default class SignIn extends React.Component{
             </View>
             <RkTextInput rkType='rounded inputText' placeholder='DNI' keyboardType='numeric'
               autoFocus onChangeText={userId => this.setState({userId})}
-              onSubmitEditing={this.onSubmitUserId}
+              onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
+              autoCapitalize='none' autoCorrect={false}
               value={this.props.isLoggedIn ? this.state.userId : null}/>
 
             <RkTextInput rkType='rounded inputText' placeholder='Contraseña'
