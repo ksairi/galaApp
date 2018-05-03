@@ -38,5 +38,6 @@ export default class App extends React.Component {
 }
 
 console.ignoredYellowBox = [
-    'Setting a timer' // https://github.com/status-im/status-react/pull/2853    // https://github.com/facebook/react-native/issues/12981
+    'Setting a timer',
+    'Remote debugger'
 ]
