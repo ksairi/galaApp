@@ -6,7 +6,7 @@ import icomoonConfig from '/icomoonConfig.json'
 
 const Icon = createIconSetFromIcoMoon(icomoonConfig)
 
-export default () =>
-  <View style={{flex:1}}>
+export default ({style}) =>
+  <View style={[{flex:1}, style]}>
     <Icon name="timetable" size={80} color='white'/> 
   </View>

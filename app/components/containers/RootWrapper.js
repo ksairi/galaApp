@@ -1,12 +1,12 @@
 import React from 'react'
-import {ScrollView, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { genericBackgroundColor, containerPadding } from '/config/styles'
 import { connect } from 'react-redux'
 import { ActionsCreators } from '/redux/actions'
 
 const styles = StyleSheet.create({
   rootWrapper:{
-    flexGrow:1,
+    flex:1,
     backgroundColor: genericBackgroundColor,
     padding: containerPadding,
   },
@@ -30,9 +30,9 @@ export default class RootWrapper extends React.Component{
 
   render(){
     return(
-      <ScrollView contentContainerStyle={[styles.rootWrapper, styles[this.props.orientation], this.props.style]} onLayout={this._onLayout}> 
+      <View style={[styles.rootWrapper, styles[this.props.orientation], this.props.style]} onLayout={this._onLayout}> 
         {this.props.children}
-      </ScrollView>
+      </View>
     )
   }
 }
