@@ -39,14 +39,15 @@ RkTheme.setType('RkButton', 'signIn', {
   content:{
     color:'white',
     fontSize:19,
-    fontWeight:'bold',  
+    fontWeight:'bold'
   }
 })
 
 const styles = StyleSheet.create({
   noAccount: {
     fontSize:16,
-    fontFamily:'gamja-flower-regular'
+    fontFamily:'gamja-flower-regular',
+    marginTop:10
   }
 })
 
