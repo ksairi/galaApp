@@ -1,10 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
-import { createIconSetFromIcoMoon } from '@expo/vector-icons'
-import icomoonConfig from '/icomoonConfig.json'
-
-
-const Icon = createIconSetFromIcoMoon(icomoonConfig)
+import Icon from '/helpers/ImageHelper'
 
 export default ({style}) =>
   <View style={[{flex:1}, style]}>

@@ -2,9 +2,8 @@ import React from 'react'
 import { ScrollView, StyleSheet } from 'react-native'
 import { Screens } from '/config/settings'
 import DrawerItem from '/components/presentationals/DrawerItem'
-import { createIconSetFromIcoMoon } from '@expo/vector-icons'
-import icomoonConfig from '/icomoonConfig.json'
-const Icon = createIconSetFromIcoMoon(icomoonConfig)
+import Icon from '/helpers/ImageHelper'
+
 const styles = StyleSheet.create({
   drawerItemsWrapper:{
     paddingTop:10,

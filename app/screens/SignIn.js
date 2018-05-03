@@ -15,12 +15,7 @@ import Header from '/components/presentationals/Header'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-
-import { createIconSetFromIcoMoon } from '@expo/vector-icons'
-import icomoonConfig from '/icomoonConfig.json'
-
-
-const Icon = createIconSetFromIcoMoon(icomoonConfig)
+import Icon from '/helpers/ImageHelper'
 
 
 RkTheme.setType('RkTextInput', 'inputText', {
