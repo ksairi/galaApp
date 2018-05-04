@@ -11,7 +11,7 @@ import ValidationHelper from '/helpers/ValidationHelper'
 import NetworkHelper from '/helpers/NetworkHelper'
 import { syncStoreWithServer } from '/helpers/StoreHelper'
 import createNotificationsHanlder from './lib/createHandler'
-
+import RootView from '/components/containers/RootView'
 @connect(
   state => 
   ({
@@ -109,7 +109,9 @@ export default class AppContainer extends React.Component{
 
   render() {
     return(
-      <AppRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}/>
+      <RootView>
+        <AppRoutes ref={nav => { this.navigator = nav ? nav._navigation : nav }}/>
+      </RootView>
     )
   }
 

@@ -18,22 +18,18 @@ const styles = StyleSheet.create({
   }
 })
  
-@connect(state=>({
-  orientation: state.currentOrientation
+function RootWrapper({children, orientation, style}){
+  return(
+    <View style={[styles.rootWrapper, styles[orientation], style]}> 
+      {children}
+    </View>
+  )
+}
+
+function mapStateToProps(state){
+  return({
+    orientation:state.currentOrientation
   })
-)
-export default class RootWrapper extends React.Component{
-
-  _onLayout = (e)=> {
-    this.props.dispatch(ActionsCreators.setCurrentOrientation( e.nativeEvent.layout.height > e.nativeEvent.layout.width ? 'portrait' : 'landscape'))
-  }
-
-  render(){
-    return(
-      <View style={[styles.rootWrapper, styles[this.props.orientation], this.props.style]} onLayout={this._onLayout}> 
-        {this.props.children}
-      </View>
-    )
-  }
 }
   
+export default connect(mapStateToProps)(RootWrapper)
