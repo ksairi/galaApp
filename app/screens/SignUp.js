@@ -1,20 +1,54 @@
 import React from 'react'
-import { Keyboard } from 'react-native'
+import { Keyboard, KeyboardAvoidingView, StyleSheet, View } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { GenericContainer } from '/components/presentationals/View/'
-import ContainerStyles from '/components/presentationals/View/styles'
-import { GenericTextInput } from '/components/presentationals//TextInput/'
-import { SubmitButton } from '/components/presentationals//Button_old'
-import { GenericText, GenericLink } from '/components/presentationals//Text/'
-import { LoadingSpinner } from '/components/presentationals//Spinner'
-import { Messages, Labels, Screens, SignUpConstraints, ServerProtocol } from '/config/settings'
+import { Messages, Screens, SignUpConstraints, ServerProtocol } from '/config/settings'
 import { register } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import StoreHelper from '/helpers/StoreHelper'
 import { getDeviceToken } from '/helpers/NotificationsHelper'
+import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
+import RootWrapper from '/components/containers/RootWrapper'
+import CentredWrapper from '/components/presentationals/CentredWrapper'
+import Button from '/components/presentationals/Button'
+import Header from '/components/presentationals/Header'
+import GenericText from '/components/presentationals/GenericText'
+import GenericLink from '/components/presentationals/GenericLink'
+import LoadingSpinner from '/components/presentationals/LoadingSpinner'
+import genericStyles from '/config/styles'
 
+RkTheme.setType('RkTextInput', 'inputText', {
+  backgroundColor: '#12194d',
+  color: 'white',
+  flex:1,
+  input:{
+    placeholderTextColor:'white',
+    fontSize:20,
+  }
+})
+
+RkTheme.setType('RkButton', 'signIn', {
+  backgroundColor: genericStyles.genericButtonBackgroundColor,
+  flex:1,
+  content:{
+    color:'white',
+    fontSize:19,
+    fontWeight:'bold'
+  }
+})
+
+const styles = StyleSheet.create({
+  memeberAlready: {
+    fontSize:16,
+    fontFamily:'gamja-flower-regular',
+    marginTop:10
+  },
+  registerAccountTitle:{
+    fontSize:20,
+    fontFamily:'gamja-flower-regular'
+  }
+})
 
 @connect(
 state => ({notificationsToken:state.notificationsToken})
@@ -70,7 +104,7 @@ export default class SignUp extends React.Component{
   
   onSubmitUserFullName = ()=>{
     if(!this.userId){
-      this.userIdInput.focus()
+      this.refs.userIdInput._focusInput()
     }
     else{
         this.signUp()
@@ -79,7 +113,7 @@ export default class SignUp extends React.Component{
   
   onSubmitUserId = () =>{
     if(!this.password){
-      this.passwordInput.focus()
+      this.refs.passwordInput._focusInput() 
     }
     else{
         this.signUp()
@@ -88,7 +122,7 @@ export default class SignUp extends React.Component{
   
   onSubmitPassword = () =>{
     if(!this.confirmPassword){
-      this.confirmPasswordInput.focus()
+      this.refs.confirmPasswordInput._focusInput()
     }
     else{
         this.signUp()
@@ -107,49 +141,47 @@ export default class SignUp extends React.Component{
 
   render(){
     return (
-      <GenericContainer style={ContainerStyles.rootContainer}>
-        <GenericContainer style={ContainerStyles.centredContainer}>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.FULL_NAME}>
-              <GenericTextInput key={Labels.FULL_NAME}
-                placeholder={Labels.FULL_NAME} autoCorrect={false} autoCapitalize = 'words'
-                autoFocus onChangeText={pUserFullName => this.userFullName = pUserFullName}
-                onSubmitEditing={this.onSubmitUserFullName}/>
-            </GenericContainer>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.USER_ID}>
-              <GenericTextInput key={Labels.USER_ID}
-                keyboardType="numeric" placeholder={Labels.USER_ID}
-                onChangeText={pUserId => this.userId = pUserId}
-                onSubmitEditing={this.onSubmitUserId}
-                inputRef={el => this.userIdInput = el}/>
-            </GenericContainer>
-          </GenericContainer>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.PASSWORD}>
-              <GenericTextInput key={Labels.PASSWORD} placeholder={Labels.PASSWORD}
-                secureTextEntry onChangeText={pPassword => this.password = pPassword}
-                onSubmitEditing={this.onSubmitPassword}
-                inputRef={el => this.passwordInput = el}/>
-            </GenericContainer>
-            <GenericContainer style={ContainerStyles.textInputContainer} key={Labels.CONFIRM_PASSWORD}>
-              <GenericTextInput key={Labels.CONFIRM_PASSWORD} 
-                placeholder={Labels.CONFIRM_PASSWORD}
-                secureTextEntry onChangeText={pConfirmPassword => this.confirmPassword = pConfirmPassword}
-                onSubmitEditing={this.signUp}
-                inputRef={el => this.confirmPasswordInput = el}/>
-            </GenericContainer>
-          </GenericContainer>
-          <SubmitButton key={Labels.SIGN_UP} title={Labels.SIGN_UP} onPress= {() => this.signUp}/>
-          <GenericLink key={Messages.USER_ALREADY} onPress={() => this.goToSignIn}>
-              {Messages.USER_ALREADY}
-          </GenericLink>
-          <GenericText key="GenericText" error={this.state.errorMessage ? true : false}>
-            {this.state.errorMessage}
-            {this.state.message}
-          </GenericText>
-          <LoadingSpinner visible={this.state.spinnerVisible}/>
-        </GenericContainer>
-      </GenericContainer>
+      <RootWrapper style={{paddingTop:10}}>
+        <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
+          <CentredWrapper>
+            <Header />
+            <GenericText style={styles.registerAccountTitle}>
+              REGISTRAR CUENTA
+            </GenericText>
+            <RkTextInput rkType='rounded inputText' placeholder='Nombre'
+              autoFocus returnKeyType='next' keyboardType='default' autoCapitalize='words' autoCorrect={false}
+              onChangeText={pUserFullName => this.userFullName = pUserFullName}
+              onSubmitEditing={this.onSubmitUserFullName}/>
+            
+            <RkTextInput rkType='rounded inputText' placeholder='DNI'
+              returnKeyType='next' keyboardType="numeric" autoCorrect={false} 
+              ref="userIdInput" onChangeText={pUserId => this.userId = pUserId}
+              onSubmitEditing={this.onSubmitUserId}/>
+
+            <RkTextInput rkType='rounded inputText' placeholder='Contraseña'
+              secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='next' keyboardType='default' ref="passwordInput"
+              onChangeText={pPassword => this.password = pPassword} onSubmitEditing={this.onSubmitPassword}/>
+
+            <RkTextInput rkType='rounded inputText' placeholder='Confirmar Contraseña'
+              secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="confirmPasswordInput"
+              onChangeText={pConfirmPassword => this.confirmPassword = pConfirmPassword} onSubmitEditing={this.signUp}/>
+
+            <View style={{flexDirection:'row', flex:1}}>
+              <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='REGISTRARME' onPress={this.signUp}/>
+            </View>
+
+            <GenericLink style={styles.memeberAlready} text='¿Ya tenés una cuenta? Iniciá Sesión' onPress={()=>this.goToSignIn}/>
+
+            <GenericText error={this.state.errorMessage ? true : false}>
+              {this.state.errorMessage}
+              {this.state.message}
+            </GenericText>
+            
+            <LoadingSpinner visible={this.state.spinnerVisible}/>
+
+          </CentredWrapper>
+        </KeyboardAvoidingView>
+      </RootWrapper>
     )
   }
 }
