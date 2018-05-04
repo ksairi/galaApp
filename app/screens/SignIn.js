@@ -1,7 +1,7 @@
 import React from 'react'
 import { Keyboard, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
-import { RkTheme, RkTextInput, RkText } from 'react-native-ui-kitten'
+import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import { Messages, Screens, ServerProtocol } from '/config/settings'
 import genericStyles from '/config/styles'
 import { login } from '/helpers/ApiHelper'
