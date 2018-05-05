@@ -18,25 +18,24 @@ export default ({navigation, homeHeader}) =>{
   }
 
   return(
-    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor}}>
-      <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start',}}>
-      { homeHeader ?
-        <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>
-          <Icon name={isMenuClosed ? 'classes' : "message-icon"} size={80} color='white'/>
-        </TouchableOpacity>
-        :  
-        <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-          <Icon name="timetable" size={80} color='white'/>
-        </TouchableOpacity>
-      }
-
+    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight}}>
+      <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start'}}>
+        { homeHeader ?
+          <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>
+            <Icon name={isMenuClosed ? 'classes' : "message-icon"} size={80} color='white'/>
+          </TouchableOpacity>
+          :  
+          <TouchableOpacity onPress={()=>{navigation.goBack()}}>
+            <Icon name="timetable" size={80} color='white'/>
+          </TouchableOpacity>
+        }
       </View>
-        <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
-          <Icon name="referrals" size={80} color='white'/>
-        </View>
-        <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}>
-
-        </View>
+      
+      <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
+        <Icon name="referrals" size={80} color='white'/>
+      </View>
+      
+      <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}/>
     </View>
   )
 }
