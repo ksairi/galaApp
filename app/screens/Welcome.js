@@ -8,7 +8,7 @@ import { ActionsCreators } from '/redux/actions'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import genericStyles from '/config/styles'
-import Icon from '/helpers/ImageHelper'
+import Logo from '/components/presentationals/Logo'
 
 const styles = StyleSheet.create({
   welcome:{
@@ -45,9 +45,7 @@ function goToLogin(dispatch, navigation){
   return(
     <RootWrapper>
       <CentredWrapper>
-        <View style={{flex:1}}>
-          <Icon name="timetable" size={80} color='white'/>
-        </View>
+        <Logo />
         <Text style={styles.welcome}> 
           ¡BIENVENIDO!
         </Text>

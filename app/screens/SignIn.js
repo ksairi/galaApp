@@ -16,7 +16,7 @@ import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
 import { styleGenericTextInput } from '/components/presentationals/styles' 
-
+import Logo from '/components/presentationals/Logo'
 
 RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
@@ -60,9 +60,7 @@ export default class SignIn extends React.Component{
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <View style={{flex:1}}>
-              <Icon name="timetable" size={80} color='white'/>
-            </View>
+            <Logo />
             <View style={{flex:1}}>
               <Icon name="referrals" size={80} color='white'/>
             </View>
