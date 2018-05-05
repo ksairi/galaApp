@@ -12,7 +12,6 @@ import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/Button'
-import Header from '/components/presentationals/Header'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
@@ -144,7 +143,6 @@ export default class SignUp extends React.Component{
       <RootWrapper style={{paddingTop:10}}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <Header />
             <GenericText style={styles.registerAccountTitle}>
               REGISTRAR CUENTA
             </GenericText>

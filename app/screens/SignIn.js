@@ -11,7 +11,6 @@ import { ActionsCreators } from '/redux/actions'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/Button'
-import Header from '/components/presentationals/Header'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
@@ -78,7 +77,9 @@ export default class SignIn extends React.Component{
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <Header />
+            <View style={{flex:1}}>
+              <Icon name="timetable" size={80} color='white'/>
+            </View>
             <View style={{flex:1}}>
               <Icon name="referrals" size={80} color='white'/>
             </View>

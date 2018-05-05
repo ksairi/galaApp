@@ -4,12 +4,12 @@ import { RkTheme } from 'react-native-ui-kitten'
 import Button from '/components/presentationals/Button'
 import GenericText from '/components/presentationals/GenericText'
 import { connect } from 'react-redux'
-import { Screens } from '/config/settings'
-import Header from '/components/presentationals/Header' 
+import { Screens } from '/config/settings' 
 import { ActionsCreators } from '/redux/actions'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import genericStyles from '/config/styles'
+import Icon from '/helpers/ImageHelper'
 
 
 RkTheme.setType('RkButton', 'goToLoginButton', {
@@ -57,7 +57,9 @@ function goToLogin(dispatch, navigation){
   return(
     <RootWrapper>
       <CentredWrapper>
-        <Header style={{flex:1}}/>
+        <View style={{flex:1}}>
+          <Icon name="timetable" size={80} color='white'/>
+        </View>
         <GenericText style={styles.welcome}> 
           ¡BIENVENIDO!
         </GenericText>
