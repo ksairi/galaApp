@@ -1,7 +1,8 @@
+import { inputBackgroundColor } from '/config/styles'
 
 const styleGenericTextInput = {
   
-  backgroundColor: '#12194d',
+  backgroundColor: inputBackgroundColor,
   color: 'white',
   flex:1,
   input:{
