@@ -10,32 +10,15 @@ import ValidationHelper from '/helpers/ValidationHelper'
 import { ActionsCreators } from '/redux/actions'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
-import Button from '/components/presentationals/Button'
+import Button from '/components/presentationals/GenericButton'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
+import { styleGenericTextInput } from '/components/presentationals/styles' 
 
 
-RkTheme.setType('RkTextInput', 'inputText', {
-  backgroundColor: '#12194d',
-  color: 'white',
-  flex:1,
-  input:{
-    placeholderTextColor:'white',
-    fontSize:20,
-  }
-})
-
-RkTheme.setType('RkButton', 'signIn', {
-  backgroundColor: genericStyles.genericButtonBackgroundColor,
-  flex:1,
-  content:{
-    color:'white',
-    fontSize:19,
-    fontWeight:'bold'
-  }
-})
+RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
 const styles = StyleSheet.create({
   noAccount: {
@@ -96,7 +79,7 @@ export default class SignIn extends React.Component{
               value={this.props.isLoggedIn ? this.state.password : null}/>
 
             <View style={{flexDirection:'row', flex:1}}>
-              <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
+              <Button contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
             <GenericLink style={styles.noAccount} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>

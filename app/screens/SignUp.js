@@ -11,31 +11,14 @@ import { getDeviceToken } from '/helpers/NotificationsHelper'
 import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
-import Button from '/components/presentationals/Button'
+import Button from '/components/presentationals/GenericButton'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import genericStyles from '/config/styles'
+import { styleGenericTextInput } from '/components/presentationals/styles' 
 
-RkTheme.setType('RkTextInput', 'inputText', {
-  backgroundColor: '#12194d',
-  color: 'white',
-  flex:1,
-  input:{
-    placeholderTextColor:'white',
-    fontSize:20,
-  }
-})
 
-RkTheme.setType('RkButton', 'signIn', {
-  backgroundColor: genericStyles.genericButtonBackgroundColor,
-  flex:1,
-  content:{
-    color:'white',
-    fontSize:19,
-    fontWeight:'bold'
-  }
-})
+RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
 const styles = StyleSheet.create({
   memeberAlready: {
@@ -165,7 +148,7 @@ export default class SignUp extends React.Component{
               onChangeText={pConfirmPassword => this.confirmPassword = pConfirmPassword} onSubmitEditing={this.signUp}/>
 
             <View style={{flexDirection:'row', flex:1}}>
-              <Button rkType='rounded signIn' contentStyle={styles[this.props.orientation]} text='REGISTRARME' onPress={this.signUp}/>
+              <Button contentStyle={styles[this.props.orientation]} text='REGISTRARME' onPress={this.signUp}/>
             </View>
 
             <GenericLink style={styles.memeberAlready} text='¿Ya tenés una cuenta? Iniciá Sesión' onPress={()=>this.goToSignIn}/>

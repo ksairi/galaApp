@@ -1,8 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { RkTheme } from 'react-native-ui-kitten'
-import Button from '/components/presentationals/Button'
-import GenericText from '/components/presentationals/GenericText'
+import Button from '/components/presentationals/GenericButton'
+import Text from '/components/presentationals/GenericText'
 import { connect } from 'react-redux'
 import { Screens } from '/config/settings' 
 import { ActionsCreators } from '/redux/actions'
@@ -10,17 +9,6 @@ import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import genericStyles from '/config/styles'
 import Icon from '/helpers/ImageHelper'
-
-
-RkTheme.setType('RkButton', 'goToLoginButton', {
-  backgroundColor: genericStyles.genericButtonBackgroundColor,
-  flex:1,
-  content:{
-    color:'white',
-    fontSize:19,
-    fontWeight:'bold',  
-  }
-})
 
 const styles = StyleSheet.create({
   welcome:{
@@ -60,14 +48,14 @@ function goToLogin(dispatch, navigation){
         <View style={{flex:1}}>
           <Icon name="timetable" size={80} color='white'/>
         </View>
-        <GenericText style={styles.welcome}> 
+        <Text style={styles.welcome}> 
           ¡BIENVENIDO!
-        </GenericText>
-        <GenericText style={styles.welcomeDescription}>
+        </Text>
+        <Text style={styles.welcomeDescription}>
           Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio
-        </GenericText>
+        </Text>
         <View style={{flexDirection:'row', flex:1}}>
-          <Button rkType='rounded goToLoginButton' contentStyle={styles[orientation]} text='EXPLORA LA APP' onPress={() => goToLogin(dispatch, navigation)} />
+          <Button contentStyle={styles[orientation]} text='EXPLORA LA APP' onPress={() => goToLogin(dispatch, navigation)} />
         </View>
       </CentredWrapper>
     </RootWrapper>
