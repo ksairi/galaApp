@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   noAccount: {
     fontSize:16,
     fontFamily:'gamja-flower-regular',
-    marginTop:10
+    flex:0.5
   }
 })
 
@@ -44,7 +44,8 @@ export default class SignIn extends React.Component{
     focusPassword:false,
     spinnerVisible:false,
     userId:'',
-    password:''
+    password:'',
+    isKeyboardOn:false
   }
 
   componentDidMount() {
@@ -52,40 +53,79 @@ export default class SignIn extends React.Component{
       this.setState({userId:this.props.userData.userId})
       this.setState({password:this.props.userData.password})          
     }
+
+    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
+    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
+  }
+
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
+  }
+
+  _keyboardDidShow = ()=> {
+    this.setState({isKeyboardOn:true, errorMessage:''})
+  }
+
+  _keyboardDidHide = ()=> {
+    this.setState({isKeyboardOn:false})
   }
 
   
   render(){
+    var imageSize, imageFlex, logoSize, logoFlex, passwordMarginBottom, buttonStyle
+    if(this.state.isKeyboardOn){
+      logoSize = 150
+      logoFlex = 2.4
+      imageSize = 145
+      imageFlex = 2.9
+      passwordMarginBottom = 5
+      buttonStyle = {height:30}
+    }
+    else{
+      logoSize = 200
+      logoFlex = 1.7
+      imageSize = 250
+      imageFlex = 3
+      passwordMarginBottom = 20
+      buttonStyle = {}
+      
+    }
+     
     return(
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <Logo />
-            <View style={{flex:1}}>
-              <Icon name="referrals" size={80} color='white'/>
-            </View>
-            <RkTextInput rkType='rounded inputText' placeholder='DNI' keyboardType='numeric'
+            <Logo style={{flex:logoFlex}} logoSize={logoSize}/>
+            
+            <Icon name="referrals" size={imageSize} color='white' style={{flex:imageFlex}}/>
+            
+            <RkTextInput rkType='rounded inputText' style={{flex:1}} placeholder='DNI' keyboardType='numeric'
               autoFocus onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
               autoCapitalize='none' autoCorrect={false}
               value={this.props.isLoggedIn ? this.state.userId : null}/>
 
-            <RkTextInput rkType='rounded inputText' placeholder='Contraseña'
+            <RkTextInput rkType='rounded inputText' style={{marginBottom:passwordMarginBottom}} placeholder='Contraseña'
               secureTextEntry onChangeText={password => this.setState({password})}
               autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
               onSubmitEditing={this.signIn}
               value={this.props.isLoggedIn ? this.state.password : null}/>
+            
 
-            <View style={{flexDirection:'row', flex:1}}>
-              <Button contentStyle={styles[this.props.orientation]} text='INICIAR SESIÓN' onPress={this.signIn}/>
+            <View style={{flexDirection:'row', flex:1.1}}>
+              <Button contentStyle={{}} style={buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
             <GenericLink style={styles.noAccount} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>
 
-            <GenericText error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
-              {this.state.errorMessage}
-              {this.props.autoLoginErrorMessage}
-            </GenericText>
+            { (this.state.errorMessage != '' ||
+              this.props.autoLoginErrorMessage != '') && 
+              <GenericText style={{flex:0.5}} error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
+                {this.state.errorMessage}
+                {this.props.autoLoginErrorMessage}
+              </GenericText>
+            }
           
           <LoadingSpinner visible={this.state.spinnerVisible}/>
 

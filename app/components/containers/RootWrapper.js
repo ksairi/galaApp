@@ -11,10 +11,10 @@ const styles = StyleSheet.create({
     padding: containerPadding,
   },
   portrait:{
-    paddingTop:70
+    paddingTop:0
   },
   landscape:{
-    paddingTop:40
+    paddingTop:0
   }
 })
  

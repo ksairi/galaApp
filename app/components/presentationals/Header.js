@@ -18,7 +18,7 @@ export default ({navigation, homeHeader}) =>{
   }
 
   return(
-    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight}}>
+    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight }}>
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start'}}>
         { homeHeader ?
           <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>

@@ -14,9 +14,8 @@ const styles = StyleSheet.create({
   welcome:{
     fontWeight:'bold',
     fontSize:30,
-    flex:0,
+    flex:0.5,
     color:'white',
-    paddingBottom:30
   },
 
   welcomeDescription: {
@@ -43,16 +42,18 @@ function goToLogin(dispatch, navigation){
 
  function Welcome({dispatch, navigation, orientation}){
   return(
-    <RootWrapper>
+    <RootWrapper style={{marginTop:Expo.Constants.statusBarHeight}}>
       <CentredWrapper>
         <Logo />
-        <Text style={styles.welcome}> 
-          ¡BIENVENIDO!
-        </Text>
-        <Text style={styles.welcomeDescription}>
-          Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio
-        </Text>
-        <View style={{flexDirection:'row', flex:1}}>
+        <View style={{flex:1.2}}>
+          <Text style={styles.welcome}> 
+            ¡BIENVENIDO!
+          </Text>
+          <Text style={styles.welcomeDescription}>
+            Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio
+          </Text>
+        </View>
+        <View style={{flexDirection:'row', flex:0.5}}>
           <Button contentStyle={styles[orientation]} text='EXPLORA LA APP' onPress={() => goToLogin(dispatch, navigation)} />
         </View>
       </CentredWrapper>

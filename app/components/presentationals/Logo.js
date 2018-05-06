@@ -2,7 +2,7 @@ import React from 'react'
 import {View } from 'react-native'
 import Icon from 'helpers/ImageHelper'
 
-export default ()=>
-  <View style={{flex:1}}> 
-    <Icon name="logo-gala" size={200} color='white'/>
-  </View>  
+export default ({style, logoSize})=>
+  
+    <Icon style={[{flex:1.5}, style]} name="logo-gala" size={logoSize ? logoSize : 250} color='white'/>
+    
