@@ -24,7 +24,7 @@ export default ({ navigation, activeItemKey })=>{
       <DrawerItem active={activeItemKey == 'Routines'} icon='routines' label='Rutinas' onPress={()=> navigation.navigate(Screens.Routines)} />
       <DrawerItem active={activeItemKey == 'Classes'} icon='classes' label='Clases' onPress={()=> navigation.navigate(Screens.Classes)} />
       <DrawerItem active={activeItemKey == 'Timetable'} icon='timetable' label='Horarios' onPress={()=> navigation.navigate(Screens.Timetable)} />
-      <DrawerItem active={activeItemKey == 'Messages'} icon='message-icon' label='Mensajes' onPress={()=> navigation.navigate(Screens.Messages)} />
+      <DrawerItem active={activeItemKey == 'Messages'} icon='timetable' label='Mensajes' onPress={()=> navigation.navigate(Screens.Messages)} />
       <DrawerItem active={activeItemKey == 'Referrals'} icon='referrals' label='Referidos' onPress={()=> navigation.navigate(Screens.Referrals)} />
     </ScrollView>
   )

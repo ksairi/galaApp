@@ -22,17 +22,17 @@ export default ({navigation, homeHeader}) =>{
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start'}}>
         { homeHeader ?
           <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>
-            <Icon name={isMenuClosed ? 'classes' : "message-icon"} size={80} color='white'/>
+            <Icon name={isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={60} color='white'/>
           </TouchableOpacity>
           :  
           <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-            <Icon name="timetable" size={80} color='white'/>
+            <Icon name='arrow-navigation-white-left' size={80} color='white'/>
           </TouchableOpacity>
         }
       </View>
       
       <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
-        <Icon name="referrals" size={80} color='white'/>
+        <Icon name='logo-gala' size={100} color='white'/>
       </View>
       
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}/>
