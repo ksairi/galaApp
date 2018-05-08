@@ -1,5 +1,5 @@
 import React from 'react'
-import { Keyboard, View, StyleSheet, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { Keyboard, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import { Messages, Screens, ServerProtocol } from '/config/settings'
@@ -20,19 +20,23 @@ import Logo from '/components/presentationals/Logo'
 
 RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
-const styles = StyleSheet.create({
-  noAccount: {
-    fontSize:16,
-    fontFamily:'gamja-flower-regular',
-    flex:0.5
+const styles = {
+  link: {
+    container:{
+    },
+    content:{
+      fontSize:16,
+      fontFamily:'gamja-flower-regular'
+    }
   }
-})
+}
 
 @connect(
 state => ({
   userData: state.userData,
   isLoggedIn:state.isLoggedIn,
-  autoLoginErrorMessage:state.autoLoginErrorMessage
+  autoLoginErrorMessage:state.autoLoginErrorMessage,
+  orientation : state.currentOrientation
   })
 )
 export default class SignIn extends React.Component{
@@ -70,25 +74,29 @@ export default class SignIn extends React.Component{
   _keyboardDidHide = ()=> {
     this.setState({isKeyboardOn:false})
   }
-
   
   render(){
-    var imageSize, imageFlex, logoSize, logoFlex, passwordMarginBottom, buttonStyle
+    var imageSize, imageFlex, logoSize, logoFlex, userIdMarginBottom, passwordMarginBottom, buttonFlex, buttonStyle, linksContainerFlex
     if(this.state.isKeyboardOn){
-      logoSize = 150
-      logoFlex = 2.4
-      imageSize = 145
-      imageFlex = 2.9
+      logoSize = 135
+      logoFlex = 1.4
+      imageSize = 120
+      imageFlex = 1.7
+      userIdMarginBottom = 10
       passwordMarginBottom = 5
+      buttonFlex = 0.7
       buttonStyle = {height:30}
+      linksContainerFlex = 0.9
     }
     else{
       logoSize = 200
       logoFlex = 1.7
-      imageSize = 250
-      imageFlex = 3
-      passwordMarginBottom = 20
+      imageSize = 210
+      imageFlex = 2
+      passwordMarginBottom = 10
+      buttonFlex = 1
       buttonStyle = {}
+      linksContainerFlex = 0.7
       
     }
      
@@ -98,9 +106,11 @@ export default class SignIn extends React.Component{
           <CentredWrapper>
             <Logo style={{flex:logoFlex}} logoSize={logoSize}/>
             
-            <Icon name="referrals" size={imageSize} color='white' style={{flex:imageFlex}}/>
+            { this.props.orientation == 'portrait' && 
+              <Icon name="referrals" size={imageSize} color='white' style={{flex:imageFlex}}/>
+            }
             
-            <RkTextInput rkType='rounded inputText' style={{flex:1}} placeholder='DNI' keyboardType='numeric'
+            <RkTextInput rkType='rounded inputText' style={{marginBottom:0}} placeholder='DNI' keyboardType='numeric'
               autoFocus onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
               autoCapitalize='none' autoCorrect={false}
@@ -113,11 +123,14 @@ export default class SignIn extends React.Component{
               value={this.props.isLoggedIn ? this.state.password : null}/>
             
 
-            <View style={{flexDirection:'row', flex:1.1}}>
+            <View style={{flexDirection:'row', flex:buttonFlex}}>
               <Button contentStyle={{}} style={buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
-            <GenericLink style={styles.noAccount} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>
+            <View style={{flex:linksContainerFlex}}>
+              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>
+              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} text='¿Olvidaste tu contraseña?' onPress={()=>this.goToResetPassword}/>
+            </View>
 
             { (this.state.errorMessage != '' ||
               this.props.autoLoginErrorMessage != '') && 
