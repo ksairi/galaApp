@@ -185,8 +185,9 @@ export default class SignUp extends React.Component{
               <Button style={buttonContentStyle} text='REGISTRARME' onPress={this.signUp}/>
             </View>
 
-            <GenericLink contentStyle={[styles.memeberAlready]} containerStyle={memeberAlreadyStyle} text='¿Ya tenés una cuenta? Iniciá Sesión' 
-              onPress={()=>this.goToSignIn}/>
+            <GenericLink contentStyle={[styles.memeberAlready]} containerStyle={memeberAlreadyStyle} onPress={()=>this.goToSignIn}>
+              ¿Ya tenés una cuenta? Iniciá Sesión
+            </GenericLink>
             
             { this.state.errorMessage != '' && 
               <GenericText style={{flex:0.3}} error={this.state.errorMessage ? true : false}>

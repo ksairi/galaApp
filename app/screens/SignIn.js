@@ -116,8 +116,14 @@ export default class SignIn extends React.Component{
             </View>
 
             <View style={linksContainerStyle}>
-              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>
-              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} text='¿Olvidaste tu contraseña?' onPress={()=>this.goToResetPassword}/>
+              
+              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignUp}>
+                ¿No tenés una cuenta? Creá una nueva
+              </GenericLink>
+              
+              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToResetPassword}>
+                ¿Olvidaste tu contraseña?
+              </GenericLink>
             </View>
 
             { (this.state.errorMessage != '' ||
@@ -176,12 +182,14 @@ export default class SignIn extends React.Component{
   }
   
   goToSignUp = () =>{
+    Keyboard.dismiss()
     this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.SignUp)
 
   }
 
   goToResetPassword = () =>{
+    Keyboard.dismiss()
     this.setState({errorMessage:""})
     this.props.navigation.navigate(Screens.ResetPassword)
   }
