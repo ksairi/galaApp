@@ -76,58 +76,46 @@ export default class SignIn extends React.Component{
   }
   
   render(){
-    var imageSize, imageFlex, logoSize, logoFlex, userIdMarginBottom, passwordMarginBottom, buttonFlex, buttonStyle, linksContainerFlex
+    var logoSize = 200, logoStyle = {flex:1.7}, imageSize = 225, imageStyle = {flex:2}, passwordInputStyle = {marginBottom:10}, 
+        buttonContainerStyle = {flex:1}, buttonStyle = {}, linksContainerStyle = {flex:0.7}
+    
     if(this.state.isKeyboardOn){
       logoSize = 135
-      logoFlex = 1.4
+      logoStyle = {flex:1.4}
       imageSize = 120
-      imageFlex = 1.7
-      userIdMarginBottom = 10
-      passwordMarginBottom = 5
-      buttonFlex = 0.7
+      imageStyle = {flex:1.7}
+      passwordInputStyle = {marginBottom:5}
+      buttonContainerStyle = {flex:0.7}
       buttonStyle = {height:30}
-      linksContainerFlex = 0.9
+      linksContainerStyle = {flex:0.9}
     }
-    else{
-      logoSize = 200
-      logoFlex = 1.7
-      imageSize = 210
-      imageFlex = 2
-      passwordMarginBottom = 10
-      buttonFlex = 1
-      buttonStyle = {}
-      linksContainerFlex = 0.7
-      
-    }
-     
+
     return(
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <Logo style={{flex:logoFlex}} logoSize={logoSize}/>
+            <Logo style={logoStyle} logoSize={logoSize}/>
             
             { this.props.orientation == 'portrait' && 
-              <Icon name="referrals" size={imageSize} color='white' style={{flex:imageFlex}}/>
+              <Icon name="referrals" size={imageSize} color='white' style={imageStyle}/>
             }
             
-            <RkTextInput rkType='rounded inputText' style={{marginBottom:0}} placeholder='DNI' keyboardType='numeric'
+            <RkTextInput rkType='rounded inputText' style={{marginBottom:0},{flex:0.8}} placeholder='DNI' keyboardType='numeric'
               autoFocus onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
-              autoCapitalize='none' autoCorrect={false}
-              value={this.props.isLoggedIn ? this.state.userId : null}/>
+              autoCapitalize='none' autoCorrect={false} value={this.props.isLoggedIn ? this.state.userId : null}/>
 
-            <RkTextInput rkType='rounded inputText' style={{marginBottom:passwordMarginBottom}} placeholder='Contraseña'
+            <RkTextInput rkType='rounded inputText' style={passwordInputStyle, {flex:0.8}} placeholder='Contraseña'
               secureTextEntry onChangeText={password => this.setState({password})}
               autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
-              onSubmitEditing={this.signIn}
-              value={this.props.isLoggedIn ? this.state.password : null}/>
+              onSubmitEditing={this.signIn} value={this.props.isLoggedIn ? this.state.password : null}/>
             
 
-            <View style={{flexDirection:'row', flex:buttonFlex}}>
+            <View style={[{flexDirection:'row'}, buttonContainerStyle]}>
               <Button contentStyle={{}} style={buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
-            <View style={{flex:linksContainerFlex}}>
+            <View style={linksContainerStyle}>
               <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} text='¿No tenés una cuenta? Creá una nueva' onPress={()=>this.goToSignUp}/>
               <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} text='¿Olvidaste tu contraseña?' onPress={()=>this.goToResetPassword}/>
             </View>
