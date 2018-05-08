@@ -18,7 +18,7 @@ export default ({navigation, homeHeader}) =>{
   }
 
   return(
-    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight }}>
+    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:10 }}>
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start'}}>
         { homeHeader ?
           <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>
@@ -26,13 +26,13 @@ export default ({navigation, homeHeader}) =>{
           </TouchableOpacity>
           :  
           <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-            <Icon name='arrow-navigation-white-left' size={80} color='white'/>
+            <Icon name='arrow-navigation-white-left' size={50} color='white'/>
           </TouchableOpacity>
         }
       </View>
       
-      <View style={{flex:1, flexDirection:'row', justifyContent:'center'}}>
-        <Icon name='logo-gala' size={100} color='white'/>
+      <View style={{flex:2.3, flexDirection:'row', justifyContent:'center'}}>
+        {/*<Icon name='logo-gala' size={200} color='white'/>*/}
       </View>
       
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}/>
