@@ -2,6 +2,7 @@ import React from 'react'
 import { Keyboard, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
+import * as Animatable from 'react-native-animatable'
 import { Messages, Screens, ServerProtocol } from '/config/settings'
 import genericStyles from '/config/styles'
 import { login } from '/helpers/ApiHelper'
@@ -16,7 +17,8 @@ import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
 import { styleGenericTextInput } from '/components/presentationals/styles' 
-import Logo from '/components/presentationals/Logo'
+
+const AnimatedIcon = Animatable.createAnimatableComponent(Icon)
 
 RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
@@ -27,8 +29,10 @@ const styles = {
     content:{
       fontSize:16,
       fontFamily:'gamja-flower-regular'
-    }
-  }
+    },
+  },
+  animatedLogoInitStyle:{flex:1.7, fontSize:200},
+  animatedImageInitStyle:{flex:2, fontSize:225}
 }
 
 @connect(
@@ -68,36 +72,42 @@ export default class SignIn extends React.Component{
   }
 
   _keyboardDidShow = ()=> {
+    
     this.setState({isKeyboardOn:true, errorMessage:''})
+    this.animatedLogo.transitionTo({flex:1.4, fontSize:135})
+    this.animatedImage.transitionTo({flex:1.7, fontSize:120})
   }
 
   _keyboardDidHide = ()=> {
+    
     this.setState({isKeyboardOn:false})
+    this.animatedLogo.transitionTo(styles.animatedLogoInitStyle)
+    this.animatedImage.transitionTo(styles.animatedImageInitStyle)
   }
+
+  handleAnimatedLogo = ref => this.animatedLogo = ref
+  
+  handleAnimatedImage = ref => this.animatedImage = ref
   
   render(){
-    var logoSize = 200, logoStyle = {flex:1.7}, imageSize = 225, imageStyle = {flex:2}, passwordInputStyle = {marginBottom:10}, 
+    var passwordInputStyle = {marginBottom:10}, 
         buttonContainerStyle = {flex:1}, buttonStyle = {}, linksContainerStyle = {flex:0.7}
     
     if(this.state.isKeyboardOn){
-      logoSize = 135
-      logoStyle = {flex:1.4}
-      imageSize = 120
-      imageStyle = {flex:1.7}
       passwordInputStyle = {marginBottom:5}
       buttonContainerStyle = {flex:0.7}
       buttonStyle = {height:30}
       linksContainerStyle = {flex:0.9}
     }
-
+    
     return(
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <Logo style={logoStyle} logoSize={logoSize}/>
+            <AnimatedIcon name="logo-gala" style={styles.animatedLogoInitStyle}  color='white' ref={this.handleAnimatedLogo}/>
             
             { this.props.orientation == 'portrait' && 
-              <Icon name="referrals" size={imageSize} color='white' style={imageStyle}/>
+              <AnimatedIcon name="referrals" style={styles.animatedImageInitStyle}  color='white' ref={this.handleAnimatedImage}/>
             }
             
             <RkTextInput rkType='rounded inputText' style={{marginBottom:0},{flex:0.8}} placeholder='DNI' keyboardType='numeric'
