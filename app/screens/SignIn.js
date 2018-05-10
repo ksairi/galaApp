@@ -15,26 +15,15 @@ import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
-import { styleGenericTextInput } from '/components/styles' 
+import { genericTextInputStyle, textWithLinkStyle } from '/components/styles' 
 
 const AnimatedIcon = Animatable.createAnimatableComponent(Icon)
 
-RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
+RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
-  link: {
-    container:{
-      flex:0
-    },
-    content:{
-      fontSize:16,
-      fontFamily:'lato-bold'
-    }
-  },
   animatedLogoInitStyle:{flex:1.7, fontSize:200},
   animatedImageInitStyle:{flex:2, fontSize:225},
-  textContainer:{flexDirection:'row', flex:1},
-  text:{flex:0, marginRight:5, fontFamily:'lato-regular', fontSize:16}
 }
 
 @connect(
@@ -133,20 +122,20 @@ export default class SignIn extends React.Component{
 
             <View style={linksContainerStyle}>
               
-              <View style={styles.textContainer}>
-                <GenericText style={styles.text}>
+              <View style={textWithLinkStyle.container}>
+                <GenericText style={textWithLinkStyle.text}>
                   ¿No tenés una cuenta?
                 </GenericText>
-                <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignUp}>
+                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToSignUp}>
                   Creá una nueva
                 </GenericLink>
               </View>
 
-              <View style={styles.textContainer}>
-                <GenericText style={styles.text}>
+              <View style={textWithLinkStyle.container}>
+                <GenericText style={textWithLinkStyle.text}>
                   ¿Olvidaste tu contraseña?
                 </GenericText>
-                <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToResetPassword}>
+                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToResetPassword}>
                   Recuperala
                 </GenericLink>
               </View>  

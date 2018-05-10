@@ -15,27 +15,16 @@ import Button from '/components/presentationals/GenericButton'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import { styleGenericTextInput } from '/components/styles' 
+import { genericTextInputStyle, textWithLinkStyle } from '/components/styles' 
 
 
-RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
+RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles ={
   registerAccountTitle:{
     fontSize:20,
     fontFamily:'brother-1816-bold'
-  },
-  link:{
-    container:{
-      flex:0
-    },
-    content:{
-      fontSize:16,
-      fontFamily:'lato-bold',
-    }
-  },
-  textContainer:{flexDirection:'row', flex:1},
-  text:{ flex:0, marginRight:5, fontFamily:'lato-regular', fontSize:16}
+  }
 }
 
 @connect(
@@ -198,11 +187,11 @@ export default class SignUp extends React.Component{
               <Button style={buttonContentStyle} text='REGISTRARME' onPress={this.signUp}/>
             </View>
 
-            <View style={[styles.textContainer, memeberAlreadyStyle]}>
-              <GenericText style={styles.text}>
+            <View style={[textWithLinkStyle.container, memeberAlreadyStyle]}>
+              <GenericText style={textWithLinkStyle.text}>
                 ¿Ya tenés una cuenta?
               </GenericText>
-              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignIn}>
+              <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToSignIn}>
                 Iniciá Sesión
               </GenericLink>
             </View>

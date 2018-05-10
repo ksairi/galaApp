@@ -13,27 +13,16 @@ import Button from '/components/presentationals/GenericButton'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import { styleGenericTextInput } from '/components/styles'
+import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
 
-RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
+RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   resetPasswordTitle:{
     fontSize:20,
     fontFamily:'brother-1816-bold',
     flex:0.2
-  },
-  link: {
-    container:{
-      flex:0
-    },
-    content:{
-      fontSize:16,
-      fontFamily:'lato-bold'
-    }
-  },
-  textContainer:{flexDirection:'row', flex:0.2},
-  text:{flex:0, marginRight:5, fontFamily:'lato-regular', fontSize:16}
+  }
 }
 
   
@@ -121,11 +110,11 @@ export default class ResetPassword extends React.Component {
             
             { this.state.showBackToSignIn &&
               
-              <View style={styles.textContainer}>
-                <GenericText style={styles.text}>
+              <View style={[textWithLinkStyle.container, {flex:0.2}]}>
+                <GenericText style={textWithLinkStyle.text}>
                   Contraseña actualizada!
                 </GenericText>
-                <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignIn}>
+                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToSignIn}>
                   Volvé a loguearte
                 </GenericLink>
               </View>
@@ -141,6 +130,8 @@ export default class ResetPassword extends React.Component {
   doResetPassword = () =>{
     var message
     Keyboard.dismiss()
+    this.setState({showBackToSignIn:false})
+
     if (!this.state.userId || !this.state.password || !this.state.confirmPassword){
       this.setState({message:Messages.INCOMPLETE_INPUT_DATA, hasErrors:true})
       return
