@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import Button from '/components/presentationals/GenericButton'
 import Text from '/components/presentationals/GenericText'
 import { connect } from 'react-redux'
@@ -9,7 +9,7 @@ import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Logo from '/components/presentationals/Logo'
 
-const styles = StyleSheet.create({
+const styles = {
   welcome:{
     fontSize:30,
     flex:0.5,
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flex:1.2,
     fontFamily:'lato-regular',
   }
-})
+}
 
 function goToLogin(dispatch, navigation){
   dispatch(ActionsCreators.setIsAppsFirstTime(false))

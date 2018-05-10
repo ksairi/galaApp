@@ -1,8 +1,7 @@
 import React from 'react'
 import { Text } from 'react-native'
-import { StyleSheet } from 'react-native'
 
-const styles = StyleSheet.create({
+const styles = {
   errorMessage: {
     color: 'red',
   },
@@ -12,7 +11,7 @@ const styles = StyleSheet.create({
     flex:1,
     fontFamily:'lato-regular'
   }
-})
+}
 
 export default ({children, style, error}) =>
   <Text style={[styles.genericText, style, error ? styles.errorMessage : null]}>

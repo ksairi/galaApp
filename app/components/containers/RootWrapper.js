@@ -1,10 +1,10 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 import { genericBackgroundColor, containerPadding } from '/components/styles'
 import { connect } from 'react-redux'
 import { ActionsCreators } from '/redux/actions'
 
-const styles = StyleSheet.create({
+const styles = {
   rootWrapper:{
     flex:1,
     backgroundColor: genericBackgroundColor,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   landscape:{
     paddingTop:0
   }
-})
+}
  
 function RootWrapper({children, orientation, style}){
   return(

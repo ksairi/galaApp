@@ -1,12 +1,12 @@
 import React from 'react'
-import {View, StyleSheet } from 'react-native'
+import { View } from 'react-native'
 
-const styles = StyleSheet.create({
+const styles = {
   centredWrapper:{
     flex:1,
     alignItems: 'center'
   },
-})
+}
 
 export default ({style, children})=>
   <View style={[styles.centredWrapper, style]}> 

@@ -1,12 +1,12 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity, Text } from 'react-native'
 import { createIconSetFromIcoMoon } from '@expo/vector-icons'
 import icomoonConfig from '/icomoonConfig.json'
 import { activeSideMenuItemColor } from '/components/styles'
 
 const Icon = createIconSetFromIcoMoon(icomoonConfig)
 const iconSize = 60
-const styles = StyleSheet.create({
+const styles = {
   drawerItem:{
     flex:1,
     flexDirection:'row'
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     color:'white'
 
   }
-})
+}
 
 export default ({active, onPress, icon, label})=>
   <TouchableOpacity style={[styles.drawerItem, active ? styles.activeItem : null]} onPress={()=> onPress()}>

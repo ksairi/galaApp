@@ -1,10 +1,10 @@
 import React from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView } from 'react-native'
 import { Screens } from '/config/settings'
 import DrawerItem from '/components/presentationals/DrawerItem'
 import Icon from '/helpers/ImageHelper'
 
-const styles = StyleSheet.create({
+const styles = {
   drawerItemsWrapper:{
     paddingTop:10,
     backgroundColor:'#0b1143',
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     flex:1,
     color:'white'
   }
-})
+}
 
 export default ({ navigation, activeItemKey })=>{
   return(

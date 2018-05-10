@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View } from 'react-native'
+import { View } from 'react-native'
 import { LoadingSpinner } from '/components/presentationals/Spinner'
 import { connect } from 'react-redux'
 import { Screens, ServerProtocol } from '/config/settings'
@@ -7,7 +7,7 @@ import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
 import { ActionsCreators } from '/redux/actions'
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
     justifyContent: 'center'
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     padding: 10
   }
-})
+}
 
 @connect(state=>({
   isAppsFirstTime:state.isAppsFirstTime,
