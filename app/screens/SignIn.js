@@ -74,15 +74,16 @@ export default class SignIn extends React.Component{
   _keyboardDidShow = ()=> {
     
     this.setState({isKeyboardOn:true, errorMessage:''})
-    this.animatedLogo.transitionTo({flex:1.4, fontSize:135})
-    this.animatedImage.transitionTo({flex:1.7, fontSize:120})
+    this.animatedLogo.transitionTo({flex:1.4, fontSize:135}, 1500)
+    this.animatedImage.transitionTo({flex:1.7, fontSize:120}, 1500)
   }
 
   _keyboardDidHide = ()=> {
     
     this.setState({isKeyboardOn:false})
-    this.animatedLogo.transitionTo(styles.animatedLogoInitStyle)
-    this.animatedImage.transitionTo(styles.animatedImageInitStyle)
+    this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500)
+    this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
+    
   }
 
   handleAnimatedLogo = ref => this.animatedLogo = ref
