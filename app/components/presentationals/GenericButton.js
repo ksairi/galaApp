@@ -8,7 +8,7 @@ RkTheme.setType('RkButton', 'genericButton', {
   content:{
     color:'white',
     fontSize:19,
-    fontWeight:'bold'
+    fontFamily:'lato-regular'
   }
 })
 

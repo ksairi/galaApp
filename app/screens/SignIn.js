@@ -25,14 +25,17 @@ RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 const styles = {
   link: {
     container:{
+      flex:0
     },
     content:{
       fontSize:16,
-      fontFamily:'gamja-flower-regular'
-    },
+      fontFamily:'lato-bold'
+    }
   },
   animatedLogoInitStyle:{flex:1.7, fontSize:200},
-  animatedImageInitStyle:{flex:2, fontSize:225}
+  animatedImageInitStyle:{flex:2, fontSize:225},
+  textContainer:{flexDirection:'row', flex:1},
+  text:{flex:0, marginRight:5, fontFamily:'lato-regular', fontSize:16}
 }
 
 @connect(
@@ -75,15 +78,18 @@ export default class SignIn extends React.Component{
     
     this.setState({isKeyboardOn:true, errorMessage:''})
     this.animatedLogo.transitionTo({flex:1.4, fontSize:135}, 1500)
-    this.animatedImage.transitionTo({flex:1.7, fontSize:120}, 1500)
+    if(this.animatedImage != null){
+      this.animatedImage.transitionTo({flex:1.7, fontSize:120}, 1500)
+    }
   }
 
   _keyboardDidHide = ()=> {
     
     this.setState({isKeyboardOn:false})
     this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500)
-    this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
-    
+    if(this.animatedImage != null){
+      this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
+    }
   }
 
   handleAnimatedLogo = ref => this.animatedLogo = ref
@@ -105,13 +111,13 @@ export default class SignIn extends React.Component{
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <AnimatedIcon name="logo-gala" style={styles.animatedLogoInitStyle}  color='white' ref={this.handleAnimatedLogo}/>
+            <AnimatedIcon name="logo-gala" style={styles.animatedLogoInitStyle} color='white' ref={this.handleAnimatedLogo}/>
             
             { this.props.orientation == 'portrait' && 
-              <AnimatedIcon name="referrals" style={styles.animatedImageInitStyle}  color='white' ref={this.handleAnimatedImage}/>
+              <AnimatedIcon name="referrals" style={styles.animatedImageInitStyle} color='white' ref={this.handleAnimatedImage}/>
             }
             
-            <RkTextInput rkType='rounded inputText' style={{marginBottom:0},{flex:0.8}} placeholder='DNI' keyboardType='numeric'
+            <RkTextInput rkType='rounded inputText' style={{marginBottom:0, flex:0.8}} placeholder='DNI' keyboardType='numeric'
               autoFocus onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
               autoCapitalize='none' autoCorrect={false} value={this.props.isLoggedIn ? this.state.userId : null}/>
@@ -128,13 +134,23 @@ export default class SignIn extends React.Component{
 
             <View style={linksContainerStyle}>
               
-              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignUp}>
-                ¿No tenés una cuenta? Creá una nueva
-              </GenericLink>
-              
-              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToResetPassword}>
-                ¿Olvidaste tu contraseña?
-              </GenericLink>
+              <View style={styles.textContainer}>
+                <GenericText style={styles.text}>
+                  ¿No tenés una cuenta?
+                </GenericText>
+                <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignUp}>
+                  Creá una nueva
+                </GenericLink>
+              </View>
+
+              <View style={styles.textContainer}>
+                <GenericText style={styles.text}>
+                  ¿Olvidaste tu contraseña?
+                </GenericText>
+                <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToResetPassword}>
+                  Recuperala
+                </GenericLink>
+              </View>  
             </View>
 
             { (this.state.errorMessage != '' ||

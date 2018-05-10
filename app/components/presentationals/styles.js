@@ -8,6 +8,7 @@ const styleGenericTextInput = {
   input:{
     placeholderTextColor:'white',
     fontSize:20,
+    fontFamily:'lato-regular'
   }
 }
 

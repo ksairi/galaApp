@@ -1,4 +1,5 @@
 const SERVER_HOSTNAME = (__DEV__) ? 'http://192.168.42.1:3000/' : 'https://aqueous-harbor-62651.herokuapp.com/'
+
 exports.Urls = {
   LOGIN:SERVER_HOSTNAME + 'login',
   REGISTER:SERVER_HOSTNAME + 'register',
@@ -10,7 +11,7 @@ exports.Urls = {
 } 
 
 exports.Messages = {
-	INVALID_USER_ID_PASSWORD:'Ingresá el DNI y tu contraseña para continuar',
+	INVALID_USER_ID_PASSWORD:'Ingresá tu DNI y contraseña para continuar',
   INVALID_CONFIRM_PASSWORD:'Las contraseñas no coinciden',
   SERVER_ERROR:'Error de conexión a nuestros servidores. Por favor reintentá en unos minutos',
   CHECK_INTERNET_CONNECTION:'Verificá tu conexión de internet',
@@ -87,5 +88,4 @@ exports.ActionsTypes = {
   SET_CURRENT_HOME_DRAWER_OPTION:'SET_CURRENT_HOME_DRAWER_OPTION',
   //DEVICE
   SET_CURRENT_ORIENTATION:'SET_CURRENT_ORIENTATION'
-
 }

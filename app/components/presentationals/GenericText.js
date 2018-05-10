@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
   genericText: {
     color: 'white',
     textAlign:'center',
-    flex:1
+    flex:1,
+    fontFamily:'lato-regular'
   }
 })
 

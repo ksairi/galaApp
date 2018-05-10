@@ -12,27 +12,19 @@ import Logo from '/components/presentationals/Logo'
 
 const styles = StyleSheet.create({
   welcome:{
-    fontWeight:'bold',
     fontSize:30,
     flex:0.5,
     color:'white',
+    fontFamily:'brother-1816-bold'
   },
 
   welcomeDescription: {
     fontSize:20,
     color:'white',
-    paddingLeft:40,
-    paddingRight:25,
-    flex:1,
-    fontFamily:'gamja-flower-regular',
-  },
-
-  portrait:{
-  },
-  
-  landscape:{
-    
-  },
+    paddingRight:10,
+    flex:1.2,
+    fontFamily:'lato-regular',
+  }
 })
 
 function goToLogin(dispatch, navigation){
@@ -40,30 +32,25 @@ function goToLogin(dispatch, navigation){
   navigation.navigate(Screens.LoginStack)
 }
 
- function Welcome({dispatch, navigation, orientation}){
+ function Welcome({dispatch, navigation}){
   return(
     <RootWrapper style={{marginTop:Expo.Constants.statusBarHeight}}>
       <CentredWrapper>
-        <Logo />
-        <View style={{flex:1.2}}>
+        <Logo style={{flex:0.9}}/>
+        <View style={{flex:0.95}}>
           <Text style={styles.welcome}> 
             ¡BIENVENIDO!
           </Text>
           <Text style={styles.welcomeDescription}>
-            Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio
+            Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio.
           </Text>
         </View>
-        <View style={{flexDirection:'row', flex:0.5}}>
-          <Button contentStyle={styles[orientation]} text='EXPLORA LA APP' onPress={() => goToLogin(dispatch, navigation)} />
+        <View style={{flexDirection:'row', flex:0.4}}>
+          <Button contentStyle={{fontFamily:'brother-1816-bold'}} text='EXPLORÁ LA APP' onPress={() => goToLogin(dispatch, navigation)} />
         </View>
       </CentredWrapper>
     </RootWrapper>
   )
 }
-function mapStateToProps(state){
-  return({
-    orientation:state.currentOrientation
-  })
 
-}
-export default connect(mapStateToProps)(Welcome)
+export default connect()(Welcome)

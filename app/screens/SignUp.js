@@ -1,5 +1,5 @@
 import React from 'react'
-import { Keyboard, KeyboardAvoidingView, StyleSheet, View } from 'react-native'
+import { Keyboard, KeyboardAvoidingView, View } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -20,16 +20,23 @@ import { styleGenericTextInput } from '/components/presentationals/styles'
 
 RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
-const styles = StyleSheet.create({
-  memeberAlready: {
-    fontSize:16,
-    fontFamily:'gamja-flower-regular',
-  },
+const styles ={
   registerAccountTitle:{
     fontSize:20,
-    fontFamily:'gamja-flower-regular'
-  }
-})
+    fontFamily:'brother-1816-bold'
+  },
+  link:{
+    container:{
+      flex:0
+    },
+    content:{
+      fontSize:16,
+      fontFamily:'lato-bold',
+    }
+  },
+  textContainer:{flexDirection:'row', flex:1},
+  text:{ flex:0, marginRight:5, fontFamily:'lato-regular', fontSize:16}
+}
 
 @connect(
 state => (
@@ -148,14 +155,20 @@ export default class SignUp extends React.Component{
     buttonContentStyle = {},
     memeberAlreadyStyle
 
-    if(this.state.isKeyboardOn || this.props.orientation =='landscape'){
-      textInputStyle = {marginTop:0, flex:0.5}
-      titleStyle = {flex:0.5} 
-      rootWrapperStyle = {paddingTop:10, paddingBottom:10}
-      buttonContainerStyle = {flex:0.7}
+    if(this.state.isKeyboardOn){
+      textInputStyle = {marginTop:0, marginBottom:5, flex:0.2}
+      titleStyle = {flex:0.2} 
+      rootWrapperStyle = {paddingTop:10, paddingBottom:5}
+      buttonContainerStyle = {flex:0.2}
       buttonContentStyle = {height:30}
-      memeberAlreadyStyle = {flex:0.3}
+      memeberAlreadyStyle = {flex:0.6}
     }
+    if(this.props.orientation =='landscape'){
+      textInputStyle = {marginTop:0}
+      buttonContentStyle = {height:25}
+      memeberAlreadyStyle = {flex:0.6}
+    }
+    
     return (
       <RootWrapper style={rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
@@ -185,12 +198,17 @@ export default class SignUp extends React.Component{
               <Button style={buttonContentStyle} text='REGISTRARME' onPress={this.signUp}/>
             </View>
 
-            <GenericLink contentStyle={[styles.memeberAlready]} containerStyle={memeberAlreadyStyle} onPress={()=>this.goToSignIn}>
-              ¿Ya tenés una cuenta? Iniciá Sesión
-            </GenericLink>
+            <View style={[styles.textContainer, memeberAlreadyStyle]}>
+              <GenericText style={styles.text}>
+                ¿Ya tenés una cuenta?
+              </GenericText>
+              <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignIn}>
+                Iniciá Sesión
+              </GenericLink>
+            </View>
             
             { this.state.errorMessage != '' && 
-              <GenericText style={{flex:0.3}} error={this.state.errorMessage ? true : false}>
+              <GenericText style={{flex:0.6}} error={this.state.errorMessage ? true : false}>
                 {this.state.errorMessage}
               </GenericText>
             }

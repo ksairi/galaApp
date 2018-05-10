@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Keyboard, KeyboardAvoidingView, StyleSheet } from 'react-native'
+import { View, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { NavigationActions } from 'react-navigation'
 import { connect } from 'react-redux'
 import { Messages, Screens, ServerProtocol, SignUpConstraints } from '/config/settings'
@@ -17,14 +17,24 @@ import { styleGenericTextInput } from '/components/presentationals/styles'
 
 RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 
-const styles = StyleSheet.create({
-  
+const styles = {
   resetPasswordTitle:{
     fontSize:20,
-    fontFamily:'gamja-flower-regular',
+    fontFamily:'brother-1816-bold',
     flex:0.2
-  }
-})
+  },
+  link: {
+    container:{
+      flex:0
+    },
+    content:{
+      fontSize:16,
+      fontFamily:'lato-bold'
+    }
+  },
+  textContainer:{flexDirection:'row', flex:0.2},
+  text:{flex:0, marginRight:5, fontFamily:'lato-regular', fontSize:16}
+}
 
   
 @connect(state => ({
@@ -64,7 +74,6 @@ export default class ResetPassword extends React.Component {
   }
 
   render(){
-    
     var rootWrapperStyle = {paddingTop:15},
         inputTextStyle = {flex:0.2, marginTop:0},
         buttonContainerStyle = {flex:0.3},
@@ -74,7 +83,7 @@ export default class ResetPassword extends React.Component {
     if(this.state.isKeyboardOn){
       rootWrapperStyle = {paddingTop:10, paddingBottom:10}
       inputTextStyle = {flex:0.1, marginTop:0}
-      buttonContainerStyle = {flex:0.1}
+      buttonContainerStyle = {flex:0.15}
       titleStyle = {flex:0.1}
     }
 
@@ -109,13 +118,19 @@ export default class ResetPassword extends React.Component {
                 {this.state.message}
               </GenericText>
             }
-            {   this.state.showBackToSignIn && 
+            
+            { this.state.showBackToSignIn &&
               
-                <GenericLink containerStyle={messageStyle} contentStyle={{fontWeight:'bold'}} onPress={() => this.goToSignIn}> 
-                  Contraseña actualizada. Volvé a loguearte desde aca 
+              <View style={styles.textContainer}>
+                <GenericText style={styles.text}>
+                  Contraseña actualizada!
+                </GenericText>
+                <GenericLink containerStyle={styles.link.container} contentStyle={styles.link.content} onPress={()=>this.goToSignIn}>
+                  Volvé a loguearte
                 </GenericLink>
-                
+              </View>
             }
+
             <LoadingSpinner visible={this.state.spinnerVisible}/>
           </CentredWrapper>
         </KeyboardAvoidingView>
@@ -181,7 +196,6 @@ export default class ResetPassword extends React.Component {
   }
 
   goToSignIn = () =>{
-    console.log('1')
     const resetAction = NavigationActions.reset({
       index: 0,
       actions: [

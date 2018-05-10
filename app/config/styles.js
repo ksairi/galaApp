@@ -1,8 +1,8 @@
 
-const genericBackGroundColorr = '#0b1143'
+const genericBackGroundColor = '#0b1143'
 
-exports.genericBackgroundColor = genericBackGroundColorr
-exports.headerBackgroundColor = genericBackGroundColorr
+exports.genericBackgroundColor = genericBackGroundColor
+exports.headerBackgroundColor = genericBackGroundColor
 exports.containerPadding = 20
 exports.genericButtonBackgroundColor = '#6b35e3'
 exports.inputBackgroundColor = '#12194d'
