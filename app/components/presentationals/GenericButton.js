@@ -1,9 +1,9 @@
 import React from 'react'
 import { RkTheme, RkButton } from 'react-native-ui-kitten'
-import globalStyles from '/config/styles'
+import { genericButtonBackgroundColor } from '/components/styles'
 
 RkTheme.setType('RkButton', 'genericButton', {
-  backgroundColor: globalStyles.genericButtonBackgroundColor,
+  backgroundColor: genericButtonBackgroundColor,
   flex:1,
   content:{
     color:'white',

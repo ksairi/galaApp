@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { createIconSetFromIcoMoon } from '@expo/vector-icons'
 import icomoonConfig from '/icomoonConfig.json'
-import { activeSideMenuItemColor } from '/config/styles'
+import { activeSideMenuItemColor } from '/components/styles'
 
 const Icon = createIconSetFromIcoMoon(icomoonConfig)
 const iconSize = 60

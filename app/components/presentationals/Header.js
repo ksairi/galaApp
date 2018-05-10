@@ -1,7 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import Icon from '/helpers/ImageHelper'
-import globalStyles from '/config/styles'
+import { headerBackgroundColor } from '/components/styles'
 
 
 function onMenuPress(isMenuClosed, navigation){
@@ -18,7 +18,7 @@ export default ({navigation, homeHeader}) =>{
   }
 
   return(
-    <View style={{flexDirection:'row', backgroundColor:globalStyles.headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:10 }}>
+    <View style={{flexDirection:'row', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:10 }}>
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start'}}>
         { homeHeader ?
           <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>

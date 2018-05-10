@@ -5,7 +5,6 @@ import SignIn from '/screens/SignIn'
 import SignUp from '/screens/SignUp'
 import ResetPassword from '/screens//ResetPassword'
 import { Screens } from '/config/settings'
-import globalStyles from '/config/styles'
 import Header from '/components/presentationals/Header'
 
 export default StackNavigator({

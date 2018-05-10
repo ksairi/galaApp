@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
-import { genericBackgroundColor, containerPadding } from '/config/styles'
+import { genericBackgroundColor, containerPadding } from '/components/styles'
 import { connect } from 'react-redux'
 import { ActionsCreators } from '/redux/actions'
 

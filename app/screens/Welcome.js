@@ -7,7 +7,6 @@ import { Screens } from '/config/settings'
 import { ActionsCreators } from '/redux/actions'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
-import genericStyles from '/config/styles'
 import Logo from '/components/presentationals/Logo'
 
 const styles = StyleSheet.create({

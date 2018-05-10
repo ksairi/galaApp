@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import * as Animatable from 'react-native-animatable'
 import { Messages, Screens, ServerProtocol } from '/config/settings'
-import genericStyles from '/config/styles'
 import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
@@ -16,7 +15,7 @@ import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
-import { styleGenericTextInput } from '/components/presentationals/styles' 
+import { styleGenericTextInput } from '/components/styles' 
 
 const AnimatedIcon = Animatable.createAnimatableComponent(Icon)
 

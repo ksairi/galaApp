@@ -13,7 +13,7 @@ import Button from '/components/presentationals/GenericButton'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import { styleGenericTextInput } from '/components/presentationals/styles'
+import { styleGenericTextInput } from '/components/styles'
 
 RkTheme.setType('RkTextInput', 'inputText', styleGenericTextInput)
 

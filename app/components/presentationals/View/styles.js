@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native'
-import { genericBackgroundColor, dynamicPaddingTop, containerPadding } from '/config/styles'
+import { genericBackgroundColor, dynamicPaddingTop, containerPadding } from '/components/styles'
 
 export default StyleSheet.create({
   rootContainer:{
