@@ -475,10 +475,6 @@
     component-type "^1.2.1"
     join-component "^1.1.0"
 
-"@types/node@^8.0.24":
-  version "8.9.4"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-8.9.4.tgz#dfd327582a06c114eb6e0441fa3d6fab35edad48"
-
 Base64@~0.1.3:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/Base64/-/Base64-0.1.4.tgz#e9f6c6bef567fd635ea4162ab14dd329e74aa6de"
@@ -2291,11 +2287,10 @@ electron-download@^3.0.1:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
-electron@^1.4.15:
-  version "1.8.2"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.8.2.tgz#a817cd733c2972b3c7cc4f777caf6e424b88014d"
+electron@~1.4.15:
+  version "1.4.16"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.16.tgz#435a7c037c6a858de37569bb4b012c3f286bf1f3"
   dependencies:
-    "@types/node" "^8.0.24"
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
 
@@ -5351,22 +5346,29 @@ react-deep-force-update@^1.0.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.1.tgz#bcd31478027b64b3339f108921ab520b4313dc2c"
 
-react-devtools-core@3.1.0, react-devtools-core@^3.1.0:
+react-devtools-core@3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-3.1.0.tgz#eec2e9e0e6edb77772e2bfc7d286a296f55a261a"
   dependencies:
     shell-quote "^1.6.1"
     ws "^2.0.3"
 
-react-devtools@^3.0.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-3.1.0.tgz#fc59dbe9f5a6d4b7905f64e940ca0e0b618f8b79"
+react-devtools-core@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-3.2.1.tgz#9d170b2b49e66b7426f659895684c72a431145da"
+  dependencies:
+    shell-quote "^1.6.1"
+    ws "^2.0.3"
+
+react-devtools@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/react-devtools/-/react-devtools-3.2.1.tgz#cacde35d3a18f2527b5e9f97839a948574d66569"
   dependencies:
     cross-spawn "^5.0.1"
-    electron "^1.4.15"
+    electron "~1.4.15"
     ip "^1.1.4"
     minimist "^1.2.0"
-    react-devtools-core "^3.1.0"
+    react-devtools-core "^3.2.1"
     update-notifier "^2.1.0"
 
 react-lifecycles-compat@^1.0.2:
