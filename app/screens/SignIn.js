@@ -15,9 +15,11 @@ import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
+import Logo from '/components/presentationals/Logo'
 import { genericTextInputStyle, textWithLinkStyle } from '/components/styles' 
 
 const AnimatedIcon = Animatable.createAnimatableComponent(Icon)
+const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
 
 RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
@@ -99,9 +101,9 @@ export default class SignIn extends React.Component{
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <AnimatedIcon name="logo-gala" style={styles.animatedLogoInitStyle} color='white' ref={this.handleAnimatedLogo}/>
-            
-            { this.props.orientation == 'portrait' && 
+            <AnimatedLogo style={styles.animatedLogoInitStyle} ref={this.handleAnimatedLogo}/>
+
+            { this.props.orientation == 'portrait' &&
               <AnimatedIcon name="referrals" style={styles.animatedImageInitStyle} color='white' ref={this.handleAnimatedImage}/>
             }
             

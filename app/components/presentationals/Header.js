@@ -2,6 +2,7 @@ import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import Icon from '/helpers/ImageHelper'
 import { headerBackgroundColor } from '/components/styles'
+import Logo from 'components/presentationals/Logo'
 
 
 function onMenuPress(isMenuClosed, navigation){
@@ -32,7 +33,7 @@ export default ({navigation, homeHeader}) =>{
       </View>
       
       <View style={{flex:2.3, flexDirection:'row', justifyContent:'center'}}>
-        {/*<Icon name='logo-gala' size={200} color='white'/>*/}
+        {/*<Logo style={flex:1.7, fontSize:200} /> */}
       </View>
       
       <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}/>
