@@ -35,7 +35,7 @@ function goToLogin(dispatch, navigation){
   return(
     <RootWrapper style={{marginTop:Expo.Constants.statusBarHeight}}>
       <CentredWrapper>
-        <Logo style={{flex:0.9}}/>
+        <Logo style={{flex:0.9, fontSize:250}}/>
         <View style={{flex:0.95}}>
           <Text style={styles.welcome}> 
             ¡BIENVENIDO!
