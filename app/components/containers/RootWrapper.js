@@ -9,18 +9,13 @@ const styles = {
     flex:1,
     backgroundColor: genericBackgroundColor,
     padding: containerPadding,
-  },
-  portrait:{
-    paddingTop:0
-  },
-  landscape:{
-    paddingTop:0
+    paddingBottom:10
   }
 }
- 
+
 function RootWrapper({children, orientation, style}){
   return(
-    <View style={[styles.rootWrapper, styles[orientation], style]}> 
+    <View style={[styles.rootWrapper, style]}>
       {children}
     </View>
   )
@@ -31,5 +26,5 @@ function mapStateToProps(state){
     orientation:state.currentOrientation
   })
 }
-  
+
 export default connect(mapStateToProps)(RootWrapper)
