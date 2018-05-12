@@ -1,6 +1,7 @@
 import React from 'react'
 import { DrawerNavigator  } from 'react-navigation'
 import { Screens } from '/config/settings'
+import Home from '/screens/Home'
 import Profile from '/screens/Profile'
 import Timetable from '/screens/Timetable'
 import Routines from '/screens/Routines'
@@ -10,6 +11,7 @@ import DrawerContentComponent from '/components/presentationals/DrawerContentCom
 
 
 export default DrawerNavigator({
+  [Screens.Home]:{ screen:Home },
   [Screens.Profile]:{ screen:Profile },
   [Screens.Routines]:{ screen:Routines },
   [Screens.Classes]:{ screen:Timetable },
@@ -18,5 +20,5 @@ export default DrawerNavigator({
   [Screens.Referrals]:{ screen:Referrals },
   },
 {
-  contentComponent:(props) => <DrawerContentComponent {...props} />      
+  contentComponent:(props) => <DrawerContentComponent {...props} />
 })

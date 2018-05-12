@@ -8,7 +8,7 @@ exports.Urls = {
   SEND_CLIENT_TOKEN:SERVER_HOSTNAME + 'sendClientToken',
   SYN_LOCAL_STORAGE:SERVER_HOSTNAME + 'syncLocalStorage',
   FETCH_USER_DATA:SERVER_HOSTNAME + 'fetchUserData'
-} 
+}
 
 exports.Messages = {
 	INVALID_USER_ID_PASSWORD:'Ingresá tu DNI y contraseña para continuar',
@@ -39,8 +39,9 @@ exports.Screens = {
   CheckUserActivity:'CheckUserActivity',
   Welcome:'Welcome',
   SignIn:'SignIn',
-  ResetPassword:'ResetPassword',  
+  ResetPassword:'ResetPassword',
   SignUp:'SignUp',
+  Home: 'Home',
   Profile: 'Profile',
   Routines:'Routines',
   Classes: 'Classes',
@@ -48,7 +49,7 @@ exports.Screens = {
   Messages:'Messages',
   Referrals:'Referrals',
   LoginStack:'loginStack',
-  HomeStack:'homeStack'  
+  HomeStack:'homeStack'
 }
 
 exports.SignUpConstraints = {
