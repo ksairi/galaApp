@@ -11,32 +11,34 @@ function onMenuPress(isMenuClosed, navigation){
 }
 
 export default ({navigation, homeHeader}) =>{
-  
+
   var isMenuClosed
-  
+
   if(homeHeader){
-    isMenuClosed = (navigation.state.index === 0)  
+    isMenuClosed = (navigation.state.index === 0)
   }
 
   return(
-    <View style={{flexDirection:'row', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:10 }}>
-      <View style={{flex:1, flexDirection:'row', justifyContent:'flex-start'}}>
+    <View style={{flex:0.3, flexDirection:'row', alignItems:'flex-start', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:20}}>
+      <View style={{flex:1}}>
         { homeHeader ?
           <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>
-            <Icon name={isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={60} color='white'/>
+            <Icon name={isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={40} color='white'/>
           </TouchableOpacity>
-          :  
-          <TouchableOpacity onPress={()=>{navigation.goBack()}}>
-            <Icon name='arrow-navigation-white-left' size={50} color='white'/>
+          :
+          <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{flex:1}}>
+            <Icon name='arrow-navigation-white-left' size={40} color='white'/>
           </TouchableOpacity>
         }
       </View>
-      
-      <View style={{flex:2.3, flexDirection:'row', justifyContent:'center'}}>
-        {/*<Logo style={flex:1.7, fontSize:200} /> */}
-      </View>
-      
-      <View style={{flex:1, flexDirection:'row', justifyContent:'flex-end'}}/>
+
+
+        <View style={{flex:1.4, flexDirection:'row', justifyContent:'center'}}>
+          <Logo style={{fontSize:170}} />
+        </View>
+
+        <View style={{flex:0.6, flexDirection:'row'}}/>
+
     </View>
   )
 }
