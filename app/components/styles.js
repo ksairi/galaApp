@@ -1,8 +1,9 @@
 
-const genericBackGroundColor = '#0b1143'
+const genericBackgroundColor = '#0b1143'
+    , LIGHT_VIOLET = '#12194d'
     , inputBackgroundColor = '#12194d'
     , genericTextInputStyle = {
-  
+
   backgroundColor: inputBackgroundColor,
   color: 'white',
   flex:1,
@@ -28,9 +29,10 @@ const textWithLinkStyle = {
 }
 
 exports.genericTextInputStyle = genericTextInputStyle
-exports.genericBackgroundColor = genericBackGroundColor
-exports.headerBackgroundColor = genericBackGroundColor
+exports.genericBackgroundColor = genericBackgroundColor
+exports.headerBackgroundColor = genericBackgroundColor
 exports.containerPadding = 20
 exports.genericButtonBackgroundColor = '#6b35e3'
 exports.activeSideMenuItemColor = '#12194d'
 exports.textWithLinkStyle = textWithLinkStyle
+exports.footerButtonBc = LIGHT_VIOLET
