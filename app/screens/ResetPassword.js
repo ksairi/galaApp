@@ -22,26 +22,38 @@ const styles = {
     fontSize:20,
     fontFamily:'brother-1816-bold',
     flex:0.2
+  },
+  hiddenKeyboardComponentsStyle:{
+    rootWrapperStyle:{paddingTop:15},
+    inputTextStyle:{flex:0.2, marginTop:0},
+    buttonContainerStyle:{flex:0.3},
+    messageStyle:{flex:0.2}
+  },
+  showingKeyboardComponentsStyle:{
+    rootWrapperStyle:{paddingTop:10, paddingBottom:10},
+    inputTextStyle:{flex:0.1, marginTop:0},
+    buttonContainerStyle:{flex:0.15},
+    titleStyle:{flex:0.1}
   }
 }
 
-  
+
 @connect(state => ({
     orientation : state.currentOrientation
   })
 )
 
 export default class ResetPassword extends React.Component {
-  
+
   state = {
     hasErrors:false,
     message:'',
     spinnerVisible:false,
     showBackToSignIn:false,
-    isKeyboardOn:false,
     userId:'',
     password:'',
-    confirmPassword:''
+    confirmPassword:'',
+    componentsStyle : styles.hiddenKeyboardComponentsStyle
   }
 
   componentDidMount() {
@@ -55,66 +67,54 @@ export default class ResetPassword extends React.Component {
   }
 
   _keyboardDidShow = ()=> {
-    this.setState({isKeyboardOn:true, message:''})
+    this.setState({componentsStyle : styles.showingKeyboardComponentsStyle, message:''})
   }
 
   _keyboardDidHide = ()=> {
-    this.setState({isKeyboardOn:false})
+    this.setState({componentsStyle : styles.hiddenKeyboardComponentsStyle})
   }
 
   render(){
-    var rootWrapperStyle = {paddingTop:15},
-        inputTextStyle = {flex:0.2, marginTop:0},
-        buttonContainerStyle = {flex:0.3},
-        messageStyle = {flex:0.2},
-        titleStyle = {}
-
-    if(this.state.isKeyboardOn){
-      rootWrapperStyle = {paddingTop:10, paddingBottom:10}
-      inputTextStyle = {flex:0.1, marginTop:0}
-      buttonContainerStyle = {flex:0.15}
-      titleStyle = {flex:0.1}
-    }
 
     return (
-      <RootWrapper style={rootWrapperStyle}>
+      <RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
             <GenericText style={[styles.resetPasswordTitle]}>
               RECUPERÁ TU CONTRASEÑA
             </GenericText>
-            <RkTextInput rkType='rounded inputText' style={inputTextStyle} autoFocus keyboardType="numeric" placeholder='DNI'
-              returnKeyType='next' autoCorrect={false} onChangeText={userId => this.setState({userId})} 
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} autoFocus keyboardType="numeric" placeholder='DNI'
+              returnKeyType='next' autoCorrect={false} onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId} value={this.state.userId}/>
 
-            <RkTextInput rkType='rounded inputText' style={inputTextStyle} placeholder='Contraseña'
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} placeholder='Contraseña'
               secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='next' keyboardType='default'
               onChangeText={password => this.setState({password})}
               onSubmitEditing={this.onSubmitPassword}
               ref="passwordInput" value={this.state.password}/>
-              
-            <RkTextInput rkType='rounded inputText' style={inputTextStyle} placeholder='Confirmá la contraseña'
-              secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' 
+
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} placeholder='Confirmá la contraseña'
+              secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default'
               onChangeText={confirmPassword => this.setState({confirmPassword})} onSubmitEditing={this.doResetPassword}
               ref="confirmPasswordInput" value={this.state.confirmPassword}/>
 
-            <View style={[{flexDirection:'row'}, buttonContainerStyle]}>
+            <View style={[{flexDirection:'row'}, this.state.componentsStyle.buttonContainerStyle]}>
               <Button style={{}} text='ENVIAR' onPress={this.doResetPassword}/>
             </View>
 
-            { this.state.message != '' && 
-              <GenericText style={messageStyle} error={this.state.hasErrors}>
+            { this.state.message != '' &&
+              <GenericText style={this.state.componentsStyle.messageStyle} error={this.state.hasErrors}>
                 {this.state.message}
               </GenericText>
             }
-            
+
             { this.state.showBackToSignIn &&
-              
+
               <View style={[textWithLinkStyle.container, {flex:0.2}]}>
                 <GenericText style={textWithLinkStyle.text}>
                   Contraseña actualizada!
                 </GenericText>
-                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToSignIn}>
+                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={this.goToSignIn}>
                   Volvé a loguearte
                 </GenericLink>
               </View>
@@ -141,7 +141,7 @@ export default class ResetPassword extends React.Component {
       this.setState({message, hasErrors:true})
       return
     }
-    
+
     message = ValidationHelper.passwordsWithErrors(this.state.password, this.state.confirmPassword)
     if(message){
       this.setState({message, hasErrors:true})
@@ -159,7 +159,7 @@ export default class ResetPassword extends React.Component {
 
       }
       else {
-        this.setState({message:data[ServerProtocol.messageField], hasErrors:true})  
+        this.setState({message:data[ServerProtocol.messageField], hasErrors:true})
       }
     })
     .catch(message => {
@@ -176,7 +176,7 @@ export default class ResetPassword extends React.Component {
         this.doResetPassword()
     }
   }
-  
+
   onSubmitPassword = () =>{
     if(!this.state.confirmPassword){
       this.refs.confirmPasswordInput._focusInput()

@@ -4,41 +4,50 @@ import Icon from '/helpers/ImageHelper'
 import { headerBackgroundColor } from '/components/styles'
 import Logo from 'components/presentationals/Logo'
 
+export default class Header extends React.PureComponent{
 
-function onMenuPress(isMenuClosed, navigation){
-
-  isMenuClosed ? navigation.navigate('DrawerOpen') : navigation.navigate('DrawerClose')
-}
-
-export default ({navigation, homeHeader}) =>{
-
-  var isMenuClosed
-
-  if(homeHeader){
-    isMenuClosed = (navigation.state.index === 0)
+  state = {
+    isMenuClosed:true
   }
 
-  return(
-    <View style={{flex:0.3, flexDirection:'row', alignItems:'flex-start', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:20}}>
-      <View style={{flex:1}}>
-        { homeHeader ?
-          <TouchableOpacity onPress={()=>onMenuPress(isMenuClosed, navigation)}>
-            <Icon name={isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={40} color='white'/>
-          </TouchableOpacity>
-          :
-          <TouchableOpacity onPress={()=>{navigation.goBack()}} style={{flex:1}}>
-            <Icon name='arrow-navigation-white-left' size={40} color='white'/>
-          </TouchableOpacity>
-        }
-      </View>
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.homeHeader){
+      return {
+        isMenuClosed:(nextProps.navigation.state.index === 0)
+      }
+    }
+    else{
+      return null
+    }
+  }
 
+  onMenuPress = ()=>{
+      this.state.isMenuClosed ? this.props.navigation.navigate('DrawerOpen') : this.props.navigation.navigate('DrawerClose')
+  }
 
-        <View style={{flex:1.4, flexDirection:'row', justifyContent:'center'}}>
-          <Logo style={{fontSize:170}} />
+  render(){
+    return(
+      <View style={{flex:0.1, flexDirection:'row', alignItems:'flex-start', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:20}}>
+        <View style={{flex:1}}>
+          { this.props.homeHeader ?
+            <TouchableOpacity onPress={()=>this.onMenuPress()}>
+              <Icon name={this.state.isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={40} color='white'/>
+            </TouchableOpacity>
+            :
+            <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}} style={{flex:1}}>
+              <Icon name='arrow-navigation-white-left' size={40} color='white'/>
+            </TouchableOpacity>
+          }
         </View>
 
-        <View style={{flex:0.6, flexDirection:'row'}}/>
 
-    </View>
-  )
+          <View style={{flex:1.4, flexDirection:'row', justifyContent:'center'}}>
+            <Logo style={{fontSize:170}} />
+          </View>
+
+          <View style={{flex:0.6, flexDirection:'row'}}/>
+
+      </View>
+    )
+  }
 }

@@ -19,18 +19,31 @@ const styles = {
   }
 }
 
-export default ({ navigation, activeItemKey })=>{
-  return(
-    <ScrollView contentContainerStyle={styles.drawerItemsWrapper}>
-      <TouchableOpacity style={{flex:1,flexDirection:'row'}} onPress={()=>navigation.navigate(Screens.Home)}>
-        <Logo style={styles.headerIcon}/>
-      </TouchableOpacity>
-      <DrawerItem active={activeItemKey == 'Profile'} icon='user-icon' label='MI PERFIL' onPress={()=> navigation.navigate(Screens.Profile)} />
-      <DrawerItem active={activeItemKey == 'Routines'} icon='routines' label='RUTINAS' onPress={()=> navigation.navigate(Screens.Routines)} />
-      <DrawerItem active={activeItemKey == 'Classes'} icon='classes' label='CLASES' onPress={()=> navigation.navigate(Screens.Classes)} />
-      <DrawerItem active={activeItemKey == 'Timetable'} icon='timetable' label='HORARIOS' onPress={()=> navigation.navigate(Screens.Timetable)} />
-      <DrawerItem active={activeItemKey == 'Messages'} icon='timetable' label='MENSAJES' onPress={()=> navigation.navigate(Screens.Messages)} />
-      <DrawerItem active={activeItemKey == 'Referrals'} icon='referrals' label='REFERIDOS' onPress={()=> navigation.navigate(Screens.Referrals)} />
-    </ScrollView>
-  )
+export default class extends React.PureComponent{
+
+  state = {
+    drawerItems:[{name:'Profile', icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile},
+                {name:'Routines', icon:'routines', label:'RUTINAS', screen:Screens.Routines},
+                {name:'Classes', icon:'classes', label:'MI PERFIL', screen:Screens.Classes},
+                {name:'Timetable', icon:'timetable', label:'MI PERFIL', screen:Screens.Timetable},
+                {name:'Messages', icon:'timetable', label:'MENSAJES', screen:Screens.Messages},
+                {name:'Referrals', icon:'referrals', label:'REFERIDOS', screen:Screens.Referrals}
+              ]
+  }
+
+  render(){
+    return(
+      <ScrollView contentContainerStyle={styles.drawerItemsWrapper}>
+        <TouchableOpacity style={{flex:1,flexDirection:'row'}} onPress={()=>this.props.navigation.navigate(Screens.Home)}>
+          <Logo style={styles.headerIcon}/>
+        </TouchableOpacity>
+        {
+          this.state.drawerItems.map((drawerItem, index) =>
+              <DrawerItem key={index} active={this.props.activeItemKey == drawerItem.name} icon={drawerItem.icon} label={drawerItem.label}
+              onPress={()=>this.props.navigation.navigate(drawerItem.screen)} />
+          )
+        }
+      </ScrollView>
+    )
+  }
 }

@@ -15,7 +15,7 @@ import Button from '/components/presentationals/GenericButton'
 import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import { genericTextInputStyle, textWithLinkStyle } from '/components/styles' 
+import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
 
 
 RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
@@ -24,6 +24,23 @@ const styles ={
   registerAccountTitle:{
     fontSize:20,
     fontFamily:'brother-1816-bold'
+  },
+  hiddenKeyboardComponentsStyle:{
+    rootWrapperStyle:{paddingTop:15},
+    buttonContainerStyle:{flex:1},
+  },
+  showingKeyboardComponentsStyle:{
+    textInputStyle:{marginTop:0, marginBottom:5, flex:0.15},
+    titleStyle:{flex:0.2},
+    rootWrapperStyle:{paddingTop:10, paddingBottom:5},
+    buttonContainerStyle:{flex:0.2},
+    buttonContentStyle:{height:30},
+    memeberAlreadyStyle:{flex:0.6}
+  },
+  landscapeComponentsStyle:{
+    textInputStyle:{marginTop:0},
+    buttonContentStyle:{height:25},
+    memeberAlreadyStyle:{flex:0.6}
   }
 }
 
@@ -35,12 +52,23 @@ state => (
 })
 )
 export default class SignUp extends React.Component{
-  
+
   state = {
     errorMessage:'',
     focusPassword:false,
     spinnerVisible:false,
-    isKeyboardOn:false
+    componentsStyle : styles.hiddenKeyboardComponentsStyle
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.orientation == 'landscape'){
+      return{
+        componentsStyle: {...prevState.componentsStyle, ...styles.landscapeComponentsStyle},
+      }
+    }
+    else{
+      return null
+    }
   }
 
   componentDidMount() {
@@ -54,34 +82,34 @@ export default class SignUp extends React.Component{
   }
 
   _keyboardDidShow = ()=> {
-    this.setState({isKeyboardOn:true, errorMessage:''})
+    this.setState({componentsStyle:styles.showingKeyboardComponentsStyle, errorMessage:''})
   }
 
   _keyboardDidHide = ()=> {
-    this.setState({isKeyboardOn:false})
+    this.setState({componentsStyle:styles.hiddenKeyboardComponentsStyle})
   }
 
   signUp = async () =>{
     Keyboard.dismiss()
     var errorMessage
-    
+
     if (!this.userFullName || !this.userId || !this.password){
         this.setState({errorMessage:Messages.INCOMPLETE_INPUT_DATA})
         return
     }
-    
+
     errorMessage = ValidationHelper.userIdWithErrors(this.userId)
     if(errorMessage){
-      this.setState({errorMessage})  
+      this.setState({errorMessage})
       return
     }
 
     errorMessage = ValidationHelper.passwordsWithErrors(this.password, this.confirmPassword)
     if(errorMessage){
-      this.setState({errorMessage})  
+      this.setState({errorMessage})
       return
     }
-    
+
     this.setState({errorMessage:"", spinnerVisible:true})
     try{
       const deviceToken = this.props.notificationsToken ? this.props.notificationsToken : await getDeviceToken(this.props.dispatch)
@@ -100,7 +128,7 @@ export default class SignUp extends React.Component{
       this.setState((prevState, props) => ({errorMessage}))
     }
   }
-  
+
   onSubmitUserFullName = ()=>{
     if(!this.userId){
       this.refs.userIdInput._focusInput()
@@ -109,16 +137,16 @@ export default class SignUp extends React.Component{
         this.signUp()
     }
   }
-  
+
   onSubmitUserId = () =>{
     if(!this.password){
-      this.refs.passwordInput._focusInput() 
+      this.refs.passwordInput._focusInput()
     }
     else{
         this.signUp()
     }
   }
-  
+
   onSubmitPassword = () =>{
     if(!this.confirmPassword){
       this.refs.confirmPasswordInput._focusInput()
@@ -138,70 +166,51 @@ export default class SignUp extends React.Component{
   }
 
   render(){
-    var textInputStyle = titleStyle =  {},
-    rootWrapperStyle = {paddingTop:15},
-    buttonContainerStyle = {flex:1},
-    buttonContentStyle = {},
-    memeberAlreadyStyle
 
-    if(this.state.isKeyboardOn){
-      textInputStyle = {marginTop:0, marginBottom:5, flex:0.2}
-      titleStyle = {flex:0.2} 
-      rootWrapperStyle = {paddingTop:10, paddingBottom:5}
-      buttonContainerStyle = {flex:0.2}
-      buttonContentStyle = {height:30}
-      memeberAlreadyStyle = {flex:0.6}
-    }
-    if(this.props.orientation =='landscape'){
-      textInputStyle = {marginTop:0}
-      buttonContentStyle = {height:25}
-      memeberAlreadyStyle = {flex:0.6}
-    }
-    
     return (
-      <RootWrapper style={rootWrapperStyle}>
+      <RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <GenericText style={[styles.registerAccountTitle, titleStyle]}>
+            <GenericText style={[styles.registerAccountTitle, this.state.componentsStyle.titleStyle]}>
               REGISTRAR CUENTA
             </GenericText>
-            <RkTextInput rkType='rounded inputText' style={textInputStyle} placeholder='Nombre'
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='Nombre'
               autoFocus returnKeyType='next' keyboardType='default' autoCapitalize='words' autoCorrect={false}
               onChangeText={pUserFullName => this.userFullName = pUserFullName}
               onSubmitEditing={this.onSubmitUserFullName}/>
-            
-            <RkTextInput rkType='rounded inputText' style={textInputStyle} placeholder='DNI'
+
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='DNI'
               returnKeyType='next' keyboardType="numeric" autoCorrect={false}
               ref="userIdInput" onChangeText={pUserId => this.userId = pUserId}
               onSubmitEditing={this.onSubmitUserId}/>
 
-            <RkTextInput rkType='rounded inputText' style={textInputStyle} placeholder='Contraseña'
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='Contraseña'
               secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='next' keyboardType='default' ref="passwordInput"
               onChangeText={pPassword => this.password = pPassword} onSubmitEditing={this.onSubmitPassword}/>
 
-            <RkTextInput rkType='rounded inputText' style={textInputStyle} placeholder='Confirmar Contraseña'
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='Confirmar Contraseña'
               secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="confirmPasswordInput"
               onChangeText={pConfirmPassword => this.confirmPassword = pConfirmPassword} onSubmitEditing={this.signUp}/>
 
-            <View style={[{flexDirection:'row'}, buttonContainerStyle]}>
-              <Button style={buttonContentStyle} text='REGISTRARME' onPress={this.signUp}/>
+            <View style={[{flexDirection:'row'},this.state.componentsStyle.buttonContainerStyle]}>
+              <Button style={this.state.componentsStyle.buttonContentStyle} text='REGISTRARME' onPress={this.signUp}/>
             </View>
 
-            <View style={[textWithLinkStyle.container, memeberAlreadyStyle]}>
+            <View style={[textWithLinkStyle.container, this.state.componentsStyle.memeberAlreadyStyle]}>
               <GenericText style={textWithLinkStyle.text}>
                 ¿Ya tenés una cuenta?
               </GenericText>
-              <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToSignIn}>
+              <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={this.goToSignIn}>
                 Iniciá Sesión
               </GenericLink>
             </View>
-            
-            { this.state.errorMessage != '' && 
+
+            { this.state.errorMessage != '' &&
               <GenericText style={{flex:0.6}} error={this.state.errorMessage ? true : false}>
                 {this.state.errorMessage}
               </GenericText>
             }
-            
+
             <LoadingSpinner visible={this.state.spinnerVisible}/>
 
           </CentredWrapper>

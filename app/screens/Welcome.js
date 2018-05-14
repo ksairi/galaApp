@@ -3,7 +3,7 @@ import { View } from 'react-native'
 import Button from '/components/presentationals/GenericButton'
 import Text from '/components/presentationals/GenericText'
 import { connect } from 'react-redux'
-import { Screens } from '/config/settings' 
+import { Screens } from '/config/settings'
 import { ActionsCreators } from '/redux/actions'
 import RootWrapper from '/components/containers/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
@@ -25,31 +25,32 @@ const styles = {
     fontFamily:'lato-regular',
   }
 }
+@connect()
+export default class Welcome extends React.PureComponent{
 
-function goToLogin(dispatch, navigation){
-  dispatch(ActionsCreators.setIsAppsFirstTime(false))
-  navigation.navigate(Screens.LoginStack)
+  goToLogin = (dispatch, navigation)=>{
+    this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false))
+    this.props.navigation.navigate(Screens.LoginStack)
+  }
+
+   render(){
+      return(
+        <RootWrapper style={{marginTop:Expo.Constants.statusBarHeight}}>
+          <CentredWrapper>
+            <Logo style={{flex:0.9, fontSize:250}}/>
+            <View style={{flex:0.95}}>
+              <Text style={styles.welcome}>
+                ¡BIENVENIDO!
+              </Text>
+              <Text style={styles.welcomeDescription}>
+                Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio.
+              </Text>
+            </View>
+            <View style={{flexDirection:'row', flex:0.4}}>
+              <Button contentStyle={{fontFamily:'brother-1816-bold'}} text='EXPLORÁ LA APP' onPress={() => this.goToLogin()} />
+            </View>
+          </CentredWrapper>
+        </RootWrapper>
+      )
+  }
 }
-
- function Welcome({dispatch, navigation}){
-  return(
-    <RootWrapper style={{marginTop:Expo.Constants.statusBarHeight}}>
-      <CentredWrapper>
-        <Logo style={{flex:0.9, fontSize:250}}/>
-        <View style={{flex:0.95}}>
-          <Text style={styles.welcome}> 
-            ¡BIENVENIDO!
-          </Text>
-          <Text style={styles.welcomeDescription}>
-            Dentro de la app podrás encontrar tus rutinas, clases y todas nuestras novedades para disfrutar aún más tu gimnasio.
-          </Text>
-        </View>
-        <View style={{flexDirection:'row', flex:0.4}}>
-          <Button contentStyle={{fontFamily:'brother-1816-bold'}} text='EXPLORÁ LA APP' onPress={() => goToLogin(dispatch, navigation)} />
-        </View>
-      </CentredWrapper>
-    </RootWrapper>
-  )
-}
-
-export default connect()(Welcome)

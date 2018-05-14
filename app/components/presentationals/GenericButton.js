@@ -12,8 +12,12 @@ RkTheme.setType('RkButton', 'genericButton', {
   }
 })
 
-
-export default ({rkType, style, contentStyle, text, onPress})=>
-  <RkButton rkType='rounded genericButton' style={style} contentStyle={contentStyle} onPress={() => onPress()}>
-    {text}
-  </RkButton>
+export default class GenericButton extends React.PureComponent {
+  render(){
+    return(
+      <RkButton rkType='rounded genericButton' style={this.props.style} contentStyle={this.props.contentStyle ? this.props.contentStyle : {} } onPress={() => this.props.onPress()}>
+        {this.props.text}
+      </RkButton>
+    )
+  }
+}

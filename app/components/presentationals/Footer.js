@@ -18,25 +18,26 @@ const styles = {
   }
 }
 
-export default () =>{
-
-  return(
-    <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-      <View style={{ flexDirection:'row', flex:0, paddingBottom:20}}>
-        <RkButton rkType='rounded' style={styles.button}>
-          <Icon name='classes' size={40} color='white'/>
-        </RkButton>
-        <RkButton rkType='rounded' style={styles.button}>
-          <Icon name='classes' size={40} color='white'/>
-        </RkButton>
-        <RkButton rkType='rounded' style={styles.button}>
-          <Icon name='classes' size={40} color='white'/>
-        </RkButton>
+export default class extends React.PureComponent{
+  render(){
+    return(
+      <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
+        <View style={{ flexDirection:'row', flex:0, paddingBottom:20}}>
+          <RkButton rkType='rounded' style={styles.button}>
+            <Icon name='classes' size={40} color='white'/>
+          </RkButton>
+          <RkButton rkType='rounded' style={styles.button}>
+            <Icon name='classes' size={40} color='white'/>
+          </RkButton>
+          <RkButton rkType='rounded' style={styles.button}>
+            <Icon name='classes' size={40} color='white'/>
+          </RkButton>
+        </View>
+        <View style={{flex:0, alignItems:'center', justifyContent:'center'}}>
+          <GenericText style={styles.text}>WWW.GALAGYM.COM</GenericText>
+          <GenericText style={styles.text}>ALL RIGHTS RESERVED GALAGYM 2018</GenericText>
+        </View>
       </View>
-      <View style={{flex:0, alignItems:'center', justifyContent:'center'}}>
-        <GenericText style={styles.text}>WWW.GALAGYM.COM</GenericText>
-        <GenericText style={styles.text}>ALL RIGHTS RESERVED GALAGYM 2018</GenericText>
-      </View>
-    </View>
-  )
+    )
+  }
 }

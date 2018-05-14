@@ -31,10 +31,9 @@ const styles = {
   hiddenKeyboardComponentsStyle:{
     passwordInputStyle:{marginBottom:10},
     buttonContainerStyle:{flex:1},
-    buttonStyle:{},
     linksContainerStyle:{flex:0.7}
   },
-  showingKeyboardComponentStyle:{
+  showingKeyboardComponentsStyle:{
     passwordInputStyle : {marginBottom:5},
     buttonContainerStyle:{flex:0.7},
     buttonStyle:{height:30},
@@ -77,7 +76,7 @@ export default class SignIn extends React.Component{
   }
 
   _keyboardDidShow = ()=> {
-    this.setState({errorMessage:'', componentsStyle : styles.showingKeyboardComponentStyle})
+    this.setState({errorMessage:'', componentsStyle : styles.showingKeyboardComponentsStyle})
     this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 1500)
     if(this.animatedImage != null){
       this.animatedImage.transitionTo(styles.animatedImageEndStyle, 1500)
@@ -86,9 +85,9 @@ export default class SignIn extends React.Component{
 
   _keyboardDidHide = ()=> {
     this.setState({componentsStyle:styles.hiddenKeyboardComponentsStyle})
-    this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500)
+    this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
     if(this.animatedImage != null){
-      this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
+      this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500)
     }
   }
 
@@ -120,7 +119,7 @@ export default class SignIn extends React.Component{
 
 
             <View style={[{flexDirection:'row'}, this.state.componentsStyle.buttonContainerStyle]}>
-              <Button contentStyle={{}} style={this.state.componentsStyle.buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
+              <Button style={this.state.componentsStyle.buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
             <View style={this.state.componentsStyle.linksContainerStyle}>
@@ -129,7 +128,7 @@ export default class SignIn extends React.Component{
                 <GenericText style={textWithLinkStyle.text}>
                   ¿No tenés una cuenta?
                 </GenericText>
-                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToSignUp}>
+                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={this.goToSignUp}>
                   Creá una nueva
                 </GenericLink>
               </View>
@@ -138,7 +137,7 @@ export default class SignIn extends React.Component{
                 <GenericText style={textWithLinkStyle.text}>
                   ¿Olvidaste tu contraseña?
                 </GenericText>
-                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToResetPassword}>
+                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={this.goToResetPassword}>
                   Recuperala
                 </GenericLink>
               </View>

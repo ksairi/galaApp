@@ -4,22 +4,18 @@ import { genericBackgroundColor, containerPadding } from '/components/styles'
 import { connect } from 'react-redux'
 import { ActionsCreators } from '/redux/actions'
 
-  function _onLayout(e, dispatch) {
+@connect()
+export default class RootView extends React.PureComponent{
+
+  _onLayout = (e, dispatch)=> {
     dispatch(ActionsCreators.setCurrentOrientation( e.nativeEvent.layout.height > e.nativeEvent.layout.width ? 'portrait' : 'landscape'))
   }
 
-  function RootView({children, dispatch}){
+  render(){
     return(
-      <View style={{flex:1}} onLayout={(e)=>_onLayout(e, dispatch)}> 
-        {children}
+      <View style={{flex:1}} onLayout={(e)=>this._onLayout(e, this.props.dispatch)}>
+        {this.props.children}
       </View>
     )
   }
-
-function mapStateToProps(state){
-  return({
-    orientation:state.currentOrientation
-  })
 }
-  
-export default connect(mapStateToProps)(RootView)

@@ -1,7 +1,6 @@
 import React from 'react'
 import { View } from 'react-native'
 import { genericBackgroundColor, containerPadding } from '/components/styles'
-import { connect } from 'react-redux'
 import { ActionsCreators } from '/redux/actions'
 
 const styles = {
@@ -13,18 +12,12 @@ const styles = {
   }
 }
 
-function RootWrapper({children, orientation, style}){
-  return(
-    <View style={[styles.rootWrapper, style]}>
-      {children}
-    </View>
-  )
+export default class RootWrapper extends React.PureComponent{
+  render(){
+    return(
+      <View style={[styles.rootWrapper, this.props.style]}>
+        {this.props.children}
+      </View>
+    )
+  }
 }
-
-function mapStateToProps(state){
-  return({
-    orientation:state.currentOrientation
-  })
-}
-
-export default connect(mapStateToProps)(RootWrapper)

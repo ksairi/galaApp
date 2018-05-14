@@ -27,17 +27,17 @@ const styles = {
   })
 )
 
-export default class CheckUserActivity extends React.Component {
+export default class CheckUserActivity extends React.PureComponent {
 
   static isInLoggingProcess = false
-  
+
   constructor(props){
     super(props)
     this.checkUserStatus()
   }
 
   async checkUserStatus(){
-    
+
     if(this.props.isAppsFirstTime){
     //if(1==1){
       this.props.navigation.navigate(Screens.Welcome)
@@ -53,7 +53,7 @@ export default class CheckUserActivity extends React.Component {
             }
             else{
               this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(httpResponse[ServerProtocol.messageField]))
-              this.props.navigation.navigate(Screens.LoginStack) 
+              this.props.navigation.navigate(Screens.LoginStack)
             }
           }
             catch(error){
@@ -64,15 +64,15 @@ export default class CheckUserActivity extends React.Component {
         else{
           this.props.navigation.navigate(Screens.LoginStack)
         }
-    }   
+    }
   }
 
   render(){
-    
+
     return(
       <View style={styles.container}>
         { CheckUserActivity.isInLoggingProcess && <LoadingSpinner visible={true} message={ 'Loguiando' }/>  }
       </View>
     )
   }
-} 
+}
