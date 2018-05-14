@@ -16,7 +16,7 @@ import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import Icon from '/helpers/ImageHelper'
 import Logo from '/components/presentationals/Logo'
-import { genericTextInputStyle, textWithLinkStyle } from '/components/styles' 
+import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
 
 const AnimatedIcon = Animatable.createAnimatableComponent(Icon)
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
@@ -25,7 +25,21 @@ RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   animatedLogoInitStyle:{flex:1.7, fontSize:200},
+  animatedLogoEndStyle:{flex:1.4, fontSize:135},
   animatedImageInitStyle:{flex:2, fontSize:225},
+  animatedImageEndStyle:{flex:1.7, fontSize:120},
+  hiddenKeyboardComponentsStyle:{
+    passwordInputStyle:{marginBottom:10},
+    buttonContainerStyle:{flex:1},
+    buttonStyle:{},
+    linksContainerStyle:{flex:0.7}
+  },
+  showingKeyboardComponentStyle:{
+    passwordInputStyle : {marginBottom:5},
+    buttonContainerStyle:{flex:0.7},
+    buttonStyle:{height:30},
+    linksContainerStyle:{flex:0.9}
+  }
 }
 
 @connect(
@@ -37,22 +51,20 @@ state => ({
   })
 )
 export default class SignIn extends React.Component{
-    
+
   static navigationOptions = { header: null }
 
   state = {
     errorMessage:'',
-    focusPassword:false,
     spinnerVisible:false,
     userId:'',
     password:'',
-    isKeyboardOn:false
+    componentsStyle : styles.hiddenKeyboardComponentsStyle
   }
 
   componentDidMount() {
     if(this.props.isLoggedIn){
-      this.setState({userId:this.props.userData.userId})
-      this.setState({password:this.props.userData.password})          
+      this.setState({userId:this.props.userData.userId, password:this.props.userData.password})
     }
 
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
@@ -65,17 +77,15 @@ export default class SignIn extends React.Component{
   }
 
   _keyboardDidShow = ()=> {
-    
-    this.setState({isKeyboardOn:true, errorMessage:''})
-    this.animatedLogo.transitionTo({flex:1.4, fontSize:135}, 1500)
+    this.setState({errorMessage:'', componentsStyle : styles.showingKeyboardComponentStyle})
+    this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 1500)
     if(this.animatedImage != null){
-      this.animatedImage.transitionTo({flex:1.7, fontSize:120}, 1500)
+      this.animatedImage.transitionTo(styles.animatedImageEndStyle, 1500)
     }
   }
 
   _keyboardDidHide = ()=> {
-    
-    this.setState({isKeyboardOn:false})
+    this.setState({componentsStyle:styles.hiddenKeyboardComponentsStyle})
     this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500)
     if(this.animatedImage != null){
       this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
@@ -83,20 +93,11 @@ export default class SignIn extends React.Component{
   }
 
   handleAnimatedLogo = ref => this.animatedLogo = ref
-  
+
   handleAnimatedImage = ref => this.animatedImage = ref
-  
+
   render(){
-    var passwordInputStyle = {marginBottom:10}, 
-        buttonContainerStyle = {flex:1}, buttonStyle = {}, linksContainerStyle = {flex:0.7}
-    
-    if(this.state.isKeyboardOn){
-      passwordInputStyle = {marginBottom:5}
-      buttonContainerStyle = {flex:0.7}
-      buttonStyle = {height:30}
-      linksContainerStyle = {flex:0.9}
-    }
-    
+
     return(
       <RootWrapper>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
@@ -106,24 +107,24 @@ export default class SignIn extends React.Component{
             { this.props.orientation == 'portrait' &&
               <AnimatedIcon name="referrals" style={styles.animatedImageInitStyle} color='white' ref={this.handleAnimatedImage}/>
             }
-            
+
             <RkTextInput rkType='rounded inputText' style={{marginBottom:0, flex:0.8}} placeholder='DNI' keyboardType='numeric'
               autoFocus onChangeText={userId => this.setState({userId})}
               onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
               autoCapitalize='none' autoCorrect={false} value={this.props.isLoggedIn ? this.state.userId : null}/>
 
-            <RkTextInput rkType='rounded inputText' style={passwordInputStyle, {flex:0.8}} placeholder='Contraseña'
+            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.passwordInputStyle, {flex:0.8}} placeholder='Contraseña'
               secureTextEntry onChangeText={password => this.setState({password})}
               autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
               onSubmitEditing={this.signIn} value={this.props.isLoggedIn ? this.state.password : null}/>
-            
 
-            <View style={[{flexDirection:'row'}, buttonContainerStyle]}>
-              <Button contentStyle={{}} style={buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
+
+            <View style={[{flexDirection:'row'}, this.state.componentsStyle.buttonContainerStyle]}>
+              <Button contentStyle={{}} style={this.state.componentsStyle.buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
             </View>
 
-            <View style={linksContainerStyle}>
-              
+            <View style={this.state.componentsStyle.linksContainerStyle}>
+
               <View style={textWithLinkStyle.container}>
                 <GenericText style={textWithLinkStyle.text}>
                   ¿No tenés una cuenta?
@@ -140,17 +141,17 @@ export default class SignIn extends React.Component{
                 <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={()=>this.goToResetPassword}>
                   Recuperala
                 </GenericLink>
-              </View>  
+              </View>
             </View>
 
             { (this.state.errorMessage != '' ||
-              this.props.autoLoginErrorMessage != '') && 
+              this.props.autoLoginErrorMessage != '') &&
               <GenericText style={{flex:0.5}} error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
                 {this.state.errorMessage}
                 {this.props.autoLoginErrorMessage}
               </GenericText>
             }
-          
+
           <LoadingSpinner visible={this.state.spinnerVisible}/>
 
         </CentredWrapper>
@@ -184,7 +185,7 @@ export default class SignIn extends React.Component{
         this.props.navigation.navigate(Screens.HomeStack)
       }
       else{
-        this.setState((prevState, props) => ({errorMessage})) 
+        this.setState((prevState, props) => ({errorMessage}))
       }
     }
   }
@@ -197,7 +198,7 @@ export default class SignIn extends React.Component{
         this.signIn()
     }
   }
-  
+
   goToSignUp = () =>{
     Keyboard.dismiss()
     this.setState({errorMessage:""})
