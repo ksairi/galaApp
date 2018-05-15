@@ -28,10 +28,14 @@ const styles = {
 }
 
 export default class DrawerItem  extends React.PureComponent{
+
+  onPressDrawerItem = ()=>{
+    this.props.onPress(this.props.screen)
+  }
+
   render(){
-    console.log('DrawerItem')
     return(
-      <TouchableOpacity style={[styles.drawerItem, this.props.active ? styles.activeItem : null]} onPress={()=>this.props.onPress()}>
+      <TouchableOpacity style={[styles.drawerItem,  this.props.active ? styles.activeItem : null]} onPress={this.onPressDrawerItem}>
         <Icon name={this.props.icon} size={60} style={styles.drawerItemIcon}/>
         <Text style={[styles.drawerItemLabel,{marginTop:15}]}>{this.props.label}</Text>
         <Icon name={'arrow-navigation-white-right'} size={30} style={[styles.drawerItemIcon, {marginTop:10, flex:0.6}]}/>

@@ -20,5 +20,5 @@ export default DrawerNavigator({
   [Screens.Referrals]:{ screen:Referrals },
   },
 {
-  contentComponent:(props) => <DrawerContentComponent {...props} />
+  contentComponent:(props) => <DrawerContentComponent navigation={props.navigation} activeItemKey={props.activeItemKey} />
 })
