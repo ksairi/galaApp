@@ -13,7 +13,7 @@ const styles = {
   }
 }
 
-export default class extends React.PureComponent{
+export default class GenericText extends React.PureComponent{
   render(){
     return(
       <Text style={[styles.genericText, this.props.style, this.props.error ? styles.errorMessage : null]}>

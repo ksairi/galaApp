@@ -2,7 +2,7 @@ import React from 'react'
 import { TouchableOpacity } from 'react-native'
 import GenericText from './GenericText'
 
-export default class extends React.PureComponent{
+export default class GenericLink extends React.PureComponent{
 
   onLinkPressed = () => {
     this.props.onPress()

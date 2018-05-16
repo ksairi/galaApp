@@ -27,7 +27,7 @@ const styles = {
   }
 }
 
-export default class DrawerItem  extends React.PureComponent{
+export default class DrawerItem extends React.PureComponent{
 
   onPressDrawerItem = () =>{
     this.props.onPress(this.props.screen)

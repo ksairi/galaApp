@@ -8,7 +8,7 @@ const styles = {
   },
 }
 
-export default class extends React.PureComponent{
+export default class CentredWrapper extends React.PureComponent{
   render(){
     return(
       <View style={[styles.centredWrapper, this.props.style]}>

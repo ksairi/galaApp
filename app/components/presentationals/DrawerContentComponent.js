@@ -19,7 +19,7 @@ const styles = {
   }
 }
 
-export default class extends React.PureComponent{
+export default class DrawerContentComponent extends React.PureComponent{
 
   state = {
     drawerItems:[{icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile},

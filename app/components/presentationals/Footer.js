@@ -18,7 +18,7 @@ const styles = {
   }
 }
 
-export default class extends React.PureComponent{
+export default class Footer extends React.PureComponent{
   render(){
     return(
       <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
