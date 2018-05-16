@@ -22,12 +22,13 @@ RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles ={
   registerAccountTitle:{
-    fontSize:20,
+    fontSize:16,
     fontFamily:'brother-1816-bold'
   },
   hiddenKeyboardComponentsStyle:{
     rootWrapperStyle:{paddingTop:15},
     buttonContainerStyle:{flex:1},
+    buttonContentStyle:{height:40}
   },
   showingKeyboardComponentsStyle:{
     textInputStyle:{marginTop:0, marginBottom:5, flex:0.15},
@@ -67,7 +68,9 @@ export default class SignUp extends React.Component{
       }
     }
     else{
-      return null
+      return {
+        componentsStyle: { ...prevState.componentsStyle, ...styles.hiddenKeyboardComponentsStyle }
+      }
     }
   }
 
@@ -182,7 +185,6 @@ export default class SignUp extends React.Component{
   }
 
   render(){
-
     return (
       <RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>

@@ -7,7 +7,8 @@ const styles = {
   rootWrapper:{
     flex:1,
     backgroundColor: genericBackgroundColor,
-    padding: containerPadding,
+    padding:containerPadding,
+    paddingTop:0,
     paddingBottom:10
   }
 }

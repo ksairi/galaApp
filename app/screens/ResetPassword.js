@@ -19,21 +19,23 @@ RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   resetPasswordTitle:{
-    fontSize:20,
+    fontSize:16,
     fontFamily:'brother-1816-bold',
-    flex:0.2
+    marginTop:10
   },
   hiddenKeyboardComponentsStyle:{
     rootWrapperStyle:{paddingTop:15},
-    inputTextStyle:{flex:0.2, marginTop:0},
-    buttonContainerStyle:{flex:0.3},
-    messageStyle:{flex:0.2}
+    inputTextStyle:{flex:0.15, marginTop:0},
+    buttonContainerStyle:{flex:0.15},
+    messageStyle:{flex:0.2},
+    resetPasswordTitle:{flex:0.1}
   },
   showingKeyboardComponentsStyle:{
     rootWrapperStyle:{paddingTop:10, paddingBottom:10},
     inputTextStyle:{flex:0.1, marginTop:0},
     buttonContainerStyle:{flex:0.15},
-    titleStyle:{flex:0.1}
+    titleStyle:{flex:0.1},
+    resetPasswordTitle:{flex:0.15}
   }
 }
 
@@ -88,7 +90,7 @@ export default class ResetPassword extends React.Component {
       <RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
-            <GenericText style={[styles.resetPasswordTitle]}>
+            <GenericText style={[styles.resetPasswordTitle, this.state.componentsStyle.resetPasswordTitle]}>
               RECUPERÁ TU CONTRASEÑA
             </GenericText>
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} autoFocus keyboardType="numeric" placeholder='DNI'

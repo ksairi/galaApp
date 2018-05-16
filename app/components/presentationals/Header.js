@@ -1,8 +1,20 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import Icon from '/helpers/ImageHelper'
-import { headerBackgroundColor } from '/components/styles'
+import { headerBackgroundColor, containerPadding } from '/components/styles'
 import Logo from 'components/presentationals/Logo'
+
+const styles = {
+  wrapper:{
+    flex:0.1,
+    flexDirection:'row',
+    alignItems:'flex-start',
+    backgroundColor:headerBackgroundColor,
+    marginTop:Expo.Constants.statusBarHeight,
+    paddingTop:20,
+    paddingLeft:containerPadding
+  }
+}
 
 export default class Header extends React.PureComponent{
 
@@ -31,25 +43,25 @@ export default class Header extends React.PureComponent{
 
   render(){
     return(
-      <View style={{flex:0.1, flexDirection:'row', alignItems:'flex-start', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:20}}>
-        <View style={{flex:1}}>
+      <View style={styles.wrapper}>
+        <View style={{flex:0.8}}>
           { this.props.homeHeader ?
             <TouchableOpacity onPress={this.onMenuPressed}>
-              <Icon name={this.state.isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={40} color='white'/>
+              <Icon name={this.state.isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={20} color='white'/>
             </TouchableOpacity>
             :
             <TouchableOpacity onPress={this.onBackPressed} style={{flex:1}}>
-              <Icon name='arrow-navigation-white-left' size={40} color='white'/>
+              <Icon name='arrow-navigation-white-left' size={20} color='white'/>
             </TouchableOpacity>
           }
         </View>
 
 
-          <View style={{flex:1.4, flexDirection:'row', justifyContent:'center'}}>
-            <Logo style={{fontSize:170}} />
+          <View style={{flex:2.2, flexDirection:'row', justifyContent:'center'}}>
+            <Logo style={{fontSize:50}} />
           </View>
 
-          <View style={{flex:0.6, flexDirection:'row'}}/>
+          <View style={{flex:1, flexDirection:'row'}}/>
 
       </View>
     )

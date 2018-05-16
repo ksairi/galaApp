@@ -11,8 +11,8 @@ import Logo from '/components/presentationals/Logo'
 
 const styles = {
   welcome:{
-    fontSize:30,
-    flex:0.5,
+    fontSize:22,
+    flex:0.7,
     color:'white',
     fontFamily:'brother-1816-bold'
   },
@@ -37,7 +37,7 @@ export default class Welcome extends React.PureComponent{
       return(
         <RootWrapper style={{marginTop:Expo.Constants.statusBarHeight}}>
           <CentredWrapper>
-            <Logo style={{flex:0.9, fontSize:250}}/>
+            <Logo style={{flex:0.9, fontSize:80, marginTop:50}}/>
             <View style={{flex:0.95}}>
               <Text style={styles.welcome}>
                 ¡BIENVENIDO!

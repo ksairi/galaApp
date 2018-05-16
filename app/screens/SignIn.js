@@ -24,10 +24,11 @@ const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
 RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
-  animatedLogoInitStyle:{flex:1.7, fontSize:200},
-  animatedLogoEndStyle:{flex:1.4, fontSize:135},
-  animatedImageInitStyle:{flex:2, fontSize:225},
+  animatedLogoInitStyle:{flex:0.95, fontSize:60},
+  animatedLogoEndStyle:{flex:0.8, fontSize:40},
+  animatedImageInitStyle:{flex:2, fontSize:215},
   animatedImageEndStyle:{flex:1.7, fontSize:120},
+  rootWrapperStyle:{paddingTop:Expo.Constants.statusBarHeight + 10},
   hiddenKeyboardComponentsStyle:{
     passwordInputStyle:{marginBottom:10},
     buttonContainerStyle:{flex:1},
@@ -106,7 +107,7 @@ export default class SignIn extends React.Component{
   render(){
 
     return(
-      <RootWrapper>
+      <RootWrapper style={styles.rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
             <AnimatedLogo style={styles.animatedLogoInitStyle} ref={this.handleAnimatedLogo}/>
