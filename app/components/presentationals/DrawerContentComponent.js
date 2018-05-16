@@ -31,11 +31,11 @@ export default class extends React.PureComponent{
     ]
   }
 
-  navigateTo = (screen)=>{
+  navigateTo = screen => {
     this.props.navigation.navigate(screen)
   }
-  navigateToHome = (screenName)=>(e)=>{
-    this.props.navigation.navigate(screenName)
+  navigateToHome = screen => () => {
+    this.props.navigation.navigate(screen)
   }
 
   render(){
