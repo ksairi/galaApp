@@ -165,6 +165,22 @@ export default class SignUp extends React.Component{
     this.props.navigation.dispatch(resetAction)
   }
 
+  onFullNameChangeText = fullName =>{
+    this.userFullName = fullName
+  }
+
+  onUserIdChangeText = userId =>{
+    this.userId = userId
+  }
+
+  onPasswordChangeText = password =>{
+    this.password = password
+  }
+
+  onConfirmPasswordChangeText = password =>{
+    this.confirmPassword = password
+  }
+
   render(){
 
     return (
@@ -176,21 +192,21 @@ export default class SignUp extends React.Component{
             </GenericText>
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='Nombre'
               autoFocus returnKeyType='next' keyboardType='default' autoCapitalize='words' autoCorrect={false}
-              onChangeText={pUserFullName => this.userFullName = pUserFullName}
+              onChangeText={this.onFullNameChangeText}
               onSubmitEditing={this.onSubmitUserFullName}/>
 
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='DNI'
               returnKeyType='next' keyboardType="numeric" autoCorrect={false}
-              ref="userIdInput" onChangeText={pUserId => this.userId = pUserId}
+              ref="userIdInput" onChangeText={this.onUserIdChangeText}
               onSubmitEditing={this.onSubmitUserId}/>
 
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='Contraseña'
               secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='next' keyboardType='default' ref="passwordInput"
-              onChangeText={pPassword => this.password = pPassword} onSubmitEditing={this.onSubmitPassword}/>
+              onChangeText={this.onPasswordChangeText} onSubmitEditing={this.onSubmitPassword}/>
 
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.textInputStyle} placeholder='Confirmar Contraseña'
               secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="confirmPasswordInput"
-              onChangeText={pConfirmPassword => this.confirmPassword = pConfirmPassword} onSubmitEditing={this.signUp}/>
+              onChangeText={this.onConfirmPasswordChangeText} onSubmitEditing={this.signUp}/>
 
             <View style={[{flexDirection:'row'},this.state.componentsStyle.buttonContainerStyle]}>
               <Button style={this.state.componentsStyle.buttonContentStyle} text='REGISTRARME' onPress={this.signUp}/>

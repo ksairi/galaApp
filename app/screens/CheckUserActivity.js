@@ -68,7 +68,6 @@ export default class CheckUserActivity extends React.PureComponent {
   }
 
   render(){
-
     return(
       <View style={styles.container}>
         { CheckUserActivity.isInLoggingProcess && <LoadingSpinner visible={true} message={ 'Loguiando' }/>  }

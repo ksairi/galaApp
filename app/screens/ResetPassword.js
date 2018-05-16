@@ -56,27 +56,35 @@ export default class ResetPassword extends React.Component {
     componentsStyle : styles.hiddenKeyboardComponentsStyle
   }
 
-  componentDidMount() {
+  componentDidMount(){
     this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
     this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount(){
     this.keyboardDidShowListener.remove()
     this.keyboardDidHideListener.remove()
   }
 
-  _keyboardDidShow = ()=> {
+  _keyboardDidShow = () =>{
     this.setState({componentsStyle : styles.showingKeyboardComponentsStyle, message:''})
   }
 
-  _keyboardDidHide = ()=> {
+  _keyboardDidHide = () =>{
     this.setState({componentsStyle : styles.hiddenKeyboardComponentsStyle})
+  }
+
+  onUserIdChangeText = userId =>{
+    this.setState({userId})
+  }
+
+  onConfirmPasswordChangeText = confirmPassword =>{
+    this.setState({confirmPassword})
   }
 
   render(){
 
-    return (
+    return(
       <RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
         <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
           <CentredWrapper>
@@ -84,7 +92,7 @@ export default class ResetPassword extends React.Component {
               RECUPERÁ TU CONTRASEÑA
             </GenericText>
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} autoFocus keyboardType="numeric" placeholder='DNI'
-              returnKeyType='next' autoCorrect={false} onChangeText={userId => this.setState({userId})}
+              returnKeyType='next' autoCorrect={false} onChangeText={this.onUserIdChangeText}
               onSubmitEditing={this.onSubmitUserId} value={this.state.userId}/>
 
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} placeholder='Contraseña'
@@ -95,7 +103,7 @@ export default class ResetPassword extends React.Component {
 
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.inputTextStyle} placeholder='Confirmá la contraseña'
               secureTextEntry autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default'
-              onChangeText={confirmPassword => this.setState({confirmPassword})} onSubmitEditing={this.doResetPassword}
+              onChangeText={this.onConfirmPasswordChangeText} onSubmitEditing={this.doResetPassword}
               ref="confirmPasswordInput" value={this.state.confirmPassword}/>
 
             <View style={[{flexDirection:'row'}, this.state.componentsStyle.buttonContainerStyle]}>
@@ -162,7 +170,7 @@ export default class ResetPassword extends React.Component {
         this.setState({message:data[ServerProtocol.messageField], hasErrors:true})
       }
     })
-    .catch(message => {
+    .catch(message =>{
       this.setState({spinnerVisible:false})
       this.setState((prevState, props) => ({message, hasErrors:true}))
     })

@@ -50,16 +50,22 @@ const styles = {
 )
 export default class Profile extends React.Component {
 
+  iconsData = [{icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile}, {icon:'routines', label:'RUTINAS', screen:Screens.Routines},
+              {icon:'classes', label:'MIS CLASES', screen:Screens.Classes}, {icon:'timetable',label:'HORARIOS', screen:Screens.Timetable},
+              {icon:'timetable', label:'MENSAJES', screen:Screens.Messages}, {icon:'referrals', label:'REFERIDOS', screen:Screens.Referrals}]
+
   componentDidMount(){
     if(this.props.currentHomeDrawerOption != ''){
       this.props.navigation.navigate(this.props.currentHomeDrawerOption)
       this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(''))
     }
   }
+
+  onIconPressed = (screen) => () => {
+    this.props.navigation.navigate(screen)
+  }
+
   render(){
-    const iconsData = [{icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile}, {icon:'routines', label:'RUTINAS', screen:Screens.Routines},
-                      {icon:'classes', label:'MIS CLASES', screen:Screens.Classes}, {icon:'timetable',label:'HORARIOS', screen:Screens.Timetable},
-                      {icon:'timetable', label:'MENSAJES', screen:Screens.Messages}, {icon:'referrals', label:'REFERIDOS', screen:Screens.Referrals}]
     return (
       <ScrollView style={{flexGrow:1}}>
         <RootWrapper>
@@ -69,8 +75,8 @@ export default class Profile extends React.Component {
             </View>
             <View style={styles.iconsContainer}>
 
-              {iconsData.map((iconData, index)=>
-                <TouchableOpacity key={index} onPress={()=>{this.props.navigation.navigate(iconData.screen)}}>
+              {this.iconsData.map((iconData, index)=>
+                <TouchableOpacity key={index} onPress={this.onIconPressed(iconData.screen)}>
                   <View style={styles.iconWrapper}>
                     <Icon name={iconData.icon} style={{fontSize:40}} color='white'/>
                     <GenericText style={styles.label}>

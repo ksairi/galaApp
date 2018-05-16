@@ -21,8 +21,12 @@ export default class Header extends React.PureComponent{
     }
   }
 
-  onMenuPress = ()=>{
+  onMenuPressed = () =>{
       this.state.isMenuClosed ? this.props.navigation.navigate('DrawerOpen') : this.props.navigation.navigate('DrawerClose')
+  }
+
+  onBackPressed = () =>{
+    this.props.navigation.goBack()
   }
 
   render(){
@@ -30,11 +34,11 @@ export default class Header extends React.PureComponent{
       <View style={{flex:0.1, flexDirection:'row', alignItems:'flex-start', backgroundColor:headerBackgroundColor, marginTop:Expo.Constants.statusBarHeight, paddingTop:20}}>
         <View style={{flex:1}}>
           { this.props.homeHeader ?
-            <TouchableOpacity onPress={()=>this.onMenuPress()}>
+            <TouchableOpacity onPress={this.onMenuPressed}>
               <Icon name={this.state.isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={40} color='white'/>
             </TouchableOpacity>
             :
-            <TouchableOpacity onPress={()=>{this.props.navigation.goBack()}} style={{flex:1}}>
+            <TouchableOpacity onPress={this.onBackPressed} style={{flex:1}}>
               <Icon name='arrow-navigation-white-left' size={40} color='white'/>
             </TouchableOpacity>
           }

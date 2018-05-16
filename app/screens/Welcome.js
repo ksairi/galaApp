@@ -28,7 +28,7 @@ const styles = {
 @connect()
 export default class Welcome extends React.PureComponent{
 
-  goToLogin = (dispatch, navigation)=>{
+  goToLogin = () => {
     this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false))
     this.props.navigation.navigate(Screens.LoginStack)
   }
@@ -47,7 +47,7 @@ export default class Welcome extends React.PureComponent{
               </Text>
             </View>
             <View style={{flexDirection:'row', flex:0.4}}>
-              <Button contentStyle={{fontFamily:'brother-1816-bold'}} text='EXPLORÁ LA APP' onPress={() => this.goToLogin()} />
+              <Button contentStyle={{fontFamily:'brother-1816-bold'}} text='EXPLORÁ LA APP' onPress={this.goToLogin} />
             </View>
           </CentredWrapper>
         </RootWrapper>

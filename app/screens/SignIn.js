@@ -95,6 +95,14 @@ export default class SignIn extends React.Component{
 
   handleAnimatedImage = ref => this.animatedImage = ref
 
+  onUserIdChangeText = userId =>{
+    this.setState({userId})
+  }
+
+  onPasswordChangeText = password =>{
+    this.setState({password})
+  }
+
   render(){
 
     return(
@@ -108,12 +116,12 @@ export default class SignIn extends React.Component{
             }
 
             <RkTextInput rkType='rounded inputText' style={{marginBottom:0, flex:0.8}} placeholder='DNI' keyboardType='numeric'
-              autoFocus onChangeText={userId => this.setState({userId})}
+              autoFocus onChangeText={this.onUserIdChangeText}
               onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
               autoCapitalize='none' autoCorrect={false} value={this.props.isLoggedIn ? this.state.userId : null}/>
 
             <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.passwordInputStyle, {flex:0.8}} placeholder='Contraseña'
-              secureTextEntry onChangeText={password => this.setState({password})}
+              secureTextEntry onChangeText={this.onPasswordChangeText}
               autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
               onSubmitEditing={this.signIn} value={this.props.isLoggedIn ? this.state.password : null}/>
 
