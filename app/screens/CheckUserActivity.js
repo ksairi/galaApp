@@ -27,7 +27,7 @@ const styles = {
   })
 )
 
-export default class CheckUserActivity extends React.PureComponent {
+export default class CheckUserActivity extends React.Component {
 
   static isInLoggingProcess = false
 
