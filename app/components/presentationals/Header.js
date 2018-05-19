@@ -14,34 +14,40 @@ const styles = {
     marginTop:Expo.Constants.statusBarHeight,
     paddingTop:20,
     paddingLeft:containerPadding
+  },
+  portrait:{
+  },
+  landscape:{
+    logo:{fontSize:30}
   }
 }
+
 @connect(
   state=>({
-      headerStyle:state.headerStyle
+      orientation:state.currentOrientation
   })
 )
 export default class Header extends React.PureComponent{
 
-  state = {
-    isMenuClosed:true,
-    headerStyle:{}
-  }
+  state = {}
 
   static getDerivedStateFromProps(nextProps, prevState){
-    if(nextProps.homeHeader){
-      return {
-        isMenuClosed:(nextProps.navigation.state.index === 0)
-      }
+    var newState = {}
+    if(nextProps.isHomeHeader != prevState.isHomeHeader){
+        newState.isHomeHeader = nextProps.isHomeHeader
+        newState.navigationDrawerIndexState = nextProps.navigation.state.index
     }
 
-    if(nextProps.headerStyle){
-      return {
-        headerStyle:nextProps.headerStyle
-      }
+    if(nextProps.navigation.state.index != prevState.navigationDrawerIndexState){
+      newState.isMenuClosed = (nextProps.navigation.state.index === 0)
+        newState.navigationDrawerIndexState = nextProps.navigation.state.index
     }
 
-    return null
+    if(nextProps.orientation){
+      newState.headerStyle = nextProps.orientation =='landscape' ? styles.landscape : styles.portrait
+    }
+
+    return newState
 
   }
 
@@ -57,7 +63,7 @@ export default class Header extends React.PureComponent{
     return(
       <View style={styles.wrapper}>
         <View style={{flex:0.8}}>
-          { this.props.homeHeader ?
+          { this.props.isHomeHeader ?
             <TouchableOpacity onPress={this.onMenuPressed}>
               <Icon name={this.state.isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={20} color='white'/>
             </TouchableOpacity>

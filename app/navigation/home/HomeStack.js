@@ -9,7 +9,7 @@ export default StackNavigator({
   },{
       navigationOptions: ({navigation}) => ({
         header:(headerProps)=>
-          <Header navigation={navigation} homeHeader/>
-      }) 
+          <Header navigation={navigation} isHomeHeader/>
+      })
     }
 )

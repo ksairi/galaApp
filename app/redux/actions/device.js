@@ -5,9 +5,3 @@ export function setCurrentOrientation (orientation){
     dispatch({type: ActionsTypes.SET_CURRENT_ORIENTATION, orientation})
   }
  }
-
- export function setHeaderStyle (headerStyle){
-   return (dispatch, getState) => {
-     dispatch({type: ActionsTypes.SET_HEADER_STYLE, headerStyle})
-   }
-  }

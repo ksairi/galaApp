@@ -13,31 +13,39 @@ import Footer from '/components/presentationals/Footer'
 
 const styles = {
   imageContainer:{
+    marginTop:20,
     flex:0.5
   },
-  iconsContainer:{
-    flex:1,
-    flexDirection:'row'
+  buttonsContainer:{
+    flex:0.5,
+    flexDirection:'row',
+    flexWrap:'wrap',
+    justifyContent:'center'
   },
   promotionsContainer:{
-    flex:1
+    marginTop:20,
+    marginBottom:20,
+    flex:5
   },
   footerContainer: {
     flex:1,
     flexDirection:'row'
   },
 
-  iconWrapper:{
-    flex:2,
+  buttonWrapper:{
+    flex:1.5,
     backgroundColor: activeSideMenuItemColor,
-    alignItems:'center',
-    padding:10,
+    justifyContent:'center',
+    padding:5,
+    marginRight:10,
     marginTop:10,
-    marginRight:10
+    width:100,
   },
   label:{
+    flex:-1,
     fontSize:10,
-    fontFamily:'brother-1816-bold'
+    fontFamily:'brother-1816-bold',
+    marginTop:5
   }
 }
 
@@ -50,7 +58,7 @@ const styles = {
 )
 export default class Profile extends React.Component {
 
-  iconsData = [{icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile}, {icon:'routines', label:'RUTINAS', screen:Screens.Routines},
+  iconsData = [{icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile}, {icon:'routines', label:'RUTINAS', screen:Screens.Routines, style:{fontSize:30, paddingBottom:10}},
               {icon:'classes', label:'MIS CLASES', screen:Screens.Classes}, {icon:'timetable',label:'HORARIOS', screen:Screens.Timetable},
               {icon:'timetable', label:'MENSAJES', screen:Screens.Messages}, {icon:'referrals', label:'REFERIDOS', screen:Screens.Referrals}]
 
@@ -67,21 +75,23 @@ export default class Profile extends React.Component {
 
   render(){
     return (
-      <ScrollView style={{flexGrow:1}}>
+      <ScrollView contentContainerStyle={{flexGrow:1}}>
         <RootWrapper>
           <CentredWrapper>
             <View style={styles.imageContainer}>
               <GenericText>imageContainer</GenericText>
             </View>
-            <View style={styles.iconsContainer}>
+            <View style={styles.buttonsContainer}>
 
               {this.iconsData.map((iconData, index)=>
-                <TouchableOpacity key={index} onPress={this.onIconPressed(iconData.screen)}>
-                  <View style={styles.iconWrapper}>
-                    <Icon name={iconData.icon} style={{fontSize:40}} color='white'/>
-                    <GenericText style={styles.label}>
-                      {iconData.label}
-                    </GenericText>
+                <TouchableOpacity key={index}onPress={this.onIconPressed(iconData.screen)}>
+                  <View style={styles.buttonWrapper}>
+                    <View style={{alignItems:'center'}}>
+                      <Icon name={iconData.icon} style={[{fontSize:40}, iconData.style]} color='white'/>
+                      <GenericText style={styles.label}>
+                        {iconData.label}
+                      </GenericText>
+                    </View>
                   </View>
                 </TouchableOpacity>
               )}

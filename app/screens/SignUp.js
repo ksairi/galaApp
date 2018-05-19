@@ -16,7 +16,6 @@ import GenericText from '/components/presentationals/GenericText'
 import GenericLink from '/components/presentationals/GenericLink'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
-import { ActionsCreators } from '/redux/actions'
 
 RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
@@ -42,14 +41,6 @@ const styles ={
     textInputStyle:{marginTop:0},
     buttonContentStyle:{height:25},
     memeberAlreadyStyle:{flex:0.6}
-  },
-  headerStyle:{
-    landscape:{
-      logo:{
-        fontSize:30
-      }
-    },
-    portrait:{}
   }
 }
 
@@ -71,13 +62,11 @@ export default class SignUp extends React.Component{
 
   static getDerivedStateFromProps(nextProps, prevState){
     if(nextProps.orientation == 'landscape'){
-      nextProps.dispatch(ActionsCreators.setHeaderStyle(styles.headerStyle.landscape))
       return{
         componentsStyle: {...prevState.componentsStyle, ...styles.landscapeComponentsStyle},
       }
     }
     else{
-      nextProps.dispatch(ActionsCreators.setHeaderStyle(styles.headerStyle.portrait))
       return {
         componentsStyle: { ...prevState.componentsStyle, ...styles.hiddenKeyboardComponentsStyle }
       }

@@ -9,9 +9,3 @@ export const currentOrientation = createReducer(initialOrientation, {
     return action.orientation
   }
 })
-
-export const headerStyle = createReducer({}, {
-  [ActionsTypes.SET_HEADER_STYLE](state, action){
-    return action.headerStyle
-  }
-})
