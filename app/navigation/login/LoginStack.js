@@ -5,7 +5,7 @@ import SignIn from '/screens/SignIn'
 import SignUp from '/screens/SignUp'
 import ResetPassword from '/screens//ResetPassword'
 import { Screens } from '/config/settings'
-import Header from '/components/presentationals/Header'
+import Header from '/components/containers/Header'
 
 export default StackNavigator({
   [Screens.SignIn]:{
@@ -23,6 +23,6 @@ export default StackNavigator({
       header:(headerProps)=>
         <Header navigation={navigation}/>
     })
-    
+
   }
 )

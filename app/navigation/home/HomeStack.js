@@ -2,7 +2,7 @@ import React from 'react'
 import { Ionicons } from '@expo/vector-icons'
 import { StackNavigator } from 'react-navigation'
 import DrawerStack from './DrawerStack'
-import Header from '/components/presentationals/Header'
+import Header from '/components/containers/Header'
 
 export default StackNavigator({
   DrawerStack: { screen: DrawerStack }
