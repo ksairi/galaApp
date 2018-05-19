@@ -5,7 +5,7 @@ import Text from '/components/presentationals/GenericText'
 import { connect } from 'react-redux'
 import { Screens } from '/config/settings'
 import { ActionsCreators } from '/redux/actions'
-import RootWrapper from '/components/containers/RootWrapper'
+import RootWrapper from '/components/presentationals/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Logo from '/components/presentationals/Logo'
 
