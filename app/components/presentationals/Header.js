@@ -1,5 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
+import { connect } from 'react-redux'
 import Icon from '/helpers/ImageHelper'
 import { headerBackgroundColor, containerPadding } from '/components/styles'
 import Logo from 'components/presentationals/Logo'
@@ -15,11 +16,16 @@ const styles = {
     paddingLeft:containerPadding
   }
 }
-
+@connect(
+  state=>({
+      headerStyle:state.headerStyle
+  })
+)
 export default class Header extends React.PureComponent{
 
   state = {
-    isMenuClosed:true
+    isMenuClosed:true,
+    headerStyle:{}
   }
 
   static getDerivedStateFromProps(nextProps, prevState){
@@ -28,9 +34,15 @@ export default class Header extends React.PureComponent{
         isMenuClosed:(nextProps.navigation.state.index === 0)
       }
     }
-    else{
-      return null
+
+    if(nextProps.headerStyle){
+      return {
+        headerStyle:nextProps.headerStyle
+      }
     }
+
+    return null
+
   }
 
   onMenuPressed = () =>{
@@ -58,7 +70,7 @@ export default class Header extends React.PureComponent{
 
 
           <View style={{flex:2.2, flexDirection:'row', justifyContent:'center'}}>
-            <Logo style={{fontSize:50}} />
+            <Logo style={[{fontSize:50}, this.state.headerStyle.logo]} />
           </View>
 
           <View style={{flex:1, flexDirection:'row'}}/>

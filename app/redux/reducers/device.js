@@ -7,5 +7,11 @@ const initialOrientation = Dimensions.get('window').height > Dimensions.get('win
 export const currentOrientation = createReducer(initialOrientation, {
   [ActionsTypes.SET_CURRENT_ORIENTATION](state, action){
     return action.orientation
-  }  
+  }
+})
+
+export const headerStyle = createReducer({}, {
+  [ActionsTypes.SET_HEADER_STYLE](state, action){
+    return action.headerStyle
+  }
 })

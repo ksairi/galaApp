@@ -36,6 +36,14 @@ const styles = {
     buttonContainerStyle:{flex:0.15},
     titleStyle:{flex:0.1},
     resetPasswordTitle:{flex:0.15}
+  },
+  headerStyle:{
+    landscape:{
+      logo:{
+        fontSize:30
+      }
+    },
+    portrait:{}
   }
 }
 
@@ -56,6 +64,17 @@ export default class ResetPassword extends React.Component {
     password:'',
     confirmPassword:'',
     componentsStyle : styles.hiddenKeyboardComponentsStyle
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState){
+    if(nextProps.orientation == 'landscape'){
+      nextProps.dispatch(ActionsCreators.setHeaderStyle(styles.headerStyle.landscape))
+    }
+    else{
+      nextProps.dispatch(ActionsCreators.setHeaderStyle(styles.headerStyle.portrait))
+    }
+
+    return null
   }
 
   componentDidMount(){
