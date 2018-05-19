@@ -5375,6 +5375,12 @@ react-lifecycles-compat@^1.0.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-1.1.2.tgz#6b3a97bae12f421e57771d4715c7ebcd2833c07e"
 
+react-native-animatable-promise@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/react-native-animatable-promise/-/react-native-animatable-promise-1.2.4.tgz#3ec9c24eeb7f95d85713637664089c89ba713593"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-animatable@^1.2.4:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.2.4.tgz#b5fb7657e8f6edadbc26697057a327fb920b3039"

@@ -2,7 +2,7 @@ import React from 'react'
 import { Keyboard, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import { connect } from 'react-redux'
 import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
-import * as Animatable from 'react-native-animatable'
+import * as Animatable from 'react-native-animatable-promise'
 import { Messages, Screens, ServerProtocol } from '/config/settings'
 import { login } from '/helpers/ApiHelper'
 import { setInitialData } from '/helpers/StoreHelper'
@@ -78,10 +78,11 @@ export default class SignIn extends React.Component{
 
   _keyboardDidShow = ()=> {
     this.setState({errorMessage:'', componentsStyle : styles.showingKeyboardComponentsStyle})
-    this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 1500)
-    if(this.animatedImage != null){
-      this.animatedImage.transitionTo(styles.animatedImageEndStyle, 1500)
-    }
+    this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 1000).then(()=>{
+      if(this.animatedImage){
+        this.animatedImage.transitionTo(styles.animatedImageEndStyle, 500)
+      }
+    })
   }
 
   _keyboardDidHide = ()=> {
