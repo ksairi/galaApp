@@ -11,23 +11,26 @@ const styles = {
     paddingTop:10,
     backgroundColor:genericBackgroundColor,
     alignItems:'flex-start',
-    paddingLeft:10
+    paddingLeft:5,
+    paddingBottom:5,
+    flexGrow:1
   },
   headerIcon:{
     flex:1,
-    fontSize:150
+    fontSize:40
   }
 }
 
 export default class DrawerContentComponent extends React.PureComponent{
 
   state = {
-    drawerItems:[{icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile},
-      {icon:'routines', label:'RUTINAS', screen:Screens.Routines},
-      {icon:'classes', label:'MIS CLASES', screen:Screens.Classes},
-      {icon:'timetable', label:'HORARIOS', screen:Screens.Timetable},
-      {icon:'timetable', label:'MENSAJES', screen:Screens.Messages},
-      {icon:'referrals', label:'REFERIDOS', screen:Screens.Referrals}
+    drawerItems:[
+      {icon:'user-icon', label:'MI PERFIL', screen:Screens.Profile, style:{icon:{marginTop:5, paddingLeft:7, fontSize:30}, label:{marginTop:5}, arrow:{marginTop:15}}},
+      {icon:'routines', label:'RUTINAS', screen:Screens.Routines, style:{icon:{marginTop:3, fontSize:25}, arrow:{marginTop:10}}},
+      {icon:'classes', label:'MIS CLASES', screen:Screens.Classes, style:{icon:{fontSize:40, paddingLeft:15}, label:{marginTop:5}, arrow:{marginTop:12}}},
+      {icon:'timetable', label:'HORARIOS', screen:Screens.Timetable, style:{icon:{fontSize:37,paddingLeft:5}, label:{marginTop:7}, arrow:{marginTop:15}}},
+      {icon:'referrals', label:'MENSAJES', screen:Screens.Messages, style:{arrow:{marginTop:10}}},
+      {icon:'referrals', label:'REFERIDOS', screen:Screens.Referrals, style:{label:{marginTop:5}, arrow:{marginTop:13}}}
     ]
   }
 
@@ -41,13 +44,13 @@ export default class DrawerContentComponent extends React.PureComponent{
   render(){
     return(
       <ScrollView contentContainerStyle={styles.drawerItemsWrapper}>
-        <TouchableOpacity style={{flex:1,flexDirection:'row'}} onPress={this.navigateToHome(Screens.Home)}>
+        <TouchableOpacity style={{flex:1,flexDirection:'row', marginLeft:13}} onPress={this.navigateToHome(Screens.Home)}>
           <Logo style={styles.headerIcon}/>
         </TouchableOpacity>
         {
           this.state.drawerItems.map((drawerItem, index) =>
             <DrawerItem key={index} active={this.props.activeItemKey == drawerItem.screen} icon={drawerItem.icon} label={drawerItem.label}
-              screen={drawerItem.screen} onPress={this.navigateTo} />
+              screen={drawerItem.screen} onPress={this.navigateTo} style={drawerItem.style} />
           )
         }
       </ScrollView>
