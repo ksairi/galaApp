@@ -15,12 +15,17 @@ const styles = {
     paddingTop:20,
     paddingLeft:containerPadding
   },
+  backButton:{
+    marginTop:3,
+    flex:1
+  },
   portrait:{
   },
   landscape:{
     logo:{fontSize:30}
   }
 }
+styles.firstButton = styles.backButton
 
 @connect(
   state=>({
@@ -64,11 +69,11 @@ export default class Header extends React.PureComponent{
       <View style={styles.wrapper}>
         <View style={{flex:0.8}}>
           { this.props.isHomeHeader ?
-            <TouchableOpacity onPress={this.onMenuPressed}>
+            <TouchableOpacity onPress={this.onMenuPressed} style={styles.firstButton}>
               <Icon name={this.state.isMenuClosed ? 'classes' : 'arrow-navigation-white-left'} size={20} color='white'/>
             </TouchableOpacity>
             :
-            <TouchableOpacity onPress={this.onBackPressed} style={{flex:1}}>
+            <TouchableOpacity onPress={this.onBackPressed} style={styles.backButton}>
               <Icon name='arrow-navigation-white-left' size={20} color='white'/>
             </TouchableOpacity>
           }
