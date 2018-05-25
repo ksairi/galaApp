@@ -8,8 +8,7 @@ export default StackNavigator({
   DrawerStack: { screen: DrawerStack }
   },{
       navigationOptions: ({navigation}) => ({
-        header:(headerProps)=>
-          <Header navigation={navigation} isHomeHeader/>
+        header:<Header navigation={navigation} isHomeHeader/>
       })
     }
 )

@@ -20,8 +20,7 @@ export default StackNavigator({
 },
   {
     navigationOptions: ({navigation}) => ({
-      header:(headerProps)=>
-        <Header navigation={navigation}/>
+      header: <Header navigation={navigation}/>
     })
 
   }
