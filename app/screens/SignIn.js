@@ -1,223 +1,309 @@
-import React from 'react'
-import { Keyboard, View, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
-import { connect } from 'react-redux'
-import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
-import * as Animatable from 'react-native-animatable-promise'
-import { Messages, Screens, ServerProtocol } from '/config/settings'
-import { login } from '/helpers/ApiHelper'
-import { setInitialData } from '/helpers/StoreHelper'
-import ValidationHelper from '/helpers/ValidationHelper'
-import { ActionsCreators } from '/redux/actions'
-import RootWrapper from '/components/presentationals/RootWrapper'
-import CentredWrapper from '/components/presentationals/CentredWrapper'
-import Button from '/components/presentationals/GenericButton'
-import GenericText from '/components/presentationals/GenericText'
-import GenericLink from '/components/presentationals/GenericLink'
-import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import Icon from '/helpers/ImageHelper'
-import Logo from '/components/presentationals/Logo'
-import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
+import React from "react";
+import {
+	Keyboard,
+	View,
+	TouchableOpacity,
+	KeyboardAvoidingView,
+	Image,
+	PixelRatio,
+	Dimensions
+} from "react-native";
+import { connect } from "react-redux";
+import { RkTheme, RkTextInput } from "react-native-ui-kitten";
+import * as Animatable from "react-native-animatable-promise";
+import { Messages, Screens, ServerProtocol } from "/config/settings";
+import { login } from "/helpers/ApiHelper";
+import { setInitialData } from "/helpers/StoreHelper";
+import ValidationHelper from "/helpers/ValidationHelper";
+import { ActionsCreators } from "/redux/actions";
+import RootWrapper from "/components/presentationals/RootWrapper";
+import CentredWrapper from "/components/presentationals/CentredWrapper";
+import Button from "/components/presentationals/GenericButton";
+import GenericText from "/components/presentationals/GenericText";
+import GenericLink from "/components/presentationals/GenericLink";
+import LoadingSpinner from "/components/presentationals/LoadingSpinner";
+import Logo from "/components/presentationals/Logo";
+import {
+	genericTextInputStyle,
+	textWithLinkStyle,
+	containerPadding
+} from "/components/styles";
 
-const AnimatedIcon = Animatable.createAnimatableComponent(Icon)
-const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
+const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
+const AnimatedImage = Animatable.createAnimatableComponent(Image);
 
-RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
+RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
 const styles = {
-  animatedLogoInitStyle:{flex:0.95, fontSize:60},
-  animatedLogoEndStyle:{flex:0.8, fontSize:40},
-  animatedImageInitStyle:{flex:2, fontSize:215},
-  animatedImageEndStyle:{flex:1.7, fontSize:120},
-  rootWrapperStyle:{paddingTop:Expo.Constants.statusBarHeight + 10},
-  hiddenKeyboardComponentsStyle:{
-    passwordInputStyle:{marginBottom:10},
-    buttonContainerStyle:{flex:1},
-    linksContainerStyle:{flex:0.7}
-  },
-  showingKeyboardComponentsStyle:{
-    passwordInputStyle : {marginBottom:5},
-    buttonContainerStyle:{flex:0.7},
-    buttonStyle:{height:30},
-    linksContainerStyle:{flex:0.9}
-  }
-}
+	animatedLogoInitStyle: { flex: 0.35, fontSize: 60 },
+	animatedLogoEndStyle: { flex: 0.2, fontSize: 40 },
+	animatedImageInitStyle: {
+		flex: 0.8,
+		//height: 130,
+		width: Dimensions.get("window").width,
+		marginBottom: 10
+	},
+	animatedImageEndStyle: { flex: 1.7 },
+	rootWrapperStyle: { paddingTop: Expo.Constants.statusBarHeight + 10 },
+	hiddenKeyboardComponentsStyle: {
+		passwordInputStyle: { marginBottom: 10 },
+		buttonContainerStyle: { flex: 1 },
+		linksContainerStyle: { flex: 0.7 }
+	},
+	showingKeyboardComponentsStyle: {
+		passwordInputStyle: { marginBottom: 5 },
+		buttonContainerStyle: { flex: 0.7 },
+		buttonStyle: { height: 30 },
+		linksContainerStyle: { flex: 0.9 }
+	}
+};
 
-@connect(
-state => ({
-  userData: state.userData,
-  isLoggedIn:state.isLoggedIn,
-  autoLoginErrorMessage:state.autoLoginErrorMessage,
-  orientation : state.currentOrientation
-  })
-)
-export default class SignIn extends React.Component{
+@connect(state => ({
+	userData: state.userData,
+	isLoggedIn: state.isLoggedIn,
+	autoLoginErrorMessage: state.autoLoginErrorMessage,
+	orientation: state.currentOrientation
+}))
+export default class SignIn extends React.Component {
+	static navigationOptions = { header: null };
 
-  static navigationOptions = { header: null }
+	state = {
+		errorMessage: "",
+		spinnerVisible: false,
+		userId: "",
+		password: "",
+		componentsStyle: styles.hiddenKeyboardComponentsStyle
+	};
 
-  state = {
-    errorMessage:'',
-    spinnerVisible:false,
-    userId:'',
-    password:'',
-    componentsStyle : styles.hiddenKeyboardComponentsStyle
-  }
+	componentDidMount() {
+		if (this.props.isLoggedIn) {
+			this.setState({
+				userId: this.props.userData.userId,
+				password: this.props.userData.password
+			});
+		}
 
-  componentDidMount() {
-    if(this.props.isLoggedIn){
-      this.setState({userId:this.props.userData.userId, password:this.props.userData.password})
-    }
+		this.keyboardDidShowListener = Keyboard.addListener(
+			"keyboardDidShow",
+			this._keyboardDidShow
+		);
+		this.keyboardDidHideListener = Keyboard.addListener(
+			"keyboardDidHide",
+			this._keyboardDidHide
+		);
+	}
 
-    this.keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', this._keyboardDidShow)
-    this.keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', this._keyboardDidHide)
-  }
+	componentWillUnmount() {
+		this.keyboardDidShowListener.remove();
+		this.keyboardDidHideListener.remove();
+	}
 
-  componentWillUnmount () {
-    this.keyboardDidShowListener.remove()
-    this.keyboardDidHideListener.remove()
-  }
+	_keyboardDidShow = () => {
+		this.setState({
+			errorMessage: "",
+			componentsStyle: styles.showingKeyboardComponentsStyle
+		});
+		this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 1000)
+		.then(() => {
+		if (this.animatedImage) {
+			this.animatedImage.transitionTo(styles.animatedImageEndStyle, 500);
+		}
+		});
+	};
 
-  _keyboardDidShow = ()=> {
-    this.setState({errorMessage:'', componentsStyle : styles.showingKeyboardComponentsStyle})
-    this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 1000).then(()=>{
-      if(this.animatedImage){
-        this.animatedImage.transitionTo(styles.animatedImageEndStyle, 500)
-      }
-    })
-  }
+	_keyboardDidHide = () => {
+		this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
+		this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500);
+		if (this.animatedImage != null) {
+			this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500);
+		}
+	};
 
-  _keyboardDidHide = ()=> {
-    this.setState({componentsStyle:styles.hiddenKeyboardComponentsStyle})
-    this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 1500)
-    if(this.animatedImage != null){
-      this.animatedImage.transitionTo(styles.animatedImageInitStyle, 1500)
-    }
-  }
+	handleAnimatedLogo = ref => (this.animatedLogo = ref);
 
-  handleAnimatedLogo = ref => this.animatedLogo = ref
+	handleAnimatedImage = ref => (this.animatedImage = ref);
 
-  handleAnimatedImage = ref => this.animatedImage = ref
+	onUserIdChangeText = userId => {
+		this.setState({ userId });
+	};
 
-  onUserIdChangeText = userId =>{
-    this.setState({userId})
-  }
+	onPasswordChangeText = password => {
+		this.setState({ password });
+	};
 
-  onPasswordChangeText = password =>{
-    this.setState({password})
-  }
+	render() {
+		console.log(PixelRatio.getPixelSizeForLayoutSize(500));
+		return (
+			<RootWrapper
+				style={[styles.rootWrapperStyle, { paddingLeft: 0, paddingRight: 0 }]}>
+				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+					<CentredWrapper>
+						<AnimatedLogo
+							style={styles.animatedLogoInitStyle}
+							ref={this.handleAnimatedLogo}
+						/>
 
-  render(){
+						{this.props.orientation == "portrait" && (
+							<AnimatedImage
+								source={require("../images/login.jpg")}
+								style={styles.animatedImageInitStyle}
+								ref={this.handleAnimatedImage}
+							/>
+						)}
 
-    return(
-      <RootWrapper style={styles.rootWrapperStyle}>
-        <KeyboardAvoidingView style={{flex:1}} behavior='padding'>
-          <CentredWrapper>
-            <AnimatedLogo style={styles.animatedLogoInitStyle} ref={this.handleAnimatedLogo}/>
+						<CentredWrapper
+							style={{
+								paddingLeft: containerPadding,
+								paddingRight: containerPadding
+							}}>
+							<RkTextInput
+								rkType="rounded inputText"
+								style={{ marginBottom: 0, flex: 0.8 }}
+								placeholder="DNI"
+								keyboardType="numeric"
+								autoFocus
+								onChangeText={this.onUserIdChangeText}
+								onSubmitEditing={this.onSubmitUserId}
+								returnKeyType="next"
+								autoCapitalize="none"
+								autoCorrect={false}
+								value={this.props.isLoggedIn ? this.state.userId : null}
+							/>
 
-            { this.props.orientation == 'portrait' &&
-              <AnimatedIcon name="referrals" style={styles.animatedImageInitStyle} color='white' ref={this.handleAnimatedImage}/>
-            }
+							<RkTextInput
+								rkType="rounded inputText"
+								style={
+									(this.state.componentsStyle.passwordInputStyle, { flex: 0.8 })
+								}
+								placeholder="Contraseña"
+								secureTextEntry
+								onChangeText={this.onPasswordChangeText}
+								autoCapitalize="none"
+								autoCorrect={false}
+								returnKeyType="done"
+								keyboardType="default"
+								ref="passwordInput"
+								onSubmitEditing={this.signIn}
+								value={this.props.isLoggedIn ? this.state.password : null}
+							/>
 
-            <RkTextInput rkType='rounded inputText' style={{marginBottom:0, flex:0.8}} placeholder='DNI' keyboardType='numeric'
-              autoFocus onChangeText={this.onUserIdChangeText}
-              onSubmitEditing={this.onSubmitUserId} returnKeyType='next'
-              autoCapitalize='none' autoCorrect={false} value={this.props.isLoggedIn ? this.state.userId : null}/>
+							<View
+								style={[
+									{ flexDirection: "row" },
+									this.state.componentsStyle.buttonContainerStyle
+								]}>
+								<Button
+									style={this.state.componentsStyle.buttonStyle}
+									text="INICIAR SESIÓN"
+									onPress={this.signIn}
+								/>
+							</View>
 
-            <RkTextInput rkType='rounded inputText' style={this.state.componentsStyle.passwordInputStyle, {flex:0.8}} placeholder='Contraseña'
-              secureTextEntry onChangeText={this.onPasswordChangeText}
-              autoCapitalize='none' autoCorrect={false} returnKeyType='done' keyboardType='default' ref="passwordInput"
-              onSubmitEditing={this.signIn} value={this.props.isLoggedIn ? this.state.password : null}/>
+							<View style={this.state.componentsStyle.linksContainerStyle}>
+								<View style={textWithLinkStyle.container}>
+									<GenericText style={textWithLinkStyle.text}>
+										¿No tenés una cuenta?
+									</GenericText>
+									<GenericLink
+										containerStyle={textWithLinkStyle.link.container}
+										contentStyle={textWithLinkStyle.link.content}
+										onPress={this.goToSignUp}>
+										Creá una nueva
+									</GenericLink>
+								</View>
 
+								<View style={textWithLinkStyle.container}>
+									<GenericText style={textWithLinkStyle.text}>
+										¿Olvidaste tu contraseña?
+									</GenericText>
+									<GenericLink
+										containerStyle={textWithLinkStyle.link.container}
+										contentStyle={textWithLinkStyle.link.content}
+										onPress={this.goToResetPassword}>
+										Recuperala
+									</GenericLink>
+								</View>
+							</View>
 
-            <View style={[{flexDirection:'row'}, this.state.componentsStyle.buttonContainerStyle]}>
-              <Button style={this.state.componentsStyle.buttonStyle} text='INICIAR SESIÓN' onPress={this.signIn}/>
-            </View>
+							{(this.state.errorMessage != "" ||
+								this.props.autoLoginErrorMessage != "") && (
+								<GenericText
+									style={{ flex: 0.5 }}
+									error={
+										this.state.errorMessage ||
+										this.props.autoLoginErrorMessage != ""
+											? true
+											: false
+									}>
+									{this.state.errorMessage}
+									{this.props.autoLoginErrorMessage}
+								</GenericText>
+							)}
 
-            <View style={this.state.componentsStyle.linksContainerStyle}>
+							<LoadingSpinner visible={this.state.spinnerVisible} />
+						</CentredWrapper>
+					</CentredWrapper>
+				</KeyboardAvoidingView>
+			</RootWrapper>
+		);
+	}
 
-              <View style={textWithLinkStyle.container}>
-                <GenericText style={textWithLinkStyle.text}>
-                  ¿No tenés una cuenta?
-                </GenericText>
-                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={this.goToSignUp}>
-                  Creá una nueva
-                </GenericLink>
-              </View>
+	signIn = async () => {
+		Keyboard.dismiss();
+		if (!this.state.userId || !this.state.password) {
+			this.setState({ errorMessage: Messages.INVALID_USER_ID_PASSWORD });
+			return;
+		}
+		this.setState({ errorMessage: "", spinnerVisible: true });
+		try {
+			const httpResponse = await login(this.state.userId, this.state.password);
+			this.setState({ spinnerVisible: false });
+			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+				setInitialData(
+					httpResponse.data,
+					this.state.userId,
+					this.state.password,
+					this.props.dispatch
+				);
+				this.props.navigation.navigate(Screens.HomeStack);
+			} else {
+				this.setState({
+					errorMessage: httpResponse[ServerProtocol.messageField]
+				});
+			}
+		} catch (errorMessage) {
+			this.setState({ spinnerVisible: false });
+			if (
+				Messages.CHECK_INTERNET_CONNECTION == errorMessage &&
+				this.state.userId == this.props.userData.userId &&
+				this.state.password == this.props.userData.password
+			) {
+				//offline login
+				this.props.dispatch(ActionsCreators.setIsUsingCache(true));
+				this.props.navigation.navigate(Screens.HomeStack);
+			} else {
+				this.setState((prevState, props) => ({ errorMessage }));
+			}
+		}
+	};
 
-              <View style={textWithLinkStyle.container}>
-                <GenericText style={textWithLinkStyle.text}>
-                  ¿Olvidaste tu contraseña?
-                </GenericText>
-                <GenericLink containerStyle={textWithLinkStyle.link.container} contentStyle={textWithLinkStyle.link.content} onPress={this.goToResetPassword}>
-                  Recuperala
-                </GenericLink>
-              </View>
-            </View>
+	onSubmitUserId = () => {
+		if (!this.state.password) {
+			this.refs.passwordInput._focusInput();
+		} else {
+			this.signIn();
+		}
+	};
 
-            { (this.state.errorMessage != '' ||
-              this.props.autoLoginErrorMessage != '') &&
-              <GenericText style={{flex:0.5}} error={this.state.errorMessage || this.props.autoLoginErrorMessage != '' ? true : false}>
-                {this.state.errorMessage}
-                {this.props.autoLoginErrorMessage}
-              </GenericText>
-            }
+	goToSignUp = () => {
+		Keyboard.dismiss();
+		this.setState({ errorMessage: "" });
+		this.props.navigation.navigate(Screens.SignUp);
+	};
 
-          <LoadingSpinner visible={this.state.spinnerVisible}/>
-
-        </CentredWrapper>
-        </KeyboardAvoidingView>
-      </RootWrapper>
-    )
-  }
-
-  signIn = async () =>{
-    Keyboard.dismiss()
-    if (!this.state.userId || !this.state.password){
-        this.setState({errorMessage:Messages.INVALID_USER_ID_PASSWORD})
-        return
-    }
-    this.setState({errorMessage:"", spinnerVisible:true})
-    try{
-      const httpResponse = await login(this.state.userId, this.state.password)
-      this.setState({spinnerVisible:false})
-      if(httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-        setInitialData(httpResponse.data, this.state.userId, this.state.password, this.props.dispatch)
-        this.props.navigation.navigate(Screens.HomeStack)
-      }
-      else{
-        this.setState({errorMessage:httpResponse[ServerProtocol.messageField]})
-      }
-
-    }catch(errorMessage){
-      this.setState({spinnerVisible:false})
-      if(Messages.CHECK_INTERNET_CONNECTION == errorMessage && this.state.userId == this.props.userData.userId && this.state.password == this.props.userData.password){ //offline login
-        this.props.dispatch(ActionsCreators.setIsUsingCache(true))
-        this.props.navigation.navigate(Screens.HomeStack)
-      }
-      else{
-        this.setState((prevState, props) => ({errorMessage}))
-      }
-    }
-  }
-
-  onSubmitUserId = () =>{
-    if(!this.state.password){
-      this.refs.passwordInput._focusInput()
-    }
-    else{
-        this.signIn()
-    }
-  }
-
-  goToSignUp = () =>{
-    Keyboard.dismiss()
-    this.setState({errorMessage:""})
-    this.props.navigation.navigate(Screens.SignUp)
-
-  }
-
-  goToResetPassword = () =>{
-    Keyboard.dismiss()
-    this.setState({errorMessage:""})
-    this.props.navigation.navigate(Screens.ResetPassword)
-  }
+	goToResetPassword = () => {
+		Keyboard.dismiss();
+		this.setState({ errorMessage: "" });
+		this.props.navigation.navigate(Screens.ResetPassword);
+	};
 }
