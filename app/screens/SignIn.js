@@ -308,6 +308,8 @@ export default class SignIn extends React.Component {
 	goToResetPassword = () => {
 		Keyboard.dismiss();
 		this.setState({ errorMessage: "" });
-		this.props.navigation.navigate(Screens.ResetPassword);
+		setTimeout(() => {
+			this.props.navigation.navigate(Screens.ResetPassword);
+		}, 1);
 	};
 }
