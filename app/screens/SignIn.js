@@ -261,7 +261,6 @@ export default class SignIn extends React.Component {
 		this.setState({ errorMessage: "", spinnerVisible: true });
 		try {
 			const httpResponse = await login(this.state.userId, this.state.password);
-			this.setState({ spinnerVisible: false });
 			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
 				setInitialData(
 					httpResponse.data,
@@ -269,9 +268,11 @@ export default class SignIn extends React.Component {
 					this.state.password,
 					this.props.dispatch
 				);
+				this.setState({ spinnerVisible: false });
 				this.props.navigation.navigate(Screens.HomeStack);
 			} else {
 				this.setState({
+					spinnerVisible: false,
 					errorMessage: httpResponse[ServerProtocol.messageField]
 				});
 			}
