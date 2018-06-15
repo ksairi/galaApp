@@ -62,7 +62,8 @@ const styles = {
 	userData: state.userData,
 	isLoggedIn: state.isLoggedIn,
 	autoLoginErrorMessage: state.autoLoginErrorMessage,
-	orientation: state.currentOrientation
+	orientation: state.currentOrientation,
+	synchedLoginImage: state.loginImage
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
@@ -141,7 +142,14 @@ export default class SignIn extends React.Component {
 
 						{this.props.orientation == "portrait" && (
 							<AnimatedImage
-								source={require("../images/login.jpg")}
+								source={
+									this.props.synchedLoginImage == null
+										? require("../images/login.jpg")
+										: {
+												uri:
+													"data:image/jpg;base64" + this.props.synchedLoginImage
+										  }
+								}
 								style={styles.animatedImageInitStyle}
 								ref={this.handleAnimatedImage}
 							/>
