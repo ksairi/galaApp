@@ -8,7 +8,7 @@ import { genericBackgroundColor } from "/components/styles";
 
 const styles = {
 	drawerItemsWrapper: {
-		paddingTop: 10,
+		paddingTop: Expo.Constants.statusBarHeight + 10,
 		backgroundColor: genericBackgroundColor,
 		alignItems: "flex-start",
 		paddingLeft: 5,
