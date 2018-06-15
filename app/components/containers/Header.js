@@ -36,16 +36,7 @@ export default class Header extends React.PureComponent {
 		var newState = {};
 		if (nextProps.isHomeHeader != prevState.isHomeHeader) {
 			newState.isHomeHeader = nextProps.isHomeHeader;
-			newState.navigationDrawerIndexState = nextProps.navigation.state.index;
 		}
-
-		if (
-			nextProps.navigation.state.index != prevState.navigationDrawerIndexState
-		) {
-			newState.isMenuClosed = nextProps.navigation.state.index === 0;
-			newState.navigationDrawerIndexState = nextProps.navigation.state.index;
-		}
-
 		if (nextProps.orientation) {
 			newState.headerStyle =
 				nextProps.orientation == "landscape"
@@ -57,9 +48,7 @@ export default class Header extends React.PureComponent {
 	}
 
 	onMenuPressed = () => {
-		this.state.isMenuClosed
-			? this.props.navigation.navigate("DrawerOpen")
-			: this.props.navigation.navigate("DrawerClose");
+		this.props.navigation.toggleDrawer();
 	};
 
 	onBackPressed = () => {
@@ -74,15 +63,7 @@ export default class Header extends React.PureComponent {
 						<TouchableOpacity
 							onPress={this.onMenuPressed}
 							style={styles.firstButton}>
-							<Icon
-								name={
-									this.state.isMenuClosed
-										? "menu"
-										: "arrow-navigation-white-left"
-								}
-								size={20}
-								color="white"
-							/>
+							<Icon name="menu" size={20} color="white" />
 						</TouchableOpacity>
 					) : (
 						<TouchableOpacity
