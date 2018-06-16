@@ -1,7 +1,14 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity } from "react-native";
+import {
+	View,
+	ScrollView,
+	TouchableOpacity,
+	Image,
+	Dimensions
+} from "react-native";
 import { connect } from "react-redux";
 import { RkButton } from "react-native-ui-kitten";
+import ImageSlider from "react-native-image-slider";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import { ActionsCreators } from "/redux/actions";
@@ -14,10 +21,10 @@ import Footer from "/components/presentationals/Footer";
 const styles = {
 	imageContainer: {
 		marginTop: 20,
-		flex: 0.5
+		flex: -1
 	},
 	buttonsContainer: {
-		flex: 0.5,
+		flex: 0.2,
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "center"
@@ -25,10 +32,10 @@ const styles = {
 	promotionsContainer: {
 		marginTop: 20,
 		marginBottom: 20,
-		flex: 5
+		flex: 1
 	},
 	footerContainer: {
-		flex: 1,
+		flex: 0.5,
 		flexDirection: "row"
 	},
 
@@ -52,7 +59,8 @@ const styles = {
 @connect(state => ({
 	userData: state.userData,
 	isUsingCache: state.isUsingCache,
-	currentHomeDrawerOption: state.currentHomeDrawerOption
+	currentHomeDrawerOption: state.currentHomeDrawerOption,
+	mainMenuSliderImages: state.mainMenuSliderImages
 }))
 export default class Profile extends React.Component {
 	iconsData = [
@@ -111,10 +119,31 @@ export default class Profile extends React.Component {
 				contentContainerStyle={{
 					flexGrow: 1
 				}}>
-				<RootWrapper>
+				<RootWrapper style={{ padding: 0 }}>
 					<CentredWrapper>
 						<View style={styles.imageContainer}>
-							<GenericText> imageContainer </GenericText>
+							<ImageSlider
+								autoPlayWithInterval={7000}
+								images={
+									this.props.mainMenuSliderImages.length == 0
+										? [
+												require("../images/main-menu-slider-1.jpg"),
+												require("../images/main-menu-slider-2.jpg")
+										  ]
+										: this.mainMenuSliderImages.length
+								}
+								customSlide={({ index, item, style, width }) => (
+									// It's important to put style here because it's got offset inside
+									<Image
+										key={index}
+										source={item}
+										style={{
+											height: 205,
+											width: Dimensions.get("window").width
+										}}
+									/>
+								)}
+							/>
 						</View>
 						<View style={styles.buttonsContainer}>
 							{this.iconsData.map((iconData, index) => (
