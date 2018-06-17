@@ -2,16 +2,23 @@ import { ServerProtocol } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
 
-exports.setInitialData = (serverData, userId, password, dispatch) => {
+exports.setInitialData = (
+	loginServerData,
+	userId,
+	password,
+	dynamicDataServer,
+	dispatch
+) => {
 	const {
 		userData,
 		newMemberData,
 		timetable,
 		routines,
 		notifications
-	} = serverData;
+	} = loginServerData;
 	userData.userId = userId;
 	userData.password = password;
+	//const { data } = dynamicDataServer;
 	dispatch(ActionsCreators.logIn());
 	dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	dispatch(ActionsCreators.setUserData(userData));

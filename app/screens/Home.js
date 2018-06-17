@@ -124,19 +124,12 @@ export default class Profile extends React.Component {
 						<View style={styles.imageContainer}>
 							<ImageSlider
 								autoPlayWithInterval={7000}
-								images={
-									this.props.mainMenuSliderImages.length == 0
-										? [
-												require("../images/main-menu-slider-1.jpg"),
-												require("../images/main-menu-slider-2.jpg")
-										  ]
-										: this.mainMenuSliderImages.length
-								}
+								images={this.props.mainMenuSliderImages}
 								customSlide={({ index, item, style, width }) => (
 									// It's important to put style here because it's got offset inside
 									<Image
 										key={index}
-										source={item}
+										source={{ uri: "data:image/jpg;base64" + item }}
 										style={{
 											height: 205,
 											width: Dimensions.get("window").width

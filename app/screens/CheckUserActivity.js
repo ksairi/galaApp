@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { LoadingSpinner } from "/components/presentationals/Spinner";
 import { connect } from "react-redux";
 import { Screens, ServerProtocol } from "/config/settings";
-import { login } from "/helpers/ApiHelper";
+import { login } from "/helpers/LoginHelper";
 import { setInitialData } from "/helpers/StoreHelper";
 import { ActionsCreators } from "/redux/actions";
 
@@ -43,15 +43,10 @@ export default class CheckUserActivity extends React.Component {
 					CheckUserActivity.isInLoggingProcess = true;
 					const httpResponse = await login(
 						this.props.userId,
-						this.props.password
+						this.props.password,
+						this.props.dispatch
 					);
 					if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-						setInitialData(
-							httpResponse.data,
-							this.props.userId,
-							this.props.password,
-							this.props.dispatch
-						);
 						this.props.navigation.navigate(Screens.HomeStack);
 					} else {
 						this.props.dispatch(

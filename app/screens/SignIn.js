@@ -12,8 +12,7 @@ import { connect } from "react-redux";
 import { RkTheme, RkTextInput } from "react-native-ui-kitten";
 import * as Animatable from "react-native-animatable-promise";
 import { Messages, Screens, ServerProtocol } from "/config/settings";
-import { login } from "/helpers/ApiHelper";
-import { setInitialData } from "/helpers/StoreHelper";
+import { login } from "/helpers/LoginHelper";
 import ValidationHelper from "/helpers/ValidationHelper";
 import { ActionsCreators } from "/redux/actions";
 import RootWrapper from "/components/presentationals/RootWrapper";
@@ -268,14 +267,12 @@ export default class SignIn extends React.Component {
 		}
 		this.setState({ errorMessage: "", spinnerVisible: true });
 		try {
-			const httpResponse = await login(this.state.userId, this.state.password);
+			const httpResponse = await login(
+				this.state.userId,
+				this.state.password,
+				this.props.dispatch
+			);
 			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-				setInitialData(
-					httpResponse.data,
-					this.state.userId,
-					this.state.password,
-					this.props.dispatch
-				);
 				this.setState({ spinnerVisible: false });
 				this.props.navigation.navigate(Screens.HomeStack);
 			} else {

@@ -1,15 +1,20 @@
-const SERVER_HOSTNAME = __DEV__
+const SERVER_HOSTNAME_1 = __DEV__
 	? "http://192.168.42.1:3000/"
 	: "https://aqueous-harbor-62651.herokuapp.com/";
 
+const SERVER_HOSTNAME_2 = __DEV__
+	? "http://galagym:81/api"
+	: "https://galagym.com/api";
+
 exports.Urls = {
-	LOGIN: SERVER_HOSTNAME + "login",
-	REGISTER: SERVER_HOSTNAME + "register",
-	RESET_PASSWORD: SERVER_HOSTNAME + "resetPassword",
-	SEND_COMMENTS: SERVER_HOSTNAME + "sendComments",
-	SEND_CLIENT_TOKEN: SERVER_HOSTNAME + "sendClientToken",
-	SYN_LOCAL_STORAGE: SERVER_HOSTNAME + "syncLocalStorage",
-	FETCH_USER_DATA: SERVER_HOSTNAME + "fetchUserData"
+	LOGIN: SERVER_HOSTNAME_1 + "login",
+	REGISTER: SERVER_HOSTNAME_1 + "register",
+	RESET_PASSWORD: SERVER_HOSTNAME_1 + "resetPassword",
+	SEND_COMMENTS: SERVER_HOSTNAME_1 + "sendComments",
+	SEND_CLIENT_TOKEN: SERVER_HOSTNAME_1 + "sendClientToken",
+	SYN_LOCAL_STORAGE: SERVER_HOSTNAME_1 + "syncLocalStorage",
+	FETCH_USER_DATA: SERVER_HOSTNAME_1 + "fetchUserData",
+	FETCH_DYNAMIC_IMAGES: SERVER_HOSTNAME_2 + "fetchDynamicData"
 };
 
 exports.Messages = {
