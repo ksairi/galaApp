@@ -9,8 +9,17 @@ export function setLoginImage(loginImage) {
 export function setMainMenuImages(mainMenuImages) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: ActionsTypes.SET_MAIN_MENU_SLIDER_IMAGES,
+			type: ActionsTypes.SET_MAIN_MENU_IMAGES,
 			mainMenuImages
+		});
+	};
+}
+
+export function setSynchedImagesParameters(synchedImagesParameters) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_SYNCHED_IMAGES_PARAMETERS,
+			synchedImagesParameters
 		});
 	};
 }

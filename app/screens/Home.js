@@ -60,7 +60,7 @@ const styles = {
 	userData: state.userData,
 	isUsingCache: state.isUsingCache,
 	currentHomeDrawerOption: state.currentHomeDrawerOption,
-	mainMenuSliderImages: state.mainMenuSliderImages
+	mainMenuImages: state.mainMenuImages
 }))
 export default class Profile extends React.Component {
 	iconsData = [
@@ -124,7 +124,7 @@ export default class Profile extends React.Component {
 						<View style={styles.imageContainer}>
 							<ImageSlider
 								autoPlayWithInterval={7000}
-								images={this.props.mainMenuSliderImages}
+								images={this.props.mainMenuImages}
 								customSlide={({ index, item, style, width }) => (
 									// It's important to put style here because it's got offset inside
 									<Image

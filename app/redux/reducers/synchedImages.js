@@ -6,8 +6,17 @@ export const loginImage = createReducer(null, {
 		return action.loginImage;
 	}
 });
-export const mainMenuSliderImages = createReducer([], {
-	[ActionsTypes.SET_MAIN_MENU_SLIDER_IMAGES](state, action) {
-		return action.mainMenuSliderImages;
+export const mainMenuImages = createReducer([], {
+	[ActionsTypes.SET_MAIN_MENU_IMAGES](state, action) {
+		return action.mainMenuImages;
 	}
 });
+
+export const synchedImagesParameters = createReducer(
+	{ loginImages: { imageIndex: 0 } },
+	{
+		[ActionsTypes.SET_SYNCHED_IMAGES_PARAMETERS](state, action) {
+			return action.synchedImagesParameters;
+		}
+	}
+);

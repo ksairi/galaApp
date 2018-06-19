@@ -89,20 +89,8 @@ exports.fetchUserData = userId => {
 		});
 };
 
-exports.fetchDynamicData = (
-	loginImage,
-	mainMenuSlider,
-	promotions,
-	routines,
-	classes
-) => {
-	const fetchDynamicImagesParamters = {};
-	fetchDynamicImagesParamters.loginImage = loginImage;
-	fetchDynamicImagesParamters.mainMenuSlider = mainMenuSlider;
-	fetchDynamicImagesParamters.promotions = promotions;
-	fetchDynamicImagesParamters.routines = routines;
-	fetchDynamicImagesParamters.classes = classes;
-	return connectToServer(Urls.FETCH_DYNAMIC_IMAGES, fetchDynamicImagesParamters)
+exports.fetchDynamicData = params => {
+	return connectToServer(Urls.FETCH_DYNAMIC_DATA, params)
 		.then(response => {
 			return response;
 		})
@@ -112,6 +100,7 @@ exports.fetchDynamicData = (
 };
 
 connectToServer = (url, parameters) => {
+	console.log(url, JSON.stringify(parameters));
 	return fetch(url, {
 		method: "POST",
 		headers: {
@@ -122,6 +111,7 @@ connectToServer = (url, parameters) => {
 		body: JSON.stringify(parameters)
 	})
 		.then(response => {
+			console.log(response);
 			if (response.ok) {
 				try {
 					return response.json();
@@ -133,6 +123,7 @@ connectToServer = (url, parameters) => {
 			}
 		})
 		.then(responseJson => {
+			console.log(responseJson);
 			if (responseJson[ServerProtocol.statusField] != ServerProtocol.OK) {
 				return responseJson;
 			} else {

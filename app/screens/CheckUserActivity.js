@@ -23,7 +23,8 @@ const styles = {
 	isAppsFirstTime: state.isAppsFirstTime,
 	isLoggedIn: state.isLoggedIn,
 	userId: state.userData.userId,
-	password: state.userData.password
+	password: state.userData.password,
+	synchedImagesParameters: state.synchedImagesParameters
 }))
 export default class CheckUserActivity extends React.Component {
 	static isInLoggingProcess = false;
@@ -44,11 +45,13 @@ export default class CheckUserActivity extends React.Component {
 					const httpResponse = await login(
 						this.props.userId,
 						this.props.password,
+						this.props.synchedImagesParameters,
 						this.props.dispatch
 					);
 					if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
 						this.props.navigation.navigate(Screens.HomeStack);
 					} else {
+						console.log(httpResponse);
 						this.props.dispatch(
 							ActionsCreators.setAutoLoginErrorMessage(
 								httpResponse[ServerProtocol.messageField]

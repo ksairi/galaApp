@@ -3,8 +3,8 @@ const SERVER_HOSTNAME_1 = __DEV__
 	: "https://aqueous-harbor-62651.herokuapp.com/";
 
 const SERVER_HOSTNAME_2 = __DEV__
-	? "http://galagym:81/api"
-	: "https://galagym.com/api";
+	? "http://192.168.42.1:81/api/"
+	: "http://galagym.com/api/";
 
 exports.Urls = {
 	LOGIN: SERVER_HOSTNAME_1 + "login",
@@ -14,7 +14,7 @@ exports.Urls = {
 	SEND_CLIENT_TOKEN: SERVER_HOSTNAME_1 + "sendClientToken",
 	SYN_LOCAL_STORAGE: SERVER_HOSTNAME_1 + "syncLocalStorage",
 	FETCH_USER_DATA: SERVER_HOSTNAME_1 + "fetchUserData",
-	FETCH_DYNAMIC_IMAGES: SERVER_HOSTNAME_2 + "fetchDynamicData"
+	FETCH_DYNAMIC_DATA: SERVER_HOSTNAME_2 + "fetchDynamicData.php"
 };
 
 exports.Messages = {
@@ -102,5 +102,6 @@ exports.ActionsTypes = {
 	SET_CURRENT_ORIENTATION: "SET_CURRENT_ORIENTATION",
 	//Synched Images
 	SET_LOGIN_IMAGE: "SET_LOGIN_IMAGE",
-	SET_MAIN_MENU_SLIDER_IMAGES: "SET_MAIN_MENU_SLIDER_IMAGES"
+	SET_MAIN_MENU_IMAGES: "SET_MAIN_MENU_IMAGES",
+	SET_SYNCHED_IMAGES_PARAMETERS: "SET_SYNCHED_IMAGES_PARAMETERS"
 };

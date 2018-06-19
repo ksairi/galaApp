@@ -2,10 +2,8 @@ import React from "react";
 import {
 	Keyboard,
 	View,
-	TouchableOpacity,
 	KeyboardAvoidingView,
 	Image,
-	PixelRatio,
 	Dimensions
 } from "react-native";
 import { connect } from "react-redux";
@@ -13,7 +11,6 @@ import { RkTheme, RkTextInput } from "react-native-ui-kitten";
 import * as Animatable from "react-native-animatable-promise";
 import { Messages, Screens, ServerProtocol } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
-import ValidationHelper from "/helpers/ValidationHelper";
 import { ActionsCreators } from "/redux/actions";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
@@ -62,7 +59,8 @@ const styles = {
 	isLoggedIn: state.isLoggedIn,
 	autoLoginErrorMessage: state.autoLoginErrorMessage,
 	orientation: state.currentOrientation,
-	synchedLoginImage: state.loginImage
+	synchedLoginImage: state.loginImage,
+	synchedImagesParameters: state.synchedImagesParameters
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
@@ -270,6 +268,7 @@ export default class SignIn extends React.Component {
 			const httpResponse = await login(
 				this.state.userId,
 				this.state.password,
+				this.props.synchedImagesParameters,
 				this.props.dispatch
 			);
 			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {

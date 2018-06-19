@@ -1,54 +1,141 @@
+import { PixelRatio, Dimensions } from "react-native";
 import {
 	login as loginApi,
+	register as registerApi,
 	fetchDynamicData as fetchDynamicDataApi
 } from "/helpers/ApiHelper";
 import { ServerProtocol } from "/config/settings";
-import { setInitialData } from "/helpers/StoreHelper";
+import { setInitialData, clearStore } from "/helpers/StoreHelper";
 
-exports.login = async (userId, password, dispatch) => {
+exports.login = async (userId, password, synchedImagesParameters, dispatch) => {
 	const loginResponse = await loginApi(userId, password);
-	if (loginResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-		const dynamicDataResponse = fetchDynamicData();
-		setInitialData(
-			loginResponse.data,
+	return fetchDynamicData(
+		loginResponse,
+		userId,
+		password,
+		synchedImagesParameters,
+		dispatch
+	);
+};
+
+exports.register = async (
+	fullName,
+	userId,
+	password,
+	deviceToken,
+	synchedImagesParameters,
+	dispatch
+) => {
+	const registerResponse = await registerApi(
+		fullName,
+		userId,
+		password,
+		deviceToken
+	);
+	if (registerResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+		clearStore(dispatch);
+		return fetchDynamicData(
+			registerResponse,
 			userId,
 			password,
-			dynamicDataResponse.data,
+			synchedImagesParameters,
 			dispatch
 		);
-		return { [ServerProtocol.statusField]: ServerProtocol.OK };
 	}
 };
 
-fetchDynamicData = async () => {
-	const dynamicDataResponse = await fetchDynamicDataApi(
-		getLoginImageParams(),
-		getMainMenuImagesParams(),
-		getPromotionsParams(),
-		getRoutinesImageParams(),
-		getClassesImagesParams()
+fetchDynamicData = async (
+	response,
+	userId,
+	password,
+	synchedImagesParameters,
+	dispatch
+) => {
+	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
+		try {
+			const dynamicDataResponse = await doFetchDynamicData(
+				synchedImagesParameters
+			);
+			setInitialData(
+				response.data,
+				userId,
+				password,
+				dynamicDataResponse,
+				dispatch
+			);
+			return { [ServerProtocol.statusField]: ServerProtocol.OK };
+		} catch (errorMessage) {
+			return { [ServerProtocol.messageField]: errorMessage };
+		}
+	} else {
+		return {
+			[ServerProtocol.messageField]: response[ServerProtocol.messageField]
+		};
+	}
+};
+
+doFetchDynamicData = synchedImagesParameters => {
+	const params = {};
+	params.loginImages = getLoginImagesParams(
+		synchedImagesParameters.loginImages
 	);
-	return dynamicDataResponse;
+	params.mainMenuImages = getMainMenuImagesParams(
+		synchedImagesParameters.mainMenuImages
+	);
+	params.promotions = getPromotionsParams(synchedImagesParameters.promotions);
+
+	params.routinesImages = getRoutinesImagesParams(
+		synchedImagesParameters.routinesImages
+	);
+	params.classesImages = getClassesImagesParams(
+		synchedImagesParameters.classesImages
+	);
+	return fetchDynamicDataApi(params);
 };
 
-getLoginImageParams = () => {
-	return {};
+getLoginImagesParams = params => {
+	params = params ? params : {};
+	params.width = PixelRatio.getPixelSizeForLayoutSize(
+		Dimensions.get("window").width
+	);
+	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
+	return params;
 };
 
-getMainMenuImagesParams = () => {
-	return {};
+getMainMenuImagesParams = params => {
+	params = params ? params : {};
+	params.width = PixelRatio.getPixelSizeForLayoutSize(
+		Dimensions.get("window").width
+	);
+	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
+	return params;
 };
 
-getPromotionsParams = () => {
-	return {};
+getPromotionsParams = params => {
+	params = params ? params : {};
+	params.width = PixelRatio.getPixelSizeForLayoutSize(
+		Dimensions.get("window").width
+	);
+	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
+	return params;
 };
 
-getRoutinesImageParams = () => {
-	return {};
+getRoutinesImagesParams = params => {
+	params = params ? params : {};
+	params.width = PixelRatio.getPixelSizeForLayoutSize(
+		Dimensions.get("window").width
+	);
+	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
+	return params;
 };
 
-getClassesImagesParams = () => {
-	return {};
+getClassesImagesParams = params => {
+	params = params ? params : {};
+	params.width = PixelRatio.getPixelSizeForLayoutSize(
+		Dimensions.get("window").width
+	);
+	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
+	return params;
 };
 
 exports.fetchDynamicData = fetchDynamicData;
