@@ -100,7 +100,6 @@ exports.fetchDynamicData = params => {
 };
 
 connectToServer = (url, parameters) => {
-	console.log(url, JSON.stringify(parameters));
 	return fetch(url, {
 		method: "POST",
 		headers: {
@@ -111,7 +110,6 @@ connectToServer = (url, parameters) => {
 		body: JSON.stringify(parameters)
 	})
 		.then(response => {
-			console.log(response);
 			if (response.ok) {
 				try {
 					return response.json();
@@ -123,7 +121,6 @@ connectToServer = (url, parameters) => {
 			}
 		})
 		.then(responseJson => {
-			console.log(responseJson);
 			if (responseJson[ServerProtocol.statusField] != ServerProtocol.OK) {
 				return responseJson;
 			} else {

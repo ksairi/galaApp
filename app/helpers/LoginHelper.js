@@ -53,9 +53,8 @@ fetchDynamicData = async (
 ) => {
 	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
 		try {
-			const dynamicDataResponse = await doFetchDynamicData(
-				synchedImagesParameters
-			);
+			const dynamicDataResponse =
+				1 != 1 ? null : await doFetchDynamicData(synchedImagesParameters);
 			setInitialData(
 				response.data,
 				userId,
@@ -114,9 +113,9 @@ getMainMenuImagesParams = params => {
 getPromotionsParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		Dimensions.get("window").width
+		Dimensions.get("window").width * 0.89
 	);
-	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
+	params.height = PixelRatio.getPixelSizeForLayoutSize(205 * 0.89);
 	return params;
 };
 

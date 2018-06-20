@@ -59,7 +59,7 @@ const styles = {
 	isLoggedIn: state.isLoggedIn,
 	autoLoginErrorMessage: state.autoLoginErrorMessage,
 	orientation: state.currentOrientation,
-	synchedLoginImage: state.loginImage,
+	loginImages: state.loginImages,
 	synchedImagesParameters: state.synchedImagesParameters
 }))
 export default class SignIn extends React.Component {
@@ -140,11 +140,10 @@ export default class SignIn extends React.Component {
 						{this.props.orientation == "portrait" && (
 							<AnimatedImage
 								source={
-									this.props.synchedLoginImage == null
+									this.props.loginImages.length == 0
 										? require("../images/login.jpg")
 										: {
-												uri:
-													"data:image/jpg;base64" + this.props.synchedLoginImage
+												uri: "data:image/jpg;base64" + this.props.loginImages[0]
 										  }
 								}
 								style={styles.animatedImageInitStyle}

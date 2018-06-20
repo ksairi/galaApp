@@ -6,27 +6,45 @@ exports.setInitialData = (
 	loginServerData,
 	userId,
 	password,
-	dynamicDataServer,
+	contentServerData,
 	dispatch
 ) => {
 	const {
 		userData,
 		newMemberData,
-		timetable,
+		//timetable,
 		routines,
 		notifications
 	} = loginServerData;
 	userData.userId = userId;
 	userData.password = password;
-	//const { data } = dynamicDataServer;
+
 	dispatch(ActionsCreators.logIn());
 	dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	dispatch(ActionsCreators.setUserData(userData));
 	dispatch(ActionsCreators.setNewMemberData(newMemberData));
 	dispatch(ActionsCreators.setIsUsingCache(false));
-	dispatch(ActionsCreators.setTimetable(timetable));
 	dispatch(ActionsCreators.setRoutines(routines));
 	dispatch(ActionsCreators.setNotifications(notifications));
+
+	if (contentServerData) {
+		const {
+			loginImages,
+			mainMenuImages,
+			promotionsData,
+			routinesImages,
+			classesImages,
+			timetableImages,
+			timetable
+		} = contentServerData;
+		dispatch(ActionsCreators.setLoginImages(loginImages));
+		dispatch(ActionsCreators.setMainMenuImages(mainMenuImages));
+		dispatch(ActionsCreators.setPromotions(promotionsData));
+		dispatch(ActionsCreators.setRoutinesImages(routinesImages));
+		dispatch(ActionsCreators.setClassesImages(classesImages));
+		dispatch(ActionsCreators.setTimetableImages(timetableImages));
+		dispatch(ActionsCreators.setTimetable(timetable));
+	}
 };
 
 exports.clearStore = dispatch => {
