@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import createSecureStore from "redux-persist-expo-securestore";
+import storage from "redux-persist/lib/storage";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import { persistReducer } from "redux-persist";
 import * as notificationsReducer from "./notifications";
@@ -13,7 +13,7 @@ import * as synchedImagesReducer from "./synchedImages";
 
 const rootPresistConfig = {
 	key: "root",
-	storage: createSecureStore(),
+	storage: storage,
 	stateReconciler: autoMergeLevel2,
 	blacklist: ["currentOrientation"]
 };

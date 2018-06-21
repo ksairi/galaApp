@@ -29,7 +29,7 @@
 		"react-native": "0.55.4",
 		"react-native-animatable-promise": "1.2.4",
 		"react-native-button": "2.1.0",
-		"react-native-image-slider": "^2.0.3",
+		"react-native-image-slider": "2.0.3",
 		"react-native-loading-spinner-overlay": "0.5.2",
 		"react-native-parallax-swiper": "1.1.7",
 		"react-native-table-component": "1.1.2",
@@ -37,10 +37,9 @@
 		"react-native-ui-kitten": "3.0.0",
 		"react-navigation": "2.3.1",
 		"react-redux": "5.0.7",
-		"redux": "3.7.2",
+		"redux": "4.0.0",
 		"redux-logger": "3.0.6",
-		"redux-persist": "5.9.1",
-		"redux-persist-expo-securestore": "1.0.0",
-		"redux-thunk": "2.2.0"
+		"redux-persist": "5.10.0",
+		"redux-thunk": "2.3.0"
 	}
 }

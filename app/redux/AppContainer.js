@@ -1,13 +1,11 @@
 import React from "react";
 import { NetInfo } from "react-native";
-import { NavigationActions } from "react-navigation";
 import { Notifications } from "expo";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Screens } from "/config/settings";
 import { ActionsCreators } from "./actions";
 import AppRoutes from "/navigation/";
-import ValidationHelper from "/helpers/ValidationHelper";
 import NetworkHelper from "/helpers/NetworkHelper";
 import { syncStoreWithServer } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
