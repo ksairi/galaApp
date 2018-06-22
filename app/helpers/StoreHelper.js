@@ -1,4 +1,4 @@
-import Base64 from "/utils/Base64";
+//import Base64 from "/utils/Base64";
 import { ServerProtocol } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
@@ -128,20 +128,17 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 
 saveImagesToDevice = (imagesData, prefix, action, dispatch) => {
 	const newImagesPromises = imagesData.map((imageItem, index) => {
-		const fileName =
-			Expo.FileSystem.documentDirectory + prefix + index + ".jpg";
-		let binaryImage = Base64.atob(imageItem.image);
-		return Expo.FileSystem.writeAsStringAsync(fileName, binaryImage)
+		const fileName = Expo.FileSystem.documentDirectory + prefix + index; //+ ".jpg";
+		//let binaryImage = Base64.atob(imageItem.image);
+		return Expo.FileSystem.writeAsStringAsync(fileName, imageItem.image)
 			.then(() => {
-				console.log(fileName);
-				console.log("success");
 				return {
 					...imageItem,
 					image: fileName
 				};
 			})
 			.catch(error => {
-				console.log(error);
+				console.log("error");
 			});
 	});
 

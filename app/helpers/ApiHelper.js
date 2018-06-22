@@ -121,7 +121,6 @@ connectToServer = (url, parameters) => {
 			}
 		})
 		.then(responseJson => {
-			console.log(responseJson);
 			if (responseJson[ServerProtocol.statusField] != ServerProtocol.OK) {
 				return responseJson;
 			} else {

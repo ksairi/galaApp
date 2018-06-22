@@ -4,7 +4,6 @@ import { LoadingSpinner } from "/components/presentationals/Spinner";
 import { connect } from "react-redux";
 import { Screens, ServerProtocol } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
-import { setInitialData } from "/helpers/StoreHelper";
 import { ActionsCreators } from "/redux/actions";
 
 const styles = {
