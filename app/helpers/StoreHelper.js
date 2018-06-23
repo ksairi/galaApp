@@ -3,13 +3,7 @@ import { ServerProtocol } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
 
-exports.setInitialData = (
-	loginServerData,
-	userId,
-	password,
-	contentServerData,
-	dispatch
-) => {
+exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	const { userData, newMemberData, routines, notifications } = loginServerData;
 	userData.userId = userId;
 	userData.password = password;
@@ -21,7 +15,9 @@ exports.setInitialData = (
 	dispatch(ActionsCreators.setIsUsingCache(false));
 	dispatch(ActionsCreators.setRoutines(routines));
 	dispatch(ActionsCreators.setNotifications(notifications));
+};
 
+exports.setContentServerData = (contentServerData, dispatch) => {
 	if (contentServerData) {
 		const {
 			loginImages,
@@ -47,41 +43,36 @@ exports.setInitialData = (
 			dispatch
 		);
 
-		/*saveImagesToDevice(
+		saveDataToDevice(
 			promotionsData,
 			"promotionImage",
 			ActionsCreators.setPromotions,
 			dispatch
 		);
 
-		saveImagesToDevice(
-			routinesImages,
-			"routinesImage",
-			ActionsCreators.setRoutinesImages,
-			dispatch
-		);
-
-		saveImagesToDevice(
-			classesImages,
-			"classesImage",
-			ActionsCreators.setClassesImages,
-			dispatch
-		);
-
-		saveImagesToDevice(
-			timetableImages,
-			"timetableImage",
-			ActionsCreators.setTimetableImages,
-			dispatch
-		);
-
-		dispatch(ActionsCreators.setTimetable(timetable));*/
-
-		//dispatch(ActionsCreators.setPromotions(promotionsData));
-		//dispatch(ActionsCreators.setRoutinesImages(routinesImages));
-		//dispatch(ActionsCreators.setClassesImages(classesImages));
-		//dispatch(ActionsCreators.setTimetableImages(timetableImages));
-		//dispatch(ActionsCreators.setTimetable(timetable));
+		/*saveImagesToDevice(
+				routinesImages,
+				"routinesImage",
+				ActionsCreators.setRoutinesImages,
+				dispatch
+			);
+	
+			saveImagesToDevice(
+				classesImages,
+				"classesImage",
+				ActionsCreators.setClassesImages,
+				dispatch
+			);
+	
+			saveImagesToDevice(
+				timetableImages,
+				"timetableImage",
+				ActionsCreators.setTimetableImages,
+				dispatch
+			);
+	
+			dispatch(ActionsCreators.setTimetable(timetable));*/
+		dispatch(ActionsCreators.setLastSynchedTimestamp(Date.now()));
 	}
 };
 
@@ -142,7 +133,19 @@ saveImagesToDevice = (imagesData, prefix, action, dispatch) => {
 			});
 	});
 
-	Promise.all(newImagesPromises).then(function(newImagesData) {
-		dispatch(action(newImagesData));
+	return Promise.all(newImagesPromises).then(newImagesData => {
+		if (dispatch && action) {
+			dispatch(action(newImagesData));
+		} else {
+			return newImagesData;
+		}
+	});
+};
+
+saveDataToDevice = (data, prefix, action, dispatch) => {
+	const newPromotionsPromise = saveImagesToDevice(data.promotions, prefix);
+	newPromotionsPromise.then(newPromotions => {
+		const newData = { ...data, promotions: newPromotions };
+		dispatch(action(newData));
 	});
 };

@@ -5,15 +5,26 @@ import {
 	fetchDynamicData as fetchDynamicDataApi
 } from "/helpers/ApiHelper";
 import { ServerProtocol } from "/config/settings";
-import { setInitialData, clearStore } from "/helpers/StoreHelper";
+import {
+	setInitialData,
+	clearStore,
+	setContentServerData
+} from "/helpers/StoreHelper";
 
-exports.login = async (userId, password, synchedImagesParameters, dispatch) => {
+exports.login = async (
+	userId,
+	password,
+	synchedImagesParameters,
+	lastSynchedTimestamp,
+	dispatch
+) => {
 	const loginResponse = await loginApi(userId, password);
 	return fetchDynamicData(
 		loginResponse,
 		userId,
 		password,
 		synchedImagesParameters,
+		lastSynchedTimestamp,
 		dispatch
 	);
 };
@@ -39,6 +50,7 @@ exports.register = async (
 			userId,
 			password,
 			synchedImagesParameters,
+			null,
 			dispatch
 		);
 	}
@@ -49,19 +61,19 @@ fetchDynamicData = async (
 	userId,
 	password,
 	synchedImagesParameters,
+	lastSynchedTimestamp,
 	dispatch
 ) => {
 	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
 		try {
-			const dynamicDataResponse =
-				1 != 1 ? null : await doFetchDynamicData(synchedImagesParameters);
-			setInitialData(
-				response.data,
-				userId,
-				password,
-				dynamicDataResponse,
-				dispatch
-			);
+			if (
+				lastSynchedTimestamp == null ||
+				(Date.now() - lastSynchedTimestamp) / 1000 / 60 > 15
+			) {
+				//synched content server after 15 min of last update
+				await doFetchDynamicData(synchedImagesParameters, dispatch);
+			}
+			setInitialData(response.data, userId, password, dispatch);
 			return { [ServerProtocol.statusField]: ServerProtocol.OK };
 		} catch (errorMessage) {
 			return { [ServerProtocol.messageField]: errorMessage };
@@ -73,7 +85,7 @@ fetchDynamicData = async (
 	}
 };
 
-doFetchDynamicData = synchedImagesParameters => {
+doFetchDynamicData = (synchedImagesParameters, dispatch) => {
 	const params = {};
 	params.loginImages = getLoginImagesParams(
 		synchedImagesParameters.loginImages
@@ -89,7 +101,9 @@ doFetchDynamicData = synchedImagesParameters => {
 	params.classesImages = getClassesImagesParams(
 		synchedImagesParameters.classesImages
 	);
-	return fetchDynamicDataApi(params);
+	fetchDynamicDataApi(params).then(dynamicDataResponse => {
+		setContentServerData(dynamicDataResponse, dispatch);
+	});
 };
 
 getLoginImagesParams = params => {
@@ -137,4 +151,4 @@ getClassesImagesParams = params => {
 	return params;
 };
 
-exports.fetchDynamicData = fetchDynamicData;
+exports.doFetchDynamicData = doFetchDynamicData;

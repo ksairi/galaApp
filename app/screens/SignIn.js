@@ -60,7 +60,8 @@ const styles = {
 	autoLoginErrorMessage: state.autoLoginErrorMessage,
 	orientation: state.currentOrientation,
 	loginImages: state.loginImages,
-	synchedImagesParameters: state.synchedImagesParameters
+	synchedImagesParameters: state.synchedImagesParameters,
+	lastSynchedTimestamp: state.lastSynchedTimestamp
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
@@ -268,6 +269,7 @@ export default class SignIn extends React.Component {
 				this.state.userId,
 				this.state.password,
 				this.props.synchedImagesParameters,
+				this.props.lastSynchedTimestamp,
 				this.props.dispatch
 			);
 			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {

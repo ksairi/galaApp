@@ -23,7 +23,8 @@ const styles = {
 	isLoggedIn: state.isLoggedIn,
 	userId: state.userData.userId,
 	password: state.userData.password,
-	synchedImagesParameters: state.synchedImagesParameters
+	synchedImagesParameters: state.synchedImagesParameters,
+	lastSynchedTimestamp: state.lastSynchedTimestamp
 }))
 export default class CheckUserActivity extends React.Component {
 	static isInLoggingProcess = false;
@@ -45,6 +46,7 @@ export default class CheckUserActivity extends React.Component {
 						this.props.userId,
 						this.props.password,
 						this.props.synchedImagesParameters,
+						this.props.lastSynchedTimestamp,
 						this.props.dispatch
 					);
 					if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {

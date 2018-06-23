@@ -58,3 +58,12 @@ export function setSynchedImagesParameters(synchedImagesParameters) {
 		});
 	};
 }
+
+export function setLastSynchedTimestamp(lastSynchedTimestamp) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.LAST_SYNCHED_TIMESTAMP,
+			lastSynchedTimestamp
+		});
+	};
+}

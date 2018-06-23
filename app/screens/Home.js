@@ -67,7 +67,8 @@ const styles = {
 }))
 export default class Profile extends React.Component {
 	state = {
-		sliderImagesBase64String: []
+		sliderImages: [],
+		promotionsImages: []
 	};
 	iconsData = [
 		{
@@ -119,10 +120,19 @@ export default class Profile extends React.Component {
 			Expo.FileSystem.readAsStringAsync(item.image)
 				.then(imageBase64 => {
 					this.setState({
-						sliderImagesBase64String: [
-							...this.state.sliderImagesBase64String,
-							imageBase64
-						]
+						sliderImages: [...this.state.sliderImages, imageBase64]
+					});
+				})
+				.catch(error => {
+					console.log(error);
+				});
+		});
+
+		this.props.promotions.map(item => {
+			Expo.FileSystem.readAsStringAsync(item.image)
+				.then(imageBase64 => {
+					this.setState({
+						promotionsImages: [...this.state.promotionsImages, imageBase64]
 					});
 				})
 				.catch(error => {
@@ -142,7 +152,8 @@ export default class Profile extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImagesBase64String.length > 0 ? (
+					{this.state.sliderImages.length > 0 &&
+					this.state.promotionsImages.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider
@@ -155,7 +166,7 @@ export default class Profile extends React.Component {
 												source={{
 													uri:
 														"data:image/jpg;base64," +
-														this.state.sliderImagesBase64String[index]
+														this.state.sliderImages[index]
 												}}
 												style={{
 													height: 205,
@@ -231,7 +242,9 @@ export default class Profile extends React.Component {
 											</GenericText>
 											<Image
 												source={{
-													uri: "data:image/jpg;base64," + promotion.image
+													uri:
+														"data:image/jpg;base64," +
+														this.state.promotionsImages[index]
 												}}
 												style={{
 													height: 205 * 0.89,

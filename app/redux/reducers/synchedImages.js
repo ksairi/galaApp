@@ -45,3 +45,8 @@ export const synchedImagesParameters = createReducer(
 		}
 	}
 );
+export const lastSynchedTimestamp = createReducer(null, {
+	[ActionsTypes.LAST_SYNCHED_TIMESTAMP](state, action) {
+		return action.lastSynchedTimestamp;
+	}
+});
