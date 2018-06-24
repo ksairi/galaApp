@@ -1,13 +1,6 @@
 import React from "react";
-import {
-	View,
-	ScrollView,
-	TouchableOpacity,
-	Image,
-	Dimensions
-} from "react-native";
+import { View, ScrollView, TouchableOpacity, Image } from "react-native";
 import { connect } from "react-redux";
-import ImageSlider from "react-native-image-slider";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import { ActionsCreators } from "/redux/actions";
@@ -17,6 +10,8 @@ import GenericText from "/components/presentationals/GenericText";
 import { activeSideMenuItemColor } from "/components/styles";
 import Footer from "/components/presentationals/Footer";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
+import ImageSlider from "/components/presentationals/ImageSlider";
+import * as ScreenDimensions from "/utils/ScreenDimensions";
 const styles = {
 	imageContainer: {
 		marginTop: 20,
@@ -67,7 +62,7 @@ const styles = {
 }))
 export default class Profile extends React.Component {
 	state = {
-		sliderImages: [],
+		mainMenuBase64Images: [],
 		promotionsImages: []
 	};
 	iconsData = [
@@ -120,7 +115,10 @@ export default class Profile extends React.Component {
 			Expo.FileSystem.readAsStringAsync(item.image)
 				.then(imageBase64 => {
 					this.setState({
-						sliderImages: [...this.state.sliderImages, imageBase64]
+						mainMenuBase64Images: [
+							...this.state.mainMenuBase64Images,
+							imageBase64
+						]
 					});
 				})
 				.catch(error => {
@@ -152,31 +150,18 @@ export default class Profile extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImages.length > 0 &&
+					{this.state.mainMenuBase64Images.length > 0 &&
 					this.state.promotionsImages.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider
-									autoPlayWithInterval={7000}
+									base64Images={this.state.mainMenuBase64Images}
 									images={this.props.mainMenuImages}
-									customSlide={({ index, item, style, width }) => {
-										return (
-											<Image
-												key={index}
-												source={{
-													uri:
-														"data:image/jpg;base64," +
-														this.state.sliderImages[index]
-												}}
-												style={{
-													height: 205,
-													width: Dimensions.get("window").width
-												}}
-											/>
-										);
-									}}
+									imageHeight={205}
+									imageWidth={ScreenDimensions.getPortraitWidth()}
 								/>
 							</View>
+
 							<View style={styles.buttonsContainer}>
 								{this.iconsData.map((iconData, index) => (
 									<TouchableOpacity
@@ -243,12 +228,15 @@ export default class Profile extends React.Component {
 											<Image
 												source={{
 													uri:
-														"data:image/jpg;base64," +
+														"data:image/" +
+														this.props.promotions["type"] +
+														";base64," +
 														this.state.promotionsImages[index]
 												}}
 												style={{
+													alignSelf: "center",
 													height: 205 * 0.89,
-													width: Dimensions.get("window").width * 0.89,
+													width: ScreenDimensions.getPortraitWidth() * 0.89,
 													marginTop: 15
 												}}
 											/>

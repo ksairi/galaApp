@@ -7,7 +7,7 @@ import Logo from "components/presentationals/Logo";
 
 const styles = {
 	wrapper: {
-		flex: 0.1,
+		flex: 0.15,
 		flexDirection: "row",
 		alignItems: "flex-start",
 		backgroundColor: headerBackgroundColor,
@@ -58,7 +58,7 @@ export default class Header extends React.PureComponent {
 	render() {
 		return (
 			<View style={styles.wrapper}>
-				<View style={{ flex: 0.8 }}>
+				<View style={{ flex: 0.9 }}>
 					{this.props.isHomeHeader ? (
 						<TouchableOpacity
 							onPress={this.onMenuPressed}

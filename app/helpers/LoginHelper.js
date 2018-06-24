@@ -1,4 +1,4 @@
-import { PixelRatio, Dimensions } from "react-native";
+import { PixelRatio } from "react-native";
 import {
 	login as loginApi,
 	register as registerApi,
@@ -10,6 +10,7 @@ import {
 	clearStore,
 	setContentServerData
 } from "/helpers/StoreHelper";
+import * as ScreenDimensions from "/utils/ScreenDimensions";
 
 exports.login = async (
 	userId,
@@ -109,7 +110,7 @@ doFetchDynamicData = (synchedImagesParameters, dispatch) => {
 getLoginImagesParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		Dimensions.get("window").width
+		ScreenDimensions.getPortraitWidth().width
 	);
 	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
@@ -118,7 +119,7 @@ getLoginImagesParams = params => {
 getMainMenuImagesParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		Dimensions.get("window").width
+		ScreenDimensions.getPortraitWidth()
 	);
 	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
@@ -127,7 +128,7 @@ getMainMenuImagesParams = params => {
 getPromotionsParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		Dimensions.get("window").width * 0.89
+		ScreenDimensions.getPortraitWidth() * 0.89
 	);
 	params.height = PixelRatio.getPixelSizeForLayoutSize(205 * 0.89);
 	return params;
@@ -136,7 +137,7 @@ getPromotionsParams = params => {
 getRoutinesImagesParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		Dimensions.get("window").width
+		ScreenDimensions.getPortraitWidth()
 	);
 	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
@@ -145,7 +146,7 @@ getRoutinesImagesParams = params => {
 getClassesImagesParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		Dimensions.get("window").width
+		ScreenDimensions.getPortraitWidth()
 	);
 	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
