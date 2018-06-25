@@ -58,12 +58,12 @@ const styles = {
 	isUsingCache: state.isUsingCache,
 	currentHomeDrawerOption: state.currentHomeDrawerOption,
 	mainMenuImages: state.mainMenuImages,
-	promotions: state.promotionsData.promotions
+	promotions: state.promotionsData ? state.promotionsData.promotions : []
 }))
-export default class Profile extends React.Component {
+export default class Home extends React.Component {
 	state = {
 		mainMenuBase64Images: [],
-		promotionsImages: []
+		promotionsBase64Images: []
 	};
 	iconsData = [
 		{
@@ -104,13 +104,7 @@ export default class Profile extends React.Component {
 			screen: Screens.Referrals
 		}
 	];
-
-	componentDidMount() {
-		if (this.props.currentHomeDrawerOption != "") {
-			this.props.navigation.navigate(this.props.currentHomeDrawerOption);
-			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
-		}
-
+	loadSliderImages = () => {
 		this.props.mainMenuImages.map(item => {
 			Expo.FileSystem.readAsStringAsync(item.image)
 				.then(imageBase64 => {
@@ -125,19 +119,41 @@ export default class Profile extends React.Component {
 					console.log(error);
 				});
 		});
-
+	};
+	loadPromotionsImages = () => {
 		this.props.promotions.map(item => {
 			Expo.FileSystem.readAsStringAsync(item.image)
 				.then(imageBase64 => {
 					this.setState({
-						promotionsImages: [...this.state.promotionsImages, imageBase64]
+						promotionsBase64Images: [
+							...this.state.promotionsBase64Images,
+							imageBase64
+						]
 					});
 				})
 				.catch(error => {
 					console.log(error);
 				});
 		});
+	};
+
+	componentDidMount() {
+		if (this.props.currentHomeDrawerOption != "") {
+			this.props.navigation.navigate(this.props.currentHomeDrawerOption);
+			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
+		}
+		this.loadSliderImages();
+		this.loadPromotionsImages();
 	}
+
+	/*componentDidUpdate(prevProps, prevStates) {
+		if (prevProps.mainMenuImages == 0) {
+			this.loadSliderImages();
+		}
+		if (prevProps.promotions == 0) {
+			this.loadPromotionsImages();
+		}
+	}*/
 
 	onIconPressed = screen => () => {
 		this.props.navigation.navigate(screen);
@@ -150,8 +166,8 @@ export default class Profile extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.mainMenuBase64Images.length > 0 &&
-					this.state.promotionsImages.length > 0 ? (
+					{this.state.mainMenuBase64Images.length > 0 ||
+					this.state.promotionsBase64Images.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider
@@ -231,7 +247,7 @@ export default class Profile extends React.Component {
 														"data:image/" +
 														this.props.promotions["type"] +
 														";base64," +
-														this.state.promotionsImages[index]
+														this.state.promotionsBase64Images[index]
 												}}
 												style={{
 													alignSelf: "center",

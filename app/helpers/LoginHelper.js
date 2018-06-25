@@ -4,7 +4,7 @@ import {
 	register as registerApi,
 	fetchDynamicData as fetchDynamicDataApi
 } from "/helpers/ApiHelper";
-import { ServerProtocol } from "/config/settings";
+import { ServerProtocol, Messages } from "/config/settings";
 import {
 	setInitialData,
 	clearStore,
@@ -67,15 +67,22 @@ fetchDynamicData = async (
 ) => {
 	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
 		try {
+			var contentServerResponse = true;
 			if (
 				lastSynchedTimestamp == null ||
 				(Date.now() - lastSynchedTimestamp) / 1000 / 60 > 15
 			) {
 				//synched content server after 15 min of last update
-				await doFetchDynamicData(synchedImagesParameters, dispatch);
+				contentServerResponse = await doFetchDynamicData(
+					synchedImagesParameters,
+					dispatch
+				);
 			}
-			setInitialData(response.data, userId, password, dispatch);
-			return { [ServerProtocol.statusField]: ServerProtocol.OK };
+			if (contentServerResponse) {
+				setInitialData(response.data, userId, password, dispatch);
+				return { [ServerProtocol.statusField]: ServerProtocol.OK };
+			}
+			return { [ServerProtocol.messageField]: Messages.NO_SPACE_IN_DISK };
 		} catch (errorMessage) {
 			return { [ServerProtocol.messageField]: errorMessage };
 		}
@@ -86,7 +93,7 @@ fetchDynamicData = async (
 	}
 };
 
-doFetchDynamicData = (synchedImagesParameters, dispatch) => {
+doFetchDynamicData = async (synchedImagesParameters, dispatch) => {
 	const params = {};
 	params.loginImages = getLoginImagesParams(
 		synchedImagesParameters.loginImages
@@ -102,9 +109,8 @@ doFetchDynamicData = (synchedImagesParameters, dispatch) => {
 	params.classesImages = getClassesImagesParams(
 		synchedImagesParameters.classesImages
 	);
-	fetchDynamicDataApi(params).then(dynamicDataResponse => {
-		setContentServerData(dynamicDataResponse, dispatch);
-	});
+	const dynamicDataResponse = await fetchDynamicDataApi(params);
+	return setContentServerData(dynamicDataResponse, dispatch);
 };
 
 getLoginImagesParams = params => {

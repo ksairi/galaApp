@@ -14,9 +14,9 @@ export const mainMenuImages = createReducer([], {
 		return action.mainMenuImages;
 	}
 });
-export const promotionsData = createReducer([], {
+export const promotionsData = createReducer(null, {
 	[ActionsTypes.SET_PROMOTIONS](state, action) {
-		return action.promotions;
+		return action.promotionsData;
 	}
 });
 export const routinesImages = createReducer([], {

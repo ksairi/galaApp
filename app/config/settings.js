@@ -38,7 +38,9 @@ exports.Messages = {
 	INVALID_COMMENTS: "Por favor ingresá un comentario antes de enviar",
 	SEND_COMMENTS_OK:
 		"Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias",
-	INCOMPLETE_INPUT_DATA: "Completá todos los campos antes de continuar"
+	INCOMPLETE_INPUT_DATA: "Completá todos los campos antes de continuar",
+	NO_SPACE_IN_DISK:
+		"Espacio insuficiente. Por favor, elimine contenido para continuar."
 };
 
 exports.Labels = {

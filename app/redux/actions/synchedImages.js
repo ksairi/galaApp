@@ -15,11 +15,11 @@ export function setMainMenuImages(mainMenuImages) {
 	};
 }
 
-export function setPromotions(promotions) {
+export function setPromotions(promotionsData) {
 	return (dispatch, getState) => {
 		dispatch({
 			type: ActionsTypes.SET_PROMOTIONS,
-			promotions
+			promotionsData
 		});
 	};
 }

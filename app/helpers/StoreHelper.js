@@ -17,7 +17,7 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	dispatch(ActionsCreators.setNotifications(notifications));
 };
 
-exports.setContentServerData = (contentServerData, dispatch) => {
+exports.setContentServerData = async (contentServerData, dispatch) => {
 	if (contentServerData) {
 		const {
 			loginImages,
@@ -28,29 +28,28 @@ exports.setContentServerData = (contentServerData, dispatch) => {
 			timetableImages,
 			timetable
 		} = contentServerData;
+		try {
+			await saveImagesToDevice(
+				loginImages,
+				"loginImage",
+				ActionsCreators.setLoginImages,
+				dispatch
+			);
+			await saveImagesToDevice(
+				mainMenuImages,
+				"mainMenuImage",
+				ActionsCreators.setMainMenuImages,
+				dispatch
+			);
 
-		saveImagesToDevice(
-			loginImages,
-			"loginImage",
-			ActionsCreators.setLoginImages,
-			dispatch
-		);
+			await saveDataToDevice(
+				promotionsData,
+				"promotionImage",
+				ActionsCreators.setPromotions,
+				dispatch
+			);
 
-		saveImagesToDevice(
-			mainMenuImages,
-			"mainMenuImage",
-			ActionsCreators.setMainMenuImages,
-			dispatch
-		);
-
-		saveDataToDevice(
-			promotionsData,
-			"promotionImage",
-			ActionsCreators.setPromotions,
-			dispatch
-		);
-
-		/*saveImagesToDevice(
+			/*saveImagesToDevice(
 				routinesImages,
 				"routinesImage",
 				ActionsCreators.setRoutinesImages,
@@ -72,7 +71,11 @@ exports.setContentServerData = (contentServerData, dispatch) => {
 			);
 	
 			dispatch(ActionsCreators.setTimetable(timetable));*/
-		dispatch(ActionsCreators.setLastSynchedTimestamp(Date.now()));
+			dispatch(ActionsCreators.setLastSynchedTimestamp(Date.now()));
+			return true;
+		} catch (error) {
+			return false;
+		}
 	}
 };
 
@@ -129,23 +132,33 @@ saveImagesToDevice = (imagesData, prefix, action, dispatch) => {
 				};
 			})
 			.catch(error => {
-				console.log("error");
+				console.log(error);
+				throw error;
 			});
 	});
 
-	return Promise.all(newImagesPromises).then(newImagesData => {
-		if (dispatch && action) {
-			dispatch(action(newImagesData));
-		} else {
-			return newImagesData;
-		}
-	});
+	return Promise.all(newImagesPromises)
+		.then(newImagesData => {
+			if (dispatch && action) {
+				dispatch(action(newImagesData));
+			} else {
+				return newImagesData;
+			}
+		})
+		.catch(() => {
+			console.log(error);
+			throw error;
+		});
 };
 
 saveDataToDevice = (data, prefix, action, dispatch) => {
 	const newPromotionsPromise = saveImagesToDevice(data.promotions, prefix);
-	newPromotionsPromise.then(newPromotions => {
-		const newData = { ...data, promotions: newPromotions };
-		dispatch(action(newData));
-	});
+	newPromotionsPromise
+		.then(newPromotions => {
+			const newData = { ...data, promotions: newPromotions };
+			dispatch(action(newData));
+		})
+		.catch(error => {
+			throw error;
+		});
 };
