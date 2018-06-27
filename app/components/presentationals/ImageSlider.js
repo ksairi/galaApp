@@ -7,7 +7,7 @@ export default class ImageSlider extends React.PureComponent {
 		return (
 			<RNImageSlider
 				autoPlayWithInterval={7000}
-				images={this.props.base64Images}
+				images={this.props.images}
 				style={{
 					width: this.props.imageWidth
 				}} //default to portrait
@@ -15,13 +15,17 @@ export default class ImageSlider extends React.PureComponent {
 					return (
 						<Image
 							key={index}
-							source={{
-								uri:
-									"data:image/" +
-									this.props.images["type"] +
-									";base64," +
-									this.props.base64Images[index]
-							}}
+							source={
+								this.props.images[index].base64String
+									? {
+											uri:
+												"data:image/" +
+												this.props.images[index].fileExtension +
+												";base64," +
+												this.props.images[index].base64String
+									  }
+									: this.props.images[index]
+							}
 							style={{
 								height: this.props.imageHeight,
 								width: this.props.imageWidth

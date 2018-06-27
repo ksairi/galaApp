@@ -62,7 +62,7 @@ const styles = {
 }))
 export default class Home extends React.Component {
 	state = {
-		mainMenuBase64Images: [],
+		sliderImages: [],
 		promotionsBase64Images: []
 	};
 	iconsData = [
@@ -105,19 +105,46 @@ export default class Home extends React.Component {
 		}
 	];
 	loadSliderImages = () => {
-		this.props.mainMenuImages.map(item => {
-			Expo.FileSystem.readAsStringAsync(item.image)
-				.then(imageBase64 => {
-					this.setState({
-						mainMenuBase64Images: [
-							...this.state.mainMenuBase64Images,
-							imageBase64
-						]
+		var localImages = [];
+		this.props.mainMenuImages.map((item, index) => {
+			if (item.local) {
+				//local images
+				switch (item.imageIndex) {
+					case 0: {
+						localImages.push(require("../images/main_menu_slider_0.jpg"));
+						break;
+					}
+					case 1: {
+						localImages.push(require("../images/main_menu_slider_1.jpg"));
+						break;
+					}
+					case 2: {
+						localImages.push(require("../images/main_menu_slider_2.jpg"));
+						break;
+					}
+				}
+			} else {
+				//dynamic images
+				Expo.FileSystem.readAsStringAsync(item.image)
+					.then(imageBase64 => {
+						this.setState({
+							sliderImages: [
+								...this.state.sliderImages,
+								{
+									base64String: imageBase64,
+									fileExtension: this.props.mainMenuImages[index].fileExtension
+								}
+							]
+						});
+					})
+					.catch(error => {
+						console.log(error);
 					});
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			}
+		});
+
+		this.setState({
+			sliderImages: [...this.state.sliderImages, ...localImages]
 		});
 	};
 	loadPromotionsImages = () => {
@@ -146,14 +173,14 @@ export default class Home extends React.Component {
 		this.loadPromotionsImages();
 	}
 
-	/*componentDidUpdate(prevProps, prevStates) {
+	componentDidUpdate(prevProps, prevStates) {
 		if (prevProps.mainMenuImages == 0) {
 			this.loadSliderImages();
 		}
 		if (prevProps.promotions == 0) {
 			this.loadPromotionsImages();
 		}
-	}*/
+	}
 
 	onIconPressed = screen => () => {
 		this.props.navigation.navigate(screen);
@@ -166,13 +193,12 @@ export default class Home extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.mainMenuBase64Images.length > 0 ||
+					{this.state.sliderImages.length > 0 ||
 					this.state.promotionsBase64Images.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider
-									base64Images={this.state.mainMenuBase64Images}
-									images={this.props.mainMenuImages}
+									images={this.state.sliderImages}
 									imageHeight={205}
 									imageWidth={ScreenDimensions.getPortraitWidth()}
 								/>
@@ -245,7 +271,7 @@ export default class Home extends React.Component {
 												source={{
 													uri:
 														"data:image/" +
-														this.props.promotions["type"] +
+														this.props.promotions.fileExtension +
 														";base64," +
 														this.state.promotionsBase64Images[index]
 												}}

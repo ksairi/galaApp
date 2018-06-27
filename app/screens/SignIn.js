@@ -141,10 +141,15 @@ export default class SignIn extends React.Component {
 						{this.props.orientation == "portrait" && (
 							<AnimatedImage
 								source={
-									this.props.loginImages.length == 0
+									this.props.loginImages.length > 0 &&
+									this.props.loginImages[0].imageIndex == 0
 										? require("../images/login.jpg")
 										: {
-												uri: "data:image/jpg;base64" + this.props.loginImages[0]
+												uri:
+													"data:image/" +
+													this.props.loginImages[0].fileExtension +
+													";base64," +
+													this.props.loginImages[0].image
 										  }
 								}
 								style={styles.animatedImageInitStyle}

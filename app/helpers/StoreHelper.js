@@ -121,44 +121,48 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 };
 
 saveImagesToDevice = (imagesData, prefix, action, dispatch) => {
-	const newImagesPromises = imagesData.map((imageItem, index) => {
-		const fileName = Expo.FileSystem.documentDirectory + prefix + index; //+ ".jpg";
-		//let binaryImage = Base64.atob(imageItem.image);
-		return Expo.FileSystem.writeAsStringAsync(fileName, imageItem.image)
-			.then(() => {
-				return {
-					...imageItem,
-					image: fileName
-				};
+	if (imagesData) {
+		const newImagesPromises = imagesData.map((imageItem, index) => {
+			const fileName = Expo.FileSystem.documentDirectory + prefix + index; //+ ".jpg";
+			//let binaryImage = Base64.atob(imageItem.image);
+			return Expo.FileSystem.writeAsStringAsync(fileName, imageItem.image)
+				.then(() => {
+					return {
+						...imageItem,
+						image: fileName
+					};
+				})
+				.catch(error => {
+					console.log(error);
+					throw error;
+				});
+		});
+
+		return Promise.all(newImagesPromises)
+			.then(newImagesData => {
+				if (dispatch && action) {
+					dispatch(action(newImagesData));
+				} else {
+					return newImagesData;
+				}
 			})
-			.catch(error => {
+			.catch(() => {
 				console.log(error);
 				throw error;
 			});
-	});
-
-	return Promise.all(newImagesPromises)
-		.then(newImagesData => {
-			if (dispatch && action) {
-				dispatch(action(newImagesData));
-			} else {
-				return newImagesData;
-			}
-		})
-		.catch(() => {
-			console.log(error);
-			throw error;
-		});
+	}
 };
 
 saveDataToDevice = (data, prefix, action, dispatch) => {
 	const newPromotionsPromise = saveImagesToDevice(data.promotions, prefix);
-	newPromotionsPromise
-		.then(newPromotions => {
-			const newData = { ...data, promotions: newPromotions };
-			dispatch(action(newData));
-		})
-		.catch(error => {
-			throw error;
-		});
+	if (newPromotionsPromise) {
+		newPromotionsPromise
+			.then(newPromotions => {
+				const newData = { ...data, promotions: newPromotions };
+				dispatch(action(newData));
+			})
+			.catch(error => {
+				throw error;
+			});
+	}
 };

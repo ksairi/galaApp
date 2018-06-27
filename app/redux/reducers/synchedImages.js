@@ -1,7 +1,7 @@
 import createReducer from "./lib/createReducer";
 import { ActionsTypes } from "/config/settings";
 
-export const loginImages = createReducer([], {
+export const loginImages = createReducer([{ imageIndex: 0 }], {
 	[ActionsTypes.SET_LOGIN_IMAGES](state, action) {
 		if (action.loginImages.length > 0) {
 			return action.loginImages;
@@ -9,11 +9,24 @@ export const loginImages = createReducer([], {
 		return state;
 	}
 });
-export const mainMenuImages = createReducer([], {
-	[ActionsTypes.SET_MAIN_MENU_IMAGES](state, action) {
-		return action.mainMenuImages;
+export const mainMenuImages = createReducer(
+	[
+		{
+			imageIndex: 0,
+			local: true
+		},
+		{
+			imageIndex: 1,
+			local: true
+		},
+		{ imageIndex: 2, local: true }
+	],
+	{
+		[ActionsTypes.SET_MAIN_MENU_IMAGES](state, action) {
+			return action.mainMenuImages;
+		}
 	}
-});
+);
 export const promotionsData = createReducer(null, {
 	[ActionsTypes.SET_PROMOTIONS](state, action) {
 		return action.promotionsData;
