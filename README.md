@@ -1,6 +1,7 @@
 # GalaApp
+
 React Native app for Gala Fitness Centre
 
-# app/config/apiAccesToken.js
+# app/config/apiAccessToken.js
 
-The file contains a dummy value. Production value is kept locally and should never be commited.
+File to be created to export the identication token for server
