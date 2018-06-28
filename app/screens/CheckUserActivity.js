@@ -23,7 +23,7 @@ const styles = {
 	isLoggedIn: state.isLoggedIn,
 	userId: state.userData.userId,
 	password: state.userData.password,
-	synchedImagesParameters: state.synchedImagesParameters,
+	synchedDataParameters: state.synchedDataParameters,
 	lastSynchedTimestamp: state.lastSynchedTimestamp
 }))
 export default class CheckUserActivity extends React.Component {
@@ -45,7 +45,7 @@ export default class CheckUserActivity extends React.Component {
 					const httpResponse = await login(
 						this.props.userId,
 						this.props.password,
-						this.props.synchedImagesParameters,
+						this.props.synchedDataParameters,
 						this.props.lastSynchedTimestamp,
 						this.props.dispatch
 					);

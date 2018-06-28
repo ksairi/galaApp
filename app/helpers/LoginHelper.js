@@ -15,7 +15,7 @@ import * as ScreenDimensions from "/utils/ScreenDimensions";
 exports.login = async (
 	userId,
 	password,
-	synchedImagesParameters,
+	synchedDataParameters,
 	lastSynchedTimestamp,
 	dispatch
 ) => {
@@ -24,7 +24,7 @@ exports.login = async (
 		loginResponse,
 		userId,
 		password,
-		synchedImagesParameters,
+		synchedDataParameters,
 		lastSynchedTimestamp,
 		dispatch
 	);
@@ -35,7 +35,7 @@ exports.register = async (
 	userId,
 	password,
 	deviceToken,
-	synchedImagesParameters,
+	synchedDataParameters,
 	dispatch
 ) => {
 	const registerResponse = await registerApi(
@@ -50,7 +50,7 @@ exports.register = async (
 			registerResponse,
 			userId,
 			password,
-			synchedImagesParameters,
+			synchedDataParameters,
 			null,
 			dispatch
 		);
@@ -61,7 +61,7 @@ fetchDynamicData = async (
 	response,
 	userId,
 	password,
-	synchedImagesParameters,
+	synchedDataParameters,
 	lastSynchedTimestamp,
 	dispatch
 ) => {
@@ -70,11 +70,11 @@ fetchDynamicData = async (
 			var contentServerResponse = true;
 			if (
 				lastSynchedTimestamp == null ||
-				(Date.now() - lastSynchedTimestamp) / 1000 / 60 > 15
+				(Date.now() - lastSynchedTimestamp) / 1000 > 10 //   / 1000 / 60 / 60 > 24
 			) {
-				//synched content server after 15 min of last update
+				//synched content server daily
 				contentServerResponse = await doFetchDynamicData(
-					synchedImagesParameters,
+					synchedDataParameters,
 					dispatch
 				);
 			}
@@ -93,21 +93,19 @@ fetchDynamicData = async (
 	}
 };
 
-doFetchDynamicData = async (synchedImagesParameters, dispatch) => {
+doFetchDynamicData = async (synchedDataParameters, dispatch) => {
 	const params = {};
-	params.loginImages = getLoginImagesParams(
-		synchedImagesParameters.loginImages
-	);
+	params.loginImages = getLoginImagesParams(synchedDataParameters.loginImages);
 	params.mainMenuImages = getMainMenuImagesParams(
-		synchedImagesParameters.mainMenuImages
+		synchedDataParameters.mainMenuImages
 	);
-	params.promotions = getPromotionsParams(synchedImagesParameters.promotions);
+	params.promotions = getPromotionsParams(synchedDataParameters.promotions);
 
 	params.routinesImages = getRoutinesImagesParams(
-		synchedImagesParameters.routinesImages
+		synchedDataParameters.routinesImages
 	);
 	params.classesImages = getClassesImagesParams(
-		synchedImagesParameters.classesImages
+		synchedDataParameters.classesImages
 	);
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	return setContentServerData(dynamicDataResponse, dispatch);

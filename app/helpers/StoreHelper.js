@@ -22,51 +22,60 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 		const {
 			loginImages,
 			mainMenuImages,
-			promotionsData,
+			promotions,
 			routinesImages,
 			classesImages,
 			timetableImages,
 			timetable
 		} = contentServerData;
 		try {
-			await saveImagesToDevice(
+			var saveDataPromise;
+			await saveDataToDevice(
 				loginImages,
 				"loginImage",
 				ActionsCreators.setLoginImages,
+				ActionsCreators.removeLoginImage,
 				dispatch
 			);
-			await saveImagesToDevice(
+			await saveDataToDevice(
 				mainMenuImages,
 				"mainMenuImage",
 				ActionsCreators.setMainMenuImages,
+				ActionsCreators.removeMainMenuImage,
 				dispatch
 			);
 
-			await saveDataToDevice(
-				promotionsData,
+			dataNewState = await saveDataToDevice(
+				promotions,
 				"promotionImage",
 				ActionsCreators.setPromotions,
+				ActionsCreators.removePromotionItem,
 				dispatch
 			);
+			dataNewState.entity = promotions;
+			dispatch(ActionsCreators.setSynchedDataParameters(dataNewState));
 
-			/*saveImagesToDevice(
+			/*saveDataToDevice(
 				routinesImages,
 				"routinesImage",
 				ActionsCreators.setRoutinesImages,
+				ActionsCreators.
 				dispatch
 			);
 	
-			saveImagesToDevice(
+			saveDataToDevice(
 				classesImages,
 				"classesImage",
 				ActionsCreators.setClassesImages,
+				ActionsCreators.
 				dispatch
 			);
 	
-			saveImagesToDevice(
+			saveDataToDevice(
 				timetableImages,
 				"timetableImage",
 				ActionsCreators.setTimetableImages,
+				ActionsCreators.
 				dispatch
 			);
 	
@@ -74,6 +83,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			dispatch(ActionsCreators.setLastSynchedTimestamp(Date.now()));
 			return true;
 		} catch (error) {
+			console.log(error);
 			return false;
 		}
 	}
@@ -120,48 +130,61 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 	}
 };
 
-saveImagesToDevice = (imagesData, prefix, action, dispatch) => {
+saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
 	if (imagesData) {
-		const newImagesPromises = imagesData.map((imageItem, index) => {
-			const fileName = Expo.FileSystem.documentDirectory + prefix + index; //+ ".jpg";
-			//let binaryImage = Base64.atob(imageItem.image);
-			return Expo.FileSystem.writeAsStringAsync(fileName, imageItem.image)
-				.then(() => {
-					return {
-						...imageItem,
-						image: fileName
-					};
-				})
-				.catch(error => {
-					console.log(error);
-					throw error;
-				});
+		const newDataPromises = imagesData.map(dataItem => {
+			const fileName =
+				Expo.FileSystem.documentDirectory +
+				prefix +
+				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id); //+ ".jpg";
+			if (dataItem.image) {
+				//let binaryImage = Base64.atob(dataItem.image);
+				return Expo.FileSystem.writeAsStringAsync(fileName, dataItem.image)
+					.then(() => {
+						return {
+							...dataItem,
+							image: fileName
+						};
+					})
+					.catch(error => {
+						console.log(error);
+						throw error;
+					});
+			} else {
+				return Expo.FileSystem.deleteAsync(fileName, { idempotent: false })
+					.then(() => {
+						return dataItem;
+					})
+					.catch(error => {
+						console.log(error);
+						return true;
+					});
+			}
 		});
-
-		return Promise.all(newImagesPromises)
-			.then(newImagesData => {
-				if (dispatch && action) {
-					dispatch(action(newImagesData));
-				} else {
-					return newImagesData;
+		return Promise.all(newDataPromises)
+			.then(newDataArray => {
+				const dataToAdd = [],
+					dataToRemove = [],
+					response = {};
+				newDataArray.forEach(newData => {
+					if (newData.image) {
+						dataToAdd.push(newData);
+					} else {
+						dataToRemove.push(newData);
+					}
+				});
+				if (dataToAdd.length > 0) {
+					dispatch(addAction(dataToAdd));
 				}
-			})
-			.catch(() => {
-				console.log(error);
-				throw error;
-			});
-	}
-};
-
-saveDataToDevice = (data, prefix, action, dispatch) => {
-	const newPromotionsPromise = saveImagesToDevice(data.promotions, prefix);
-	if (newPromotionsPromise) {
-		newPromotionsPromise
-			.then(newPromotions => {
-				const newData = { ...data, promotions: newPromotions };
-				dispatch(action(newData));
+				if (dataToRemove.length > 0) {
+					dispatch(removeAction(dataToRemove));
+				}
+				response.activeData = dataToAdd;
+				response.noActiveData = dataToRemove;
+				return response;
 			})
 			.catch(error => {
+				console.log(error);
 				throw error;
 			});
 	}

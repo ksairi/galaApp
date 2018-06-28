@@ -58,7 +58,7 @@ const styles = {
 	isUsingCache: state.isUsingCache,
 	currentHomeDrawerOption: state.currentHomeDrawerOption,
 	mainMenuImages: state.mainMenuImages,
-	promotions: state.promotionsData ? state.promotionsData.promotions : []
+	promotions: state.promotions
 }))
 export default class Home extends React.Component {
 	state = {

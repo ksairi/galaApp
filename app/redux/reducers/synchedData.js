@@ -27,9 +27,40 @@ export const mainMenuImages = createReducer(
 		}
 	}
 );
-export const promotionsData = createReducer(null, {
+export const promotions = createReducer([], {
 	[ActionsTypes.SET_PROMOTIONS](state, action) {
-		return action.promotionsData;
+		if (action.promotions.length > 0) {
+			const promotionsAlreadyAdded = [];
+			const newStateWithReplacedItems = state.map(
+				promotion =>
+					action.promotions.find(newPromotionData => {
+						const findCondition = newPromotionData.id == promotion.id;
+						if (findCondition) {
+							promotionsAlreadyAdded.push(newPromotionData.id);
+						}
+						return findCondition;
+					}) || promotion
+			);
+
+			var newPromotions = action.promotions.filter(promotion => {
+				return !promotionsAlreadyAdded.includes(promotion.id);
+			});
+
+			return [...newStateWithReplacedItems, ...newPromotions];
+		}
+		return state;
+	},
+
+	[ActionsTypes.REMOVE_PROMOTION_ITEM](state, action) {
+		if (action.promotionsToDelete.length > 0) {
+			const updatedState = state.filter(promotion => {
+				return !action.promotionsToDelete.find(
+					promotionToDelete => promotionToDelete.id == promotion.id
+				);
+			});
+			return updatedState;
+		}
+		return state;
 	}
 });
 export const routinesImages = createReducer([], {
@@ -50,11 +81,12 @@ export const timetableImages = createReducer([], {
 		return action.timetableImages;
 	}
 });
-export const synchedImagesParameters = createReducer(
-	{ loginImages: { imageIndex: 0 } },
+export const synchedDataParameters = createReducer(
+	{},
 	{
-		[ActionsTypes.SET_SYNCHED_IMAGES_PARAMETERS](state, action) {
-			return action.synchedImagesParamters;
+		[ActionsTypes.SET_SYNCHED_DATA_PARAMETERS](state, action) {
+			//TODO prepare the parameters action, structure:activeData, noActiveData, entity (could be id or imageIndex) . promotionsIds or imagesIndex object
+			return action.synchedDataParameters;
 		}
 	}
 );

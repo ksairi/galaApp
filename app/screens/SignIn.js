@@ -60,7 +60,7 @@ const styles = {
 	autoLoginErrorMessage: state.autoLoginErrorMessage,
 	orientation: state.currentOrientation,
 	loginImages: state.loginImages,
-	synchedImagesParameters: state.synchedImagesParameters,
+	synchedDataParameters: state.synchedDataParameters,
 	lastSynchedTimestamp: state.lastSynchedTimestamp
 }))
 export default class SignIn extends React.Component {
@@ -273,7 +273,7 @@ export default class SignIn extends React.Component {
 			const httpResponse = await login(
 				this.state.userId,
 				this.state.password,
-				this.props.synchedImagesParameters,
+				this.props.synchedDataParameters,
 				this.props.lastSynchedTimestamp,
 				this.props.dispatch
 			);

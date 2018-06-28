@@ -15,11 +15,20 @@ export function setMainMenuImages(mainMenuImages) {
 	};
 }
 
-export function setPromotions(promotionsData) {
+export function setPromotions(promotions) {
 	return (dispatch, getState) => {
 		dispatch({
 			type: ActionsTypes.SET_PROMOTIONS,
-			promotionsData
+			promotions
+		});
+	};
+}
+
+export function removePromotionItem(promotionsToDelete) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.REMOVE_PROMOTION_ITEM,
+			promotionsToDelete
 		});
 	};
 }
@@ -50,11 +59,11 @@ export function setTimetableImages(timetableImages) {
 		});
 	};
 }
-export function setSynchedImagesParameters(synchedImagesParameters) {
+export function setSynchedDataParameters(synchedDataParameters) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: ActionsTypes.SET_SYNCHED_IMAGES_PARAMETERS,
-			synchedImagesParameters
+			type: ActionsTypes.SET_SYNCHED_DATA_PARAMETERS,
+			synchedDataParameters
 		});
 	};
 }
