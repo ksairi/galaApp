@@ -29,7 +29,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			timetable
 		} = contentServerData;
 		try {
-			var saveDataPromise;
+			var dataNewState;
 			await saveDataToDevice(
 				loginImages,
 				"loginImage",
@@ -52,8 +52,9 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				ActionsCreators.removePromotionItem,
 				dispatch
 			);
-			dataNewState.entity = promotions;
-			dispatch(ActionsCreators.setSynchedDataParameters(dataNewState));
+			dataNewState.entity = "promotions";
+			dataNewState.data = {};
+			dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 
 			/*saveDataToDevice(
 				routinesImages,
@@ -80,7 +81,6 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			);
 	
 			dispatch(ActionsCreators.setTimetable(timetable));*/
-			dispatch(ActionsCreators.setLastSynchedTimestamp(Date.now()));
 			return true;
 		} catch (error) {
 			console.log(error);
@@ -166,11 +166,15 @@ saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
 				const dataToAdd = [],
 					dataToRemove = [],
 					response = {};
+				response.activeDataIds = [];
+				response.noActiveDataIds = [];
 				newDataArray.forEach(newData => {
 					if (newData.image) {
 						dataToAdd.push(newData);
+						response.activeDataIds.push(newData.id);
 					} else {
 						dataToRemove.push(newData);
+						response.noActiveDataIds.push(newData.id);
 					}
 				});
 				if (dataToAdd.length > 0) {
@@ -179,8 +183,7 @@ saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
 				if (dataToRemove.length > 0) {
 					dispatch(removeAction(dataToRemove));
 				}
-				response.activeData = dataToAdd;
-				response.noActiveData = dataToRemove;
+
 				return response;
 			})
 			.catch(error => {

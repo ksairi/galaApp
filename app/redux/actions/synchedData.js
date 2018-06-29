@@ -67,12 +67,11 @@ export function setSynchedDataParameters(synchedDataParameters) {
 		});
 	};
 }
-
-export function setLastSynchedTimestamp(lastSynchedTimestamp) {
+export function setLoginSynchedDataParameters(loginSynchedDataParameters) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: ActionsTypes.LAST_SYNCHED_TIMESTAMP,
-			lastSynchedTimestamp
+			type: ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS,
+			loginSynchedDataParameters
 		});
 	};
 }

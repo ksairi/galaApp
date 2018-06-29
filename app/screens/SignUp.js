@@ -45,7 +45,7 @@ const styles = {
 @connect(state => ({
 	notificationsToken: state.notificationsToken,
 	orientation: state.currentOrientation,
-	synchedDataParameters: state.synchedDataParameters
+	loginSynchedDataParameters: state.loginSynchedDataParameters
 }))
 export default class SignUp extends React.Component {
 	state = {
@@ -134,7 +134,7 @@ export default class SignUp extends React.Component {
 				this.userId,
 				this.password,
 				deviceToken,
-				this.props.synchedDataParameters,
+				this.props.loginSynchedDataParameters,
 				this.props.dispatch
 			);
 			this.setState({ spinnerVisible: false });

@@ -15,8 +15,7 @@ import * as ScreenDimensions from "/utils/ScreenDimensions";
 exports.login = async (
 	userId,
 	password,
-	synchedDataParameters,
-	lastSynchedTimestamp,
+	loginSynchedDataParameters,
 	dispatch
 ) => {
 	const loginResponse = await loginApi(userId, password);
@@ -24,8 +23,7 @@ exports.login = async (
 		loginResponse,
 		userId,
 		password,
-		synchedDataParameters,
-		lastSynchedTimestamp,
+		loginSynchedDataParameters,
 		dispatch
 	);
 };
@@ -35,7 +33,7 @@ exports.register = async (
 	userId,
 	password,
 	deviceToken,
-	synchedDataParameters,
+	loginSynchedDataParameters,
 	dispatch
 ) => {
 	const registerResponse = await registerApi(
@@ -50,8 +48,7 @@ exports.register = async (
 			registerResponse,
 			userId,
 			password,
-			synchedDataParameters,
-			null,
+			loginSynchedDataParameters,
 			dispatch
 		);
 	}
@@ -62,22 +59,16 @@ fetchDynamicData = async (
 	userId,
 	password,
 	synchedDataParameters,
-	lastSynchedTimestamp,
 	dispatch
 ) => {
 	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
 		try {
 			var contentServerResponse = true;
-			if (
-				lastSynchedTimestamp == null ||
-				(Date.now() - lastSynchedTimestamp) / 1000 > 10 //   / 1000 / 60 / 60 > 24
-			) {
-				//synched content server daily
-				contentServerResponse = await doFetchDynamicData(
-					synchedDataParameters,
-					dispatch
-				);
-			}
+			contentServerResponse = await doFetchDynamicData(
+				synchedDataParameters,
+				dispatch
+			);
+
 			if (contentServerResponse) {
 				setInitialData(response.data, userId, password, dispatch);
 				return { [ServerProtocol.statusField]: ServerProtocol.OK };
@@ -95,18 +86,24 @@ fetchDynamicData = async (
 
 doFetchDynamicData = async (synchedDataParameters, dispatch) => {
 	const params = {};
-	params.loginImages = getLoginImagesParams(synchedDataParameters.loginImages);
-	params.mainMenuImages = getMainMenuImagesParams(
-		synchedDataParameters.mainMenuImages
-	);
-	params.promotions = getPromotionsParams(synchedDataParameters.promotions);
+	if (synchedDataParameters.isLoginRequest) {
+		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
+	} else {
+		params.loginImages = getLoginImagesParams(
+			synchedDataParameters.loginImages
+		);
+		params.mainMenuImages = getMainMenuImagesParams(
+			synchedDataParameters.mainMenuImages
+		);
+		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
 
-	params.routinesImages = getRoutinesImagesParams(
-		synchedDataParameters.routinesImages
-	);
-	params.classesImages = getClassesImagesParams(
-		synchedDataParameters.classesImages
-	);
+		params.routinesImages = getRoutinesImagesParams(
+			synchedDataParameters.routinesImages
+		);
+		params.classesImages = getClassesImagesParams(
+			synchedDataParameters.classesImages
+		);
+	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	return setContentServerData(dynamicDataResponse, dispatch);
 };

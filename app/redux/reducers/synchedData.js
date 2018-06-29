@@ -46,7 +46,7 @@ export const promotions = createReducer([], {
 				return !promotionsAlreadyAdded.includes(promotion.id);
 			});
 
-			return [...newStateWithReplacedItems, ...newPromotions];
+			return [...newPromotions, ...newStateWithReplacedItems];
 		}
 		return state;
 	},
@@ -85,13 +85,32 @@ export const synchedDataParameters = createReducer(
 	{},
 	{
 		[ActionsTypes.SET_SYNCHED_DATA_PARAMETERS](state, action) {
-			//TODO prepare the parameters action, structure:activeData, noActiveData, entity (could be id or imageIndex) . promotionsIds or imagesIndex object
+			//TODO prepare the parameters action, structure:activeData, noActiveData, entity. imagesIndex object
 			return action.synchedDataParameters;
 		}
 	}
 );
-export const lastSynchedTimestamp = createReducer(null, {
-	[ActionsTypes.LAST_SYNCHED_TIMESTAMP](state, action) {
-		return action.lastSynchedTimestamp;
+export const loginSynchedDataParameters = createReducer(
+	{ promotions: { allPromotions: true }, isLoginRequest: true },
+	{
+		[ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS](state, action) {
+			const params = action.loginSynchedDataParameters;
+			const currentParameters = state[params.entity].dataIds
+				? state[params.entity].dataIds
+				: [];
+			var entityActiveDataNewState = currentParameters.filter(
+				currentDataId => !params.noActiveDataIds.find(id => id == currentDataId)
+			);
+			entityActiveDataNewState = [
+				...entityActiveDataNewState,
+				...params.activeDataIds
+			];
+			const entityNewData = params.data;
+			entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates
+			return {
+				...state,
+				[params.entity]: entityNewData
+			};
+		}
 	}
-});
+);
