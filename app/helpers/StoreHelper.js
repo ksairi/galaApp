@@ -46,14 +46,14 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			);
 
 			dataNewState = await saveDataToDevice(
-				promotions,
+				promotions.data,
 				"promotionImage",
 				ActionsCreators.setPromotions,
 				ActionsCreators.removePromotionItem,
 				dispatch
 			);
 			dataNewState.entity = "promotions";
-			dataNewState.data = {};
+			dataNewState.data = { lastUpdate: promotions.lastUpdate };
 			dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 
 			/*saveDataToDevice(
