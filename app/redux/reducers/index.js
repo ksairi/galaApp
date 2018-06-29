@@ -9,7 +9,7 @@ import * as userDataReducer from "./userData";
 import * as sessionReducer from "./session";
 import * as navigationReducer from "./navigation";
 import * as deviceReducer from "./device";
-import * as synchedImagesReducer from "./synchedImages";
+import * as synchedDataReducer from "./synchedData";
 
 const rootPresistConfig = {
 	key: "root",
@@ -27,7 +27,7 @@ const rootReducer = combineReducers(
 		sessionReducer,
 		navigationReducer,
 		deviceReducer,
-		synchedImagesReducer
+		synchedDataReducer
 	)
 );
 

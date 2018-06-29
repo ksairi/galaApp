@@ -15,8 +15,7 @@ import * as ScreenDimensions from "/utils/ScreenDimensions";
 exports.login = async (
 	userId,
 	password,
-	synchedImagesParameters,
-	lastSynchedTimestamp,
+	loginSynchedDataParameters,
 	dispatch
 ) => {
 	const loginResponse = await loginApi(userId, password);
@@ -24,8 +23,7 @@ exports.login = async (
 		loginResponse,
 		userId,
 		password,
-		synchedImagesParameters,
-		lastSynchedTimestamp,
+		loginSynchedDataParameters,
 		dispatch
 	);
 };
@@ -35,7 +33,7 @@ exports.register = async (
 	userId,
 	password,
 	deviceToken,
-	synchedImagesParameters,
+	loginSynchedDataParameters,
 	dispatch
 ) => {
 	const registerResponse = await registerApi(
@@ -50,8 +48,7 @@ exports.register = async (
 			registerResponse,
 			userId,
 			password,
-			synchedImagesParameters,
-			null,
+			loginSynchedDataParameters,
 			dispatch
 		);
 	}
@@ -61,23 +58,17 @@ fetchDynamicData = async (
 	response,
 	userId,
 	password,
-	synchedImagesParameters,
-	lastSynchedTimestamp,
+	synchedDataParameters,
 	dispatch
 ) => {
 	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
 		try {
 			var contentServerResponse = true;
-			if (
-				lastSynchedTimestamp == null ||
-				(Date.now() - lastSynchedTimestamp) / 1000 / 60 > 15
-			) {
-				//synched content server after 15 min of last update
-				contentServerResponse = await doFetchDynamicData(
-					synchedImagesParameters,
-					dispatch
-				);
-			}
+			contentServerResponse = await doFetchDynamicData(
+				synchedDataParameters,
+				dispatch
+			);
+
 			if (contentServerResponse) {
 				setInitialData(response.data, userId, password, dispatch);
 				return { [ServerProtocol.statusField]: ServerProtocol.OK };
@@ -93,22 +84,26 @@ fetchDynamicData = async (
 	}
 };
 
-doFetchDynamicData = async (synchedImagesParameters, dispatch) => {
+doFetchDynamicData = async (synchedDataParameters, dispatch) => {
 	const params = {};
-	params.loginImages = getLoginImagesParams(
-		synchedImagesParameters.loginImages
-	);
-	params.mainMenuImages = getMainMenuImagesParams(
-		synchedImagesParameters.mainMenuImages
-	);
-	params.promotions = getPromotionsParams(synchedImagesParameters.promotions);
+	if (synchedDataParameters.isLoginRequest) {
+		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
+	} else {
+		params.loginImages = getLoginImagesParams(
+			synchedDataParameters.loginImages
+		);
+		params.mainMenuImages = getMainMenuImagesParams(
+			synchedDataParameters.mainMenuImages
+		);
+		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
 
-	params.routinesImages = getRoutinesImagesParams(
-		synchedImagesParameters.routinesImages
-	);
-	params.classesImages = getClassesImagesParams(
-		synchedImagesParameters.classesImages
-	);
+		params.routinesImages = getRoutinesImagesParams(
+			synchedDataParameters.routinesImages
+		);
+		params.classesImages = getClassesImagesParams(
+			synchedDataParameters.classesImages
+		);
+	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	return setContentServerData(dynamicDataResponse, dispatch);
 };

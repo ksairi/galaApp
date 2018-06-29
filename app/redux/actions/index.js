@@ -5,7 +5,7 @@ import * as UserDataActions from "./userData";
 import * as SessionActions from "./session";
 import * as NavigationActions from "./navigation";
 import * as DeviceActions from "./device";
-import * as SynchedImagesActions from "./synchedImages";
+import * as SynchedDataActions from "./synchedData";
 
 export const ActionsCreators = Object.assign(
 	{},
@@ -16,5 +16,5 @@ export const ActionsCreators = Object.assign(
 	SessionActions,
 	NavigationActions,
 	DeviceActions,
-	SynchedImagesActions
+	SynchedDataActions
 );
