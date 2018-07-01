@@ -1,3 +1,5 @@
+import { FileSystem } from "expo";
+
 const SERVER_HOSTNAME_1 = __DEV__
 	? "http://192.168.42.1:3000/"
 	: "https://aqueous-harbor-62651.herokuapp.com/";
@@ -93,6 +95,7 @@ exports.ActionsTypes = {
 	SET_IS_USING_CACHE: "SET_IS_USING_CACHE",
 	SET_NEW_PASSWORD: "SET_NEW_PASSWORD",
 	SET_NOTIFICATIONS_NEW_MEMBER_DATA: "SET_NOTIFICATIONS_NEW_MEMBER_DATA",
+	SET_PROFILE_PICTURE: "SET_PROFILE_PICTURE",
 	//Session
 	LOG_IN: "LOG_IN",
 	LOG_OUT: "LOG_OUT",
@@ -112,4 +115,8 @@ exports.ActionsTypes = {
 	SET_CLASSES_IMAGES: "SET_CLASSES_IMAGES",
 	SET_TIMETABLE_IMAGES: "SET_TIMETABLE_IMAGES",
 	SET_LOGIN_SYNCHED_DATA_PARAMETERS: "SET_LOGIN_SYNCHED_DATA_PARAMETERS"
+};
+
+exports.Paths = {
+	PROFILE_PICTURE: `${FileSystem.documentDirectory}profilePic.jpg`
 };

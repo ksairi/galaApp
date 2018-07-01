@@ -1,36 +1,44 @@
-import createReducer from './lib/createReducer'
-import { ActionsTypes } from '/config/settings'
+import createReducer from "./lib/createReducer";
+import { ActionsTypes } from "/config/settings";
 
-export const userData = createReducer({}, {
-  [ActionsTypes.SET_USER_DATA](state, action) {
-    return action.userData
-  },
-  [ActionsTypes.SET_NEW_PASSWORD](state, action){
-    return { ...state, password:action.password }
-  }
-})
+export const userData = createReducer(
+	{},
+	{
+		[ActionsTypes.SET_USER_DATA](state, action) {
+			return action.userData;
+		},
+		[ActionsTypes.SET_NEW_PASSWORD](state, action) {
+			return { ...state, password: action.password };
+		},
+
+		[ActionsTypes.SET_PROFILE_PICTURE](state, action) {
+			return { ...state, profilePicPath: action.path };
+		}
+	}
+);
 
 export const newMemberData = createReducer(null, {
-  [ActionsTypes.SET_NEW_MEMBER_DATA](state, action){
-    if(action.newMemberData == null){
-      return {}
-    }
-    else{
-      return action.newMemberData
-    }    
-  },
-  [ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action){
-    if(action.notificationsNewMemberData){
-      return {...state, freeEntryDaysLeft: action.notificationsNewMemberData.freeEntryDaysLeft}
-    }
-    else{
-      return state
-    }
-  }  
-})
+	[ActionsTypes.SET_NEW_MEMBER_DATA](state, action) {
+		if (action.newMemberData == null) {
+			return {};
+		} else {
+			return action.newMemberData;
+		}
+	},
+	[ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action) {
+		if (action.notificationsNewMemberData) {
+			return {
+				...state,
+				freeEntryDaysLeft: action.notificationsNewMemberData.freeEntryDaysLeft
+			};
+		} else {
+			return state;
+		}
+	}
+});
 
 export const isUsingCache = createReducer(false, {
-  [ActionsTypes.SET_IS_USING_CACHE](state, action) {
-    return action.isUsingCache
-  }
-})
+	[ActionsTypes.SET_IS_USING_CACHE](state, action) {
+		return action.isUsingCache;
+	}
+});

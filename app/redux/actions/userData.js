@@ -1,9 +1,13 @@
-import { ActionsTypes } from "/config/settings";
+import { ActionsTypes, Paths } from "/config/settings";
 import { fetchUserData } from "/helpers/ApiHelper";
 
 export function setUserData(userData) {
 	return (dispatch, getState) => {
 		dispatch({ type: ActionsTypes.SET_USER_DATA, userData });
+		if (!userData.profilePicPath) {
+			const path = Paths.PROFILE_PICTURE;
+			dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE, path });
+		}
 	};
 }
 

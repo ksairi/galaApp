@@ -2,7 +2,7 @@ import React from "react";
 import { TouchableOpacity, View } from "react-native";
 import { connect } from "react-redux";
 import Icon from "/helpers/ImageHelper";
-import { headerBackgroundColor, containerPadding } from "/components/styles";
+import { containerPadding } from "/components/styles";
 import Logo from "components/presentationals/Logo";
 
 const styles = {
@@ -10,7 +10,7 @@ const styles = {
 		flex: 0.15,
 		flexDirection: "row",
 		alignItems: "flex-start",
-		backgroundColor: headerBackgroundColor,
+		backgroundColor: "#0b1143",
 		marginTop: Expo.Constants.statusBarHeight,
 		paddingTop: 20,
 		paddingLeft: containerPadding
