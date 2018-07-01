@@ -91,13 +91,14 @@ export const synchedDataParameters = createReducer(
 	}
 );
 export const loginSynchedDataParameters = createReducer(
-	{ promotions: { allPromotions: true }, isLoginRequest: true },
+	{ isLoginRequest: true },
 	{
 		[ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS](state, action) {
 			const params = action.loginSynchedDataParameters;
-			const currentParameters = state[params.entity].dataIds
-				? state[params.entity].dataIds
-				: [];
+			const currentParameters =
+				state[params.entity] && state[params.entity].dataIds
+					? state[params.entity].dataIds
+					: [];
 			var entityActiveDataNewState = currentParameters.filter(
 				currentDataId => !params.noActiveDataIds.find(id => id == currentDataId)
 			);
@@ -105,7 +106,7 @@ export const loginSynchedDataParameters = createReducer(
 				...entityActiveDataNewState,
 				...params.activeDataIds
 			];
-			const entityNewData = params.data;
+			const entityNewData = { ...params.data };
 			entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates
 			return {
 				...state,
