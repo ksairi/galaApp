@@ -78,9 +78,8 @@ const ReferralsNavigator = createStackNavigator(
 
 export default createDrawerNavigator(
 	{
-		[Screens.Profile]: { screen: ProfileNavigator },
 		[Screens.Home]: { screen: HomeNavigator },
-		
+		[Screens.Profile]: { screen: ProfileNavigator },
 		[Screens.Routines]: { screen: RoutinesNavigator },
 		[Screens.Classes]: { screen: TimetableNavigator },
 		[Screens.Timetable]: { screen: TimetableNavigator },

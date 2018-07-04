@@ -9,10 +9,6 @@ export const userData = createReducer(
 		},
 		[ActionsTypes.SET_NEW_PASSWORD](state, action) {
 			return { ...state, password: action.password };
-		},
-
-		[ActionsTypes.SET_PROFILE_PICTURE](state, action) {
-			return { ...state, profilePicPath: action.path };
 		}
 	}
 );
@@ -40,5 +36,11 @@ export const newMemberData = createReducer(null, {
 export const isUsingCache = createReducer(false, {
 	[ActionsTypes.SET_IS_USING_CACHE](state, action) {
 		return action.isUsingCache;
+	}
+});
+
+export const profilePicturePath = createReducer(null, {
+	[ActionsTypes.SET_PROFILE_PICTURE_PATH](state, action) {
+		return action.path;
 	}
 });

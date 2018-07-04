@@ -3,9 +3,10 @@ import {
 	View,
 	ScrollView,
 	Text,
-	Image,
 	TouchableOpacity,
-	ImageBackground
+	ImageBackground,
+	Image,
+	Dimensions
 } from "react-native";
 import { Camera, Permissions, Constants, FileSystem } from "expo";
 import {
@@ -22,7 +23,11 @@ import { Messages, Paths } from "/config/settings";
 import GenericText from "/components/presentationals/GenericText";
 import { ActionsCreators } from "/redux/actions/";
 const styles = {
-	photoContainer: { flex: 1, alignItems: "center" },
+	photoContainer: {
+		flex: 1,
+		alignItems: "center",
+		justifyContent: "center"
+	},
 	userDataContainer: {
 		flex: 1
 	},
@@ -56,22 +61,23 @@ const styles = {
 		backgroundColor: "transparent",
 		flexDirection: "row",
 		justifyContent: "space-around",
-		paddingTop: Constants.statusBarHeight / 2
+		paddingTop: 5
 	},
 	bottomBar: {
 		paddingBottom: 5,
 		backgroundColor: "transparent",
 		alignSelf: "flex-end",
-		justifyContent: "space-between",
-		flex: 0.12,
-		flexDirection: "row"
+		flex: 1,
+		flexDirection: "row",
+		paddingLeft: 10,
+		paddingRight: 10
 	},
 	toggleButton: {
 		flex: 0.25,
 		height: 40,
 		marginHorizontal: 2,
 		marginBottom: 10,
-		marginTop: 20,
+		marginTop: 0,
 		padding: 5,
 		alignItems: "center",
 		justifyContent: "center"
@@ -93,7 +99,9 @@ const flashIcons = {
 };
 
 @connect(state => ({
-	userData: state.userData
+	userData: state.userData,
+	profilePicturePath: state.profilePicturePath,
+	orientation: state.currentOrientation
 }))
 export default class Profile extends React.Component {
 	state = {
@@ -102,11 +110,20 @@ export default class Profile extends React.Component {
 		flash: "off",
 		hasProfilePic: false,
 		renderCamera: false,
-		pictureTaken: null
+		pictureTaken: null,
+		deviceWidth: Dimensions.get("window").width
 	};
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.orientation) {
+			return {
+				deviceWidth: Dimensions.get("window").width
+			};
+		}
+	}
+
 	componentDidMount = () => {
-		Expo.FileSystem.getInfoAsync(this.props.userData.profilePicPath)
+		Expo.FileSystem.getInfoAsync(this.props.profilePicturePath)
 			.then(response => {
 				this.setState({ hasProfilePic: response.exists });
 			})
@@ -140,7 +157,7 @@ export default class Profile extends React.Component {
 
 	renderCameraViewBottomBar = () => (
 		<View style={styles.bottomBar}>
-			<View style={{ flex: 0.4 }}>
+			<View style={{ flex: 1, alignSelf: "flex-end" }}>
 				<TouchableOpacity
 					onPress={this.takePicture}
 					style={{ alignSelf: "center" }}>
@@ -182,22 +199,23 @@ export default class Profile extends React.Component {
 				uri: `${this.state.pictureTaken.uri}`
 			}}
 			style={{
+				flex: 1,
 				width: "100%",
 				height: "100%"
 			}}>
-			<View style={styles.bottomBar}>
-				<View style={{ flex: 0.4 }}>
+			<View style={[styles.bottomBar, { alignItems: "flex-end" }]}>
+				<View style={{ flex: 1 }}>
 					<TouchableOpacity
 						onPress={this.discardPicture}
-						style={{ alignSelf: "center" }}>
-						<Entypo name="circle-with-cross" size={70} color="white" />
+						style={{ alignSelf: "flex-start" }}>
+						<Entypo name="circle-with-cross" size={50} color="white" />
 					</TouchableOpacity>
 				</View>
-				<View>
+				<View style={{ flex: 1 }}>
 					<TouchableOpacity
 						onPress={this.savePicture}
-						style={{ alignSelf: "center" }}>
-						<Ionicons name="md-send" size={70} color="white" />
+						style={{ alignSelf: "flex-end" }}>
+						<Ionicons name="md-send" size={50} color="white" />
 					</TouchableOpacity>
 				</View>
 			</View>
@@ -209,13 +227,24 @@ export default class Profile extends React.Component {
 	};
 
 	savePicture = async () => {
-		console.log(this.state.pictureTaken.uri);
+		const picturePath = `${
+			FileSystem.documentDirectory
+		}${Date.now()}-profilePic.jpg`;
 		try {
+			if (this.props.userData.profilePicPath) {
+				await FileSystem.deleteAsync(`${this.props.profilePicturePath}`, {
+					idempotent: true
+				});
+			}
 			await FileSystem.moveAsync({
 				from: this.state.pictureTaken.uri,
-				to: Paths.PROFILE_PICTURE
+				to: picturePath
 			});
-			this.setState({ pictureTaken: null, hasProfilePic: true });
+			this.setState({
+				pictureTaken: null,
+				hasProfilePic: true
+			});
+			this.props.dispatch(ActionsCreators.setProfilePicturePath(picturePath));
 		} catch (error) {
 			console.log(error);
 			this.setState({ pictureTaken: null, error: Messages.NO_SPACE_IN_DISK });
@@ -248,6 +277,22 @@ export default class Profile extends React.Component {
 		}
 	};
 
+	getImageDimensions = ({ width, height }, pictureSize) => {
+		if (width > height) {
+			const scaledHeight = (pictureSize * height) / width;
+			return {
+				width: pictureSize,
+				height: scaledHeight
+			};
+		} else {
+			const scaledWidth = (pictureSize * width) / height;
+			return {
+				width: scaledWidth,
+				height: pictureSize
+			};
+		}
+	};
+
 	render() {
 		if (this.state.pictureTaken) {
 			return this.renderPicture();
@@ -267,22 +312,36 @@ export default class Profile extends React.Component {
 							source={
 								this.state.hasProfilePic
 									? {
-											uri: `${this.props.userData.profilePicPath}`
+											uri: `${this.props.profilePicturePath}`
 									  }
-									: require("../images/login.jpg")
+									: require("../images/no_profile_picture.jpg")
 							}
 							style={{
 								width: 100,
-								height: 100
+								height: 100,
+								borderRadius: 100 / 2
 							}}
 						/>
-						<TouchableOpacity onPress={this.useCamera}>
-							<View style={{ backgroundColor: "white" }}>
-								<FontAwesome name="camera-retro" size={32} />
-							</View>
+						<TouchableOpacity
+							onPress={this.useCamera}
+							style={{
+								backgroundColor: "white",
+								width: 40,
+								height: 40,
+								alignItems: "center",
+								justifyContent: "center",
+								borderRadius: 40 / 2,
+								position: "absolute",
+								left: this.state.deviceWidth / 2 + 15,
+								top: 5
+							}}>
+							<FontAwesome name="camera-retro" size={32} />
 						</TouchableOpacity>
+
 						{this.state.error && (
-							<GenericText error>{this.state.error}</GenericText>
+							<GenericText error style={{ marginTop: 10 }}>
+								{this.state.error}
+							</GenericText>
 						)}
 					</View>
 					<Text
@@ -300,18 +359,21 @@ export default class Profile extends React.Component {
 							<Text style={styles.userData}>{this.props.userData.name}</Text>
 						</View>
 						{
-							/*this.props.userData.mail &&*/ <View style={styles.userDataRow}>
+							<View style={styles.userDataRow}>
 								<Text style={styles.label}>Email</Text>
 								<Text style={[styles.userData, { fontSize: 16 }]}>
-									marianoksairi@gmail.com
+									{this.props.userData.mail ? this.props.userData.mail : "N/D"}
 								</Text>
 							</View>
 						}
 						{
-							/*this.props.userData.phoneNumber &&*/ <View
-								style={styles.userDataRow}>
+							<View style={styles.userDataRow}>
 								<Text style={styles.label}>Teléfono</Text>
-								<Text style={styles.userData}>49832325</Text>
+								<Text style={styles.userData}>
+									{this.props.userData.phoneNumber
+										? this.props.userData.phoneNumber
+										: "N/D"}
+								</Text>
 							</View>
 						}
 					</View>

@@ -4,10 +4,6 @@ import { fetchUserData } from "/helpers/ApiHelper";
 export function setUserData(userData) {
 	return (dispatch, getState) => {
 		dispatch({ type: ActionsTypes.SET_USER_DATA, userData });
-		if (!userData.profilePicPath) {
-			const path = Paths.PROFILE_PICTURE;
-			dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE, path });
-		}
 	};
 }
 
@@ -54,5 +50,11 @@ export function fetchUserStore() {
 export function setUserNewPassword(password) {
 	return (dispatch, getState) => {
 		dispatch({ type: ActionsTypes.SET_NEW_PASSWORD, password });
+	};
+}
+
+export function setProfilePicturePath(path) {
+	return (dispatch, getState) => {
+		dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE_PATH, path });
 	};
 }
