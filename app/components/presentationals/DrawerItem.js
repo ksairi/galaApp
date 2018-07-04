@@ -1,7 +1,5 @@
 import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
-import { createIconSetFromIcoMoon } from "@expo/vector-icons";
-import { activeSideMenuItemColor } from "/components/styles";
 import Icon from "/helpers/ImageHelper";
 
 const styles = {
@@ -14,7 +12,7 @@ const styles = {
 		paddingBottom: 3
 	},
 	activeItem: {
-		backgroundColor: activeSideMenuItemColor
+		backgroundColor: "#12194d"
 	},
 	drawerItemIcon: {
 		color: "white",

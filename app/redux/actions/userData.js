@@ -1,4 +1,4 @@
-import { ActionsTypes } from "/config/settings";
+import { ActionsTypes, Paths } from "/config/settings";
 import { fetchUserData } from "/helpers/ApiHelper";
 
 export function setUserData(userData) {
@@ -50,5 +50,11 @@ export function fetchUserStore() {
 export function setUserNewPassword(password) {
 	return (dispatch, getState) => {
 		dispatch({ type: ActionsTypes.SET_NEW_PASSWORD, password });
+	};
+}
+
+export function setProfilePicturePath(path) {
+	return (dispatch, getState) => {
+		dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE_PATH, path });
 	};
 }

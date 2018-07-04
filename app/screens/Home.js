@@ -7,7 +7,6 @@ import { ActionsCreators } from "/redux/actions";
 import { Screens } from "/config/settings";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
-import { activeSideMenuItemColor } from "/components/styles";
 import Footer from "/components/presentationals/Footer";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
 import ImageSlider from "/components/presentationals/ImageSlider";
@@ -38,7 +37,7 @@ const styles = {
 
 	buttonWrapper: {
 		flex: 1.5,
-		backgroundColor: activeSideMenuItemColor,
+		backgroundColor: "#12194d",
 		justifyContent: "center",
 		padding: 5,
 		marginRight: 10,
@@ -242,7 +241,7 @@ export default class Home extends React.Component {
 										<View
 											key={index}
 											style={{
-												backgroundColor: activeSideMenuItemColor,
+												backgroundColor: "#12194d",
 												paddingTop: 15,
 												marginTop: 15
 											}}>

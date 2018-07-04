@@ -2,12 +2,11 @@ import React from "react";
 import { View, Linking } from "react-native";
 import { RkTheme, RkButton } from "react-native-ui-kitten";
 import Icon from "/helpers/ImageHelper";
-import { footerButtonBc } from "/components/styles";
 import GenericText from "/components/presentationals/GenericText";
 
 const styles = {
 	button: {
-		backgroundColor: footerButtonBc,
+		backgroundColor: "#12194d",
 		width: 70,
 		marginRight: 20
 	},

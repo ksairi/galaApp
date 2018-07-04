@@ -1,3 +1,5 @@
+import { FileSystem } from "expo";
+
 const SERVER_HOSTNAME_1 = __DEV__
 	? "http://192.168.42.1:3000/"
 	: "https://aqueous-harbor-62651.herokuapp.com/";
@@ -93,6 +95,7 @@ exports.ActionsTypes = {
 	SET_IS_USING_CACHE: "SET_IS_USING_CACHE",
 	SET_NEW_PASSWORD: "SET_NEW_PASSWORD",
 	SET_NOTIFICATIONS_NEW_MEMBER_DATA: "SET_NOTIFICATIONS_NEW_MEMBER_DATA",
+	SET_PROFILE_PICTURE_PATH: "SET_PROFILE_PICTURE_PATH",
 	//Session
 	LOG_IN: "LOG_IN",
 	LOG_OUT: "LOG_OUT",

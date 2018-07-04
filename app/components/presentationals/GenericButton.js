@@ -1,29 +1,32 @@
-import React from 'react'
-import { RkTheme, RkButton } from 'react-native-ui-kitten'
-import { genericButtonBackgroundColor } from '/components/styles'
+import React from "react";
+import { RkButton } from "react-native-ui-kitten";
 
-RkTheme.setType('RkButton', 'genericButton', {
-  backgroundColor: genericButtonBackgroundColor,
-  flex:1,
-  content:{
-    color:'white',
-    fontSize:19,
-    fontFamily:'lato-regular'
-  }
-})
+const styles = {
+	buttonStyle: {
+		backgroundColor: "#6b35e3",
+		flex: 1
+	},
+	buttonContent: {
+		color: "white",
+		fontSize: 19,
+		fontFamily: "lato-regular"
+	}
+};
 
 export default class GenericButton extends React.PureComponent {
-
-  onButtonPressed = () =>{
-    this.props.onPress()
-  }
-
-  render(){
-    return(
-      <RkButton rkType='rounded genericButton' style={this.props.style} contentStyle={this.props.contentStyle ? this.props.contentStyle : {} }
-        onPress={this.onButtonPressed}>
-        {this.props.text}
-      </RkButton>
-    )
-  }
+	render() {
+		var shapeType = "rounded";
+		if (this.props.shapeType) {
+			shapeType = this.props.shapeType;
+		}
+		return (
+			<RkButton
+				rkType={shapeType}
+				style={[styles.buttonStyle, this.props.style]}
+				contentStyle={[styles.buttonContent, this.props.contentStyle]}
+				onPress={this.props.onPress}>
+				{this.props.text}
+			</RkButton>
+		);
+	}
 }
