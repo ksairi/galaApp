@@ -15,7 +15,7 @@ const rootPresistConfig = {
 	key: "root",
 	storage: storage,
 	stateReconciler: autoMergeLevel2,
-	blacklist: ["currentOrientation"]
+	blacklist: ["currentOrientation", "currentRoutine"]
 };
 
 const rootReducer = combineReducers(

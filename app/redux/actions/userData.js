@@ -58,3 +58,9 @@ export function setProfilePicturePath(path) {
 		dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE_PATH, path });
 	};
 }
+
+export function setReceiveNotifications(value) {
+	return (dispatch, getState) => {
+		dispatch({ type: ActionsTypes.SET_RECEIVE_NOTIFICATIONS, value });
+	};
+}

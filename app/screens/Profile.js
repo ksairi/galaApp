@@ -2,13 +2,12 @@ import React from "react";
 import {
 	View,
 	ScrollView,
-	Text,
 	TouchableOpacity,
 	ImageBackground,
 	Image,
 	Dimensions
 } from "react-native";
-import { Camera, Permissions, Constants, FileSystem } from "expo";
+import { Camera, Permissions, FileSystem } from "expo";
 import {
 	Ionicons,
 	MaterialIcons,
@@ -19,7 +18,7 @@ import { connect } from "react-redux";
 import { RkButton } from "react-native-ui-kitten";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import Footer from "/components/presentationals/Footer";
-import { Messages, Paths } from "/config/settings";
+import { Messages, Screens } from "/config/settings";
 import GenericText from "/components/presentationals/GenericText";
 import { ActionsCreators } from "/redux/actions/";
 const styles = {
@@ -36,21 +35,15 @@ const styles = {
 		flex: 1
 	},
 	label: {
-		fontFamily: "lato-regular",
 		fontSize: 18,
-		color: "white",
-		textAlign: "left"
+		textAlign: "left",
+		flex: -1
 	},
 	userData: {
 		fontFamily: "brother-1816-bold",
 		fontSize: 18,
-		color: "white",
 		flex: 1,
 		textAlign: "right"
-	},
-	footerContainer: {
-		flex: 0.5,
-		flexDirection: "row"
 	},
 	camera: {
 		flex: 1,
@@ -293,6 +286,10 @@ export default class Profile extends React.Component {
 		}
 	};
 
+	goToSettings = () => {
+		this.props.navigation.navigate(Screens.Settings);
+	};
+
 	render() {
 		if (this.state.pictureTaken) {
 			return this.renderPicture();
@@ -344,36 +341,37 @@ export default class Profile extends React.Component {
 							</GenericText>
 						)}
 					</View>
-					<Text
+					<GenericText
 						style={{
 							fontFamily: "brother-1816-bold",
 							fontSize: 22,
-							flex: 0.6,
-							color: "white"
+							flex: 0.6
 						}}>
 						MI INFORMACIÓN
-					</Text>
+					</GenericText>
 					<View style={styles.userDataContainer}>
 						<View style={styles.userDataRow}>
-							<Text style={styles.label}>Nombre</Text>
-							<Text style={styles.userData}>{this.props.userData.name}</Text>
+							<GenericText style={styles.label}>Nombre</GenericText>
+							<GenericText style={styles.userData}>
+								{this.props.userData.name}
+							</GenericText>
 						</View>
 						{
 							<View style={styles.userDataRow}>
-								<Text style={styles.label}>Email</Text>
-								<Text style={[styles.userData, { fontSize: 16 }]}>
+								<GenericText style={styles.label}>Email</GenericText>
+								<GenericText style={[styles.userData, { fontSize: 16 }]}>
 									{this.props.userData.mail ? this.props.userData.mail : "N/D"}
-								</Text>
+								</GenericText>
 							</View>
 						}
 						{
 							<View style={styles.userDataRow}>
-								<Text style={styles.label}>Teléfono</Text>
-								<Text style={styles.userData}>
+								<GenericText style={styles.label}>Teléfono</GenericText>
+								<GenericText style={styles.userData}>
 									{this.props.userData.phoneNumber
 										? this.props.userData.phoneNumber
 										: "N/D"}
-								</Text>
+								</GenericText>
 							</View>
 						}
 					</View>
@@ -390,13 +388,12 @@ export default class Profile extends React.Component {
 							contentStyle={{
 								fontSize: 22,
 								fontFamily: "brother-1816-bold"
-							}}>
+							}}
+							onPress={this.goToSettings}>
 							CONFIGURACIÓN
 						</RkButton>
 					</View>
-					<View style={styles.footerContainer}>
-						<Footer />
-					</View>
+					<Footer />
 				</RootWrapper>
 			</ScrollView>
 		);

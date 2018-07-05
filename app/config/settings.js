@@ -60,12 +60,14 @@ exports.Screens = {
 	Home: "Home",
 	Profile: "Profile",
 	Routines: "Routines",
+	RoutineDetail: "RoutineDetail",
 	Classes: "Classes",
 	Timetable: "Timetable",
 	Messages: "Messages",
 	Referrals: "Referrals",
 	LoginStack: "loginStack",
-	HomeStack: "homeStack"
+	HomeStack: "homeStack",
+	Settings: "Settings"
 };
 
 exports.SignUpConstraints = {
@@ -87,6 +89,7 @@ exports.ActionsTypes = {
 	SET_NOTIFICATIONS_SYNC_FLAGS: "SET_NOTIFICATIONS_SYNC_FLAGS",
 	// Routines
 	SET_ROUTINES: "SET_ROUTINES",
+	SET_CURRENT_ROUTINE: "SET_CURRENT_ROUTINE",
 	// Timetable
 	SET_TIMETABLE: "SET_TIMETABLE",
 	// User Data
@@ -96,6 +99,7 @@ exports.ActionsTypes = {
 	SET_NEW_PASSWORD: "SET_NEW_PASSWORD",
 	SET_NOTIFICATIONS_NEW_MEMBER_DATA: "SET_NOTIFICATIONS_NEW_MEMBER_DATA",
 	SET_PROFILE_PICTURE_PATH: "SET_PROFILE_PICTURE_PATH",
+	SET_RECEIVE_NOTIFICATIONS: "SET_RECEIVE_NOTIFICATIONS",
 	//Session
 	LOG_IN: "LOG_IN",
 	LOG_OUT: "LOG_OUT",

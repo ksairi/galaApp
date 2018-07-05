@@ -1,75 +1,106 @@
-import React from 'react'
-import { FlatList } from 'react-native'
-import { connect } from 'react-redux'
-import { Messages } from '/config/settings'
-import ContainerStyles from '/components/presentationals/View/styles'
-import { GenericText } from '/components/presentationals/Text/'
-import { GenericContainer } from '/components/presentationals/View'
-import { LoadingSpinner } from '/components/presentationals/Spinner'
-import { RoutineListItem } from '/components/presentationals/ListItem'
-import { ModalRoutinesDetail } from '/components/presentationals/View'
+import React from "react";
+import { ScrollView, Image, View } from "react-native";
+import { RkButton } from "react-native-ui-kitten";
+import { connect } from "react-redux";
+import RootWrapper from "/components/presentationals/RootWrapper";
+import Footer from "/components/presentationals/Footer";
+import GenericText from "/components/presentationals/GenericText";
+import * as ScreenDimensions from "/utils/ScreenDimensions";
+import { Screens } from "/config/settings";
+import { ActionsCreators } from "/redux/actions/";
 
+const styles = {
+	routinesWrapper: {
+		flex: 1,
+		marginBottom: 40
+	}
+};
 
-@connect(
-  state => ({routines:state.routines})
-) 
+@connect(state => ({
+	routines: state.routines,
+	routinesImages: state.routinesImages
+}))
 export default class Routines extends React.Component {
-  static LocalMessages = {
-    NO_ROUTINES:"Sin rutinas"
-  }
-  
-  state = {
-    hasErrors:false,
-    selectedRoutine:null
-  }
+	seeRoutine = routine => () => {
+		this.props.dispatch(ActionsCreators.setCurrentRoutine(routine));
+		this.props.navigation.navigate(Screens.RoutineDetail);
+	};
 
-  openModal = (selectedRoutine)=> {
-    this.setState({selectedRoutine})
-  }
+	showRoutines = () =>
+		this.props.routines.map((routine, index) => (
+			<View
+				key={index}
+				style={{
+					flexDirection: "row",
+					flex: 1,
+					marginLeft: 20,
+					marginRight: 20,
+					marginTop: 15
+				}}>
+				<RkButton
+					shapeType="outline"
+					style={{
+						backgroundColor: "#12194d",
+						flex: 1,
+						paddingLeft: 10,
+						justifyContent: "flex-start",
+						height: 60
+					}}
+					contentStyle={{
+						fontSize: 22,
+						fontFamily: "brother-1816-bold"
+					}}
+					onPress={this.seeRoutine(routine)}>
+					{routine.description.toUpperCase()}
+				</RkButton>
+			</View>
+		));
 
-  closeModal = ()=> {
-    this.setState({selectedRoutine:null})
-  }
-  
-  render() {
-    if(this.state.hasErrors){
-      return(
-        <GenericText error={true}>
-          {Messages.SYSTEM_READ_ERROR}
-        </GenericText>
-      )
-    }
-    
-    if(this.props.routines.length == 0){
-      return(
-        <GenericText error={true}>
-          {Routines.LocalMessages.NO_ROUTINES}
-        </GenericText>
-      )  
-    }
-
-    if(this.state.selectedRoutine != null){
-      return (
-        <ModalRoutinesDetail routine={this.state.selectedRoutine} 
-        closeModal={()=>this.closeModal}/>
-      )
-    }
-
-    return (
-      <GenericContainer style={ContainerStyles.rootContainer}>
-        <GenericContainer style={ContainerStyles.centredContainer}>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <FlatList
-              data={this.props.routines}
-              keyExtractor = {(item, index) => `key-${index}`}
-              renderItem={({item}) =>
-                <RoutineListItem description={item.description} active={item.isActive} 
-                  dateFrom={item.dateFrom} dateTo={item.dateTo} onPress={() => this.openModal(item)}/> 
-              }
-            />
-          </GenericContainer>
-        </GenericContainer>
-      </GenericContainer>
-    )
-  }
+	render() {
+		return (
+			<ScrollView
+				contentContainerStyle={{
+					flexGrow: 1
+				}}>
+				<RootWrapper style={{ padding: 0 }}>
+					<Image
+						source={
+							this.props.routinesImages.length > 0 &&
+							this.props.routinesImages[0].imageIndex == 0
+								? require("../images/routines.jpg")
+								: {
+										uri:
+											"data:image/" +
+											this.props.routinesImages[0].fileExtension +
+											";base64," +
+											this.props.routinesImages[0].image
+								  }
+						}
+						style={{
+							height: 205,
+							width: ScreenDimensions.getPortraitWidth(),
+							alignSelf: "center"
+						}}
+					/>
+					<View style={styles.routinesWrapper}>
+						{this.props.routines.length > 0 ? (
+							this.showRoutines()
+						) : (
+							<View style={{ alignItems: "center", marginTop: 20 }}>
+								<GenericText
+									style={{ fontFamily: "brother-1816-bold", fontSize: 22 }}>
+									¡Ups!
+								</GenericText>
+								<GenericText style={{ fontSize: 18 }}>
+									Todavía no tienes rutinas
+								</GenericText>
+								<GenericText style={{ fontSize: 18 }}>disponibles</GenericText>
+							</View>
+						)}
+					</View>
+					<Footer />
+				</RootWrapper>
+			</ScrollView>
+		);
+	}
 }
