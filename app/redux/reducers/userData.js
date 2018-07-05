@@ -9,6 +9,9 @@ export const userData = createReducer(
 		},
 		[ActionsTypes.SET_NEW_PASSWORD](state, action) {
 			return { ...state, password: action.password };
+		},
+		[ActionsTypes.SET_RECEIVE_NOTIFICATIONS](state, action) {
+			return { ...state, receiveNotifications: action.value };
 		}
 	}
 );

@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, View } from "react-native";
+import { TouchableOpacity, View, Text } from "react-native";
 import { connect } from "react-redux";
 import Icon from "/helpers/ImageHelper";
 import { containerPadding } from "/components/styles";
@@ -22,7 +22,8 @@ const styles = {
 	portrait: {},
 	landscape: {
 		logo: { fontSize: 30 }
-	}
+	},
+	title: { fontSize: 20, color: "white", fontFamily: "brother-1816-bold" }
 };
 styles.firstButton = styles.backButton;
 
@@ -52,7 +53,11 @@ export default class Header extends React.PureComponent {
 	};
 
 	onBackPressed = () => {
-		this.props.navigation.goBack();
+		if (this.props.backScreen) {
+			this.props.navigation.navigate(this.props.backScreen);
+		} else {
+			this.props.navigation.goBack();
+		}
 	};
 
 	render() {
@@ -77,11 +82,25 @@ export default class Header extends React.PureComponent {
 						</TouchableOpacity>
 					)}
 				</View>
-
-				<View
-					style={{ flex: 2.2, flexDirection: "row", justifyContent: "center" }}>
-					<Logo style={[{ fontSize: 50 }, this.state.headerStyle.logo]} />
-				</View>
+				{this.props.title ? (
+					<View
+						style={{
+							flex: 2.2,
+							flexDirection: "row",
+							justifyContent: "center"
+						}}>
+						<Text style={styles.title}>{this.props.title}</Text>
+					</View>
+				) : (
+					<View
+						style={{
+							flex: 2.2,
+							flexDirection: "row",
+							justifyContent: "center"
+						}}>
+						<Logo style={[{ fontSize: 50 }, this.state.headerStyle.logo]} />
+					</View>
+				)}
 
 				<View style={{ flex: 1, flexDirection: "row" }} />
 			</View>
