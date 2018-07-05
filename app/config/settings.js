@@ -65,7 +65,8 @@ exports.Screens = {
 	Messages: "Messages",
 	Referrals: "Referrals",
 	LoginStack: "loginStack",
-	HomeStack: "homeStack"
+	HomeStack: "homeStack",
+	Settings: "Settings"
 };
 
 exports.SignUpConstraints = {
@@ -96,6 +97,7 @@ exports.ActionsTypes = {
 	SET_NEW_PASSWORD: "SET_NEW_PASSWORD",
 	SET_NOTIFICATIONS_NEW_MEMBER_DATA: "SET_NOTIFICATIONS_NEW_MEMBER_DATA",
 	SET_PROFILE_PICTURE_PATH: "SET_PROFILE_PICTURE_PATH",
+	SET_RECEIVE_NOTIFICATIONS: "SET_RECEIVE_NOTIFICATIONS",
 	//Session
 	LOG_IN: "LOG_IN",
 	LOG_OUT: "LOG_OUT",
