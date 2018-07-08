@@ -63,25 +63,26 @@ export default class Routines extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					<Image
-						source={
-							this.props.routinesImages.length > 0 &&
-							this.props.routinesImages[0].imageIndex == 0
-								? require("../images/routines.jpg")
-								: {
-										uri:
-											"data:image/" +
-											this.props.routinesImages[0].fileExtension +
-											";base64," +
-											this.props.routinesImages[0].image
-								  }
-						}
-						style={{
-							height: 205,
-							width: ScreenDimensions.getPortraitWidth(),
-							alignSelf: "center"
-						}}
-					/>
+					{this.props.routinesImages.length > 0 && (
+						<Image
+							source={
+								this.props.routinesImages[0].imageIndex == 0
+									? require("../images/routines.jpg")
+									: {
+											uri:
+												"data:image/" +
+												this.props.routinesImages[0].fileExtension +
+												";base64," +
+												this.props.routinesImages[0].image
+									  }
+							}
+							style={{
+								height: 205,
+								width: ScreenDimensions.getPortraitWidth(),
+								alignSelf: "center"
+							}}
+						/>
+					)}
 					<View style={styles.routinesWrapper}>
 						{this.props.routines.length > 0 ? (
 							this.showRoutines()

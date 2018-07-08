@@ -167,15 +167,6 @@ export default class Home extends React.Component {
 		this.loadPromotionsImages();
 	}
 
-	componentDidUpdate(prevProps, prevStates) {
-		if (prevProps.mainMenuImages == 0) {
-			this.loadSliderImages();
-		}
-		if (prevProps.promotions == 0) {
-			this.loadPromotionsImages();
-		}
-	}
-
 	onIconPressed = screen => () => {
 		this.props.navigation.navigate(screen);
 	};
