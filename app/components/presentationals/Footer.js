@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Linking } from "react-native";
-import { RkTheme, RkButton } from "react-native-ui-kitten";
+import { RkButton } from "react-native-ui-kitten";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
 

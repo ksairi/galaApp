@@ -60,6 +60,7 @@ exports.Screens = {
 	Home: "Home",
 	Profile: "Profile",
 	Routines: "Routines",
+	RoutineDetail: "RoutineDetail",
 	Classes: "Classes",
 	Timetable: "Timetable",
 	Messages: "Messages",
@@ -88,6 +89,7 @@ exports.ActionsTypes = {
 	SET_NOTIFICATIONS_SYNC_FLAGS: "SET_NOTIFICATIONS_SYNC_FLAGS",
 	// Routines
 	SET_ROUTINES: "SET_ROUTINES",
+	SET_CURRENT_ROUTINE: "SET_CURRENT_ROUTINE",
 	// Timetable
 	SET_TIMETABLE: "SET_TIMETABLE",
 	// User Data

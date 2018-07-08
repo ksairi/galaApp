@@ -30,11 +30,6 @@ const styles = {
 		marginRight: 20,
 		flex: 1
 	},
-	footerContainer: {
-		flex: 0.5,
-		flexDirection: "row"
-	},
-
 	buttonWrapper: {
 		flex: 1.5,
 		backgroundColor: "#12194d",
@@ -284,9 +279,7 @@ export default class Home extends React.Component {
 										</View>
 									))}
 							</View>
-							<View style={styles.footerContainer}>
-								<Footer />
-							</View>
+							<Footer />
 						</CentredWrapper>
 					) : (
 						<LoadingSpinner visible={true} message={"Cargando"} />

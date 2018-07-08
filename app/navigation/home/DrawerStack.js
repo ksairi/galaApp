@@ -5,6 +5,7 @@ import Home from "/screens/Home";
 import Profile from "/screens/Profile";
 import Timetable from "/screens/Timetable";
 import Routines from "/screens/Routines";
+import RoutineDetail from "/screens/RoutineDetail";
 import Messages from "/screens/Messages";
 import Referrals from "/screens/Referrals";
 import DrawerContentComponent from "/components/presentationals/DrawerContentComponent";
@@ -35,6 +36,17 @@ const ProfileNavigator = createStackNavigator(
 const RoutinesNavigator = createStackNavigator(
 	{
 		[Screens.Routines]: { screen: Routines }
+	},
+	{
+		navigationOptions: ({ navigation }) => ({
+			header: <Header navigation={navigation} isHomeHeader />
+		})
+	}
+);
+
+const RoutineDetailNavigator = createStackNavigator(
+	{
+		[Screens.RoutineDetail]: { screen: RoutineDetail }
 	},
 	{
 		navigationOptions: ({ navigation }) => ({
@@ -81,6 +93,7 @@ export default createDrawerNavigator(
 		[Screens.Home]: { screen: HomeNavigator },
 		[Screens.Profile]: { screen: ProfileNavigator },
 		[Screens.Routines]: { screen: RoutinesNavigator },
+		[Screens.RoutineDetail]: { screen: RoutineDetailNavigator },
 		[Screens.Classes]: { screen: TimetableNavigator },
 		[Screens.Timetable]: { screen: TimetableNavigator },
 		[Screens.Messages]: { screen: MessagesNavigator },

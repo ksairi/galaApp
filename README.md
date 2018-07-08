@@ -1,7 +1,13 @@
 # GalaApp
 
-React Native app for Gala Fitness Centre
+**React Native app for Gala Fitness Centre**
 
-# app/config/apiAccessToken.js
+## Files comments
 
-File to be created to export the identication token for server
+### app/config/apiAccessToken.js
+
+**File to be created to export the identication token for server**
+
+### icomoonConfig.json
+
+**Icons hosted in [Icomoon](https://icomoon.io/app)**
