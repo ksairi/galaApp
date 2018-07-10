@@ -178,7 +178,7 @@ export default class Home extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImages.length > 0 ||
+					{this.state.sliderImages.length > 0 &&
 					this.state.promotionsBase64Images.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
