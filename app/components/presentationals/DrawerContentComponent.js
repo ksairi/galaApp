@@ -2,7 +2,6 @@ import React from "react";
 import { ScrollView, TouchableOpacity } from "react-native";
 import { Screens } from "/config/settings";
 import DrawerItem from "/components/presentationals/DrawerItem";
-import Icon from "/helpers/ImageHelper";
 import Logo from "/components/presentationals/Logo";
 import { genericBackgroundColor } from "/components/styles";
 
