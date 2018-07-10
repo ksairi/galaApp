@@ -1,7 +1,7 @@
 import React from "react";
 import { ScrollView, Image, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
-import Carousel from "react-native-carousel-control";
+import Carousel from "react-native-carousel-control-fork";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import Footer from "/components/presentationals/Footer";
 import GenericText from "/components/presentationals/GenericText";
@@ -41,35 +41,82 @@ const styles = {
 };
 
 const timetableDaysMetadata = [
-	{ day: "LUNES", image: require("../images/timetable_mon.jpg") },
-	{ day: "MARTES", image: require("../images/timetable_tue.jpg") },
-	{ day: "MIÉRCOLES", image: require("../images/timetable_wed.jpg") },
-	{ day: "JUEVES", image: require("../images/timetable_thu.jpg") },
-	{ day: "VIERNES", image: require("../images/timetable_fri.jpg") },
-	{ day: "SÁBADO", image: require("../images/timetable_sat.jpg") }
+	{
+		day: "LUNES",
+		image: require("../images/timetable_mon.jpg")
+	},
+	{
+		day: "MARTES",
+		image: require("../images/timetable_tue.jpg")
+	},
+	{
+		day: "MIÉRCOLES",
+		image: require("../images/timetable_wed.jpg")
+	},
+	{
+		day: "JUEVES",
+		image: require("../images/timetable_thu.jpg")
+	},
+	{
+		day: "VIERNES",
+		image: require("../images/timetable_fri.jpg")
+	},
+	{
+		day: "SÁBADO",
+		image: require("../images/timetable_sat.jpg")
+	}
 ];
 
 const carouselOffset = 50,
 	pictureWidth = 1069,
 	pictureHeight = 600;
 
-@connect(state => ({ timetable: state.timetable }))
+@connect(state => ({
+	timetable: state.timetable,
+	orientation: state.currentOrientation
+}))
 export default class TimeTbale extends React.Component {
-	state = {};
+	state = {
+		portraitWidth: Dimensions.get("window").width
+	};
+	static currentIndex = null;
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.orientation) {
+			if (nextProps.orientation == "landscape") {
+				return {
+					portraitWidth: Dimensions.get("window").height,
+					sneak: 50
+				};
+			} else {
+				return {
+					portraitWidth: Dimensions.get("window").width,
+					sneak: 6
+				};
+			}
+		}
+
+		return prevState;
+	}
 
 	getImageWidth = () => {
-		if (Dimensions.get("window").width > Dimensions.get("window").height) {
-			return ScreenDimensions.getPortraitWidth();
-		}
 		return ScreenDimensions.getPortraitWidth() - carouselOffset;
 	};
 
-	getCarouselInitalItem = () => {
+	getCurrentIndex = () => {
+		if (Carousel.currentIndex != null) {
+			return Carousel.currentIndex;
+		}
+		//inital index
 		const today = new Date().getDay();
 		if (today == 0) {
 			return today; //monday in our schema
 		}
 		return today - 1;
+	};
+
+	onPageChange = position => {
+		Carousel.currentIndex = position;
 	};
 
 	render() {
@@ -78,13 +125,25 @@ export default class TimeTbale extends React.Component {
 				contentContainerStyle={{
 					flexGrow: 1
 				}}>
-				<RootWrapper style={{ padding: 0 }}>
+				<RootWrapper
+					style={{
+						padding: 0
+					}}>
 					<Carousel
-						pageWidth={Dimensions.get("window").width - carouselOffset}
-						sneak={10}
-						currentPage={this.getCarouselInitalItem()}
-						pageStyle={{ marginBottom: 20 }}
-						swipeThreshold={0.1}>
+						pageStyle={{
+							paddingLeft: 0,
+							paddingRight: 0,
+							marginLeft: 0,
+							marginRight: 0
+						}}
+						pageWidth={this.state.portraitWidth - carouselOffset}
+						sneak={this.state.sneak}
+						currentPage={this.getCurrentIndex()}
+						pageStyle={{
+							marginBottom: 20
+						}}
+						swipeThreshold={0.1}
+						onPageChange={this.onPageChange}>
 						{timetableDaysMetadata.map((dayMetadata, index) => (
 							<View key={index} style={styles.timetableDay}>
 								<View
