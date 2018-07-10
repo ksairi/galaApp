@@ -78,9 +78,9 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				ActionsCreators.setTimetableImages,
 				ActionsCreators.
 				dispatch
-			);
-	
-			dispatch(ActionsCreators.setTimetable(timetable));*/
+			);*/
+
+			dispatch(ActionsCreators.setTimetable(timetable));
 			return true;
 		} catch (error) {
 			console.log(error);

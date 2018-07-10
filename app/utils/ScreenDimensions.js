@@ -4,9 +4,3 @@ export const getPortraitWidth = () => {
 	const width = Dimensions.get("window").width;
 	return width > height ? height : width;
 };
-
-export const getPortraitHeight = () => {
-	const height = Dimensions.get("window").height;
-	const width = Dimensions.get("window").width;
-	return width > height ? height : width;
-};

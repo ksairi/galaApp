@@ -5769,6 +5769,10 @@ react-native-button@2.1.0:
   dependencies:
     prop-types "^15.5.10"
 
+"react-native-carousel-control-fork@https://github.com/ksairi/react-native-carousel-control/archive/v1.0.tar.gz":
+  version "2.0.1"
+  resolved "https://github.com/ksairi/react-native-carousel-control/archive/v1.0.tar.gz#01478b0d24033c24c5ec76019c251e4801334bd6"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -5811,13 +5815,10 @@ react-native-maps@0.21.0:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
 
-<<<<<<< HEAD
 react-native-reanimated@1.0.0-alpha.3:
   version "1.0.0-alpha.3"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.0.0-alpha.3.tgz#42983aa41911791cd3186fd3a18a788c3d4c3601"
 
-=======
->>>>>>> 1706d8298aea37870fe064962bfddc8f31caefcb
 react-native-safe-area-view@^0.7.0:
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/react-native-safe-area-view/-/react-native-safe-area-view-0.7.0.tgz#38f5ab9368d6ef9e5d18ab64212938af3ec39421"
@@ -5899,15 +5900,9 @@ react-native-vector-icons@4.5.0:
     prop-types "^15.5.10"
     yargs "^8.0.2"
 
-<<<<<<< HEAD
 "react-native@https://github.com/expo/react-native/archive/sdk-28.0.1.tar.gz":
   version "0.55.4"
   resolved "https://github.com/expo/react-native/archive/sdk-28.0.1.tar.gz#b7f363f0098baa69a0fb064bf7b2fbd9d533cf85"
-=======
-"react-native@https://github.com/expo/react-native/archive/v0.55.4.tar.gz":
-  version "0.55.4"
-  resolved "https://github.com/expo/react-native/archive/v0.55.4.tar.gz#ab5781868bfc85082c4b5caaf77e069556a4ccb1"
->>>>>>> 1706d8298aea37870fe064962bfddc8f31caefcb
   dependencies:
     absolute-path "^0.0.0"
     art "^0.10.0"
