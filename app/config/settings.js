@@ -67,7 +67,8 @@ exports.Screens = {
 	Referrals: "Referrals",
 	LoginStack: "loginStack",
 	HomeStack: "homeStack",
-	Settings: "Settings"
+	Settings: "Settings",
+	CameraView: "CameraView"
 };
 
 exports.SignUpConstraints = {

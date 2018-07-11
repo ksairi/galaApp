@@ -8,6 +8,7 @@ import Routines from "/screens/Routines";
 import RoutineDetail from "/screens/RoutineDetail";
 import Messages from "/screens/Messages";
 import Referrals from "/screens/Referrals";
+import CameraView from "/screens/CameraView";
 import DrawerContentComponent from "/components/presentationals/DrawerContentComponent";
 import Header from "/components/containers/Header";
 
@@ -94,6 +95,7 @@ export default createDrawerNavigator(
 		[Screens.Profile]: { screen: ProfileNavigator },
 		[Screens.Routines]: { screen: RoutinesNavigator },
 		[Screens.RoutineDetail]: { screen: RoutineDetailNavigator },
+		[Screens.CameraView]: { screen: CameraView },
 		[Screens.Classes]: { screen: TimetableNavigator },
 		[Screens.Timetable]: { screen: TimetableNavigator },
 		[Screens.Messages]: { screen: MessagesNavigator },
