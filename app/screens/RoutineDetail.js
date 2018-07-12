@@ -10,7 +10,7 @@ import { ActionsCreators } from "/redux/actions/";
 import { genericBackgroundColor } from "/components/styles";
 import { FontAwesome } from "@expo/vector-icons";
 
-styles = {
+const styles = {
 	exerciseDetail: {
 		fontFamily: "brother-1816-bold",
 		fontSize: 13,
