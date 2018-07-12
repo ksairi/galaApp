@@ -45,11 +45,11 @@ exports.resetPassword = (userId, password) => {
 		});
 };
 
-exports.sendComments = (userId, comments) => {
-	const sendCommentsParameters = {};
-	sendCommentsParameters.userId = userId;
-	sendCommentsParameters.comments = comments;
-	return connectToServer(Urls.SEND_COMMENTS, sendCommentsParameters)
+exports.sendReferral = (userId, mail) => {
+	const sendReferralParameters = {};
+	sendReferralParameters.userId = userId;
+	sendReferralParameters.mail = mail;
+	return connectToServer(Urls.SEND_REFERRAL, sendReferralParameters)
 		.then(response => {
 			return response;
 		})

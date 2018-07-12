@@ -12,7 +12,7 @@ exports.Urls = {
 	LOGIN: SERVER_HOSTNAME_1 + "login",
 	REGISTER: SERVER_HOSTNAME_1 + "register",
 	RESET_PASSWORD: SERVER_HOSTNAME_1 + "resetPassword",
-	SEND_COMMENTS: SERVER_HOSTNAME_1 + "sendComments",
+	SEND_REFERRAL: SERVER_HOSTNAME_2 + "sendReferral",
 	SEND_CLIENT_TOKEN: SERVER_HOSTNAME_1 + "sendClientToken",
 	SYN_LOCAL_STORAGE: SERVER_HOSTNAME_1 + "syncLocalStorage",
 	FETCH_USER_DATA: SERVER_HOSTNAME_1 + "fetchUserData",
@@ -37,9 +37,7 @@ exports.Messages = {
 		"Error al guardar información en el dispositivo. Vuelva a intentarlo nuevamente",
 	SYSTEM_READ_ERROR:
 		"Error al leer información del dispositivo. Vuelva a intentarlo nuevamente",
-	INVALID_COMMENTS: "Por favor ingresá un comentario antes de enviar",
-	SEND_COMMENTS_OK:
-		"Recibimos tus comentarios. Te contactaremos si es necesario. Muchas Gracias",
+	INVALID_EMAIL: "Por favor ingresá mail válido",
 	INCOMPLETE_INPUT_DATA: "Completá todos los campos antes de continuar",
 	NO_SPACE_IN_DISK:
 		"Espacio insuficiente. Por favor, elimine contenido para continuar."
@@ -47,8 +45,7 @@ exports.Messages = {
 
 exports.Labels = {
 	SUBMIT: "Enviar",
-	MAIL: "E-mail",
-	ENTER_COMMENTS: "Queremos leer lo que tenés para decir"
+	MAIL: "E-mail"
 };
 
 exports.Screens = {
