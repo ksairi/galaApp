@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import { RkTheme, RkTextInput } from "react-native-ui-kitten";
 import * as Animatable from "react-native-animatable-promise";
-import { Messages, Screens, ServerProtocol } from "/config/settings";
+import { Messages, Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
 import { ActionsCreators } from "/redux/actions";
 import RootWrapper from "/components/presentationals/RootWrapper";
@@ -269,21 +269,14 @@ export default class SignIn extends React.Component {
 		}
 		this.setState({ errorMessage: "", spinnerVisible: true });
 		try {
-			const httpResponse = await login(
+			await login(
 				this.state.userId,
 				this.state.password,
 				this.props.loginSynchedDataParameters,
 				this.props.dispatch
 			);
-			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-				this.setState({ spinnerVisible: false });
-				this.props.navigation.navigate(Screens.HomeStack);
-			} else {
-				this.setState({
-					spinnerVisible: false,
-					errorMessage: httpResponse[ServerProtocol.messageField]
-				});
-			}
+			this.setState({ spinnerVisible: false });
+			this.props.navigation.navigate(Screens.HomeStack);
 		} catch (errorMessage) {
 			this.setState({ spinnerVisible: false });
 			if (
@@ -295,7 +288,7 @@ export default class SignIn extends React.Component {
 				this.props.dispatch(ActionsCreators.setIsUsingCache(true));
 				this.props.navigation.navigate(Screens.HomeStack);
 			} else {
-				this.setState((prevState, props) => ({ errorMessage }));
+				this.setState({ errorMessage });
 			}
 		}
 	};

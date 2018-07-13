@@ -2,7 +2,7 @@ import React from "react";
 import { View } from "react-native";
 import { LoadingSpinner } from "/components/presentationals/Spinner";
 import { connect } from "react-redux";
-import { Screens, ServerProtocol } from "/config/settings";
+import { Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
 import { ActionsCreators } from "/redux/actions";
 
@@ -41,22 +41,14 @@ export default class CheckUserActivity extends React.Component {
 			if (this.props.isLoggedIn) {
 				try {
 					CheckUserActivity.isInLoggingProcess = true;
-					const httpResponse = await login(
+					await login(
 						this.props.userId,
 						this.props.password,
 						this.props.loginSynchedDataParameters,
 						this.props.dispatch
 					);
-					if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-						this.props.navigation.navigate(Screens.HomeStack);
-					} else {
-						this.props.dispatch(
-							ActionsCreators.setAutoLoginErrorMessage(
-								httpResponse[ServerProtocol.messageField]
-							)
-						);
-						this.props.navigation.navigate(Screens.LoginStack);
-					}
+
+					this.props.navigation.navigate(Screens.HomeStack);
 				} catch (error) {
 					this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(error));
 					this.props.navigation.navigate(Screens.LoginStack);

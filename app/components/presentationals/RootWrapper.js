@@ -1,7 +1,6 @@
 import React from "react";
 import { View } from "react-native";
 import { genericBackgroundColor, containerPadding } from "/components/styles";
-import { ActionsCreators } from "/redux/actions";
 
 const styles = {
 	rootWrapper: {

@@ -20,3 +20,10 @@ exports.isObjectEmpty = (obj) => {
 
   return (obj == null || (Object.getOwnPropertyNames(obj).length == 0))
 }
+
+exports.isMailValid = (email) => {
+  
+  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  
+   return regex.test(email);
+}
