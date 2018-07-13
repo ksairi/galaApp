@@ -1,8 +1,7 @@
 import React from "react";
 import { Keyboard, KeyboardAvoidingView, View } from "react-native";
-import { NavigationActions } from "react-navigation";
 import { connect } from "react-redux";
-import { Messages, Screens, ServerProtocol } from "/config/settings";
+import { Messages, Screens } from "/config/settings";
 import { register } from "/helpers/LoginHelper";
 import ValidationHelper from "/helpers/ValidationHelper";
 import { getDeviceToken } from "/helpers/NotificationsHelper";
@@ -129,7 +128,7 @@ export default class SignUp extends React.Component {
 			const deviceToken = this.props.notificationsToken
 				? this.props.notificationsToken
 				: await getDeviceToken(this.props.dispatch);
-			const httpResponse = await register(
+			await register(
 				this.userFullName,
 				this.userId,
 				this.password,
@@ -138,16 +137,11 @@ export default class SignUp extends React.Component {
 				this.props.dispatch
 			);
 			this.setState({ spinnerVisible: false });
-			if (httpResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
-				this.props.navigation.navigate(Screens.HomeStack);
-			} else {
-				this.setState({
-					errorMessage: httpResponse[ServerProtocol.messageField]
-				});
-			}
+
+			this.props.navigation.navigate(Screens.HomeStack);
 		} catch (errorMessage) {
 			this.setState({ spinnerVisible: false });
-			this.setState((prevState, props) => ({ errorMessage }));
+			this.setState = { errorMessage };
 		}
 	};
 
@@ -175,11 +169,7 @@ export default class SignUp extends React.Component {
 		}
 	};
 	goToSignIn = () => {
-		const resetAction = NavigationActions.reset({
-			index: 0,
-			actions: [NavigationActions.navigate({ routeName: Screens.SignIn })]
-		});
-		this.props.navigation.dispatch(resetAction);
+		this.props.navigation.navigate(Screens.SignIn);
 	};
 
 	onFullNameChangeText = fullName => {

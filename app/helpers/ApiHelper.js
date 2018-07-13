@@ -122,7 +122,7 @@ connectToServer = (url, parameters) => {
 		})
 		.then(responseJson => {
 			if (responseJson[ServerProtocol.statusField] != ServerProtocol.OK) {
-				return responseJson;
+				throw responseJson[ServerProtocol.messageField];
 			} else {
 				return responseJson;
 			}
@@ -130,11 +130,11 @@ connectToServer = (url, parameters) => {
 		.catch(error => {
 			return isDeviceConnected().then(isConnected => {
 				if (isConnected) {
-					if (error.message) {
+					if (error && error.message) {
 						//for unified Error:Network request failed
 						throw Messages.SERVER_ERROR;
 					}
-					throw error;
+					throw error ? error : Messages.SERVER_ERROR;
 				} else {
 					throw Messages.CHECK_INTERNET_CONNECTION;
 				}

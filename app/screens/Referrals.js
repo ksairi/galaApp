@@ -1,13 +1,14 @@
 import React from "react";
-import { Keyboard, KeyboardAvoidingView, View } from "react-native";
+import { Keyboard, View } from "react-native";
 import { connect } from "react-redux";
 import { RkTextInput, RkTheme } from "react-native-ui-kitten";
 import GenericText from "/components/presentationals/GenericText";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
-import { Messages, Labels } from "/config/settings";
+import { Messages, ServerProtocol } from "/config/settings";
 import { sendReferral } from "/helpers/ApiHelper";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import Button from "/components/presentationals/GenericButton";
+import { isMailValid } from "/helpers/ValidationHelper";
 
 const styles = {
 	textInputStyle: {
@@ -40,8 +41,9 @@ export default class Referrals extends React.Component {
 	state = {
 		spinnerVisible: false,
 		error: false,
-		message: "",
-		componentsStyle: styles.hiddenKeyboardComponentsStyle
+		message: null,
+		componentsStyle: styles.hiddenKeyboardComponentsStyle,
+		mail: null
 	};
 	componentDidMount() {
 		this.keyboardDidShowListener = Keyboard.addListener(
@@ -61,7 +63,7 @@ export default class Referrals extends React.Component {
 
 	_keyboardDidShow = () => {
 		this.setState({
-			message: "",
+			message: null,
 			componentsStyle: styles.showingKeyboardComponentsStyle
 		});
 	};
@@ -73,88 +75,90 @@ export default class Referrals extends React.Component {
 	render() {
 		return (
 			<RootWrapper style={this.state.componentsStyle.rootWrapper}>
-				<KeyboardAvoidingView>
+				<GenericText
+					style={[
+						{
+							fontFamily: "brother-1816-bold",
+							flex: -1,
+							paddingBottom: 10
+						},
+						this.state.componentsStyle.title
+					]}>
+					REFERIDOS
+				</GenericText>
+				<GenericText
+					style={[
+						{ flex: -1, paddingBottom: 10 },
+						this.state.componentsStyle.description
+					]}>
+					Invitá a quien quieras y disfruten ambos de beneficios exclusivos
+				</GenericText>
+				<View style={{ flexDirection: "row", marginBottom: 30 }}>
+					<RkTextInput
+						rkType="outline referralInputText"
+						placeholder="INGRESÁ MAIL"
+						autoFocus
+						onChangeText={pMail => this.setState({ mail: pMail })}
+						onSubmitEditing={this.sendEmail}
+						keyboardType="email-address"
+						returnKeyType="send"
+						autoCapitalize="none"
+						autoCorrect={false}
+						value={this.state.mail}
+					/>
+				</View>
+				<View style={{ flexDirection: "row" }}>
+					<Button
+						text="ENVIAR"
+						onPress={this.sendEmail}
+						style={{ flex: 1 }}
+						contentStyle={{
+							fontFamily: "brother-1816-bold"
+						}}
+					/>
+				</View>
+
+				{this.state.message && (
 					<GenericText
-						style={[
-							{
-								fontFamily: "brother-1816-bold",
-								flex: -1,
-								paddingBottom: 10
-							},
-							this.state.componentsStyle.title
-						]}>
-						REFERIDOS
-					</GenericText>
-					<GenericText
-						style={[
-							{ flex: -1, paddingBottom: 10 },
-							this.state.componentsStyle.description
-						]}>
-						Invitá a quien quieras y disfruten ambos de beneficios exclusivos
-					</GenericText>
-					<View style={{ flexDirection: "row", marginBottom: 30 }}>
-						<RkTextInput
-							rkType="outline referralInputText"
-							placeholder="INGRESÁ MAIL"
-							autoFocus
-							onChangeText={pMail => (this.mail = pMail)}
-							onSubmitEditing={this.sendEmail}
-							keyboardType="email-address"
-							returnKeyType="send"
-							autoCapitalize="none"
-							autoCorrect={false}
-						/>
-					</View>
-					<View style={{ flexDirection: "row" }}>
-						<Button
-							text="ENVIAR"
-							onPress={this.sendEmail}
-							style={{ flex: 1 }}
-							contentStyle={{
-								fontFamily: "brother-1816-bold"
-							}}
-						/>
-					</View>
-					<GenericText error={this.state.error}>
+						style={{
+							fontSize: 17,
+							flex: -1,
+							paddingTop: 10
+						}}
+						error={this.state.error}>
 						{this.state.message}
 					</GenericText>
-					<LoadingSpinner visible={this.state.spinnerVisible} />
-				</KeyboardAvoidingView>
+				)}
+				<LoadingSpinner visible={this.state.spinnerVisible} />
 			</RootWrapper>
 		);
 	}
 
 	sendEmail = () => {
 		Keyboard.dismiss();
-		if (!this.mail) {
-			this.setState({ message: Messages.INVALID_EMAIL, error: true });
+		if (!isMailValid(this.state.mail)) {
+			this.setState({ message: Messages.INVALID_MAIL, error: true });
 			return;
 		}
-		this.setState({ message: "", spinnerVisible: true });
+		this.setState({ message: null, spinnerVisible: true });
 		if (this.props.userId !== null) {
-			sendReferral(this.props.userId, this.mail)
+			sendReferral(this.props.userId, this.state.mail)
 				.then(response => {
-					this.setState({ spinnerVisible: false });
-					if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
-						this.setState({
-							message: `Listo! ${
-								this.mail
-							} comenzará a recibir nuestras promociones! `,
-							error: false
-						});
-					} else {
-						this.setState({
-							message: response[ServerProtocol.messageField],
-							error: true
-						});
-					}
+					this.setState({
+						message: `Listo! ${
+							this.state.mail
+						} comenzará a recibir nuestras promociones! `,
+						error: false,
+						mail: null,
+						spinnerVisible: false
+					});
 				})
 				.catch(message => {
-					this.setState((prevState, props) => ({
+					this.setState({
 						message,
 						error: true,
 						spinnerVisible: false
-					}));
+					});
 				});
 		} else {
 			this.setState({

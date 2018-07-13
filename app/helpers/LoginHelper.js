@@ -18,14 +18,18 @@ exports.login = async (
 	loginSynchedDataParameters,
 	dispatch
 ) => {
-	const loginResponse = await loginApi(userId, password);
-	return fetchDynamicData(
-		loginResponse,
-		userId,
-		password,
-		loginSynchedDataParameters,
-		dispatch
-	);
+	try {
+		const loginResponse = await loginApi(userId, password);
+		return fetchDynamicData(
+			loginResponse,
+			userId,
+			password,
+			loginSynchedDataParameters,
+			dispatch
+		);
+	} catch (error) {
+		throw error;
+	}
 };
 
 exports.register = async (
@@ -36,13 +40,14 @@ exports.register = async (
 	loginSynchedDataParameters,
 	dispatch
 ) => {
-	const registerResponse = await registerApi(
-		fullName,
-		userId,
-		password,
-		deviceToken
-	);
-	if (registerResponse[ServerProtocol.statusField] == ServerProtocol.OK) {
+	try {
+		const registerResponse = await registerApi(
+			fullName,
+			userId,
+			password,
+			deviceToken
+		);
+
 		clearStore(dispatch);
 		return fetchDynamicData(
 			registerResponse,
@@ -51,6 +56,8 @@ exports.register = async (
 			loginSynchedDataParameters,
 			dispatch
 		);
+	} catch (error) {
+		throw error;
 	}
 };
 
@@ -61,26 +68,19 @@ fetchDynamicData = async (
 	synchedDataParameters,
 	dispatch
 ) => {
-	if (response[ServerProtocol.statusField] == ServerProtocol.OK) {
-		try {
-			var contentServerResponse = true;
-			contentServerResponse = await doFetchDynamicData(
-				synchedDataParameters,
-				dispatch
-			);
+	try {
+		var fetchAndSaveContentServerResponse = await doFetchDynamicData(
+			synchedDataParameters,
+			dispatch
+		);
 
-			if (contentServerResponse) {
-				setInitialData(response.data, userId, password, dispatch);
-				return { [ServerProtocol.statusField]: ServerProtocol.OK };
-			}
-			return { [ServerProtocol.messageField]: Messages.NO_SPACE_IN_DISK };
-		} catch (errorMessage) {
-			return { [ServerProtocol.messageField]: errorMessage };
+		if (fetchAndSaveContentServerResponse) {
+			setInitialData(response.data, userId, password, dispatch);
+			return { [ServerProtocol.statusField]: ServerProtocol.OK };
 		}
-	} else {
-		return {
-			[ServerProtocol.messageField]: response[ServerProtocol.messageField]
-		};
+		return { [ServerProtocol.messageField]: Messages.NO_SPACE_IN_DISK };
+	} catch (errorMessage) {
+		return { [ServerProtocol.messageField]: errorMessage };
 	}
 };
 

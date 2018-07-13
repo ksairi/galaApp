@@ -1,5 +1,4 @@
 //import Base64 from "/utils/Base64";
-import { ServerProtocol } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
 
@@ -117,13 +116,12 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 		) {
 			syncLocalStorage(userId, receivedNotificationsKeys, readNotificationsKeys)
 				.then(response => {
-					if (response[ServerProtocol.statusField] == ServerProtocol.OK)
-						dispatch(
-							ActionsCreators.setNotificationsSyncFlags(
-								receivedNotificationsKeys,
-								readNotificationsKeys
-							)
-						);
+					dispatch(
+						ActionsCreators.setNotificationsSyncFlags(
+							receivedNotificationsKeys,
+							readNotificationsKeys
+						)
+					);
 				})
 				.catch(error => {});
 		}
