@@ -1,4 +1,5 @@
 import React from "react";
+import { Keyboard } from "react-native";
 import { createDrawerNavigator, createStackNavigator } from "react-navigation";
 import { Screens } from "/config/settings";
 import Home from "/screens/Home";
@@ -89,7 +90,7 @@ const ReferralsNavigator = createStackNavigator(
 	}
 );
 
-export default createDrawerNavigator(
+const drawerNavigator = createDrawerNavigator(
 	{
 		[Screens.Home]: { screen: HomeNavigator },
 		[Screens.Profile]: { screen: ProfileNavigator },
@@ -110,3 +111,14 @@ export default createDrawerNavigator(
 		)
 	}
 );
+
+const defaultGetStateForAction = drawerNavigator.router.getStateForAction;
+
+drawerNavigator.router.getStateForAction = (action, state) => {
+	if (state && action.type === "Navigation/OPEN_DRAWER") {
+		Keyboard.dismiss();
+	}
+	return defaultGetStateForAction(action, state);
+};
+
+export default drawerNavigator;
