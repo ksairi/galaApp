@@ -65,7 +65,8 @@ exports.Screens = {
 	LoginStack: "loginStack",
 	HomeStack: "homeStack",
 	Settings: "Settings",
-	CameraView: "CameraView"
+	CameraView: "CameraView",
+	NewMember: "NewMember"
 };
 
 exports.SignUpConstraints = {
@@ -95,7 +96,6 @@ exports.ActionsTypes = {
 	SET_NEW_MEMBER_DATA: "SET_NEW_MEMBER_DATA",
 	SET_IS_USING_CACHE: "SET_IS_USING_CACHE",
 	SET_NEW_PASSWORD: "SET_NEW_PASSWORD",
-	SET_NOTIFICATIONS_NEW_MEMBER_DATA: "SET_NOTIFICATIONS_NEW_MEMBER_DATA",
 	SET_PROFILE_PICTURE_PATH: "SET_PROFILE_PICTURE_PATH",
 	SET_RECEIVE_NOTIFICATIONS: "SET_RECEIVE_NOTIFICATIONS",
 	//Session

@@ -96,7 +96,9 @@ export default class SignUp extends React.Component {
 	};
 
 	_keyboardDidHide = () => {
-		this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
+		if (this) {
+			this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
+		}
 	};
 
 	signUp = async () => {
@@ -137,11 +139,9 @@ export default class SignUp extends React.Component {
 				this.props.dispatch
 			);
 			this.setState({ spinnerVisible: false });
-
 			this.props.navigation.navigate(Screens.HomeStack);
 		} catch (errorMessage) {
-			this.setState({ spinnerVisible: false });
-			this.setState = { errorMessage };
+			this.setState({ spinnerVisible: false, errorMessage });
 		}
 	};
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, View, TouchableOpacity } from "react-native";
+import { ScrollView, View, TouchableOpacity, BackHandler } from "react-native";
 import { connect } from "react-redux";
 import Timeline from "react-native-timeline-listview";
 import RootWrapper from "/components/presentationals/RootWrapper";
@@ -38,6 +38,14 @@ const styles = {
 export default class RoutineDetail extends React.Component {
 	state = {};
 
+	componentDidMount() {
+		BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+	}
+
+	componentWillUnmount() {
+		BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+	}
+
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.currentRoutine) {
 			return {
@@ -65,10 +73,18 @@ export default class RoutineDetail extends React.Component {
 		return result;
 	}
 
+	handleBackPress = () => {
+		this.goBackToRoutines();
+		return true;
+	};
+
 	goBackToRoutines = () => {
-		this.props.dispatch(ActionsCreators.setCurrentRoutine(""));
 		this.props.navigation.navigate(Screens.Routines);
 	};
+
+	componentWillUnmount() {
+		this.props.dispatch(ActionsCreators.setCurrentRoutine(""));
+	}
 
 	renderTimeLineDetail = rowData => {
 		let title = (

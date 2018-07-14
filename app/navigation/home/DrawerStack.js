@@ -10,12 +10,24 @@ import RoutineDetail from "/screens/RoutineDetail";
 import Messages from "/screens/Messages";
 import Referrals from "/screens/Referrals";
 import CameraView from "/screens/CameraView";
-import DrawerContentComponent from "/components/presentationals/DrawerContentComponent";
+import NewMember from "/screens/NewMember";
+import DrawerContentComponent from "/components/containers/DrawerContentComponent";
 import Header from "/components/containers/Header";
 
 const HomeNavigator = createStackNavigator(
 	{
 		[Screens.Home]: { screen: Home }
+	},
+	{
+		navigationOptions: ({ navigation }) => ({
+			header: <Header navigation={navigation} isHomeHeader />
+		})
+	}
+);
+
+const NewMemberNavigator = createStackNavigator(
+	{
+		[Screens.NewMember]: { screen: NewMember }
 	},
 	{
 		navigationOptions: ({ navigation }) => ({
@@ -93,6 +105,7 @@ const ReferralsNavigator = createStackNavigator(
 const drawerNavigator = createDrawerNavigator(
 	{
 		[Screens.Home]: { screen: HomeNavigator },
+		[Screens.NewMember]: { screen: NewMemberNavigator },
 		[Screens.Profile]: { screen: ProfileNavigator },
 		[Screens.Routines]: { screen: RoutinesNavigator },
 		[Screens.RoutineDetail]: { screen: RoutineDetailNavigator },
@@ -108,7 +121,8 @@ const drawerNavigator = createDrawerNavigator(
 				navigation={props.navigation}
 				activeItemKey={props.activeItemKey}
 			/>
-		)
+		),
+		backBehavior: "initialRoute"
 	}
 );
 

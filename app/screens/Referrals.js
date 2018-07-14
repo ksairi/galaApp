@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { RkTextInput, RkTheme } from "react-native-ui-kitten";
 import GenericText from "/components/presentationals/GenericText";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
-import { Messages, ServerProtocol } from "/config/settings";
+import { Messages } from "/config/settings";
 import { sendReferral } from "/helpers/ApiHelper";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import Button from "/components/presentationals/GenericButton";

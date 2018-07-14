@@ -18,21 +18,17 @@ export const userData = createReducer(
 
 export const newMemberData = createReducer(null, {
 	[ActionsTypes.SET_NEW_MEMBER_DATA](state, action) {
-		if (action.newMemberData == null) {
-			return {};
-		} else {
-			return action.newMemberData;
-		}
-	},
-	[ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA](state, action) {
-		if (action.notificationsNewMemberData) {
-			return {
-				...state,
-				freeEntryDaysLeft: action.notificationsNewMemberData.freeEntryDaysLeft
+		if (action.newMemberData != null) {
+			const newMemberData = {
+				...action.newMemberData,
+				freeEntryData: {
+					...action.newMemberData.freeEntryData,
+					date: Date.now()
+				}
 			};
-		} else {
-			return state;
+			return newMemberData;
 		}
+		return state;
 	}
 });
 

@@ -99,6 +99,10 @@ export default class TimeTbale extends React.Component {
 		return prevState;
 	}
 
+	componentWillUnmount() {
+		Carousel.currentIndex = null;
+	}
+
 	getImageWidth = () => {
 		return ScreenDimensions.getPortraitWidth() - carouselOffset;
 	};
@@ -173,31 +177,30 @@ export default class TimeTbale extends React.Component {
 									<GenericText style={styles.day}>
 										{dayMetadata.day}
 									</GenericText>
-									{this.props.timetable[index] && (
-										<View>
-											<GenericText style={styles.dayMessage}>
-												{this.props.timetable[index].message}
-											</GenericText>
-											{this.props.timetable[index].data.map(
-												(timetableData, index) => (
-													<View
-														key={index}
-														style={{
-															flex: 1,
-															flexDirection: "row",
-															paddingBottom: 10
-														}}>
-														<GenericText style={styles.className}>
-															{timetableData.class}
-														</GenericText>
-														<GenericText style={styles.classTime}>
-															{timetableData.time}
-														</GenericText>
-													</View>
-												)
-											)}
-										</View>
-									)}
+
+									<View>
+										<GenericText style={styles.dayMessage}>
+											{this.props.timetable[index].message}
+										</GenericText>
+										{this.props.timetable[index].data.map(
+											(timetableData, index) => (
+												<View
+													key={index}
+													style={{
+														flex: 1,
+														flexDirection: "row",
+														paddingBottom: 10
+													}}>
+													<GenericText style={styles.className}>
+														{timetableData.class}
+													</GenericText>
+													<GenericText style={styles.classTime}>
+														{timetableData.time}
+													</GenericText>
+												</View>
+											)
+										)}
+									</View>
 								</View>
 							</View>
 						))}
