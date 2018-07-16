@@ -1,10 +1,11 @@
 import React from "react";
-import { ScrollView, TouchableOpacity } from "react-native";
+import { ScrollView, TouchableOpacity, AppState } from "react-native";
 import { connect } from "react-redux";
 import { Screens } from "/config/settings";
 import DrawerItem from "/components/presentationals/DrawerItem";
 import Logo from "/components/presentationals/Logo";
 import { genericBackgroundColor } from "/components/styles";
+import * as UserDataHelper from "/helpers/UserDataHelper";
 
 const styles = {
 	drawerItemsWrapper: {
@@ -98,7 +99,50 @@ export default class DrawerContentComponent extends React.PureComponent {
 				screen: Screens.Referrals,
 				style: { label: { marginTop: 5 }, arrow: { marginTop: 13 } }
 			}
-		]
+		],
+		appState: AppState.currentState,
+		freeEntryDaysLeft: null
+	};
+
+	componentDidMount() {
+		AppState.addEventListener("change", this._handleAppStateChange);
+	}
+
+	componentWillUnmount() {
+		AppState.removeEventListener("change", this._handleAppStateChange);
+	}
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.newMemberData) {
+			return {
+				freeEntryDaysLeft: UserDataHelper.getFreeEntryDaysLeft(
+					nextProps.newMemberData.freeEntryData.date
+				)
+			};
+		}
+	}
+
+	_handleAppStateChange = nextAppState => {
+		if (
+			this.state.appState.match(/inactive|background/) &&
+			nextAppState === "active"
+		) {
+			if (this.props.newMemberData) {
+				const freeEntryDaysLeft = UserDataHelper.getFreeEntryDaysLeft(
+					this.props.newMemberData.freeEntryData.date
+				);
+				if (freeEntryDaysLeft > 0) {
+					this.setState({
+						freeEntryDaysLeft: UserDataHelper.getFreeEntryDaysLeft(
+							this.props.newMemberData.freeEntryData.date
+						)
+					});
+				} else {
+					this.props.navigation.navigate(Screens.Home);
+				}
+			}
+		}
+		this.setState({ appState: nextAppState });
 	};
 
 	navigateTo = screen => {
@@ -119,7 +163,9 @@ export default class DrawerContentComponent extends React.PureComponent {
 				{this.state.drawerItems.map((drawerItem, index) => {
 					if (
 						drawerItem.screen != Screens.NewMember ||
-						(drawerItem.screen == Screens.NewMember && this.props.newMemberData)
+						(drawerItem.screen == Screens.NewMember &&
+							this.state.freeEntryDaysLeft &&
+							this.state.freeEntryDaysLeft > 0)
 					) {
 						return (
 							<DrawerItem
