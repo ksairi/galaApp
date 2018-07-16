@@ -22,12 +22,6 @@ export function setNotificationsNewMemberData(notificationsNewMemberData) {
 	};
 }
 
-export function setIsUsingCache(isUsingCache) {
-	return (dispatch, getState) => {
-		dispatch({ type: ActionsTypes.SET_IS_USING_CACHE, isUsingCache });
-	};
-}
-
 export function fetchUserStore() {
 	return (dispatch, getState) => {
 		if (getState().userData.userId) {

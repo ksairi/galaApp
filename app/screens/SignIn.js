@@ -285,7 +285,6 @@ export default class SignIn extends React.Component {
 				this.state.password == this.props.userData.password
 			) {
 				//offline login
-				this.props.dispatch(ActionsCreators.setIsUsingCache(true));
 				this.props.navigation.navigate(Screens.HomeStack);
 			} else {
 				this.setState({ errorMessage });

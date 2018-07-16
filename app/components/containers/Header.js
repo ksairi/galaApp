@@ -1,9 +1,11 @@
 import React from "react";
-import { TouchableOpacity, View, Text } from "react-native";
+import { TouchableOpacity, View, Text, NetInfo } from "react-native";
 import { connect } from "react-redux";
 import Icon from "/helpers/ImageHelper";
 import { containerPadding } from "/components/styles";
 import Logo from "components/presentationals/Logo";
+import GenericText from "components/presentationals/GenericText";
+import NetworkHelper from "/helpers/NetworkHelper";
 
 const styles = {
 	wrapper: {
@@ -31,7 +33,13 @@ styles.firstButton = styles.backButton;
 	orientation: state.currentOrientation
 }))
 export default class Header extends React.PureComponent {
-	state = {};
+	static timeoutId;
+
+	state = {
+		isDeviceConnected: true,
+		wasDeviceDisconnected: false,
+		hideConnectedMessage: true
+	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		var newState = {};
@@ -47,6 +55,52 @@ export default class Header extends React.PureComponent {
 
 		return newState;
 	}
+
+	componentDidMount() {
+		NetInfo.addEventListener("connectionChange", this.handleConnectivityChange);
+		NetworkHelper.isDeviceConnected().then(isDeviceConnected => {
+			this.setState({
+				isDeviceConnected,
+				wasDeviceDisconnected: !isDeviceConnected,
+				hideConnectedMessage: isDeviceConnected
+			});
+		});
+	}
+
+	componentWillUnmount() {
+		NetInfo.removeEventListener(
+			"connectionChange",
+			this.handleConnectivityChange
+		);
+		clearTimeout(Header.timeoutId);
+	}
+
+	handleConnectivityChange = connectionInfo => {
+		const isDeviceConnected = NetworkHelper.isDeviceConnected(connectionInfo);
+		this.setState({
+			isDeviceConnected,
+			wasDeviceDisconnected: isDeviceConnected,
+			hideConnectedMessage: !isDeviceConnected
+		});
+	};
+
+	showBackToConnection = () => {
+		if (this.state.wasDeviceDisconnected && !this.state.hideConnectedMessage) {
+			Header.timeoutId = setTimeout(() => {
+				this.setState({ hideConnectedMessage: true });
+			}, 3000);
+			return (
+				<GenericText
+					style={{
+						backgroundColor: "green"
+					}}>
+					Conectado!
+				</GenericText>
+			);
+		} else {
+			return null;
+		}
+	};
 
 	onMenuPressed = () => {
 		this.props.navigation.toggleDrawer();
@@ -102,7 +156,18 @@ export default class Header extends React.PureComponent {
 					</View>
 				)}
 
-				<View style={{ flex: 1, flexDirection: "row" }} />
+				<View style={{ flex: 1, flexDirection: "row" }}>
+					{!this.state.isDeviceConnected ? (
+						<GenericText
+							style={{
+								backgroundColor: "red"
+							}}>
+							Sin conexión
+						</GenericText>
+					) : (
+						this.showBackToConnection()
+					)}
+				</View>
 			</View>
 		);
 	}

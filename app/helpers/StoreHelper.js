@@ -11,7 +11,6 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	dispatch(ActionsCreators.setUserData(userData));
 	dispatch(ActionsCreators.setNewMemberData(newMemberData));
-	dispatch(ActionsCreators.setIsUsingCache(false));
 	dispatch(ActionsCreators.setRoutines(routines));
 	dispatch(ActionsCreators.setNotifications(notifications));
 };

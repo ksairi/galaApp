@@ -106,10 +106,7 @@ export default class AppContainer extends React.Component {
 
 	handleConnectivityChange = connectionInfo => {
 		if (NetworkHelper.isDeviceConnected(connectionInfo)) {
-			this.props.dispatch(ActionsCreators.setIsUsingCache(false));
 			this.props.dispatch(ActionsCreators.fetchUserStore());
-		} else {
-			this.props.dispatch(ActionsCreators.setIsUsingCache(true));
 		}
 	};
 
