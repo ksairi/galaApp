@@ -58,7 +58,7 @@ export default class DrawerContentComponent extends React.PureComponent {
 					arrow: { marginTop: 10 }
 				}
 			},
-			{
+			/*{
 				icon: "classes",
 				label: "MIS CLASES",
 				screen: Screens.Classes,
@@ -67,7 +67,7 @@ export default class DrawerContentComponent extends React.PureComponent {
 					label: { marginTop: 5 },
 					arrow: { marginTop: 12 }
 				}
-			},
+			},*/
 			{
 				icon: "timetable",
 				label: "HORARIOS",
