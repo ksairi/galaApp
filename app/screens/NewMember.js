@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import GenericText from "/components/presentationals/GenericText";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import * as UserDataHelper from "/helpers/UserDataHelper";
+import { Screens } from "../config/settings";
 @connect(state => ({
 	newMemberData: state.newMemberData
 }))
@@ -36,11 +37,14 @@ export default class NewMember extends React.Component {
 			this.state.appState.match(/inactive|background/) &&
 			nextAppState === "active"
 		) {
-			this.setState({
-				freeEntryDaysLeft: UserDataHelper.getFreeEntryDaysLeft(
-					this.props.newMemberData.freeEntryData.date
-				)
-			});
+			const freeEntryDaysLeft = UserDataHelper.getFreeEntryDaysLeft(
+				this.props.newMemberData.freeEntryData.date
+			);
+			if (freeEntryDaysLeft <= 0) {
+				this.props.navigation.navigate(Screens.Home);
+				return;
+			}
+			this.setState({ freeEntryDaysLeft });
 		}
 		this.setState({ appState: nextAppState });
 	};

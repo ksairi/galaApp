@@ -28,6 +28,6 @@ exports.getDeviceId = async dispatch => {
 		dispatch(ActionsCreators.setDeviceId(deviceId));
 		return deviceId;
 	} catch (error) {
-		throw Messages.SYSTEM_READ_ERROR;
+		//throw Messages.SYSTEM_READ_ERROR;
 	}
 };

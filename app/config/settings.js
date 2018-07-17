@@ -48,7 +48,7 @@ exports.Labels = {
 	MAIL: "E-mail"
 };
 
-exports.Screens = {
+export const Screens = {
 	CheckUserActivity: "CheckUserActivity",
 	Welcome: "Welcome",
 	SignIn: "SignIn",
@@ -117,3 +117,90 @@ exports.ActionsTypes = {
 	SET_TIMETABLE_IMAGES: "SET_TIMETABLE_IMAGES",
 	SET_LOGIN_SYNCHED_DATA_PARAMETERS: "SET_LOGIN_SYNCHED_DATA_PARAMETERS"
 };
+
+export const SectionsData = [
+	{
+		icon: "exclamation",
+		label: "SOCIO NUEVO",
+		screen: Screens.NewMember,
+		otherIcon: true,
+		drawerStyle: {
+			icon: { marginTop: 5, paddingLeft: 15, fontSize: 30 },
+			label: { marginTop: 10, color: "green", fontFamily: "lato-regular" },
+			arrow: { marginTop: 15 }
+		},
+		homeStyle: { fontSize: 40, color: "white" }
+	},
+	{
+		icon: "user-icon",
+		label: "MI PERFIL",
+		screen: Screens.Profile,
+		drawerStyle: {
+			icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
+			label: { marginTop: 5 },
+			arrow: { marginTop: 15 }
+		},
+		homeStyle: { fontSize: 40, color: "white" }
+	},
+	{
+		icon: "routines",
+		label: "RUTINAS",
+		screen: Screens.Routines,
+		drawerStyle: {
+			icon: { marginTop: 3, fontSize: 25 },
+			arrow: { marginTop: 10 }
+		},
+		homeStyle: {
+			fontSize: 30,
+			paddingBottom: 10,
+			color: "white"
+		}
+	},
+	/*{
+		icon: "classes",
+		label: "MIS CLASES",
+		screen: Screens.Classes,
+		drawerStyle: {
+			icon: { fontSize: 40, paddingLeft: 15 },
+			label: { marginTop: 5 },
+			arrow: { marginTop: 12 }
+		}
+	},*/
+	{
+		icon: "timetable",
+		label: "HORARIOS",
+		screen: Screens.Timetable,
+		drawerStyle: {
+			icon: { fontSize: 37, paddingLeft: 5 },
+			label: { marginTop: 7 },
+			arrow: { marginTop: 15 }
+		},
+		homeStyle: { fontSize: 40, color: "white" }
+	},
+	{
+		icon: "messages",
+		label: "MENSAJES",
+		screen: Screens.Messages,
+		drawerStyle: {
+			icon: {
+				fontSize: 28,
+				paddingLeft: 4,
+				marginTop: 3
+			},
+			arrow: {
+				marginTop: 10
+			}
+		},
+		homeStyle: {
+			fontSize: 30,
+			color: "white"
+		}
+	},
+	{
+		icon: "referrals",
+		label: "REFERIDOS",
+		screen: Screens.Referrals,
+		drawerStyle: { label: { marginTop: 5 }, arrow: { marginTop: 13 } },
+		homeStyle: { fontSize: 40, color: "white" }
+	}
+];

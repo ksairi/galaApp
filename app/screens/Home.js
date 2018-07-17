@@ -1,16 +1,25 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity, Image } from "react-native";
+import {
+	View,
+	ScrollView,
+	TouchableOpacity,
+	Image,
+	AppState
+} from "react-native";
 import { connect } from "react-redux";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import { ActionsCreators } from "/redux/actions";
-import { Screens } from "/config/settings";
+import { Screens, SectionsData } from "/config/settings";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
 import Footer from "/components/presentationals/Footer";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
 import ImageSlider from "/components/presentationals/ImageSlider";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
+import { FontAwesome } from "@expo/vector-icons";
+import * as UserDataHelper from "/helpers/UserDataHelper";
+
 const styles = {
 	imageContainer: {
 		marginTop: 20,
@@ -52,52 +61,27 @@ const styles = {
 	isUsingCache: state.isUsingCache,
 	currentHomeDrawerOption: state.currentHomeDrawerOption,
 	mainMenuImages: state.mainMenuImages,
-	promotions: state.promotions
+	promotions: state.promotions,
+	newMemberData: state.newMemberData
 }))
 export default class Home extends React.Component {
 	state = {
 		sliderImages: [],
-		promotionsBase64Images: []
+		promotionsBase64Images: [],
+		appState: AppState.currentState
 	};
-	iconsData = [
-		{
-			icon: "user-icon",
-			label: "MI PERFIL",
-			screen: Screens.Profile
-		},
-		{
-			icon: "routines",
-			label: "RUTINAS",
-			screen: Screens.Routines,
-			style: {
-				fontSize: 30,
-				paddingBottom: 10
-			}
-		},
-		{
-			icon: "classes",
-			label: "MIS CLASES",
-			screen: Screens.Classes
-		},
-		{
-			icon: "timetable",
-			label: "HORARIOS",
-			screen: Screens.Timetable
-		},
-		{
-			icon: "messages",
-			label: "MENSAJES",
-			screen: Screens.Messages,
-			style: {
-				fontSize: 30
-			}
-		},
-		{
-			icon: "referrals",
-			label: "REFERIDOS",
-			screen: Screens.Referrals
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.newMemberData) {
+			return {
+				freeEntryDaysLeft: UserDataHelper.getFreeEntryDaysLeft(
+					nextProps.newMemberData.freeEntryData.date
+				)
+			};
 		}
-	];
+		return prevState;
+	}
+
 	loadSliderImages = () => {
 		var localImages = [];
 		this.props.mainMenuImages.map((item, index) => {
@@ -158,13 +142,35 @@ export default class Home extends React.Component {
 		});
 	};
 
+	_handleAppStateChange = nextAppState => {
+		if (
+			this.state.appState.match(/inactive|background/) &&
+			nextAppState === "active"
+		) {
+			if (this.props.newMemberData) {
+				const freeEntryDaysLeft = UserDataHelper.getFreeEntryDaysLeft(
+					this.props.newMemberData.freeEntryData.date
+				);
+				this.setState({
+					freeEntryDaysLeft
+				});
+			}
+		}
+		this.setState({ appState: nextAppState });
+	};
+
 	componentDidMount() {
+		AppState.addEventListener("change", this._handleAppStateChange);
 		if (this.props.currentHomeDrawerOption != "") {
 			this.props.navigation.navigate(this.props.currentHomeDrawerOption);
 			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
 		}
 		this.loadSliderImages();
 		this.loadPromotionsImages();
+	}
+
+	componentWillUnmount() {
+		AppState.removeEventListener("change", this._handleAppStateChange);
 	}
 
 	onIconPressed = screen => () => {
@@ -190,32 +196,42 @@ export default class Home extends React.Component {
 							</View>
 
 							<View style={styles.buttonsContainer}>
-								{this.iconsData.map((iconData, index) => (
-									<TouchableOpacity
-										key={index}
-										onPress={this.onIconPressed(iconData.screen)}>
-										<View style={styles.buttonWrapper}>
-											<View
-												style={{
-													alignItems: "center"
-												}}>
-												<Icon
-													name={iconData.icon}
-													style={[
-														{
-															fontSize: 40
-														},
-														iconData.style
-													]}
-													color="white"
-												/>
-												<GenericText style={styles.label}>
-													{iconData.label}
-												</GenericText>
-											</View>
-										</View>
-									</TouchableOpacity>
-								))}
+								{SectionsData.map((sectionData, index) => {
+									if (
+										sectionData.screen != Screens.NewMember ||
+										(sectionData.screen == Screens.NewMember &&
+											this.state.freeEntryDaysLeft &&
+											this.state.freeEntryDaysLeft > 0)
+									) {
+										return (
+											<TouchableOpacity
+												key={index}
+												onPress={this.onIconPressed(sectionData.screen)}>
+												<View style={styles.buttonWrapper}>
+													<View
+														style={{
+															alignItems: "center"
+														}}>
+														{sectionData.otherIcon ? (
+															<FontAwesome
+																name={sectionData.icon}
+																style={sectionData.homeStyle}
+															/>
+														) : (
+															<Icon
+																name={sectionData.icon}
+																style={sectionData.homeStyle}
+															/>
+														)}
+														<GenericText style={styles.label}>
+															{sectionData.label}
+														</GenericText>
+													</View>
+												</View>
+											</TouchableOpacity>
+										);
+									}
+								})}
 							</View>
 							<View style={styles.promotionsContainer}>
 								<GenericText
