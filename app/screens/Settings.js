@@ -41,7 +41,7 @@ export default class Settings extends React.Component {
 	state = {
 		receivePushNotifications:
 			this.props.userData.receiveNotifications == null
-				? false
+				? true
 				: this.props.userData.receiveNotifications
 	};
 

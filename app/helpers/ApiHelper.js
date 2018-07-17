@@ -16,13 +16,13 @@ exports.login = (userId, password) => {
 		});
 };
 
-exports.register = (fullName, userId, password, notificationsToken) => {
+exports.register = (fullName, userId, password, deviceId) => {
 	const registerParamters = {};
 
 	registerParamters.fullName = fullName;
 	registerParamters.userId = userId;
 	registerParamters.password = password;
-	registerParamters.notificationsToken = notificationsToken;
+	registerParamters.deviceId = deviceId;
 	return connectToServer(Urls.REGISTER, registerParamters)
 		.then(response => {
 			return response;

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Messages, Screens } from "/config/settings";
 import { register } from "/helpers/LoginHelper";
 import ValidationHelper from "/helpers/ValidationHelper";
-import { getDeviceToken } from "/helpers/NotificationsHelper";
+import { getDeviceId } from "/helpers/NotificationsHelper";
 import { RkTheme, RkTextInput } from "react-native-ui-kitten";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
@@ -42,7 +42,7 @@ const styles = {
 };
 
 @connect(state => ({
-	notificationsToken: state.notificationsToken,
+	deviceId: state.deviceId,
 	orientation: state.currentOrientation,
 	loginSynchedDataParameters: state.loginSynchedDataParameters
 }))
@@ -127,14 +127,14 @@ export default class SignUp extends React.Component {
 
 		this.setState({ errorMessage: "", spinnerVisible: true });
 		try {
-			const deviceToken = this.props.notificationsToken
-				? this.props.notificationsToken
-				: await getDeviceToken(this.props.dispatch);
+			const deviceId = this.props.deviceId
+				? this.props.deviceId
+				: await getDeviceId(this.props.dispatch);
 			await register(
 				this.userFullName,
 				this.userId,
 				this.password,
-				deviceToken,
+				deviceId,
 				this.props.loginSynchedDataParameters,
 				this.props.dispatch
 			);

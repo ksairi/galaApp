@@ -44,6 +44,7 @@ export default class CheckUserActivity extends React.Component {
 					await login(
 						this.props.userId,
 						this.props.password,
+						null,
 						this.props.loginSynchedDataParameters,
 						this.props.dispatch
 					);

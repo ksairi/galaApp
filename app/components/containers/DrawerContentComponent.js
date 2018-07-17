@@ -120,6 +120,7 @@ export default class DrawerContentComponent extends React.PureComponent {
 				)
 			};
 		}
+		return prevState;
 	}
 
 	_handleAppStateChange = nextAppState => {

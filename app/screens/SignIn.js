@@ -24,6 +24,7 @@ import {
 	textWithLinkStyle,
 	containerPadding
 } from "/components/styles";
+import { getDeviceId } from "/helpers/NotificationsHelper";
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 const AnimatedImage = Animatable.createAnimatableComponent(Image);
@@ -60,7 +61,8 @@ const styles = {
 	autoLoginErrorMessage: state.autoLoginErrorMessage,
 	orientation: state.currentOrientation,
 	loginImages: state.loginImages,
-	loginSynchedDataParameters: state.loginSynchedDataParameters
+	loginSynchedDataParameters: state.loginSynchedDataParameters,
+	deviceId: state.deviceId
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
@@ -269,9 +271,13 @@ export default class SignIn extends React.Component {
 		}
 		this.setState({ errorMessage: "", spinnerVisible: true });
 		try {
+			const deviceId = this.props.deviceId
+				? this.props.deviceId
+				: await getDeviceId(this.props.dispatch);
 			await login(
 				this.state.userId,
 				this.state.password,
+				deviceId,
 				this.props.loginSynchedDataParameters,
 				this.props.dispatch
 			);

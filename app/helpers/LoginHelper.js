@@ -15,6 +15,7 @@ import * as ScreenDimensions from "/utils/ScreenDimensions";
 exports.login = async (
 	userId,
 	password,
+	deviceId,
 	loginSynchedDataParameters,
 	dispatch
 ) => {
@@ -24,6 +25,7 @@ exports.login = async (
 			loginResponse,
 			userId,
 			password,
+			deviceId,
 			loginSynchedDataParameters,
 			dispatch
 		);
@@ -36,7 +38,7 @@ exports.register = async (
 	fullName,
 	userId,
 	password,
-	deviceToken,
+	deviceId,
 	loginSynchedDataParameters,
 	dispatch
 ) => {
@@ -45,7 +47,7 @@ exports.register = async (
 			fullName,
 			userId,
 			password,
-			deviceToken
+			deviceId
 		);
 
 		clearStore(dispatch);
@@ -53,6 +55,7 @@ exports.register = async (
 			registerResponse,
 			userId,
 			password,
+			deviceId,
 			loginSynchedDataParameters,
 			dispatch
 		);
@@ -65,12 +68,15 @@ fetchDynamicData = async (
 	response,
 	userId,
 	password,
+	deviceId,
 	synchedDataParameters,
 	dispatch
 ) => {
 	try {
 		var fetchAndSaveContentServerResponse = await doFetchDynamicData(
 			synchedDataParameters,
+			userId,
+			deviceId,
 			dispatch
 		);
 
@@ -84,10 +90,17 @@ fetchDynamicData = async (
 	}
 };
 
-doFetchDynamicData = async (synchedDataParameters, dispatch) => {
+doFetchDynamicData = async (
+	synchedDataParameters,
+	userId,
+	deviceId,
+	dispatch
+) => {
 	const params = {};
 	if (synchedDataParameters.isLoginRequest) {
 		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
+		params.userId = userId;
+		params.deviceId = deviceId;
 	} else {
 		params.loginImages = getLoginImagesParams(
 			synchedDataParameters.loginImages
