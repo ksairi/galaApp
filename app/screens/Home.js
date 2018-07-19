@@ -67,7 +67,7 @@ const styles = {
 export default class Home extends React.Component {
 	state = {
 		sliderImages: [],
-		promotionsBase64Images: [],
+		//promotionsBase64Images: [],
 		appState: AppState.currentState
 	};
 
@@ -166,7 +166,7 @@ export default class Home extends React.Component {
 			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
 		}
 		this.loadSliderImages();
-		this.loadPromotionsImages();
+		//this.loadPromotionsImages();
 	}
 
 	componentWillUnmount() {
@@ -184,8 +184,7 @@ export default class Home extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImages.length > 0 &&
-					this.state.promotionsBase64Images.length > 0 ? (
+					{this.state.sliderImages.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider
@@ -270,11 +269,7 @@ export default class Home extends React.Component {
 											</GenericText>
 											<Image
 												source={{
-													uri:
-														"data:image/" +
-														this.props.promotions.fileExtension +
-														";base64," +
-														this.state.promotionsBase64Images[index]
+													uri: promotion.uri
 												}}
 												style={{
 													alignSelf: "center",

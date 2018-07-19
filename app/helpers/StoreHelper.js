@@ -1,4 +1,3 @@
-//import Base64 from "/utils/Base64";
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
 
@@ -130,17 +129,21 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
 	if (imagesData) {
 		const newDataPromises = imagesData.map(dataItem => {
+			const ext =
+				dataItem.imageUrl.indexOf(".") === -1
+					? ".jpg"
+					: dataItem.imageUrl.substring(dataItem.imageUrl.lastIndexOf("."));
 			const fileName =
 				Expo.FileSystem.documentDirectory +
 				prefix +
-				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id); //+ ".jpg";
-			if (dataItem.image) {
-				//let binaryImage = Base64.atob(dataItem.image);
-				return Expo.FileSystem.writeAsStringAsync(fileName, dataItem.image)
-					.then(() => {
+				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id) +
+				ext;
+			if (dataItem.imageUrl) {
+				return Expo.FileSystem.downloadAsync(dataItem.imageUrl, fileName)
+					.then(({ uri }) => {
 						return {
 							...dataItem,
-							image: fileName
+							uri
 						};
 					})
 					.catch(error => {
@@ -166,7 +169,7 @@ saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
 				response.activeDataIds = [];
 				response.noActiveDataIds = [];
 				newDataArray.forEach(newData => {
-					if (newData.image) {
+					if (newData.uri) {
 						dataToAdd.push(newData);
 						response.activeDataIds.push(newData.id);
 					} else {
