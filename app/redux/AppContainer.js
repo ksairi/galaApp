@@ -7,7 +7,7 @@ import { Screens } from "/config/settings";
 import { ActionsCreators } from "./actions";
 import AppRoutes from "/navigation/";
 import NetworkHelper from "/helpers/NetworkHelper";
-import { syncStoreWithServer } from "/helpers/StoreHelper";
+import { syncStoreWithServer, savePromotionsData } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
 @connect(
@@ -55,50 +55,33 @@ export default class AppContainer extends React.Component {
 	}
 
 	handleNotification = async notification => {
+		const props = this.props;
 		if (notification.origin === "received") {
-			const props = this.props;
 			createNotificationsHanlder({
-				timetable() {
-					props.setTimetable(notification.data.timetable);
-				},
-				routines() {
-					props.setRoutines(notification.data.routines);
-				},
-				notifications() {
-					props.setNotifications(notification.data.notifications);
-				},
-				notificationsNewMemberData() {
-					if (props.newMemberData) {
-						props.setNotificationsNewMemberData(
-							notification.data.notificationsNewMemberData
-						);
-					}
+				promotions() {
+					savePromotionsData(notification.data.promotions, props.dispatch);
 				}
 			})(notification.data);
 		}
 
 		if (notification.origin === "selected") {
-			if (this.props.isLoggedIn) {
-				const navigator = this.navigator;
-				createNotificationsHanlder({
-					timetable() {
-						navigator.navigate(Screens.Timetable);
-					},
-					routines() {
-						navigator.navigate(Screens.Routines);
-					},
-					notifications() {
-						navigator.navigate(Screens.Notifications);
-					}
-				})(notification.data);
+			const navigator = this.navigator;
+			createNotificationsHanlder({
+				promotions() {
+					props.setPromotions(notification.data.promotions);
+				}
+			})(notification.data);
+			if (props.isLoggedIn) {
+				const section =
+					Object.keys(notification.data)[0]
+						.charAt(0)
+						.toUpperCase() + Object.keys(notification.data)[0].slice(1);
+				if (section == "Promotions") {
+					navigator.navigate(Screens.Home);
+				} else {
+					navigator.navigate(section);
+				}
 			} else {
-				this.props.dispatch(
-					ActionsCreators.setCurrentHomeDrawerOption(
-						Object.keys(notification.data)[0]
-							.charAt(0)
-							.toUpperCase() + Object.keys(notification.data)[0].slice(1)
-					)
-				);
 				navigator.navigate(Screens.LoginStack);
 			}
 		}
