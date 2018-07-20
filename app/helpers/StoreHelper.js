@@ -26,7 +26,6 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			timetable
 		} = contentServerData;
 		try {
-			var dataNewState;
 			await saveDataToDevice(
 				loginImages,
 				"loginImage",
@@ -42,16 +41,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				dispatch
 			);
 
-			dataNewState = await saveDataToDevice(
-				promotions.data,
-				"promotionImage",
-				ActionsCreators.setPromotions,
-				ActionsCreators.removePromotionItem,
-				dispatch
-			);
-			dataNewState.entity = "promotions";
-			dataNewState.data = { lastUpdate: promotions.lastUpdate };
-			dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
+			await savePromotionsData(promotions, dispatch);
 
 			/*saveDataToDevice(
 				routinesImages,
@@ -126,7 +116,13 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 	}
 };
 
-saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
+export const saveDataToDevice = (
+	imagesData,
+	prefix,
+	addAction,
+	removeAction,
+	dispatch
+) => {
 	if (imagesData) {
 		const newDataPromises = imagesData.map(dataItem => {
 			const ext =
@@ -191,4 +187,17 @@ saveDataToDevice = (imagesData, prefix, addAction, removeAction, dispatch) => {
 				throw error;
 			});
 	}
+};
+
+export const savePromotionsData = async (promotions, dispatch) => {
+	const dataNewState = await saveDataToDevice(
+		promotions.data,
+		"promotionImage",
+		ActionsCreators.setPromotions,
+		ActionsCreators.removePromotionItem,
+		dispatch
+	);
+	dataNewState.entity = "promotions";
+	dataNewState.data = { lastUpdate: promotions.lastUpdate };
+	dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 };

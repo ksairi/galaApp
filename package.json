@@ -28,7 +28,7 @@
 		"react": "16.3.1",
 		"react-native": "https://github.com/expo/react-native/archive/sdk-28.0.1.tar.gz",
 		"react-native-animatable-promise": "1.2.4",
-		"react-native-auto-height-image": "^1.0.1",
+		"react-native-auto-height-image": "1.0.1",
 		"react-native-button": "2.1.0",
 		"react-native-carousel-control-fork": "https://github.com/ksairi/react-native-carousel-control/archive/v1.0.tar.gz",
 		"react-native-image-slider": "2.0.3",
