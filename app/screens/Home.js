@@ -1,16 +1,11 @@
 import React from "react";
-import {
-	View,
-	ScrollView,
-	TouchableOpacity,
-	Image,
-	AppState
-} from "react-native";
+import { View, ScrollView, TouchableOpacity, AppState } from "react-native";
 import { connect } from "react-redux";
+import AutoHeightImage from "react-native-auto-height-image";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import { ActionsCreators } from "/redux/actions";
-import { Screens, SectionsData } from "/config/settings";
+import { Screens, SectionsData, ImagesSettings } from "/config/settings";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
 import Footer from "/components/presentationals/Footer";
@@ -67,7 +62,6 @@ const styles = {
 export default class Home extends React.Component {
 	state = {
 		sliderImages: [],
-		promotionsBase64Images: [],
 		appState: AppState.currentState
 	};
 
@@ -83,62 +77,32 @@ export default class Home extends React.Component {
 	}
 
 	loadSliderImages = () => {
-		var localImages = [];
+		var sliderImages = [];
 		this.props.mainMenuImages.map((item, index) => {
 			if (item.local) {
 				//local images
 				switch (item.imageIndex) {
 					case 0: {
-						localImages.push(require("../images/main_menu_slider_0.jpg"));
+						sliderImages.push(require("../images/main_menu_slider_0.jpg"));
 						break;
 					}
 					case 1: {
-						localImages.push(require("../images/main_menu_slider_1.jpg"));
+						sliderImages.push(require("../images/main_menu_slider_1.jpg"));
 						break;
 					}
 					case 2: {
-						localImages.push(require("../images/main_menu_slider_2.jpg"));
+						sliderImages.push(require("../images/main_menu_slider_2.jpg"));
 						break;
 					}
 				}
 			} else {
 				//dynamic images
-				Expo.FileSystem.readAsStringAsync(item.image)
-					.then(imageBase64 => {
-						this.setState({
-							sliderImages: [
-								...this.state.sliderImages,
-								{
-									base64String: imageBase64,
-									fileExtension: this.props.mainMenuImages[index].fileExtension
-								}
-							]
-						});
-					})
-					.catch(error => {
-						console.log(error);
-					});
+				sliderImages.push({ uri: item.uri });
 			}
 		});
 
 		this.setState({
-			sliderImages: [...this.state.sliderImages, ...localImages]
-		});
-	};
-	loadPromotionsImages = () => {
-		this.props.promotions.map(item => {
-			Expo.FileSystem.readAsStringAsync(item.image)
-				.then(imageBase64 => {
-					this.setState({
-						promotionsBase64Images: [
-							...this.state.promotionsBase64Images,
-							imageBase64
-						]
-					});
-				})
-				.catch(error => {
-					console.log(error);
-				});
+			sliderImages: sliderImages
 		});
 	};
 
@@ -166,7 +130,6 @@ export default class Home extends React.Component {
 			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
 		}
 		this.loadSliderImages();
-		this.loadPromotionsImages();
 	}
 
 	componentWillUnmount() {
@@ -184,13 +147,11 @@ export default class Home extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImages.length > 0 &&
-					this.state.promotionsBase64Images.length > 0 ? (
+					{this.state.sliderImages.length > 0 ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider
 									images={this.state.sliderImages}
-									imageHeight={205}
 									imageWidth={ScreenDimensions.getPortraitWidth()}
 								/>
 							</View>
@@ -268,18 +229,17 @@ export default class Home extends React.Component {
 												}}>
 												{promotion.subtitle}
 											</GenericText>
-											<Image
+											<AutoHeightImage
 												source={{
-													uri:
-														"data:image/" +
-														this.props.promotions.fileExtension +
-														";base64," +
-														this.state.promotionsBase64Images[index]
+													uri: promotion.uri
 												}}
+												width={
+													ScreenDimensions.getPortraitWidth() *
+													ImagesSettings.promotionOffset
+												}
 												style={{
 													alignSelf: "center",
-													height: 205 * 0.89,
-													width: ScreenDimensions.getPortraitWidth() * 0.89,
+
 													marginTop: 15
 												}}
 											/>

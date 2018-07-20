@@ -204,3 +204,7 @@ export const SectionsData = [
 		homeStyle: { fontSize: 40, color: "white" }
 	}
 ];
+
+export const ImagesSettings = {
+	promotionOffset: 0.89
+};
