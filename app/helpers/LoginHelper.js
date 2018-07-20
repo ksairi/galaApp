@@ -4,7 +4,7 @@ import {
 	register as registerApi,
 	fetchDynamicData as fetchDynamicDataApi
 } from "/helpers/ApiHelper";
-import { ServerProtocol, Messages } from "/config/settings";
+import { ServerProtocol, Messages, ImagesSettings } from "/config/settings";
 import {
 	setInitialData,
 	clearStore,
@@ -126,7 +126,6 @@ getLoginImagesParams = params => {
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
 		ScreenDimensions.getPortraitWidth().width
 	);
-	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
 };
 
@@ -135,16 +134,14 @@ getMainMenuImagesParams = params => {
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
 		ScreenDimensions.getPortraitWidth()
 	);
-	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
 };
 
 getPromotionsParams = params => {
 	params = params ? params : {};
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		ScreenDimensions.getPortraitWidth() * 0.89
+		ScreenDimensions.getPortraitWidth() * ImagesSettings.promotionOffset
 	);
-	params.height = PixelRatio.getPixelSizeForLayoutSize(205 * 0.89);
 	return params;
 };
 
@@ -153,7 +150,6 @@ getRoutinesImagesParams = params => {
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
 		ScreenDimensions.getPortraitWidth()
 	);
-	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
 };
 
@@ -162,7 +158,6 @@ getClassesImagesParams = params => {
 	params.width = PixelRatio.getPixelSizeForLayoutSize(
 		ScreenDimensions.getPortraitWidth()
 	);
-	params.height = PixelRatio.getPixelSizeForLayoutSize(205);
 	return params;
 };
 

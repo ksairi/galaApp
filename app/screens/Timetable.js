@@ -2,6 +2,7 @@ import React from "react";
 import { ScrollView, Image, View, Dimensions } from "react-native";
 import { connect } from "react-redux";
 import Carousel from "react-native-carousel-control-fork";
+import AutoHeightImage from "react-native-auto-height-image";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import Footer from "/components/presentationals/Footer";
 import GenericText from "/components/presentationals/GenericText";
@@ -67,9 +68,7 @@ const timetableDaysMetadata = [
 	}
 ];
 
-const carouselOffset = 50,
-	pictureWidth = 1069,
-	pictureHeight = 600;
+const carouselOffset = 50;
 
 @connect(state => ({
 	timetable: state.timetable,
@@ -102,10 +101,6 @@ export default class TimeTbale extends React.Component {
 	componentWillUnmount() {
 		Carousel.currentIndex = null;
 	}
-
-	getImageWidth = () => {
-		return ScreenDimensions.getPortraitWidth() - carouselOffset;
-	};
 
 	getCurrentIndex = () => {
 		if (Carousel.currentIndex != null) {
@@ -152,21 +147,14 @@ export default class TimeTbale extends React.Component {
 							<View key={index} style={styles.timetableDay}>
 								<View
 									style={{
-										width: this.getImageWidth(),
-										height:
-											(this.getImageWidth() * pictureHeight) / pictureWidth,
 										borderTopLeftRadius: 15,
 										borderTopRightRadius: 15,
 										overflow: "hidden",
 										alignSelf: "center"
 									}}>
-									<Image
+									<AutoHeightImage
 										source={dayMetadata.image}
-										style={{
-											width: this.getImageWidth(),
-											height:
-												(this.getImageWidth() * pictureHeight) / pictureWidth
-										}}
+										width={ScreenDimensions.getPortraitWidth() - carouselOffset}
 									/>
 								</View>
 								<View

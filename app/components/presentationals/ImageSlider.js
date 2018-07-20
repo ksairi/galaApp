@@ -1,6 +1,6 @@
 import React from "react";
-import { Image } from "react-native";
 import RNImageSlider from "react-native-image-slider";
+import AutoHeightImage from "react-native-auto-height-image";
 
 export default class ImageSlider extends React.PureComponent {
 	render() {
@@ -13,23 +13,16 @@ export default class ImageSlider extends React.PureComponent {
 				}} //default to portrait
 				customSlide={({ index, item, style, width }) => {
 					return (
-						<Image
+						<AutoHeightImage
 							key={index}
 							source={
-								this.props.images[index].base64String
+								item.uri
 									? {
-											uri:
-												"data:image/" +
-												this.props.images[index].fileExtension +
-												";base64," +
-												this.props.images[index].base64String
+											uri: item.uri
 									  }
-									: this.props.images[index]
+									: item
 							}
-							style={{
-								height: this.props.imageHeight,
-								width: this.props.imageWidth
-							}}
+							width={this.props.imageWidth}
 						/>
 					);
 				}}

@@ -11,7 +11,6 @@ import { RkTheme, RkTextInput } from "react-native-ui-kitten";
 import * as Animatable from "react-native-animatable-promise";
 import { Messages, Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
-import { ActionsCreators } from "/redux/actions";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import Button from "/components/presentationals/GenericButton";
@@ -146,11 +145,7 @@ export default class SignIn extends React.Component {
 									this.props.loginImages[0].imageIndex == 0
 										? require("../images/login.jpg")
 										: {
-												uri:
-													"data:image/" +
-													this.props.loginImages[0].fileExtension +
-													";base64," +
-													this.props.loginImages[0].image
+												uri: this.props.loginImages[0].uri
 										  }
 								}
 								style={styles.animatedImageInitStyle}

@@ -69,11 +69,7 @@ export default class Routines extends React.Component {
 								this.props.routinesImages[0].imageIndex == 0
 									? require("../images/routines.jpg")
 									: {
-											uri:
-												"data:image/" +
-												this.props.routinesImages[0].fileExtension +
-												";base64," +
-												this.props.routinesImages[0].image
+											uri: this.props.routinesImages[0].uri
 									  }
 							}
 							style={{
