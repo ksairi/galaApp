@@ -23,7 +23,8 @@ const styles = {
 	isLoggedIn: state.isLoggedIn,
 	userId: state.userData.userId,
 	password: state.userData.password,
-	loginSynchedDataParameters: state.loginSynchedDataParameters
+	loginSynchedDataParameters: state.loginSynchedDataParameters,
+	deviceId: state.deviceId
 }))
 export default class CheckUserActivity extends React.Component {
 	static isInLoggingProcess = false;
@@ -41,10 +42,13 @@ export default class CheckUserActivity extends React.Component {
 			if (this.props.isLoggedIn) {
 				try {
 					CheckUserActivity.isInLoggingProcess = true;
+					const deviceId = this.props.deviceId
+						? this.props.deviceId
+						: await getDeviceId(this.props.dispatch);
 					await login(
 						this.props.userId,
 						this.props.password,
-						null,
+						deviceId,
 						this.props.loginSynchedDataParameters,
 						this.props.dispatch
 					);

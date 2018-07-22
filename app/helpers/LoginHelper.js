@@ -96,8 +96,8 @@ doFetchDynamicData = async (
 	deviceId,
 	dispatch
 ) => {
-	const params = {};
-	if (synchedDataParameters.isLoginRequest) {
+	const params = { ...synchedDataParameters };
+	if (params.isLoginRequest) {
 		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
 		params.userId = userId;
 		params.deviceId = deviceId;
