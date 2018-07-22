@@ -125,17 +125,12 @@ export const saveDataToDevice = (
 ) => {
 	if (imagesData) {
 		const newDataPromises = imagesData.map(dataItem => {
-			const ext =
-				dataItem.imageUrl.indexOf(".") === -1
-					? ".jpg"
-					: dataItem.imageUrl.substring(dataItem.imageUrl.lastIndexOf("."));
-			const fileName =
+			const fileUri =
 				Expo.FileSystem.documentDirectory +
 				prefix +
-				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id) +
-				ext;
+				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id);
 			if (dataItem.imageUrl) {
-				return Expo.FileSystem.downloadAsync(dataItem.imageUrl, fileName)
+				return Expo.FileSystem.downloadAsync(dataItem.imageUrl, fileUri)
 					.then(({ uri }) => {
 						return {
 							...dataItem,
@@ -147,7 +142,7 @@ export const saveDataToDevice = (
 						throw error;
 					});
 			} else {
-				return Expo.FileSystem.deleteAsync(fileName, { idempotent: false })
+				return Expo.FileSystem.deleteAsync(fileUri, { idempotent: false })
 					.then(() => {
 						return dataItem;
 					})
