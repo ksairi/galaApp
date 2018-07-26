@@ -99,6 +99,26 @@ exports.fetchDynamicData = params => {
 		});
 };
 
+exports.setContentSaved = params => {
+	return connectToServer(Urls.SET_CONTENT_SAVED, params)
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
+exports.setPromotionsSaved = params => {
+	return connectToServer(Urls.SET_PROMOTIONS_SAVED, params)
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
 connectToServer = (url, parameters) => {
 	return fetch(url, {
 		method: "POST",

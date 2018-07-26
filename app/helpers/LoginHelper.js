@@ -2,9 +2,10 @@ import { PixelRatio } from "react-native";
 import {
 	login as loginApi,
 	register as registerApi,
-	fetchDynamicData as fetchDynamicDataApi
+	fetchDynamicData as fetchDynamicDataApi,
+	setContentSaved as setContentSavedApi
 } from "/helpers/ApiHelper";
-import { ServerProtocol, Messages, ImagesSettings } from "/config/settings";
+import { ServerProtocol, Messages } from "/config/settings";
 import {
 	setInitialData,
 	clearStore,
@@ -98,67 +99,16 @@ doFetchDynamicData = async (
 ) => {
 	const params = { ...synchedDataParameters };
 	if (params.isLoginRequest) {
-		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
 		params.userId = userId;
 		params.deviceId = deviceId;
-	} else {
-		params.loginImages = getLoginImagesParams(
-			synchedDataParameters.loginImages
-		);
-		params.mainMenuImages = getMainMenuImagesParams(
-			synchedDataParameters.mainMenuImages
-		);
-		params.promotions = getPromotionsParams(synchedDataParameters.promotions);
-
-		params.routinesImages = getRoutinesImagesParams(
-			synchedDataParameters.routinesImages
-		);
-		params.classesImages = getClassesImagesParams(
-			synchedDataParameters.classesImages
+		params.deviceWidth = PixelRatio.getPixelSizeForLayoutSize(
+			ScreenDimensions.getPortraitWidth()
 		);
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
-	return setContentServerData(dynamicDataResponse, dispatch);
-};
-
-getLoginImagesParams = params => {
-	params = params ? params : {};
-	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		ScreenDimensions.getPortraitWidth().width
-	);
-	return params;
-};
-
-getMainMenuImagesParams = params => {
-	params = params ? params : {};
-	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		ScreenDimensions.getPortraitWidth()
-	);
-	return params;
-};
-
-getPromotionsParams = params => {
-	params = params ? params : {};
-	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		ScreenDimensions.getPortraitWidth() * ImagesSettings.promotionOffset
-	);
-	return params;
-};
-
-getRoutinesImagesParams = params => {
-	params = params ? params : {};
-	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		ScreenDimensions.getPortraitWidth()
-	);
-	return params;
-};
-
-getClassesImagesParams = params => {
-	params = params ? params : {};
-	params.width = PixelRatio.getPixelSizeForLayoutSize(
-		ScreenDimensions.getPortraitWidth()
-	);
-	return params;
+	const setContentResult = setContentServerData(dynamicDataResponse, dispatch);
+	setContentSavedApi({ userId, deviceId });
+	return setContentResult;
 };
 
 exports.doFetchDynamicData = doFetchDynamicData;

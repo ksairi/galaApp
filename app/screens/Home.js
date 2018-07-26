@@ -1,11 +1,17 @@
 import React from "react";
-import { View, ScrollView, TouchableOpacity, AppState } from "react-native";
+import {
+	View,
+	ScrollView,
+	TouchableOpacity,
+	AppState,
+	Image
+} from "react-native";
 import { connect } from "react-redux";
 import AutoHeightImage from "react-native-auto-height-image";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import { ActionsCreators } from "/redux/actions";
-import { Screens, SectionsData, ImagesSettings } from "/config/settings";
+import { Screens, SectionsData } from "/config/settings";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
 import Footer from "/components/presentationals/Footer";
@@ -62,7 +68,8 @@ const styles = {
 export default class Home extends React.Component {
 	state = {
 		sliderImages: [],
-		appState: AppState.currentState
+		appState: AppState.currentState,
+		promotionsImages: []
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -130,6 +137,23 @@ export default class Home extends React.Component {
 			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
 		}
 		this.loadSliderImages();
+
+		this.props.promotions.map(promotion => {
+			Image.getSize(
+				promotion.uri,
+				width => {
+					this.setState({
+						promotionsImages: [
+							...this.state.promotionsImages,
+							{ width: (width * 160) / ScreenDimensions.getScreenDensity() }
+						]
+					});
+				},
+				errorMsg => {
+					console.log(errorMsg);
+				}
+			);
+		});
 	}
 
 	componentWillUnmount() {
@@ -141,6 +165,8 @@ export default class Home extends React.Component {
 	};
 
 	render() {
+		console.log("samia");
+		console.log(this.state.promotionsImages);
 		return (
 			<ScrollView
 				contentContainerStyle={{
@@ -234,12 +260,12 @@ export default class Home extends React.Component {
 													uri: promotion.uri
 												}}
 												width={
-													ScreenDimensions.getPortraitWidth() *
-													ImagesSettings.promotionOffset
+													this.state.promotionsImages[index]
+														? this.state.promotionsImages[index].width
+														: 0
 												}
 												style={{
 													alignSelf: "center",
-
 													marginTop: 15
 												}}
 											/>

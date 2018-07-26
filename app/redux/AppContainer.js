@@ -10,6 +10,7 @@ import NetworkHelper from "/helpers/NetworkHelper";
 import { syncStoreWithServer, savePromotionsData } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
+import { setPromotionsSaved } from "/helpers/ApiHelper";
 @connect(
 	state => ({
 		userData: state.userData,
@@ -17,7 +18,8 @@ import RootView from "/components/containers/RootView";
 		notifications: state.notifications,
 		currentHomeDrawerOption: state.currentHomeDrawerOption,
 		isLoggedIn: state.isLoggedIn,
-		isAppsFirstTime: state.isAppsFirstTime
+		isAppsFirstTime: state.isAppsFirstTime,
+		deviceId: state.deviceId
 	}),
 	dispatch =>
 		Object.assign(
@@ -29,6 +31,7 @@ import RootView from "/components/containers/RootView";
 export default class AppContainer extends React.Component {
 	static BATCH_PROCESS_INTERVAL = 300000;
 	static intervalId;
+	static alreadySetPromotionsSaved = false;
 
 	componentDidMount() {
 		this.notificationSubscription = Notifications.addListener(
@@ -37,11 +40,11 @@ export default class AppContainer extends React.Component {
 
 		NetInfo.addEventListener("connectionChange", this.handleConnectivityChange);
 
-		this.startBatchProcess(); //to execute without delay
-		AppContainer.intervalId = setInterval(
-			this.startBatchProcess,
-			AppContainer.BATCH_PROCESS_INTERVAL
-		);
+		//this.startBatchProcess(); //to execute without delay
+		//AppContainer.intervalId = setInterval(
+		//	this.startBatchProcess,
+		//	AppContainer.BATCH_PROCESS_INTERVAL
+		//);
 	}
 
 	componentWillUnmount() {
@@ -51,7 +54,7 @@ export default class AppContainer extends React.Component {
 			"connectionChange",
 			this.handleConnectivityChange
 		);
-		clearInterval(AppContainer.intervalId);
+		//clearInterval(AppContainer.intervalId);
 	}
 
 	handleNotification = async notification => {
@@ -60,6 +63,12 @@ export default class AppContainer extends React.Component {
 			createNotificationsHanlder({
 				promotions() {
 					savePromotionsData(notification.data.promotions, props.dispatch);
+					setPromotionsSaved({
+						userId: this.props.userData.userId,
+						deviceId: this.props.deviceId,
+						notificationId: notification.data.notificationId
+					});
+					AppContainer.alreadySetPromotionsSaved = true;
 				}
 			})(notification.data);
 		}
@@ -69,6 +78,13 @@ export default class AppContainer extends React.Component {
 			createNotificationsHanlder({
 				promotions() {
 					props.setPromotions(notification.data.promotions);
+					if (!AppContainer.alreadySetPromotionsSaved) {
+						setPromotionsSaved({
+							userId: this.props.userData.userId,
+							deviceId: this.props.deviceId,
+							notificationId: notification.data.notificationId
+						});
+					}
 				}
 			})(notification.data);
 			if (props.isLoggedIn) {

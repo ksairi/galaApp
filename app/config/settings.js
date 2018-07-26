@@ -1,5 +1,3 @@
-import { FileSystem } from "expo";
-
 const SERVER_HOSTNAME_1 = __DEV__
 	? "http://192.168.42.1:3000/"
 	: "https://aqueous-harbor-62651.herokuapp.com/";
@@ -16,7 +14,9 @@ exports.Urls = {
 	SEND_CLIENT_TOKEN: SERVER_HOSTNAME_1 + "sendClientToken",
 	SYN_LOCAL_STORAGE: SERVER_HOSTNAME_1 + "syncLocalStorage",
 	FETCH_USER_DATA: SERVER_HOSTNAME_1 + "fetchUserData",
-	FETCH_DYNAMIC_DATA: SERVER_HOSTNAME_2 + "fetchDynamicData.php"
+	FETCH_DYNAMIC_DATA: SERVER_HOSTNAME_2 + "fetchDynamicData.php",
+	SET_CONTENT_SAVED: SERVER_HOSTNAME_2 + "setContentSaved.php",
+	SET_PROMOTIONS_SAVED: SERVER_HOSTNAME_2 + "setPromotionsSaved.php"
 };
 
 exports.Messages = {
@@ -204,7 +204,3 @@ export const SectionsData = [
 		homeStyle: { fontSize: 40, color: "white" }
 	}
 ];
-
-export const ImagesSettings = {
-	promotionOffset: 0.89
-};
