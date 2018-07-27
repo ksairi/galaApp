@@ -16,7 +16,8 @@ exports.Urls = {
 	FETCH_USER_DATA: SERVER_HOSTNAME_1 + "fetchUserData",
 	FETCH_DYNAMIC_DATA: SERVER_HOSTNAME_2 + "fetchDynamicData.php",
 	SET_CONTENT_SAVED: SERVER_HOSTNAME_2 + "setContentSaved.php",
-	SET_PROMOTIONS_SAVED: SERVER_HOSTNAME_2 + "setPromotionsSaved.php"
+	SET_NOTIFIED_PROMOTIONS_SAVED:
+		SERVER_HOSTNAME_2 + "setNotifiedPromotionsSaved.php"
 };
 
 exports.Messages = {

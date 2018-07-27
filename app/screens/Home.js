@@ -69,8 +69,10 @@ export default class Home extends React.Component {
 	state = {
 		sliderImages: [],
 		appState: AppState.currentState,
-		promotionsImages: []
+		promotionsImageWidth: null
 	};
+
+	static screenDensity = ScreenDimensions.getScreenDensity();
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.newMemberData) {
@@ -137,23 +139,19 @@ export default class Home extends React.Component {
 			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
 		}
 		this.loadSliderImages();
-
-		this.props.promotions.map(promotion => {
+		if (this.props.promotions[0]) {
 			Image.getSize(
-				promotion.uri,
+				this.props.promotions[0].uri,
 				width => {
 					this.setState({
-						promotionsImages: [
-							...this.state.promotionsImages,
-							{ width: (width * 160) / ScreenDimensions.getScreenDensity() }
-						]
+						promotionsImageWidth: (width * 160) / Home.screenDensity
 					});
 				},
 				errorMsg => {
 					console.log(errorMsg);
 				}
 			);
-		});
+		}
 	}
 
 	componentWillUnmount() {
@@ -165,8 +163,6 @@ export default class Home extends React.Component {
 	};
 
 	render() {
-		console.log("samia");
-		console.log(this.state.promotionsImages);
 		return (
 			<ScrollView
 				contentContainerStyle={{
@@ -260,8 +256,8 @@ export default class Home extends React.Component {
 													uri: promotion.uri
 												}}
 												width={
-													this.state.promotionsImages[index]
-														? this.state.promotionsImages[index].width
+													this.state.promotionsImageWidth
+														? this.state.promotionsImageWidth
 														: 0
 												}
 												style={{

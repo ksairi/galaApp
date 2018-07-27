@@ -109,8 +109,10 @@ exports.setContentSaved = params => {
 		});
 };
 
-exports.setPromotionsSaved = params => {
-	return connectToServer(Urls.SET_PROMOTIONS_SAVED, params)
+exports.setNotifiedPromotionsSaved = params => {
+	console.log("samia");
+	console.log(Urls.SET_NOTIFIED_PROMOTIONS_SAVED);
+	return connectToServer(Urls.SET_NOTIFIED_PROMOTIONS_SAVED, params)
 		.then(response => {
 			return response;
 		})

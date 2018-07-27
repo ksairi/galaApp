@@ -117,14 +117,14 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 };
 
 export const saveDataToDevice = (
-	imagesData,
+	data,
 	prefix,
 	addAction,
 	removeAction,
 	dispatch
 ) => {
-	if (imagesData) {
-		const newDataPromises = imagesData.map(dataItem => {
+	if (data) {
+		const newDataPromises = data.map(dataItem => {
 			const fileUri =
 				Expo.FileSystem.documentDirectory +
 				prefix +
@@ -155,17 +155,17 @@ export const saveDataToDevice = (
 		return Promise.all(newDataPromises)
 			.then(newDataArray => {
 				const dataToAdd = [],
-					dataToRemove = [],
-					response = {};
-				response.activeDataIds = [];
-				response.noActiveDataIds = [];
+					dataToRemove = [];
+				//response = {};
+				//response.activeDataIds = [];
+				//response.noActiveDataIds = [];
 				newDataArray.forEach(newData => {
 					if (newData.uri) {
 						dataToAdd.push(newData);
-						response.activeDataIds.push(newData.id);
+						//response.activeDataIds.push(newData.id);
 					} else {
 						dataToRemove.push(newData);
-						response.noActiveDataIds.push(newData.id);
+						//response.noActiveDataIds.push(newData.id);
 					}
 				});
 				if (dataToAdd.length > 0) {
@@ -175,7 +175,7 @@ export const saveDataToDevice = (
 					dispatch(removeAction(dataToRemove));
 				}
 
-				return response;
+				//return response;
 			})
 			.catch(error => {
 				console.log(error);
@@ -185,13 +185,14 @@ export const saveDataToDevice = (
 };
 
 export const savePromotionsData = async (promotions, dispatch) => {
-	const dataNewState = await saveDataToDevice(
+	await saveDataToDevice(
 		promotions.data,
 		"promotionImage",
 		ActionsCreators.setPromotions,
 		ActionsCreators.removePromotionItem,
 		dispatch
 	);
+	const dataNewState = {};
 	dataNewState.entity = "promotions";
 	dataNewState.data = { lastUpdate: promotions.lastUpdate };
 	dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));

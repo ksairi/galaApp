@@ -95,7 +95,7 @@ export const loginSynchedDataParameters = createReducer(
 	{
 		[ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS](state, action) {
 			const params = action.loginSynchedDataParameters;
-			const currentParameters =
+			/*const currentParameters =
 				state[params.entity] && state[params.entity].dataIds
 					? state[params.entity].dataIds
 					: [];
@@ -105,9 +105,9 @@ export const loginSynchedDataParameters = createReducer(
 			entityActiveDataNewState = [
 				...entityActiveDataNewState,
 				...params.activeDataIds
-			];
+			];*/
 			const entityNewData = { ...params.data };
-			entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates
+			//entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates
 			return {
 				...state,
 				[params.entity]: entityNewData

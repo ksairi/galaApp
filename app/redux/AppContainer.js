@@ -10,7 +10,7 @@ import NetworkHelper from "/helpers/NetworkHelper";
 import { syncStoreWithServer, savePromotionsData } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
-import { setPromotionsSaved } from "/helpers/ApiHelper";
+import { setNotifiedPromotionsSaved } from "/helpers/ApiHelper";
 @connect(
 	state => ({
 		userData: state.userData,
@@ -63,9 +63,9 @@ export default class AppContainer extends React.Component {
 			createNotificationsHanlder({
 				promotions() {
 					savePromotionsData(notification.data.promotions, props.dispatch);
-					setPromotionsSaved({
-						userId: this.props.userData.userId,
-						deviceId: this.props.deviceId,
+					setNotifiedPromotionsSaved({
+						userId: props.userData.userId,
+						deviceId: props.deviceId,
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetPromotionsSaved = true;
@@ -79,9 +79,9 @@ export default class AppContainer extends React.Component {
 				promotions() {
 					props.setPromotions(notification.data.promotions);
 					if (!AppContainer.alreadySetPromotionsSaved) {
-						setPromotionsSaved({
-							userId: this.props.userData.userId,
-							deviceId: this.props.deviceId,
+						setNotifiedPromotionsSaved({
+							userId: props.userData.userId,
+							deviceId: props.deviceId,
 							notificationId: notification.data.notificationId
 						});
 					}
