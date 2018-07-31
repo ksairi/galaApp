@@ -77,7 +77,7 @@ export default class AppContainer extends React.Component {
 			const navigator = this.navigator;
 			createNotificationsHanlder({
 				promotions() {
-					props.setPromotions(notification.data.promotions);
+					savePromotionsData(notification.data.promotions, props.dispatch);
 					if (!AppContainer.alreadySetPromotionsSaved) {
 						setNotifiedPromotionsSaved({
 							userId: props.userData.userId,

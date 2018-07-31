@@ -192,8 +192,10 @@ export const savePromotionsData = async (promotions, dispatch) => {
 		ActionsCreators.removePromotionItem,
 		dispatch
 	);
-	const dataNewState = {};
-	dataNewState.entity = "promotions";
-	dataNewState.data = { lastUpdate: promotions.lastUpdate };
-	dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
+	if (promotions.lastUpdate) {
+		const dataNewState = {};
+		dataNewState.entity = "promotions";
+		dataNewState.data = { lastUpdate: promotions.lastUpdate };
+		dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
+	}
 };

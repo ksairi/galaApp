@@ -106,9 +106,16 @@ doFetchDynamicData = async (
 		);
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
-	const setContentResult = setContentServerData(dynamicDataResponse, dispatch);
-	setContentSavedApi({ userId, deviceId });
-	return setContentResult;
+	if (hasResponseResults(dynamicDataResponse)) {
+		setContentSavedApi({ userId, deviceId });
+		return setContentServerData(dynamicDataResponse, dispatch);
+	}
+	return true;
 };
+
+hasResponseResults = response =>
+	response.promotions &&
+	response.promotions.data &&
+	response.promotions.data.length > 0;
 
 exports.doFetchDynamicData = doFetchDynamicData;
