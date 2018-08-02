@@ -21,7 +21,7 @@ exports.login = async (
 	dispatch
 ) => {
 	try {
-		const loginResponse = await loginApi(userId, password);
+		const loginResponse = await loginApi(userId, password, deviceId);
 		return fetchDynamicData(
 			loginResponse,
 			userId,

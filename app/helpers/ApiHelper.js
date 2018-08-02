@@ -2,11 +2,12 @@ import { Urls, Messages, ServerProtocol } from "/config/settings.js";
 import { isDeviceConnected } from "./NetworkHelper";
 import API_ACCESS_TOKEN from "/config/apiAccessToken";
 
-exports.login = (userId, password) => {
+exports.login = (userId, password, deviceId) => {
 	const loginParamters = {};
 
 	loginParamters.userId = userId;
 	loginParamters.password = password;
+	loginParamters.notificationsToken = deviceId;
 	return connectToServer(Urls.LOGIN, loginParamters)
 		.then(response => {
 			return response;
@@ -22,7 +23,7 @@ exports.register = (fullName, userId, password, deviceId) => {
 	registerParamters.fullName = fullName;
 	registerParamters.userId = userId;
 	registerParamters.password = password;
-	registerParamters.deviceId = deviceId;
+	registerParamters.notificationsToken = deviceId;
 	return connectToServer(Urls.REGISTER, registerParamters)
 		.then(response => {
 			return response;
