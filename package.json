@@ -12,7 +12,7 @@
 	},
 	"main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
 	"scripts": {
-		"start": "react-native-scripts start",
+		"start": "exp start",
 		"eject": "react-native-scripts eject",
 		"android": "react-native-scripts android",
 		"ios": "react-native-scripts ios",
@@ -24,9 +24,9 @@
 		"preset": "jest-expo"
 	},
 	"dependencies": {
-		"expo": "28.0.0",
+		"expo": "29.0.0",
 		"react": "16.3.1",
-		"react-native": "https://github.com/expo/react-native/archive/sdk-28.0.1.tar.gz",
+		"react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz",
 		"react-native-animatable-promise": "1.2.4",
 		"react-native-auto-height-image": "1.0.1",
 		"react-native-button": "2.1.0",
