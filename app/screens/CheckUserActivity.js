@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
 import { ActionsCreators } from "/redux/actions";
+import { getDeviceId } from "/helpers/NotificationsHelper";
 
 const styles = {
 	container: {
