@@ -24,6 +24,7 @@ exports.login = async (
 		const loginResponse = await loginApi(userId, password, deviceId);
 		return fetchDynamicData(
 			loginResponse,
+			null,
 			userId,
 			password,
 			deviceId,
@@ -54,6 +55,7 @@ exports.register = async (
 		clearStore(dispatch);
 		return fetchDynamicData(
 			registerResponse,
+			fullName,
 			userId,
 			password,
 			deviceId,
@@ -67,6 +69,7 @@ exports.register = async (
 
 fetchDynamicData = async (
 	response,
+	fullName,
 	userId,
 	password,
 	deviceId,
@@ -76,6 +79,7 @@ fetchDynamicData = async (
 	try {
 		var fetchAndSaveContentServerResponse = await doFetchDynamicData(
 			synchedDataParameters,
+			fullName,
 			userId,
 			deviceId,
 			dispatch
@@ -93,6 +97,7 @@ fetchDynamicData = async (
 
 doFetchDynamicData = async (
 	synchedDataParameters,
+	fullName,
 	userId,
 	deviceId,
 	dispatch
@@ -101,6 +106,7 @@ doFetchDynamicData = async (
 	if (params.isLoginRequest) {
 		params.userId = userId;
 		params.deviceId = deviceId;
+		params.fullName = fullName;
 		params.deviceWidth = PixelRatio.getPixelSizeForLayoutSize(
 			ScreenDimensions.getPortraitWidth()
 		);
