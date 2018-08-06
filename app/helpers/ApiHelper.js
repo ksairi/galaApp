@@ -111,8 +111,6 @@ exports.setContentSaved = params => {
 };
 
 exports.setNotifiedPromotionsSaved = params => {
-	console.log("samia");
-	console.log(Urls.SET_NOTIFIED_PROMOTIONS_SAVED);
 	return connectToServer(Urls.SET_NOTIFIED_PROMOTIONS_SAVED, params)
 		.then(response => {
 			return response;
