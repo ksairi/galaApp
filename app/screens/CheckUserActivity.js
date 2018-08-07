@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import { LoadingSpinner } from "/components/presentationals/Spinner";
+import LoadingSpinner from "/components/presentationals/LoadingSpinner";
 import { connect } from "react-redux";
 import { Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
