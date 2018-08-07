@@ -5,7 +5,7 @@ import {
 	fetchDynamicData as fetchDynamicDataApi,
 	setContentSaved as setContentSavedApi
 } from "/helpers/ApiHelper";
-import { ServerProtocol, Messages } from "/config/settings";
+import { Messages } from "/config/settings";
 import {
 	setInitialData,
 	clearStore,
@@ -22,7 +22,7 @@ exports.login = async (
 ) => {
 	try {
 		const loginResponse = await loginApi(userId, password, deviceId);
-		return fetchDynamicData(
+		await fetchDynamicData(
 			loginResponse,
 			null,
 			userId,
@@ -53,7 +53,7 @@ exports.register = async (
 		);
 
 		clearStore(dispatch);
-		return fetchDynamicData(
+		await fetchDynamicData(
 			registerResponse,
 			fullName,
 			userId,
@@ -87,11 +87,11 @@ fetchDynamicData = async (
 
 		if (fetchAndSaveContentServerResponse) {
 			setInitialData(response.data, userId, password, dispatch);
-			return { [ServerProtocol.statusField]: ServerProtocol.OK };
+		} else {
+			throw Messages.NO_SPACE_IN_DISK;
 		}
-		return { [ServerProtocol.messageField]: Messages.NO_SPACE_IN_DISK };
 	} catch (errorMessage) {
-		return { [ServerProtocol.messageField]: errorMessage };
+		throw errorMessage;
 	}
 };
 
