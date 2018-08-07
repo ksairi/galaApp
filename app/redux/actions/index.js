@@ -6,6 +6,7 @@ import * as SessionActions from "./session";
 import * as NavigationActions from "./navigation";
 import * as DeviceActions from "./device";
 import * as SynchedDataActions from "./synchedData";
+import * as MessagesActions from "./messages";
 
 export const ActionsCreators = Object.assign(
 	{},
@@ -16,5 +17,6 @@ export const ActionsCreators = Object.assign(
 	SessionActions,
 	NavigationActions,
 	DeviceActions,
-	SynchedDataActions
+	SynchedDataActions,
+	MessagesActions
 );

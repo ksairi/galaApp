@@ -10,6 +10,7 @@ import * as sessionReducer from "./session";
 import * as navigationReducer from "./navigation";
 import * as deviceReducer from "./device";
 import * as synchedDataReducer from "./synchedData";
+import * as messagesReducer from "./messages";
 
 const rootPresistConfig = {
 	key: "root",
@@ -27,7 +28,8 @@ const rootReducer = combineReducers(
 		sessionReducer,
 		navigationReducer,
 		deviceReducer,
-		synchedDataReducer
+		synchedDataReducer,
+		messagesReducer
 	)
 );
 

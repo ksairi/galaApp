@@ -31,6 +31,7 @@
 		"react-native-auto-height-image": "1.0.1",
 		"react-native-button": "2.1.0",
 		"react-native-carousel-control-fork": "https://github.com/ksairi/react-native-carousel-control/archive/v1.0.tar.gz",
+		"react-native-gifted-chat": "0.4.3",
 		"react-native-image-slider": "2.0.3",
 		"react-native-loading-spinner-overlay": "0.5.2",
 		"react-native-table-component": "1.1.2",

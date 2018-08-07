@@ -15,7 +15,7 @@ import { setNotifiedPromotionsSaved } from "/helpers/ApiHelper";
 	state => ({
 		userData: state.userData,
 		newMemberData: state.newMemberData,
-		notifications: state.notifications,
+		messages: state.messages,
 		currentHomeDrawerOption: state.currentHomeDrawerOption,
 		isLoggedIn: state.isLoggedIn,
 		isAppsFirstTime: state.isAppsFirstTime,
@@ -29,8 +29,8 @@ import { setNotifiedPromotionsSaved } from "/helpers/ApiHelper";
 		)
 )
 export default class AppContainer extends React.Component {
-	static BATCH_PROCESS_INTERVAL = 300000;
-	static intervalId;
+	//static BATCH_PROCESS_INTERVAL = 300000;
+	//static intervalId;
 	static alreadySetPromotionsSaved = false;
 
 	componentDidMount() {
@@ -124,7 +124,7 @@ export default class AppContainer extends React.Component {
 	startBatchProcess = () => {
 		syncStoreWithServer(
 			this.props.userData.userId,
-			this.props.notifications,
+			this.props.messages,
 			this.props.dispatch
 		);
 	};

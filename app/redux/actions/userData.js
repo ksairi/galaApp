@@ -13,24 +13,16 @@ export function setNewMemberData(newMemberData) {
 	};
 }
 
-export function setNotificationsNewMemberData(notificationsNewMemberData) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: ActionsTypes.SET_NOTIFICATIONS_NEW_MEMBER_DATA,
-			notificationsNewMemberData
-		});
-	};
-}
-
 export function fetchUserStore() {
 	return (dispatch, getState) => {
 		if (getState().userData.userId) {
 			fetchUserData(getState().userData.userId).then(
 				response => {
-					const { notifications, routines, timetable } = response.data;
-					dispatch({ type: ActionsTypes.SET_NOTIFICATIONS, notifications });
+					//const { notifications, routines, timetable } = response.data;
+					const { routines } = response.data;
+					//dispatch({ type: ActionsTypes.SET_NOTIFICATIONS, notifications });
 					dispatch({ type: ActionsTypes.SET_ROUTINES, routines });
-					dispatch({ type: ActionsTypes.SET_TIMETABLE, timetable });
+					//dispatch({ type: ActionsTypes.SET_TIMETABLE, timetable });
 				},
 				error => {
 					console.log(error);

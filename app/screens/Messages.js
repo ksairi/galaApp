@@ -1,85 +1,72 @@
-import React from 'react'
-import { FlatList } from 'react-native'
-import { connect } from 'react-redux'
-import { Messages } from '/config/settings'
-import ContainerStyles from '/components/presentationals/View/styles'
-import { GenericText } from '/components/presentationals/Text/'
-import { GenericContainer } from '/components/presentationals/View'
-import { NotificationListItem } from '/components/presentationals/ListItem'
-import { ModalNotificationDetail } from '/components/presentationals/View'
-import { ActionsCreators } from '/redux/actions'
+import React from "react";
+import { connect } from "react-redux";
+import { GiftedChat, Composer, Time, Day } from "react-native-gifted-chat";
+import RootWrapper from "/components/presentationals/RootWrapper";
+import { ActionsCreators } from "/redux/actions/";
+import moment from "moment";
+const styles = {
+	footerContainer: {
+		marginTop: 5,
+		marginLeft: 10,
+		marginRight: 10,
+		marginBottom: 10
+	},
+	footerText: {
+		fontSize: 14,
+		color: "#aaa"
+	},
+	status: {
+		textAlign: "center",
+		padding: 5
+	}
+};
 
-@connect(
-  state =>
-  ({
-    notifications:state.notifications,
-    userData: state.userData
-  })
-)
-export default class Notifications extends React.Component {
-  static LocalMessages = {
-    NO_NOTIFICATIONS:"Sin Notificaciones"
-  }
-  
-  state = {
-    hasErrors:false,
-    selectedNotification:null
-  }
+@connect(state => ({
+	messages: state.messages,
+	userData: state.userData
+}))
+export default class Messages extends React.Component {
+	state = {
+		messageText: null
+	};
+	componentWillMount() {
+		this.props.dispatch(
+			ActionsCreators.addMessage([
+				{
+					_id: Math.random() * 1000000,
+					text: "Hello developer",
+					createdAt: new Date(),
+					user: {}
+				}
+			])
+		);
+	}
 
-  openModal = (selectedNotification)=> {
-    this.setState({selectedNotification})
-  }
+	onSend(messages = []) {
+		this.props.dispatch(ActionsCreators.addMessage(messages));
+	}
 
-  closeModal = ()=> {
-    this.setState({selectedNotification:null})
-  }
-  
-  render() {
-    if(this.state.hasErrors){
-      return(
-        <GenericText error={true}>
-          {Messages.SYSTEM_READ_ERROR}
-        </GenericText>
-      )
-    }
-    if(this.props.notifications.length == 0){
-      return(
-        <GenericText error={true}>
-          {Notifications.LocalMessages.NO_NOTIFICATIONS}
-        </GenericText>
-      )  
-    }
+	renderComposer = props => (
+		<Composer {...props} placeholder="Escribí tu mensaje" />
+	);
 
-    if(this.state.selectedNotification != null){
-      return (
-        <ModalNotificationDetail notification={this.state.selectedNotification} 
-        closeModal={()=>this.closeModal}/>
-      )
-    }
-    return (
-      <GenericContainer style={ContainerStyles.rootContainer}>
-        <GenericContainer style={ContainerStyles.centredContainer}>
-          <GenericContainer style={ContainerStyles.horizontalContainer}>
-            <FlatList
-              data={this.props.notifications}
-              keyExtractor = {(item, index) => `key-${index}`}
-              renderItem={({item, index}) =>
-                <NotificationListItem title={item.title} unRead={item.unRead} onPress={async () =>{
-                    if(item.unRead){
-                      this.props.dispatch(ActionsCreators.setReadNotification(index))
-                      this.openModal(item)
-                    }
-                    else{
-                      this.openModal(item)
-                    }
-                  }
-                }
-                /> 
-              }
-            />
-          </GenericContainer>
-        </GenericContainer>
-      </GenericContainer>
-    )
-  }
+	renderTimeFormat = props => <Time {...props} timeFormat="H:mm" />;
+
+	renderDay = props => <Day {...props} dateFormat="D/M/YY" />;
+
+	render() {
+		return (
+			<GiftedChat
+				messages={this.props.messages}
+				onSend={messages => this.onSend(messages)}
+				user={{
+					_id: this.props.userData.userId
+				}}
+				isAnimated={true}
+				renderComposer={this.renderComposer}
+				renderTime={this.renderTimeFormat}
+				renderDay={this.renderDay}
+			/>
+		);
+	}
 }

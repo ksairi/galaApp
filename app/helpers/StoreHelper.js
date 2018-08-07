@@ -3,7 +3,7 @@ import { syncLocalStorage } from "/helpers/ApiHelper";
 import { Messages } from "/config/settings";
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
-	const { userData, newMemberData, routines, notifications } = loginServerData;
+	const { userData, newMemberData, routines } = loginServerData;
 	userData.userId = userId;
 	userData.password = password;
 
@@ -12,7 +12,6 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	dispatch(ActionsCreators.setUserData(userData));
 	dispatch(ActionsCreators.setNewMemberData(newMemberData));
 	dispatch(ActionsCreators.setRoutines(routines));
-	dispatch(ActionsCreators.setNotifications(notifications));
 };
 
 exports.setContentServerData = async (contentServerData, dispatch) => {
@@ -75,11 +74,11 @@ exports.clearStore = dispatch => {
 	dispatch(ActionsCreators.setNewMemberData({}));
 	dispatch(ActionsCreators.setTimetable(null));
 	dispatch(ActionsCreators.setRoutines(null));
-	dispatch(ActionsCreators.setNotifications(null));
+	//dispatch(ActionsCreators.setNotifications(null));
 };
 
-exports.syncStoreWithServer = (userId, notifications, dispatch) => {
-	if (userId) {
+exports.syncStoreWithServer = (userId, messages, dispatch) => {
+	/*if (userId) {
 		var readNotificationsKeys = [],
 			receivedNotificationsKeys = [];
 
@@ -107,7 +106,7 @@ exports.syncStoreWithServer = (userId, notifications, dispatch) => {
 				})
 				.catch(error => {});
 		}
-	}
+	}*/
 };
 
 export const saveDataToDevice = (
