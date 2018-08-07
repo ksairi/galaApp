@@ -1,5 +1,6 @@
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
+import { Messages } from "/config/settings";
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	const { userData, newMemberData, routines, notifications } = loginServerData;
@@ -25,25 +26,24 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			timetableImages,
 			timetable
 		} = contentServerData;
-		try {
-			await saveDataToDevice(
-				loginImages,
-				"loginImage",
-				ActionsCreators.setLoginImages,
-				ActionsCreators.removeLoginImage,
-				dispatch
-			);
-			await saveDataToDevice(
-				mainMenuImages,
-				"mainMenuImage",
-				ActionsCreators.setMainMenuImages,
-				ActionsCreators.removeMainMenuImage,
-				dispatch
-			);
+		await saveDataToDevice(
+			loginImages,
+			"loginImage",
+			ActionsCreators.setLoginImages,
+			ActionsCreators.removeLoginImage,
+			dispatch
+		);
+		await saveDataToDevice(
+			mainMenuImages,
+			"mainMenuImage",
+			ActionsCreators.setMainMenuImages,
+			ActionsCreators.removeMainMenuImage,
+			dispatch
+		);
 
-			await savePromotionsData(promotions, dispatch);
+		await savePromotionsData(promotions, dispatch);
 
-			/*saveDataToDevice(
+		/*saveDataToDevice(
 				routinesImages,
 				"routinesImage",
 				ActionsCreators.setRoutinesImages,
@@ -66,13 +66,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				ActionsCreators.
 				dispatch
 			);*/
-
-			dispatch(ActionsCreators.setTimetable(timetable));
-			return true;
-		} catch (error) {
-			console.log(error);
-			return false;
-		}
+		dispatch(ActionsCreators.setTimetable(timetable));
 	}
 };
 
@@ -138,9 +132,8 @@ export const saveDataToDevice = (
 							uri
 						};
 					})
-					.catch(error => {
-						console.log(error);
-						throw error;
+					.catch(() => {
+						throw Messages.NO_SPACE_IN_DISK;
 					});
 			} else {
 				return Expo.FileSystem.deleteAsync(fileUri, { idempotent: false })
@@ -149,7 +142,6 @@ export const saveDataToDevice = (
 					})
 					.catch(error => {
 						console.log(error);
-						return true;
 					});
 			}
 		});
@@ -173,7 +165,6 @@ export const saveDataToDevice = (
 				}
 			})
 			.catch(error => {
-				console.log(error);
 				throw error;
 			});
 	}

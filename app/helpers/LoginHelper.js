@@ -5,7 +5,6 @@ import {
 	fetchDynamicData as fetchDynamicDataApi,
 	setContentSaved as setContentSavedApi
 } from "/helpers/ApiHelper";
-import { Messages } from "/config/settings";
 import {
 	setInitialData,
 	clearStore,
@@ -20,20 +19,16 @@ exports.login = async (
 	loginSynchedDataParameters,
 	dispatch
 ) => {
-	try {
-		const loginResponse = await loginApi(userId, password, deviceId);
-		await fetchDynamicData(
-			loginResponse,
-			null,
-			userId,
-			password,
-			deviceId,
-			loginSynchedDataParameters,
-			dispatch
-		);
-	} catch (error) {
-		throw error;
-	}
+	const loginResponse = await loginApi(userId, password, deviceId);
+	await fetchDynamicData(
+		loginResponse,
+		null,
+		userId,
+		password,
+		deviceId,
+		loginSynchedDataParameters,
+		dispatch
+	);
 };
 
 exports.register = async (
@@ -44,27 +39,23 @@ exports.register = async (
 	loginSynchedDataParameters,
 	dispatch
 ) => {
-	try {
-		const registerResponse = await registerApi(
-			fullName,
-			userId,
-			password,
-			deviceId
-		);
+	const registerResponse = await registerApi(
+		fullName,
+		userId,
+		password,
+		deviceId
+	);
 
-		clearStore(dispatch);
-		await fetchDynamicData(
-			registerResponse,
-			fullName,
-			userId,
-			password,
-			deviceId,
-			loginSynchedDataParameters,
-			dispatch
-		);
-	} catch (error) {
-		throw error;
-	}
+	clearStore(dispatch);
+	await fetchDynamicData(
+		registerResponse,
+		fullName,
+		userId,
+		password,
+		deviceId,
+		loginSynchedDataParameters,
+		dispatch
+	);
 };
 
 fetchDynamicData = async (
@@ -76,23 +67,14 @@ fetchDynamicData = async (
 	synchedDataParameters,
 	dispatch
 ) => {
-	try {
-		var fetchAndSaveContentServerResponse = await doFetchDynamicData(
-			synchedDataParameters,
-			fullName,
-			userId,
-			deviceId,
-			dispatch
-		);
-
-		if (fetchAndSaveContentServerResponse) {
-			setInitialData(response.data, userId, password, dispatch);
-		} else {
-			throw Messages.NO_SPACE_IN_DISK;
-		}
-	} catch (errorMessage) {
-		throw errorMessage;
-	}
+	await doFetchDynamicData(
+		synchedDataParameters,
+		fullName,
+		userId,
+		deviceId,
+		dispatch
+	);
+	setInitialData(response.data, userId, password, dispatch);
 };
 
 doFetchDynamicData = async (
@@ -114,9 +96,8 @@ doFetchDynamicData = async (
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	if (hasResponseResults(dynamicDataResponse)) {
 		setContentSavedApi({ userId, deviceId });
-		return setContentServerData(dynamicDataResponse, dispatch);
+		await setContentServerData(dynamicDataResponse, dispatch);
 	}
-	return true;
 };
 
 hasResponseResults = response =>
