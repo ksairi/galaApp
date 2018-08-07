@@ -63,7 +63,8 @@ const styles = {
 	currentHomeDrawerOption: state.currentHomeDrawerOption,
 	mainMenuImages: state.mainMenuImages,
 	promotions: state.promotions,
-	newMemberData: state.newMemberData
+	newMemberData: state.newMemberData,
+	isDownloadingRemoteImages: state.isDownloadingRemoteImages
 }))
 export default class Home extends React.Component {
 	state = {
@@ -169,7 +170,8 @@ export default class Home extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImages.length > 0 ? (
+					{this.state.sliderImages.length > 0 &&
+					!this.props.isDownloadingRemoteImages ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
 								<ImageSlider

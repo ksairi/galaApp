@@ -130,6 +130,7 @@ export const saveDataToDevice = (
 				prefix +
 				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id);
 			if (dataItem.imageUrl) {
+				dispatch(ActionsCreators.setIsDownloadingRemoteImages(true));
 				return Expo.FileSystem.downloadAsync(dataItem.imageUrl, fileUri)
 					.then(({ uri }) => {
 						return {
@@ -156,26 +157,20 @@ export const saveDataToDevice = (
 			.then(newDataArray => {
 				const dataToAdd = [],
 					dataToRemove = [];
-				//response = {};
-				//response.activeDataIds = [];
-				//response.noActiveDataIds = [];
 				newDataArray.forEach(newData => {
 					if (newData.uri) {
 						dataToAdd.push(newData);
-						//response.activeDataIds.push(newData.id);
 					} else {
 						dataToRemove.push(newData);
-						//response.noActiveDataIds.push(newData.id);
 					}
 				});
 				if (dataToAdd.length > 0) {
 					dispatch(addAction(dataToAdd));
+					dispatch(ActionsCreators.setIsDownloadingRemoteImages(false));
 				}
 				if (dataToRemove.length > 0) {
 					dispatch(removeAction(dataToRemove));
 				}
-
-				//return response;
 			})
 			.catch(error => {
 				console.log(error);
