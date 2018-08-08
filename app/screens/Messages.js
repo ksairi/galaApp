@@ -1,25 +1,18 @@
 import React from "react";
 import { connect } from "react-redux";
-import { GiftedChat, Composer, Time, Day } from "react-native-gifted-chat";
+import { View, KeyboardAvoidingView } from "react-native";
+import {
+	GiftedChat,
+	Composer,
+	Time,
+	Day,
+	Bubble,
+	InputToolbar,
+	Send
+} from "react-native-gifted-chat";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import { ActionsCreators } from "/redux/actions/";
-import moment from "moment";
-const styles = {
-	footerContainer: {
-		marginTop: 5,
-		marginLeft: 10,
-		marginRight: 10,
-		marginBottom: 10
-	},
-	footerText: {
-		fontSize: 14,
-		color: "#aaa"
-	},
-	status: {
-		textAlign: "center",
-		padding: 5
-	}
-};
+import { MaterialIcons } from "@expo/vector-icons";
 
 @connect(state => ({
 	messages: state.messages,
@@ -47,26 +40,91 @@ export default class Messages extends React.Component {
 	}
 
 	renderComposer = props => (
-		<Composer {...props} placeholder="Escribí tu mensaje" />
+		<Composer
+			{...props}
+			textInputStyle={{
+				fontSize: 21,
+				color: "white",
+				fontFamily: "lato-regular"
+			}}
+		/>
 	);
 
 	renderTimeFormat = props => <Time {...props} timeFormat="H:mm" />;
 
 	renderDay = props => <Day {...props} dateFormat="D/M/YY" />;
 
+	renderBubble = props => (
+		<Bubble
+			{...props}
+			textStyle={{
+				right: {
+					color: "white",
+					fontFamily: "lato-regular",
+					fontSize: 21,
+					lineHeight: 27
+				},
+				left: {
+					color: "white",
+					fontFamily: "lato-regular",
+					fontSize: 21,
+					lineHeight: 27
+				}
+			}}
+			wrapperStyle={{
+				left: {
+					backgroundColor: "#2f396c",
+					paddingTop: 8
+				},
+				right: {
+					backgroundColor: "#282f59",
+					paddingTop: 8
+				}
+			}}
+			timeProps={{
+				style: {
+					fontSize: 26
+				}
+			}}
+		/>
+	);
+	renderInputToolbar = props => (
+		<InputToolbar
+			{...props}
+			containerStyle={{ backgroundColor: "#12194d", borderTopWidth: 0 }}
+		/>
+	);
+	renderSend = props => (
+		<Send {...props}>
+			<View style={{ marginBottom: 10, marginRight: 5 }}>
+				<MaterialIcons name="send" color="white" size={25} />
+			</View>
+		</Send>
+	);
+
 	render() {
 		return (
-			<GiftedChat
-				messages={this.props.messages}
-				onSend={messages => this.onSend(messages)}
-				user={{
-					_id: this.props.userData.userId
-				}}
-				isAnimated={true}
-				renderComposer={this.renderComposer}
-				renderTime={this.renderTimeFormat}
-				renderDay={this.renderDay}
-			/>
+			<RootWrapper style={{ paddingLeft: 0, paddingRight: 0 }}>
+				<GiftedChat
+					messages={this.props.messages}
+					onSend={messages => this.onSend(messages)}
+					user={{
+						_id: this.props.userData.userId
+					}}
+					isAnimated={true}
+					renderComposer={this.renderComposer}
+					renderTime={this.renderTimeFormat}
+					renderDay={this.renderDay}
+					renderBubble={this.renderBubble}
+					renderInputToolbar={this.renderInputToolbar}
+					renderSend={this.renderSend}
+					placeholder="Escribí tu mensaje"
+				/>
+				<KeyboardAvoidingView
+					behavior={"padding"}
+					keyboardVerticalOffset={120}
+				/>
+			</RootWrapper>
 		);
 	}
 }
