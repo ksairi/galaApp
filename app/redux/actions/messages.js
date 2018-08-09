@@ -9,10 +9,19 @@ export function setMessages(messages) {
 	};
 }
 
-export function addMessage(messages) {
+export function addMessages(messages) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: ActionsTypes.ADD_MESSAGE,
+			type: ActionsTypes.ADD_MESSAGES,
+			messages
+		});
+	};
+}
+
+export function setSentMessages(messages) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_SENT_MESSAGES,
 			messages
 		});
 	};

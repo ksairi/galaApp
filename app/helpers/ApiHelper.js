@@ -120,6 +120,16 @@ exports.setNotifiedPromotionsSaved = params => {
 		});
 };
 
+exports.sendMessages = params => {
+	return connectToServer(Urls.SEND_MESSAGES, params)
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
 connectToServer = (url, parameters) => {
 	return fetch(url, {
 		method: "POST",

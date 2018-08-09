@@ -13,18 +13,62 @@ import {
 import RootWrapper from "/components/presentationals/RootWrapper";
 import { ActionsCreators } from "/redux/actions/";
 import { MaterialIcons } from "@expo/vector-icons";
+import { sendMessages } from "/helpers/MessagesHelper";
+import LoadingSpinner from "/components/presentationals/LoadingSpinner";
+
+const styles = {
+	textInputStyle: {
+		fontSize: 21,
+		color: "white",
+		fontFamily: "lato-regular"
+	},
+	bubbleTextStyle: {
+		right: {
+			color: "white",
+			fontFamily: "lato-regular",
+			fontSize: 21,
+			lineHeight: 27
+		},
+		left: {
+			color: "white",
+			fontFamily: "lato-regular",
+			fontSize: 21,
+			lineHeight: 27
+		}
+	},
+	bubbleWrapperStyle: {
+		left: {
+			backgroundColor: "#2f396c",
+			paddingTop: 8
+		},
+		right: {
+			backgroundColor: "#2f396c",
+			paddingTop: 8,
+			opacity: 0.2
+		}
+	},
+	bubbleWrapperStyleSent: {
+		left: {
+			backgroundColor: "#2f396c",
+			paddingTop: 8
+		},
+		right: {
+			backgroundColor: "#2f396c",
+			paddingTop: 8,
+			opacity: 1
+		}
+	}
+};
 
 @connect(state => ({
 	messages: state.messages,
-	userData: state.userData
+	userData: state.userData,
+	deviceId: state.deviceId
 }))
 export default class Messages extends React.Component {
-	state = {
-		messageText: null
-	};
 	componentWillMount() {
 		this.props.dispatch(
-			ActionsCreators.addMessage([
+			ActionsCreators.addMessages([
 				{
 					_id: Math.random() * 1000000,
 					text: "Hello developer",
@@ -35,59 +79,44 @@ export default class Messages extends React.Component {
 		);
 	}
 
-	onSend(messages = []) {
-		this.props.dispatch(ActionsCreators.addMessage(messages));
+	async onSend(messages = []) {
+		this.props.dispatch(ActionsCreators.addMessages(messages));
+		const sentMessages = await sendMessages(
+			this.props.userData.userId,
+			this.props.deviceId,
+			messages
+		);
+		if (sentMessages) {
+			this.setSentMessages(sentMessages);
+		}
 	}
 
+	setSentMessages = sentMessages => {
+		this.props.dispatch(ActionsCreators.setSentMessages(sentMessages));
+	};
+
 	renderComposer = props => (
-		<Composer
-			{...props}
-			textInputStyle={{
-				fontSize: 21,
-				color: "white",
-				fontFamily: "lato-regular"
-			}}
-		/>
+		<Composer {...props} textInputStyle={styles.textInputStyle} />
 	);
 
 	renderTimeFormat = props => <Time {...props} timeFormat="H:mm" />;
 
 	renderDay = props => <Day {...props} dateFormat="D/M/YY" />;
 
-	renderBubble = props => (
-		<Bubble
-			{...props}
-			textStyle={{
-				right: {
-					color: "white",
-					fontFamily: "lato-regular",
-					fontSize: 21,
-					lineHeight: 27
-				},
-				left: {
-					color: "white",
-					fontFamily: "lato-regular",
-					fontSize: 21,
-					lineHeight: 27
-				}
-			}}
-			wrapperStyle={{
-				left: {
-					backgroundColor: "#2f396c",
-					paddingTop: 8
-				},
-				right: {
-					backgroundColor: "#282f59",
-					paddingTop: 8
-				}
-			}}
-			timeProps={{
-				style: {
-					fontSize: 26
-				}
-			}}
-		/>
-	);
+	renderBubble = props => {
+		var currentMessageBubbleStyle = styles.bubbleWrapperStyle;
+		if (props.currentMessage.serverTime) {
+			currentMessageBubbleStyle = styles.bubbleWrapperStyleSent;
+		}
+		return (
+			<Bubble
+				{...props}
+				textStyle={styles.bubbleTextStyle}
+				wrapperStyle={currentMessageBubbleStyle}
+			/>
+		);
+	};
+
 	renderInputToolbar = props => (
 		<InputToolbar
 			{...props}
@@ -101,6 +130,8 @@ export default class Messages extends React.Component {
 			</View>
 		</Send>
 	);
+
+	renderLoading = () => <LoadingSpinner visible={true} message={"Cargando"} />;
 
 	render() {
 		return (
@@ -119,6 +150,7 @@ export default class Messages extends React.Component {
 					renderInputToolbar={this.renderInputToolbar}
 					renderSend={this.renderSend}
 					placeholder="Escribí tu mensaje"
+					renderLoading={this.renderLoading}
 				/>
 				<KeyboardAvoidingView
 					behavior={"padding"}
