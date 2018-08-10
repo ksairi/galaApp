@@ -7,21 +7,20 @@ export const messages = createReducer([], {
 	},
 	[ActionsTypes.ADD_MESSAGES](state, action) {
 		if (action.messages) {
-			const initialIndex = 0;
-			const newMessages = [...action.messages, ...state];
-			newMessages.forEach(message => {
-				message.index = initialIndex++;
-			});
-			return [...newMessages];
+			return [...action.messages, ...state];
 		}
 		return state;
 	},
 	[ActionsTypes.SET_SENT_MESSAGES](state, action) {
 		const stateCopy = [...state];
-		action.messages.forEach(message => {
-			stateCopy[message.index].serverTime = message.serverTime;
+		action.messages.forEach(messageWithStamp => {
+			const index = stateCopy.findIndex(
+				stateMessage => stateMessage._id == messageWithStamp._id
+			);
+			if (index != -1) {
+				stateCopy[index].serverTime = messageWithStamp.serverTime;
+			}
 		});
-
 		return stateCopy;
 	}
 });
