@@ -80,6 +80,12 @@ export default class Messages extends React.Component {
 	}
 
 	async onSend(messages = []) {
+		var nextIndex =
+			this.props.messages.length == 0 ? 0 : this.props.messages.length - 1;
+		messages.forEach(newMessage => {
+			newMessage.index = nextIndex++;
+		});
+
 		this.props.dispatch(ActionsCreators.addMessages(messages));
 		const sentMessages = await sendMessages(
 			this.props.userData.userId,

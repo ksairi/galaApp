@@ -13,12 +13,12 @@ export const messages = createReducer([], {
 	},
 	[ActionsTypes.SET_SENT_MESSAGES](state, action) {
 		const stateCopy = [...state];
-		action.messages.forEach(messageWithStamp => {
+		action.messages.forEach(messageWithServerStamp => {
 			const index = stateCopy.findIndex(
-				stateMessage => stateMessage._id == messageWithStamp._id
+				stateMessage => stateMessage._id == messageWithServerStamp._id
 			);
 			if (index != -1) {
-				stateCopy[index].serverTime = messageWithStamp.serverTime;
+				stateCopy[index].serverTime = messageWithServerStamp.serverTime;
 			}
 		});
 		return stateCopy;
