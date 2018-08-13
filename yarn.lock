@@ -598,59 +598,6 @@
     pouchdb-collections "^1.0.1"
     tiny-queue "^0.2.1"
 
-"@livechat/cookies@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@livechat/cookies/-/cookies-0.0.1.tgz#81ad57af1d91bec97fdbdbad83155d91cc6fa348"
-
-"@livechat/data-utils@^0.2.0", "@livechat/data-utils@^0.2.3":
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/@livechat/data-utils/-/data-utils-0.2.3.tgz#4aa60eaa6d4dbd80fd93fa6035f9b4bedad223e0"
-
-"@livechat/file-upload@^0.2.1":
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/@livechat/file-upload/-/file-upload-0.2.1.tgz#e3e1103a5bdb88298dc8f4b0ea4ac753757f498f"
-
-"@livechat/livechat-visitor-sdk@0.35.2":
-  version "0.35.2"
-  resolved "https://registry.yarnpkg.com/@livechat/livechat-visitor-sdk/-/livechat-visitor-sdk-0.35.2.tgz#42f1a0096eccbbe0602d5c29f23ef895dad44994"
-  dependencies:
-    "@livechat/cookies" "^0.0.1"
-    "@livechat/data-utils" "^0.2.3"
-    "@livechat/file-upload" "^0.2.1"
-    "@livechat/mitt" "^0.1.0"
-    "@livechat/redux-utils" "^0.1.0"
-    "@livechat/saga-utils" "^0.1.0"
-    "@livechat/url-utils" "^0.1.1"
-    lodash "^4.17.4"
-    memory-web-storage "^0.1.0"
-    redux "^3.6.0"
-    redux-saga "^0.15.6"
-    regenerator-runtime "^0.10.5"
-    unfetch "^2.1.2"
-
-"@livechat/mitt@0.1.0", "@livechat/mitt@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@livechat/mitt/-/mitt-0.1.0.tgz#44f36fcabff51a5b8af83c3b0b077d3556947bf2"
-  dependencies:
-    mitt "^1.1.2"
-
-"@livechat/redux-utils@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@livechat/redux-utils/-/redux-utils-0.1.0.tgz#90eb38234a920880373f4b47a7bf8a3aac42a33c"
-  dependencies:
-    "@livechat/data-utils" "^0.2.0"
-    redux-saga "^0.15.6"
-
-"@livechat/saga-utils@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@livechat/saga-utils/-/saga-utils-0.1.0.tgz#36901e9f071b92b1c15b3a5e371a38467cc25069"
-  dependencies:
-    backo2 "^1.0.2"
-
-"@livechat/url-utils@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@livechat/url-utils/-/url-utils-0.1.1.tgz#4bb80b3e443c1a1232f10444496a6bdd5ba4c558"
-
 "@segment/loosely-validate-event@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@segment/loosely-validate-event/-/loosely-validate-event-1.1.2.tgz#d77840999e3f7e43e74b3b0d43391c1526f793b8"
@@ -1710,10 +1657,6 @@ babylon@7.0.0-beta.44, babylon@^7.0.0-beta:
 babylon@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.18.0.tgz#af2f3b88fa6f5c1e4c634d1a0f8eac4f55b395e3"
-
-backo2@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -4907,10 +4850,6 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-memory-web-storage@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/memory-web-storage/-/memory-web-storage-0.1.0.tgz#602eb95a9f48735abfeb8236ed8546fb9db5ae88"
-
 meow@^3.1.0:
   version "3.7.0"
   resolved "https://registry.yarnpkg.com/meow/-/meow-3.7.0.tgz#72cb668b425228290abbfa856892587308a801fb"
@@ -5159,10 +5098,6 @@ minizlib@^1.1.0:
   resolved "https://registry.yarnpkg.com/minizlib/-/minizlib-1.1.0.tgz#11e13658ce46bc3a70a267aac58359d1e0c29ceb"
   dependencies:
     minipass "^2.2.1"
-
-mitt@^1.1.2:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/mitt/-/mitt-1.1.3.tgz#528c506238a05dce11cd914a741ea2cc332da9b8"
 
 mkdirp-promise@^5.0.0:
   version "5.0.1"
@@ -5992,6 +5927,12 @@ react-native-animatable-promise@1.2.4:
   dependencies:
     prop-types "^15.5.10"
 
+react-native-animatable@^1.2.4:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.0.tgz#b5c3940fc758cfd9b2fe54613a457c4b6962b46e"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-auto-height-image@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-native-auto-height-image/-/react-native-auto-height-image-1.0.1.tgz#ec31f45b1af247832d0f69f9e43675727f7e3ccc"
@@ -6017,6 +5958,13 @@ react-native-communications@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
 
+react-native-dialog@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-dialog/-/react-native-dialog-5.1.0.tgz#f37e67705438082e7343cfc8419c3a91cbf6b2c7"
+  dependencies:
+    prop-types "^15.6.0"
+    react-native-modal "^6.4.0"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -6041,7 +5989,7 @@ react-native-gesture-handler@1.0.6:
     invariant "^2.2.2"
     prop-types "^15.5.10"
 
-react-native-gifted-chat@^0.4.3:
+react-native-gifted-chat@0.4.3:
   version "0.4.3"
   resolved "https://registry.yarnpkg.com/react-native-gifted-chat/-/react-native-gifted-chat-0.4.3.tgz#25b4da866c802e407c06e589495f421f7dcdf70a"
   dependencies:
@@ -6088,6 +6036,13 @@ react-native-maps@0.21.0:
   dependencies:
     babel-plugin-module-resolver "^2.3.0"
     babel-preset-react-native "1.9.0"
+
+react-native-modal@^6.4.0:
+  version "6.5.0"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-6.5.0.tgz#46220b2289a41597d344c1db17454611b426a758"
+  dependencies:
+    prop-types "^15.6.1"
+    react-native-animatable "^1.2.4"
 
 react-native-parsed-text@^0.0.20:
   version "0.0.20"
@@ -6459,10 +6414,6 @@ redux-logger@^2.7.4:
 redux-persist@5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/redux-persist/-/redux-persist-5.10.0.tgz#5d8d802c5571e55924efc1c3a9b23575283be62b"
-
-redux-saga@^0.15.6:
-  version "0.15.6"
-  resolved "https://registry.yarnpkg.com/redux-saga/-/redux-saga-0.15.6.tgz#8638dc522de6c6c0a496fe8b2b5466287ac2dc4d"
 
 redux-thunk@2.3.0:
   version "2.3.0"
@@ -7541,10 +7492,6 @@ ultron@1.0.x:
 ultron@~1.1.0:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
-
-unfetch@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/unfetch/-/unfetch-2.1.2.tgz#684fee4d8acdb135bdb26c0364c642fc326ca95b"
 
 unique-string@^1.0.0:
   version "1.0.0"

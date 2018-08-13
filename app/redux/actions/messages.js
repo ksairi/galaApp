@@ -26,3 +26,20 @@ export function setSentMessages(messages) {
 		});
 	};
 }
+
+export function setHasShownUnsentMessagesDialog() {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_HAS_SHOWN_UNSENT_MESSAGES_DIALOG
+		});
+	};
+}
+
+export function deleteMessage(message) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.DELETE_MESSAGE,
+			message
+		});
+	};
+}

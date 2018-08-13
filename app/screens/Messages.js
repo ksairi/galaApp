@@ -1,6 +1,6 @@
 import React from "react";
-import { connect } from "react-redux";
 import { View, KeyboardAvoidingView } from "react-native";
+import { connect } from "react-redux";
 import {
 	GiftedChat,
 	Composer,
@@ -10,6 +10,7 @@ import {
 	InputToolbar,
 	Send
 } from "react-native-gifted-chat";
+import Dialog from "react-native-dialog";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import { ActionsCreators } from "/redux/actions/";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -20,7 +21,8 @@ const styles = {
 	textInputStyle: {
 		fontSize: 21,
 		color: "white",
-		fontFamily: "lato-regular"
+		fontFamily: "lato-regular",
+		lineHeight: 26
 	},
 	bubbleTextStyle: {
 		right: {
@@ -63,30 +65,25 @@ const styles = {
 @connect(state => ({
 	messages: state.messages,
 	userData: state.userData,
-	deviceId: state.deviceId
+	deviceId: state.deviceId,
+	hasShownUnsentMessagesDialog: state.hasShownUnsentMessagesDialog
 }))
 export default class Messages extends React.Component {
-	componentWillMount() {
-		this.props.dispatch(
-			ActionsCreators.addMessages([
-				{
-					_id: Math.random() * 1000000,
-					text: "Hello developer",
-					createdAt: new Date(),
-					user: {}
-				}
-			])
-		);
-	}
+	state = {
+		showFirstUnsentMessageDialog: false,
+		resendMessage: null
+	};
 
-	async onSend(messages = []) {
-		var nextIndex =
-			this.props.messages.length == 0 ? 0 : this.props.messages.length - 1;
+	onSend = async (messages = []) => {
+		var nextIndex = this.props.messages.length;
 		messages.forEach(newMessage => {
 			newMessage.index = nextIndex++;
 		});
-
 		this.props.dispatch(ActionsCreators.addMessages(messages));
+		this.doSendMessages(messages);
+	};
+
+	doSendMessages = async messages => {
 		const sentMessages = await sendMessages(
 			this.props.userData.userId,
 			this.props.deviceId,
@@ -94,8 +91,10 @@ export default class Messages extends React.Component {
 		);
 		if (sentMessages) {
 			this.setSentMessages(sentMessages);
+		} else {
+			this.setState({ showFirstUnsentMessageDialog: true });
 		}
-	}
+	};
 
 	setSentMessages = sentMessages => {
 		this.props.dispatch(ActionsCreators.setSentMessages(sentMessages));
@@ -126,7 +125,10 @@ export default class Messages extends React.Component {
 	renderInputToolbar = props => (
 		<InputToolbar
 			{...props}
-			containerStyle={{ backgroundColor: "#12194d", borderTopWidth: 0 }}
+			containerStyle={{
+				backgroundColor: "#12194d",
+				borderTopWidth: 0
+			}}
 		/>
 	);
 	renderSend = props => (
@@ -137,7 +139,66 @@ export default class Messages extends React.Component {
 		</Send>
 	);
 
-	renderLoading = () => <LoadingSpinner visible={true} message={"Cargando"} />;
+	renderLoading = () => (
+		<LoadingSpinner visible={true} message={"Cargando los mensajes!"} />
+	);
+
+	showUnsentMessageDialog = () => {
+		if (!this.props.hasShownUnsentMessagesDialog) {
+			return (
+				<Dialog.Container visible={this.state.showFirstUnsentMessageDialog}>
+					<Dialog.Title>Mensaje no enviado</Dialog.Title>
+					<Dialog.Description>
+						Seleccioná el mensaje para reintentar
+					</Dialog.Description>
+					<Dialog.Button
+						label="OK"
+						onPress={() => {
+							this.props.dispatch(
+								ActionsCreators.setHasShownUnsentMessagesDialog()
+							);
+							this.setState({ showFirstUnsentMessageDialog: false });
+						}}
+					/>
+				</Dialog.Container>
+			);
+		}
+	};
+
+	onPressBubble = (context, message) => {
+		if (!message.serverTime) {
+			const messageCopy = { ...message };
+			delete messageCopy.previousMessage;
+			delete messageCopy.nextMessage;
+			delete messageCopy.hash;
+			this.setState({ resendMessage: messageCopy });
+		}
+	};
+	showResendDialog = () => (
+		<Dialog.Container visible={this.state.resendMessage != null}>
+			<Dialog.Title>Mensaje no enviado</Dialog.Title>
+			<Dialog.Button
+				label="Enviar"
+				onPress={() => {
+					this.doSendMessages([this.state.resendMessage]);
+					this.setState({ resendMessage: null });
+				}}
+			/>
+			<Dialog.Button
+				label="Borrar"
+				onPress={() => {
+					this.props.dispatch(
+						ActionsCreators.deleteMessage(this.state.resendMessage)
+					);
+					this.setState({ resendMessage: null });
+				}}
+			/>
+			<Dialog.Button
+				label="Cancelar"
+				onPress={() => this.setState({ resendMessage: null })}
+			/>
+		</Dialog.Container>
+	);
 
 	render() {
 		return (
@@ -157,11 +218,14 @@ export default class Messages extends React.Component {
 					renderSend={this.renderSend}
 					placeholder="Escribí tu mensaje"
 					renderLoading={this.renderLoading}
+					onLongPress={this.onPressBubble}
 				/>
 				<KeyboardAvoidingView
 					behavior={"padding"}
 					keyboardVerticalOffset={120}
 				/>
+				{this.showUnsentMessageDialog()}
+				{this.showResendDialog()}
 			</RootWrapper>
 		);
 	}
