@@ -7,10 +7,17 @@ import { Screens } from "/config/settings";
 import { ActionsCreators } from "./actions";
 import AppRoutes from "/navigation/";
 import NetworkHelper from "/helpers/NetworkHelper";
-import { syncStoreWithServer, savePromotionsData } from "/helpers/StoreHelper";
+import { savePromotionsData } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
-import { setNotifiedPromotionsSaved } from "/helpers/ApiHelper";
+import {
+	setNotifiedPromotionsSaved,
+	setNotifiedMessagesSaved
+} from "/helpers/ApiHelper";
+import {
+	sendUnsentMessages,
+	setMessageLoginSynchedDataParameters
+} from "/helpers/MessagesHelper";
 @connect(
 	state => ({
 		userData: state.userData,
@@ -19,7 +26,8 @@ import { setNotifiedPromotionsSaved } from "/helpers/ApiHelper";
 		currentHomeDrawerOption: state.currentHomeDrawerOption,
 		isLoggedIn: state.isLoggedIn,
 		isAppsFirstTime: state.isAppsFirstTime,
-		deviceId: state.deviceId
+		deviceId: state.deviceId,
+		messages: state.messages
 	}),
 	dispatch =>
 		Object.assign(
@@ -29,9 +37,8 @@ import { setNotifiedPromotionsSaved } from "/helpers/ApiHelper";
 		)
 )
 export default class AppContainer extends React.Component {
-	//static BATCH_PROCESS_INTERVAL = 300000;
-	//static intervalId;
 	static alreadySetPromotionsSaved = false;
+	static alreadySetMessagesSaved = false;
 
 	componentDidMount() {
 		this.notificationSubscription = Notifications.addListener(
@@ -39,12 +46,6 @@ export default class AppContainer extends React.Component {
 		);
 
 		NetInfo.addEventListener("connectionChange", this.handleConnectivityChange);
-
-		//this.startBatchProcess(); //to execute without delay
-		//AppContainer.intervalId = setInterval(
-		//	this.startBatchProcess,
-		//	AppContainer.BATCH_PROCESS_INTERVAL
-		//);
 	}
 
 	componentWillUnmount() {
@@ -54,7 +55,6 @@ export default class AppContainer extends React.Component {
 			"connectionChange",
 			this.handleConnectivityChange
 		);
-		//clearInterval(AppContainer.intervalId);
 	}
 
 	handleNotification = async notification => {
@@ -69,6 +69,27 @@ export default class AppContainer extends React.Component {
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetPromotionsSaved = true;
+				},
+				messages() {
+					props.dispatch(
+						ActionsCreators.addMessages(notification.data.messages)
+					);
+					props.dispatch(
+						ActionsCreators.setNewMessagesCount(
+							notification.data.messages.length
+						)
+					);
+					setMessageLoginSynchedDataParameters(
+						notification.data.messages,
+						dispatch
+					);
+
+					setNotifiedMessagesSaved({
+						userId: props.userData.userId,
+						deviceId: props.deviceId,
+						notificationId: notification.data.notificationId
+					});
+					AppContainer.alreadySetMessagesSaved = true;
 				}
 			})(notification.data);
 		}
@@ -80,6 +101,28 @@ export default class AppContainer extends React.Component {
 					savePromotionsData(notification.data.promotions, props.dispatch);
 					if (!AppContainer.alreadySetPromotionsSaved) {
 						setNotifiedPromotionsSaved({
+							userId: props.userData.userId,
+							deviceId: props.deviceId,
+							notificationId: notification.data.notificationId
+						});
+					}
+				},
+				messages() {
+					props.dispatch(
+						ActionsCreators.addMessages(notification.data.messages)
+					);
+					props.dispatch(
+						ActionsCreators.setNewMessagesCount(
+							notification.data.messages.length
+						)
+					);
+					setMessageLoginSynchedDataParameters(
+						notification.data.messages,
+						dispatch
+					);
+
+					if (!AppContainer.alreadySetMessagesSaved) {
+						setNotifiedMessagesSaved({
 							userId: props.userData.userId,
 							deviceId: props.deviceId,
 							notificationId: notification.data.notificationId
@@ -106,6 +149,12 @@ export default class AppContainer extends React.Component {
 	handleConnectivityChange = connectionInfo => {
 		if (NetworkHelper.isDeviceConnected(connectionInfo)) {
 			this.props.dispatch(ActionsCreators.fetchUserStore());
+			sendUnsentMessages(
+				this.props.userData.userId,
+				this.props.deviceId,
+				this.props.messages,
+				this.props.dispatch
+			);
 		}
 	};
 
@@ -120,12 +169,4 @@ export default class AppContainer extends React.Component {
 			</RootView>
 		);
 	}
-
-	startBatchProcess = () => {
-		syncStoreWithServer(
-			this.props.userData.userId,
-			this.props.messages,
-			this.props.dispatch
-		);
-	};
 }

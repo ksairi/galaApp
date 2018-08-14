@@ -25,7 +25,8 @@ const styles = {
 	userId: state.userData.userId,
 	password: state.userData.password,
 	loginSynchedDataParameters: state.loginSynchedDataParameters,
-	deviceId: state.deviceId
+	deviceId: state.deviceId,
+	messages: state.messages
 }))
 export default class CheckUserActivity extends React.Component {
 	static isInLoggingProcess = false;
@@ -50,6 +51,7 @@ export default class CheckUserActivity extends React.Component {
 						this.props.password,
 						deviceId,
 						this.props.loginSynchedDataParameters,
+						this.props.messages,
 						this.props.dispatch
 					);
 

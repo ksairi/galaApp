@@ -1,5 +1,5 @@
 import React from "react";
-import { View, KeyboardAvoidingView } from "react-native";
+import { View, KeyboardAvoidingView, AppState } from "react-native";
 import { connect } from "react-redux";
 import {
 	GiftedChat,
@@ -38,18 +38,14 @@ const styles = {
 			lineHeight: 27
 		}
 	},
-	bubbleWrapperStyle: {
-		left: {
-			backgroundColor: "#2f396c",
-			paddingTop: 8
-		},
+	bubbleWrapperStyleMessageNotSent: {
 		right: {
 			backgroundColor: "#2f396c",
 			paddingTop: 8,
 			opacity: 0.2
 		}
 	},
-	bubbleWrapperStyleSent: {
+	bubbleWrapperStyleMessageSynched: {
 		left: {
 			backgroundColor: "#2f396c",
 			paddingTop: 8
@@ -66,12 +62,45 @@ const styles = {
 	messages: state.messages,
 	userData: state.userData,
 	deviceId: state.deviceId,
-	hasShownUnsentMessagesDialog: state.hasShownUnsentMessagesDialog
+	hasShownUnsentMessagesDialog: state.hasShownUnsentMessagesDialog,
+	newMessagesCount: state.newMessagesCount
 }))
 export default class Messages extends React.Component {
 	state = {
 		showFirstUnsentMessageDialog: false,
-		resendMessage: null
+		resendMessage: null,
+		appState: AppState.currentState
+	};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.newMessagesCount) {
+			return { hasNewMessages: true };
+		}
+		return prevState;
+	}
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.hasNewMessages) {
+			this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+		}
+	}
+
+	componentDidMount() {
+		AppState.addEventListener("change", this._handleAppStateChange);
+		this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+	}
+
+	componentWillUnmount() {
+		AppState.removeEventListener("change", this._handleAppStateChange);
+	}
+
+	_handleAppStateChange = nextAppState => {
+		if (
+			this.state.appState.match(/inactive|background/) &&
+			nextAppState === "active"
+		) {
+			this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+		}
+		this.setState({ appState: nextAppState });
 	};
 
 	onSend = async (messages = []) => {
@@ -109,9 +138,9 @@ export default class Messages extends React.Component {
 	renderDay = props => <Day {...props} dateFormat="D/M/YY" />;
 
 	renderBubble = props => {
-		var currentMessageBubbleStyle = styles.bubbleWrapperStyle;
+		var currentMessageBubbleStyle = styles.bubbleWrapperStyleMessageNotSent;
 		if (props.currentMessage.serverTime) {
-			currentMessageBubbleStyle = styles.bubbleWrapperStyleSent;
+			currentMessageBubbleStyle = styles.bubbleWrapperStyleMessageSynched;
 		}
 		return (
 			<Bubble
@@ -204,6 +233,7 @@ export default class Messages extends React.Component {
 		return (
 			<RootWrapper style={{ paddingLeft: 0, paddingRight: 0 }}>
 				<GiftedChat
+					textInputProps={{ autoFocus: true }}
 					messages={this.props.messages}
 					onSend={messages => this.onSend(messages)}
 					user={{

@@ -38,13 +38,6 @@ const styles = {
 	userData: state.userData
 }))
 export default class Settings extends React.Component {
-	state = {
-		receivePushNotifications:
-			this.props.userData.receiveNotifications == null
-				? true
-				: this.props.userData.receiveNotifications
-	};
-
 	logout = () => {
 		Alert.alert(
 			"",
@@ -62,13 +55,7 @@ export default class Settings extends React.Component {
 			{ cancelable: true }
 		);
 	};
-	componentWillUnmount() {
-		this.props.dispatch(
-			ActionsCreators.setReceiveNotifications(
-				this.state.receivePushNotifications
-			)
-		);
-	}
+
 	render() {
 		return (
 			<ScrollView
@@ -82,12 +69,18 @@ export default class Settings extends React.Component {
 							<Text style={styles.settingText}>Recibir Notificaciones</Text>
 							<Switch
 								style={{ alignSelf: "flex-end" }}
-								value={this.state.receivePushNotifications}
+								value={
+									this.props.userData.receiveNotifications == null
+										? true
+										: this.props.userData.receiveNotifications
+								}
 								tintColor="grey"
 								onTintColor="white"
 								thumbTintColor="white"
 								onValueChange={value => {
-									this.setState({ receivePushNotifications: value });
+									this.props.dispatch(
+										ActionsCreators.setReceiveNotifications(value)
+									);
 								}}
 							/>
 						</View>

@@ -23,7 +23,8 @@ const styles = {
 };
 
 @connect(state => ({
-	newMemberData: state.newMemberData
+	newMemberData: state.newMemberData,
+	newMessagesCount: state.newMessagesCount
 }))
 export default class DrawerContentComponent extends React.PureComponent {
 	state = {
@@ -99,6 +100,12 @@ export default class DrawerContentComponent extends React.PureComponent {
 								onPress={this.navigateTo}
 								style={drawerItem.drawerStyle}
 								otherIcon={drawerItem.otherIcon}
+								labelExtraData={
+									drawerItem.label == "MENSAJES" &&
+									this.props.newMessagesCount > 0
+										? " (" + this.props.newMessagesCount + ")"
+										: null
+								}
 							/>
 						);
 					}

@@ -2,17 +2,12 @@ import createReducer from "./lib/createReducer";
 import { ActionsTypes } from "/config/settings";
 
 export const messages = createReducer([], {
-	[ActionsTypes.SET_MESSAGES](state, action) {
-		return action.messages;
-	},
 	[ActionsTypes.ADD_MESSAGES](state, action) {
 		if (action.messages) {
 			const stateCopy = [...state];
 			action.messages.forEach(message => {
 				const index = getMessageIndex(state, message);
-				if (index != -1) {
-					stateCopy[index] = message;
-				} else {
+				if (index == -1) {
 					stateCopy = [message, ...stateCopy];
 				}
 			});
@@ -44,6 +39,15 @@ export const messages = createReducer([], {
 export const hasShownUnsentMessagesDialog = createReducer(false, {
 	[ActionsTypes.SET_HAS_SHOWN_UNSENT_MESSAGES_DIALOG](state, action) {
 		return true;
+	}
+});
+
+export const newMessagesCount = createReducer(0, {
+	[ActionsTypes.SET_NEW_MESSAGES_COUNT](state, action) {
+		if (!action.value) {
+			return 0;
+		}
+		return state + action.value;
 	}
 });
 

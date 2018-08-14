@@ -1,14 +1,5 @@
 import { ActionsTypes } from "/config/settings";
 
-export function setMessages(messages) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: ActionsTypes.SET_MESSAGES,
-			messages
-		});
-	};
-}
-
 export function addMessages(messages) {
 	return (dispatch, getState) => {
 		dispatch({
@@ -40,6 +31,15 @@ export function deleteMessage(message) {
 		dispatch({
 			type: ActionsTypes.DELETE_MESSAGE,
 			message
+		});
+	};
+}
+
+export function setNewMessagesCount(value) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_NEW_MESSAGES_COUNT,
+			value
 		});
 	};
 }

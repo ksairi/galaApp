@@ -23,7 +23,9 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			routinesImages,
 			classesImages,
 			timetableImages,
-			timetable
+			timetable,
+			sentMessages,
+			messagesData
 		} = contentServerData;
 		await saveDataToDevice(
 			loginImages,
@@ -66,6 +68,16 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				dispatch
 			);*/
 		dispatch(ActionsCreators.setTimetable(timetable));
+		dispatch(ActionsCreators.addMessages(messagesData.messages));
+		setMessageLoginSynchedDataParameters(
+			messagesData.lastMessageTimeStamp,
+			sentMessages,
+			dispatch
+		);
+		if (sentMessages) {
+			dispatch(ActionsCreators.setSentMessages(sentMessages));
+			setMessageLoginSynchedDataParameters(null, sentMessages, dispatch);
+		}
 	}
 };
 
@@ -76,39 +88,6 @@ exports.clearStore = dispatch => {
 	dispatch(ActionsCreators.setRoutines(null));
 	//dispatch(ActionsCreators.setNotifications(null));
 };
-
-exports.syncStoreWithServer = (userId, messages, dispatch) => {
-	/*if (userId) {
-		var readNotificationsKeys = [],
-			receivedNotificationsKeys = [];
-
-		notifications.forEach(notification => {
-			if (!notification.receivedFlagSynched) {
-				receivedNotificationsKeys.push(notification.key);
-			}
-
-			if (!notification.unRead && !notification.unReadFlagSynched) {
-				readNotificationsKeys.push(notification.key);
-			}
-		});
-		if (
-			receivedNotificationsKeys.length > 0 ||
-			readNotificationsKeys.length > 0
-		) {
-			syncLocalStorage(userId, receivedNotificationsKeys, readNotificationsKeys)
-				.then(response => {
-					dispatch(
-						ActionsCreators.setNotificationsSyncFlags(
-							receivedNotificationsKeys,
-							readNotificationsKeys
-						)
-					);
-				})
-				.catch(error => {});
-		}
-	}*/
-};
-
 export const saveDataToDevice = (
 	data,
 	prefix,
