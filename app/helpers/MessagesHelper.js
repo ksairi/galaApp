@@ -1,17 +1,14 @@
 import { sendMessages as sendMessagesApi } from "/helpers/ApiHelper";
 import { ActionsCreators } from "/redux/actions";
+import { saveMessagesToDevice } from "/helpers/StoreHelper";
 
-export const sendMessages = async (userId, deviceId, messages) => {
-	try {
-		const params = {};
-		params.userId = userId;
-		params.deviceId = deviceId;
-		params.messages = messages;
-		const sentMessagesReponse = await sendMessagesApi(params);
-		return sentMessagesReponse.messages;
-	} catch (error) {
-		return null;
-	}
+export const sendMessages = async (userId, deviceId, messages, dispatch) => {
+	const params = {};
+	params.userId = userId;
+	params.deviceId = deviceId;
+	params.messages = messages;
+	const sentMessagesReponse = await sendMessagesApi(params);
+	saveMessagesToDevice(null, sentMessagesReponse.messages, dispatch);
 };
 
 export const sendUnsentMessages = async (
@@ -21,14 +18,20 @@ export const sendUnsentMessages = async (
 	dispatch
 ) => {
 	const unsentMessages = getUnsentMessages(messages);
-	const sentMessages = await sendMessages(userId, deviceId, unsentMessages);
-	if (sentMessages) {
-		dispatch(ActionsCreators.setSentMessages(sentMessages));
+	if (unsentMessages != null && unsentMessages.length > 0) {
+		const sentMessages = await sendMessages(userId, deviceId, unsentMessages);
+		if (sentMessages) {
+			dispatch(ActionsCreators.setSentMessages(sentMessages));
+		}
 	}
 };
 
-export const getUnsentMessages = messages =>
-	messages.filter(message => !message.serverTime);
+export const getUnsentMessages = messages => {
+	if (messages != null) {
+		return messages.filter(message => !message.serverTime);
+	}
+	return null;
+};
 
 export const setMessageLoginSynchedDataParameters = (
 	lastMessageTs,
@@ -36,18 +39,16 @@ export const setMessageLoginSynchedDataParameters = (
 	dispatch
 ) => {
 	var newLastMessageTs = null;
-	if (lastMessageTs == null) {
-		if (messages && messages.length > 0) {
-			newLastMessageTs = messages[0].serverTime;
-		}
+	if (messages && messages.length > 0) {
+		newLastMessageTs = messages[0].serverTime;
 	} else {
 		newLastMessageTs = lastMessageTs;
 	}
 	if (newLastMessageTs) {
 		dispatch(
-			ActionsCreators.setLastTimeStampMessage({
-				entity: messages,
-				data: { lastMessageTime }
+			ActionsCreators.setLoginSynchedDataParameters({
+				entity: "messages",
+				data: { lastMessageTimeStamp: newLastMessageTs }
 			})
 		);
 	}

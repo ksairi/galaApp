@@ -148,13 +148,15 @@ export default class AppContainer extends React.Component {
 
 	handleConnectivityChange = connectionInfo => {
 		if (NetworkHelper.isDeviceConnected(connectionInfo)) {
-			this.props.dispatch(ActionsCreators.fetchUserStore());
-			sendUnsentMessages(
-				this.props.userData.userId,
-				this.props.deviceId,
-				this.props.messages,
-				this.props.dispatch
-			);
+			if (this.props.userData != null && this.props.userData.userId != null) {
+				this.props.dispatch(ActionsCreators.fetchUserStore());
+				sendUnsentMessages(
+					this.props.userData.userId,
+					this.props.deviceId,
+					this.props.messages,
+					this.props.dispatch
+				);
+			}
 		}
 	};
 

@@ -113,20 +113,16 @@ export default class Messages extends React.Component {
 	};
 
 	doSendMessages = async messages => {
-		const sentMessages = await sendMessages(
-			this.props.userData.userId,
-			this.props.deviceId,
-			messages
-		);
-		if (sentMessages) {
-			this.setSentMessages(sentMessages);
-		} else {
+		try {
+			const sentMessages = await sendMessages(
+				this.props.userData.userId,
+				this.props.deviceId,
+				messages,
+				this.props.dispatch
+			);
+		} catch (err) {
 			this.setState({ showFirstUnsentMessageDialog: true });
 		}
-	};
-
-	setSentMessages = sentMessages => {
-		this.props.dispatch(ActionsCreators.setSentMessages(sentMessages));
 	};
 
 	renderComposer = props => (

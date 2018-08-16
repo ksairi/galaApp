@@ -1,6 +1,7 @@
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
 import { Messages } from "/config/settings";
+import { setMessageLoginSynchedDataParameters } from "/helpers/MessagesHelper";
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	const { userData, newMemberData, routines } = loginServerData;
@@ -67,17 +68,8 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				ActionsCreators.
 				dispatch
 			);*/
-		dispatch(ActionsCreators.setTimetable(timetable));
-		dispatch(ActionsCreators.addMessages(messagesData.messages));
-		setMessageLoginSynchedDataParameters(
-			messagesData.lastMessageTimeStamp,
-			sentMessages,
-			dispatch
-		);
-		if (sentMessages) {
-			dispatch(ActionsCreators.setSentMessages(sentMessages));
-			setMessageLoginSynchedDataParameters(null, sentMessages, dispatch);
-		}
+		saveTimetableToDevice(timetable, dispatch);
+		saveMessagesToDevice(messagesData, sentMessages, dispatch);
 	}
 };
 
@@ -162,4 +154,23 @@ export const savePromotionsData = async (promotions, dispatch) => {
 		dataNewState.data = { lastUpdate: promotions.lastUpdate };
 		dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 	}
+};
+
+export const saveMessagesToDevice = (messagesData, sentMessages, dispatch) => {
+	if (messagesData) {
+		dispatch(ActionsCreators.addMessages(messagesData.messages));
+	}
+	if (sentMessages) {
+		dispatch(ActionsCreators.setSentMessages(sentMessages));
+	}
+
+	setMessageLoginSynchedDataParameters(
+		messagesData ? messagesData.lastMessageTimeStamp : null,
+		sentMessages,
+		dispatch
+	);
+};
+
+saveTimetableToDevice = (timetable, dispatch) => {
+	dispatch(ActionsCreators.setTimetable(timetable));
 };
