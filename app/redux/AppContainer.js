@@ -72,7 +72,7 @@ export default class AppContainer extends React.Component {
 				},
 				messages() {
 					props.dispatch(
-						ActionsCreators.addMessages(notification.data.messages)
+						ActionsCreators.setMessages(notification.data.messages)
 					);
 					props.dispatch(
 						ActionsCreators.setNewMessagesCount(
@@ -109,7 +109,7 @@ export default class AppContainer extends React.Component {
 				},
 				messages() {
 					props.dispatch(
-						ActionsCreators.addMessages(notification.data.messages)
+						ActionsCreators.setMessages(notification.data.messages)
 					);
 					props.dispatch(
 						ActionsCreators.setNewMessagesCount(
@@ -148,7 +148,7 @@ export default class AppContainer extends React.Component {
 
 	handleConnectivityChange = connectionInfo => {
 		if (NetworkHelper.isDeviceConnected(connectionInfo)) {
-			if (this.props.userData != null && this.props.userData.userId != null) {
+			if (this.props.isLoggedIn) {
 				this.props.dispatch(ActionsCreators.fetchUserStore());
 				sendUnsentMessages(
 					this.props.userData.userId,

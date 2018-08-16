@@ -108,13 +108,13 @@ export default class Messages extends React.Component {
 		messages.forEach(newMessage => {
 			newMessage.index = nextIndex++;
 		});
-		this.props.dispatch(ActionsCreators.addMessages(messages));
+		this.props.dispatch(ActionsCreators.setMessages(messages));
 		this.doSendMessages(messages);
 	};
 
 	doSendMessages = async messages => {
 		try {
-			const sentMessages = await sendMessages(
+			await sendMessages(
 				this.props.userData.userId,
 				this.props.deviceId,
 				messages,

@@ -78,7 +78,7 @@ exports.clearStore = dispatch => {
 	dispatch(ActionsCreators.setNewMemberData({}));
 	dispatch(ActionsCreators.setTimetable(null));
 	dispatch(ActionsCreators.setRoutines(null));
-	//dispatch(ActionsCreators.setNotifications(null));
+	dispatch(ActionsCreators.setMessages(null));
 };
 export const saveDataToDevice = (
 	data,
@@ -158,7 +158,7 @@ export const savePromotionsData = async (promotions, dispatch) => {
 
 export const saveMessagesToDevice = (messagesData, sentMessages, dispatch) => {
 	if (messagesData) {
-		dispatch(ActionsCreators.addMessages(messagesData.messages));
+		dispatch(ActionsCreators.setMessages(messagesData.messages));
 	}
 	if (sentMessages) {
 		dispatch(ActionsCreators.setSentMessages(sentMessages));

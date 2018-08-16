@@ -1,9 +1,9 @@
 import { ActionsTypes } from "/config/settings";
 
-export function addMessages(messages) {
+export function setMessages(messages) {
 	return (dispatch, getState) => {
 		dispatch({
-			type: ActionsTypes.ADD_MESSAGES,
+			type: ActionsTypes.SET_MESSAGES,
 			messages
 		});
 	};

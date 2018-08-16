@@ -2,7 +2,7 @@ import createReducer from "./lib/createReducer";
 import { ActionsTypes } from "/config/settings";
 
 export const messages = createReducer([], {
-	[ActionsTypes.ADD_MESSAGES](state, action) {
+	[ActionsTypes.SET_MESSAGES](state, action) {
 		if (action.messages) {
 			const stateCopy = [...state];
 			action.messages.forEach(message => {
@@ -13,7 +13,7 @@ export const messages = createReducer([], {
 			});
 			return stateCopy;
 		}
-		return state;
+		return [];
 	},
 	[ActionsTypes.SET_SENT_MESSAGES](state, action) {
 		const stateCopy = [...state];
