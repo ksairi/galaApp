@@ -16,6 +16,11 @@ import { ActionsCreators } from "/redux/actions/";
 import { MaterialIcons } from "@expo/vector-icons";
 import { sendMessages } from "/helpers/MessagesHelper";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
+import {
+	getRealTimeMessages,
+	setRealTimeMessagesSaved
+} from "/helpers/ApiHelper";
+import { saveMessagesToDevice } from "/helpers/StoreHelper";
 
 const styles = {
 	textInputStyle: {
@@ -61,9 +66,9 @@ const styles = {
 @connect(state => ({
 	messages: state.messages,
 	userData: state.userData,
-	deviceId: state.deviceId,
 	hasShownUnsentMessagesDialog: state.hasShownUnsentMessagesDialog,
-	newMessagesCount: state.newMessagesCount
+	newMessagesCount: state.newMessagesCount,
+	loginSynchedDataParameters: state.loginSynchedDataParameters
 }))
 export default class Messages extends React.Component {
 	state = {
@@ -71,6 +76,8 @@ export default class Messages extends React.Component {
 		resendMessage: null,
 		appState: AppState.currentState
 	};
+
+	static intervalId;
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.newMessagesCount) {
@@ -87,10 +94,28 @@ export default class Messages extends React.Component {
 	componentDidMount() {
 		AppState.addEventListener("change", this._handleAppStateChange);
 		this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+
+		Messages.intervalId = setInterval(
+			() =>
+				getRealTimeMessages({
+					userId: this.props.userData.userId,
+					lastSynchedMessageTimestamp: this.props.loginSynchedDataParameters
+						.messages.lastMessageTimestamp
+				})
+					.then(messagesData => {
+						if (messagesData && messagesData.messages.length > 0) {
+							saveMessagesToDevice(messagesData, null, this.props.dispatch);
+							setRealTimeMessagesSaved({ userId: this.props.userData.userId });
+						}
+					})
+					.catch(() => {}),
+			5000
+		);
 	}
 
 	componentWillUnmount() {
 		AppState.removeEventListener("change", this._handleAppStateChange);
+		clearInterval(Messages.intervalId);
 	}
 
 	_handleAppStateChange = nextAppState => {
@@ -116,7 +141,6 @@ export default class Messages extends React.Component {
 		try {
 			await sendMessages(
 				this.props.userData.userId,
-				this.props.deviceId,
 				messages,
 				this.props.dispatch
 			);

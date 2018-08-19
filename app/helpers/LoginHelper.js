@@ -104,14 +104,17 @@ doFetchDynamicData = async (
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	if (hasResponseResults(dynamicDataResponse)) {
-		setContentSavedApi({ userId, deviceId });
+		setContentSavedApi({ userId });
 	}
 	await setContentServerData(dynamicDataResponse, dispatch);
 };
 
 hasResponseResults = response =>
-	response.promotions &&
-	response.promotions.data &&
-	response.promotions.data.length > 0;
+	(response.promotions &&
+		response.promotions.data &&
+		response.promotions.data.length > 0) ||
+	(response.messagesData && response.messagesData.messages.length > 0) ||
+	(response.messagesData && response.messagesData.messages.length > 0) ||
+	(response.sentMessages && response.sentMessages.length > 0);
 
 exports.doFetchDynamicData = doFetchDynamicData;

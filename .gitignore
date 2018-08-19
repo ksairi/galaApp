@@ -2,3 +2,4 @@ node_modules/
 .expo/
 npm-debug.*
 app/config/apiAccessToken.js
+google-services.json

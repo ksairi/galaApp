@@ -20,7 +20,10 @@ exports.Urls = {
 		SERVER_HOSTNAME_2 + "setNotifiedPromotionsSaved.php",
 	SEND_MESSAGES: SERVER_HOSTNAME_2 + "sendMessages.php",
 	SET_NOTIFIED_MESSAGES_SAVED:
-		SERVER_HOSTNAME_2 + "setNotifiedMessagesSaved.php"
+		SERVER_HOSTNAME_2 + "setNotifiedMessagesSaved.php",
+	GET_REAL_TIME_MESSAGES: SERVER_HOSTNAME_2 + "getRealTimeMessages.php",
+	SET_REAL_TIME_MESSAGES_SAVED:
+		SERVER_HOSTNAME_2 + "setRealTimeMessagesSaved.php"
 };
 
 exports.Messages = {

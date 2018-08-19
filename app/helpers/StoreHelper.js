@@ -1,7 +1,6 @@
 import { ActionsCreators } from "/redux/actions";
 import { syncLocalStorage } from "/helpers/ApiHelper";
 import { Messages } from "/config/settings";
-import { setMessageLoginSynchedDataParameters } from "/helpers/MessagesHelper";
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	const { userData, newMemberData, routines } = loginServerData;
@@ -165,10 +164,31 @@ export const saveMessagesToDevice = (messagesData, sentMessages, dispatch) => {
 	}
 
 	setMessageLoginSynchedDataParameters(
-		messagesData ? messagesData.lastMessageTimeStamp : null,
+		messagesData ? messagesData.lastMessageTimestamp : null,
 		sentMessages,
 		dispatch
 	);
+};
+
+export const setMessageLoginSynchedDataParameters = (
+	lastMessageTs,
+	sentMessages,
+	dispatch
+) => {
+	var newLastMessageTs = null;
+	if (sentMessages && sentMessages.length > 0) {
+		newLastMessageTs = sentMessages[0].serverTime;
+	} else {
+		newLastMessageTs = lastMessageTs;
+	}
+	if (newLastMessageTs) {
+		dispatch(
+			ActionsCreators.setLoginSynchedDataParameters({
+				entity: "messages",
+				data: { lastMessageTimestamp: newLastMessageTs }
+			})
+		);
+	}
 };
 
 saveTimetableToDevice = (timetable, dispatch) => {

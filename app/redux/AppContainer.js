@@ -7,17 +7,14 @@ import { Screens } from "/config/settings";
 import { ActionsCreators } from "./actions";
 import AppRoutes from "/navigation/";
 import NetworkHelper from "/helpers/NetworkHelper";
-import { savePromotionsData } from "/helpers/StoreHelper";
+import { savePromotionsData, saveMessagesToDevice } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
 import {
 	setNotifiedPromotionsSaved,
 	setNotifiedMessagesSaved
 } from "/helpers/ApiHelper";
-import {
-	sendUnsentMessages,
-	setMessageLoginSynchedDataParameters
-} from "/helpers/MessagesHelper";
+import { sendUnsentMessages } from "/helpers/MessagesHelper";
 @connect(
 	state => ({
 		userData: state.userData,
@@ -26,7 +23,6 @@ import {
 		currentHomeDrawerOption: state.currentHomeDrawerOption,
 		isLoggedIn: state.isLoggedIn,
 		isAppsFirstTime: state.isAppsFirstTime,
-		deviceId: state.deviceId,
 		messages: state.messages
 	}),
 	dispatch =>
@@ -65,28 +61,23 @@ export default class AppContainer extends React.Component {
 					savePromotionsData(notification.data.promotions, props.dispatch);
 					setNotifiedPromotionsSaved({
 						userId: props.userData.userId,
-						deviceId: props.deviceId,
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetPromotionsSaved = true;
 				},
 				messages() {
-					props.dispatch(
-						ActionsCreators.setMessages(notification.data.messages)
+					saveMessagesToDevice(
+						notification.data.messages,
+						null,
+						props.dispatch
 					);
 					props.dispatch(
 						ActionsCreators.setNewMessagesCount(
-							notification.data.messages.length
+							notification.data.messages.messages.length
 						)
 					);
-					setMessageLoginSynchedDataParameters(
-						notification.data.messages,
-						dispatch
-					);
-
 					setNotifiedMessagesSaved({
 						userId: props.userData.userId,
-						deviceId: props.deviceId,
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetMessagesSaved = true;
@@ -102,29 +93,26 @@ export default class AppContainer extends React.Component {
 					if (!AppContainer.alreadySetPromotionsSaved) {
 						setNotifiedPromotionsSaved({
 							userId: props.userData.userId,
-							deviceId: props.deviceId,
 							notificationId: notification.data.notificationId
 						});
 					}
 				},
 				messages() {
-					props.dispatch(
-						ActionsCreators.setMessages(notification.data.messages)
-					);
-					props.dispatch(
-						ActionsCreators.setNewMessagesCount(
-							notification.data.messages.length
-						)
-					);
-					setMessageLoginSynchedDataParameters(
-						notification.data.messages,
-						dispatch
-					);
-
 					if (!AppContainer.alreadySetMessagesSaved) {
+						saveMessagesToDevice(
+							notification.data.messages,
+							null,
+							props.dispatch
+						);
+
+						props.dispatch(
+							ActionsCreators.setNewMessagesCount(
+								notification.data.messages.length
+							)
+						);
+
 						setNotifiedMessagesSaved({
 							userId: props.userData.userId,
-							deviceId: props.deviceId,
 							notificationId: notification.data.notificationId
 						});
 					}
@@ -152,7 +140,6 @@ export default class AppContainer extends React.Component {
 				this.props.dispatch(ActionsCreators.fetchUserStore());
 				sendUnsentMessages(
 					this.props.userData.userId,
-					this.props.deviceId,
 					this.props.messages,
 					this.props.dispatch
 				);
