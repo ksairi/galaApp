@@ -100,7 +100,10 @@ export default class Messages extends React.Component {
 				getRealTimeMessages({
 					userId: this.props.userData.userId,
 					lastSynchedMessageTimestamp: this.props.loginSynchedDataParameters
-						.messages.lastMessageTimestamp
+						.messages
+						? this.props.loginSynchedDataParameters.messages
+								.lastMessageTimestamp
+						: null
 				})
 					.then(messagesData => {
 						if (messagesData && messagesData.messages.length > 0) {
