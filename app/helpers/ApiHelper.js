@@ -120,6 +120,46 @@ exports.setNotifiedPromotionsSaved = params => {
 		});
 };
 
+exports.setNotifiedMessagesSaved = params => {
+	return connectToServer(Urls.SET_NOTIFIED_MESSAGES_SAVED, params)
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
+exports.sendMessages = params => {
+	return connectToServer(Urls.SEND_MESSAGES, params)
+		.then(response => {
+			return response.messages;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
+exports.getRealTimeMessages = params => {
+	return connectToServer(Urls.GET_REAL_TIME_MESSAGES, params)
+		.then(response => {
+			return response.messages;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
+exports.setRealTimeMessagesSaved = params => {
+	return connectToServer(Urls.SET_REAL_TIME_MESSAGES_SAVED, params)
+		.then(response => {
+			return response.messages;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
 connectToServer = (url, parameters) => {
 	return fetch(url, {
 		method: "POST",

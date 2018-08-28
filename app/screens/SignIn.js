@@ -61,7 +61,8 @@ const styles = {
 	orientation: state.currentOrientation,
 	loginImages: state.loginImages,
 	loginSynchedDataParameters: state.loginSynchedDataParameters,
-	deviceId: state.deviceId
+	deviceId: state.deviceId,
+	messages: state.messages
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
@@ -274,6 +275,7 @@ export default class SignIn extends React.Component {
 				this.state.password,
 				deviceId,
 				this.props.loginSynchedDataParameters,
+				this.props.messages,
 				this.props.dispatch
 			);
 			this.setState({ spinnerVisible: false });

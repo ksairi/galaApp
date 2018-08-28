@@ -11,15 +11,18 @@ import {
 	setContentServerData
 } from "/helpers/StoreHelper";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
+import { getUnsentMessages } from "/helpers/MessagesHelper";
 
 exports.login = async (
 	userId,
 	password,
 	deviceId,
 	loginSynchedDataParameters,
+	messages,
 	dispatch
 ) => {
 	const loginResponse = await loginApi(userId, password, deviceId);
+	const unsentMessages = getUnsentMessages(messages);
 	await fetchDynamicData(
 		loginResponse,
 		null,
@@ -27,6 +30,7 @@ exports.login = async (
 		password,
 		deviceId,
 		loginSynchedDataParameters,
+		unsentMessages,
 		dispatch
 	);
 };
@@ -54,6 +58,7 @@ exports.register = async (
 		password,
 		deviceId,
 		loginSynchedDataParameters,
+		null,
 		dispatch
 	);
 };
@@ -65,6 +70,7 @@ fetchDynamicData = async (
 	password,
 	deviceId,
 	synchedDataParameters,
+	unsentMessages,
 	dispatch
 ) => {
 	await doFetchDynamicData(
@@ -72,6 +78,7 @@ fetchDynamicData = async (
 		fullName,
 		userId,
 		deviceId,
+		unsentMessages,
 		dispatch
 	);
 	setInitialData(response.data, userId, password, dispatch);
@@ -82,6 +89,7 @@ doFetchDynamicData = async (
 	fullName,
 	userId,
 	deviceId,
+	unsentMessages,
 	dispatch
 ) => {
 	const params = { ...synchedDataParameters };
@@ -92,17 +100,21 @@ doFetchDynamicData = async (
 		params.deviceWidth = PixelRatio.getPixelSizeForLayoutSize(
 			ScreenDimensions.getPortraitWidth()
 		);
+		params.unsentMessages = unsentMessages;
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	if (hasResponseResults(dynamicDataResponse)) {
-		setContentSavedApi({ userId, deviceId });
-		await setContentServerData(dynamicDataResponse, dispatch);
+		setContentSavedApi({ userId });
 	}
+	await setContentServerData(dynamicDataResponse, dispatch);
 };
 
 hasResponseResults = response =>
-	response.promotions &&
-	response.promotions.data &&
-	response.promotions.data.length > 0;
+	(response.promotions &&
+		response.promotions.data &&
+		response.promotions.data.length > 0) ||
+	(response.messagesData && response.messagesData.messages.length > 0) ||
+	(response.messagesData && response.messagesData.messages.length > 0) ||
+	(response.sentMessages && response.sentMessages.length > 0);
 
 exports.doFetchDynamicData = doFetchDynamicData;

@@ -3,7 +3,7 @@ import { syncLocalStorage } from "/helpers/ApiHelper";
 import { Messages } from "/config/settings";
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
-	const { userData, newMemberData, routines, notifications } = loginServerData;
+	const { userData, newMemberData, routines } = loginServerData;
 	userData.userId = userId;
 	userData.password = password;
 
@@ -12,7 +12,6 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	dispatch(ActionsCreators.setUserData(userData));
 	dispatch(ActionsCreators.setNewMemberData(newMemberData));
 	dispatch(ActionsCreators.setRoutines(routines));
-	dispatch(ActionsCreators.setNotifications(notifications));
 };
 
 exports.setContentServerData = async (contentServerData, dispatch) => {
@@ -24,7 +23,9 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			routinesImages,
 			classesImages,
 			timetableImages,
-			timetable
+			timetable,
+			sentMessages,
+			messagesData
 		} = contentServerData;
 		await saveDataToDevice(
 			loginImages,
@@ -66,7 +67,8 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				ActionsCreators.
 				dispatch
 			);*/
-		dispatch(ActionsCreators.setTimetable(timetable));
+		saveTimetableToDevice(timetable, dispatch);
+		saveMessagesToDevice(messagesData, sentMessages, dispatch);
 	}
 };
 
@@ -75,41 +77,8 @@ exports.clearStore = dispatch => {
 	dispatch(ActionsCreators.setNewMemberData({}));
 	dispatch(ActionsCreators.setTimetable(null));
 	dispatch(ActionsCreators.setRoutines(null));
-	dispatch(ActionsCreators.setNotifications(null));
+	dispatch(ActionsCreators.setMessages(null));
 };
-
-exports.syncStoreWithServer = (userId, notifications, dispatch) => {
-	if (userId) {
-		var readNotificationsKeys = [],
-			receivedNotificationsKeys = [];
-
-		notifications.forEach(notification => {
-			if (!notification.receivedFlagSynched) {
-				receivedNotificationsKeys.push(notification.key);
-			}
-
-			if (!notification.unRead && !notification.unReadFlagSynched) {
-				readNotificationsKeys.push(notification.key);
-			}
-		});
-		if (
-			receivedNotificationsKeys.length > 0 ||
-			readNotificationsKeys.length > 0
-		) {
-			syncLocalStorage(userId, receivedNotificationsKeys, readNotificationsKeys)
-				.then(response => {
-					dispatch(
-						ActionsCreators.setNotificationsSyncFlags(
-							receivedNotificationsKeys,
-							readNotificationsKeys
-						)
-					);
-				})
-				.catch(error => {});
-		}
-	}
-};
-
 export const saveDataToDevice = (
 	data,
 	prefix,
@@ -184,4 +153,44 @@ export const savePromotionsData = async (promotions, dispatch) => {
 		dataNewState.data = { lastUpdate: promotions.lastUpdate };
 		dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 	}
+};
+
+export const saveMessagesToDevice = (messagesData, sentMessages, dispatch) => {
+	if (messagesData) {
+		dispatch(ActionsCreators.setMessages(messagesData.messages));
+	}
+	if (sentMessages) {
+		dispatch(ActionsCreators.setSentMessages(sentMessages));
+	}
+
+	setMessageLoginSynchedDataParameters(
+		messagesData ? messagesData.lastMessageTimestamp : null,
+		sentMessages,
+		dispatch
+	);
+};
+
+export const setMessageLoginSynchedDataParameters = (
+	lastMessageTs,
+	sentMessages,
+	dispatch
+) => {
+	var newLastMessageTs = null;
+	if (sentMessages && sentMessages.length > 0) {
+		newLastMessageTs = sentMessages[0].serverTime;
+	} else {
+		newLastMessageTs = lastMessageTs;
+	}
+	if (newLastMessageTs) {
+		dispatch(
+			ActionsCreators.setLoginSynchedDataParameters({
+				entity: "messages",
+				data: { lastMessageTimestamp: newLastMessageTs }
+			})
+		);
+	}
+};
+
+saveTimetableToDevice = (timetable, dispatch) => {
+	dispatch(ActionsCreators.setTimetable(timetable));
 };

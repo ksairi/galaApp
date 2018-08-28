@@ -9,6 +9,10 @@
 		"sdkVersion": "29.0.0",
 		"splash": {
 			"image": "./assets/splash.png"
+		},
+		"android": {
+			"package": "com.gala.galaapp",
+			"googleServicesFile": "./google-services.json"
 		}
 	}
 }

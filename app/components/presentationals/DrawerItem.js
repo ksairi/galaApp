@@ -60,7 +60,7 @@ export default class DrawerItem extends React.PureComponent {
 					/>
 				)}
 				<Text style={[styles.drawerItemLabel, this.props.style.label]}>
-					{this.props.label}
+					{this.props.label} {this.props.labelExtraData}
 				</Text>
 				<Icon
 					name={"arrow-navigation-white-right"}
