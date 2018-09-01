@@ -24,7 +24,7 @@ import {
 	containerPadding
 } from "/components/styles";
 import { getDeviceId } from "/helpers/NotificationsHelper";
-
+import { ActionsCreators } from "/redux/actions";
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 const AnimatedImage = Animatable.createAnimatableComponent(Image);
 
@@ -62,7 +62,8 @@ const styles = {
 	loginImages: state.loginImages,
 	loginSynchedDataParameters: state.loginSynchedDataParameters,
 	deviceId: state.deviceId,
-	messages: state.messages
+	messages: state.messages,
+	hasResetFirstPassword: state.hasResetFirstPassword
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
@@ -279,7 +280,12 @@ export default class SignIn extends React.Component {
 				this.props.dispatch
 			);
 			this.setState({ spinnerVisible: false });
-			this.props.navigation.navigate(Screens.HomeStack);
+			if (this.props.hasResetFirstPassword) {
+				this.props.navigation.navigate(Screens.HomeStack);
+			} else {
+				this.props.dispatch(ActionsCreators.setInResetFirstPasswordMode(true));
+				this.props.navigation.navigate(Screens.ResetPassword);
+			}
 		} catch (errorMessage) {
 			this.setState({ spinnerVisible: false });
 			if (

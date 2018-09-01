@@ -12,7 +12,7 @@ import {
 } from "/helpers/StoreHelper";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { getUnsentMessages } from "/helpers/MessagesHelper";
-
+import { ActionsCreators } from "/redux/actions";
 exports.login = async (
 	userId,
 	password,
@@ -22,6 +22,11 @@ exports.login = async (
 	dispatch
 ) => {
 	const loginResponse = await loginApi(userId, password, deviceId);
+	dispatch(
+		ActionsCreators.setHasResetFirstPassword(
+			loginResponse.data.hasResetFirstPassword
+		)
+	);
 	const unsentMessages = getUnsentMessages(messages);
 	await fetchDynamicData(
 		loginResponse,
@@ -51,6 +56,7 @@ exports.register = async (
 	);
 
 	clearStore(dispatch);
+	dispatch(ActionsCreators.setHasResetFirstPassword(true));
 	await fetchDynamicData(
 		registerResponse,
 		fullName,

@@ -26,7 +26,8 @@ const styles = {
 	password: state.userData.password,
 	loginSynchedDataParameters: state.loginSynchedDataParameters,
 	deviceId: state.deviceId,
-	messages: state.messages
+	messages: state.messages,
+	hasResetFirstPassword: state.hasResetFirstPassword
 }))
 export default class CheckUserActivity extends React.Component {
 	static isInLoggingProcess = false;
@@ -55,7 +56,14 @@ export default class CheckUserActivity extends React.Component {
 						this.props.dispatch
 					);
 
-					this.props.navigation.navigate(Screens.HomeStack);
+					if (this.props.hasResetFirstPassword) {
+						this.props.navigation.navigate(Screens.HomeStack);
+					} else {
+						this.props.dispatch(
+							ActionsCreators.setInResetFirstPasswordMode(true)
+						);
+						this.props.navigation.navigate(Screens.ResetPassword);
+					}
 				} catch (error) {
 					this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(error));
 					this.props.navigation.navigate(Screens.LoginStack);
