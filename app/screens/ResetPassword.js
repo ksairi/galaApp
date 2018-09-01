@@ -45,7 +45,9 @@ const styles = {
 };
 
 @connect(state => ({
-	orientation: state.currentOrientation
+	orientation: state.currentOrientation,
+	inResetFirstPasswordMode: state.inResetFirstPasswordMode,
+	userId: state.userData.userId
 }))
 export default class ResetPassword extends React.Component {
 	state = {
@@ -122,25 +124,30 @@ export default class ResetPassword extends React.Component {
 								styles.resetPasswordTitle,
 								this.state.componentsStyle.resetPasswordTitle
 							]}>
-							RECUPERÁ TU CONTRASEÑA
+							{this.props.inResetFirstPasswordMode
+								? "INGRESÁ UNA NUEVA CONTRASEÑA"
+								: "RECUPERÁ TU CONTRASEÑA"}
 						</GenericText>
-						<RkTextInput
-							rkType="rounded inputText"
-							style={this.state.componentsStyle.inputTextStyle}
-							autoFocus
-							keyboardType="numeric"
-							placeholder="DNI"
-							returnKeyType="next"
-							autoCorrect={false}
-							onChangeText={this.onUserIdChangeText}
-							onSubmitEditing={this.onSubmitUserId}
-							value={this.state.userId}
-						/>
+						{!this.props.inResetFirstPasswordMode && (
+							<RkTextInput
+								rkType="rounded inputText"
+								style={this.state.componentsStyle.inputTextStyle}
+								autoFocus
+								keyboardType="numeric"
+								placeholder="DNI"
+								returnKeyType="next"
+								autoCorrect={false}
+								onChangeText={this.onUserIdChangeText}
+								onSubmitEditing={this.onSubmitUserId}
+								value={this.state.userId}
+							/>
+						)}
 
 						<RkTextInput
 							rkType="rounded inputText"
 							style={this.state.componentsStyle.inputTextStyle}
 							placeholder="Contraseña"
+							autoFocus={this.props.inResetFirstPasswordMode}
 							secureTextEntry
 							autoCapitalize="none"
 							autoCorrect={false}
@@ -183,19 +190,20 @@ export default class ResetPassword extends React.Component {
 							</GenericText>
 						)}
 
-						{this.state.showBackToSignIn && (
-							<View style={[textWithLinkStyle.container, { flex: 0.2 }]}>
-								<GenericText style={textWithLinkStyle.text}>
-									Contraseña actualizada!
-								</GenericText>
-								<GenericLink
-									containerStyle={textWithLinkStyle.link.container}
-									contentStyle={textWithLinkStyle.link.content}
-									onPress={this.goToSignIn}>
-									Volvé a loguearte
-								</GenericLink>
-							</View>
-						)}
+						{this.state.showBackToSignIn &&
+							!this.props.inResetFirstPasswordMode && (
+								<View style={[textWithLinkStyle.container, { flex: 0.2 }]}>
+									<GenericText style={textWithLinkStyle.text}>
+										Contraseña actualizada!
+									</GenericText>
+									<GenericLink
+										containerStyle={textWithLinkStyle.link.container}
+										contentStyle={textWithLinkStyle.link.content}
+										onPress={this.goToSignIn}>
+										Volvé a loguearte
+									</GenericLink>
+								</View>
+							)}
 
 						<LoadingSpinner visible={this.state.spinnerVisible} />
 					</CentredWrapper>
@@ -210,7 +218,7 @@ export default class ResetPassword extends React.Component {
 		this.setState({ showBackToSignIn: false });
 
 		if (
-			!this.state.userId ||
+			(!this.props.inResetFirstPasswordMode && !this.state.userId) ||
 			!this.state.password ||
 			!this.state.confirmPassword
 		) {
@@ -220,10 +228,12 @@ export default class ResetPassword extends React.Component {
 			});
 			return;
 		}
-		message = ValidationHelper.userIdWithErrors(this.state.userId);
-		if (message) {
-			this.setState({ message, hasErrors: true });
-			return;
+		if (!this.props.inResetFirstPasswordMode) {
+			message = ValidationHelper.userIdWithErrors(this.state.userId);
+			if (message) {
+				this.setState({ message, hasErrors: true });
+				return;
+			}
 		}
 
 		message = ValidationHelper.passwordsWithErrors(
@@ -236,10 +246,9 @@ export default class ResetPassword extends React.Component {
 		}
 
 		this.setState({ message: "", spinnerVisible: true });
-		resetPassword(this.state.userId, this.state.password)
+		const userId = this.state.userId ? this.state.userId : this.props.userId;
+		resetPassword(userId, this.state.password)
 			.then(data => {
-				this.setState({ spinnerVisible: false });
-
 				this.props.dispatch(
 					ActionsCreators.setUserNewPassword(this.state.password)
 				);
@@ -248,8 +257,16 @@ export default class ResetPassword extends React.Component {
 					showBackToSignIn: true,
 					userId: "",
 					password: "",
-					confirmPassword: ""
+					confirmPassword: "",
+					spinnerVisible: false
 				});
+
+				if (this.props.inResetFirstPasswordMode) {
+					this.props.dispatch(
+						ActionsCreators.setInResetFirstPasswordMode(false)
+					);
+					this.props.navigation.navigate(Screens.HomeStack);
+				}
 			})
 			.catch(message => {
 				this.setState({});

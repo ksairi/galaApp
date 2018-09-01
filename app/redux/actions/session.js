@@ -25,3 +25,21 @@ export function setAutoLoginErrorMessage(autoLoginErrorMessage) {
 		});
 	};
 }
+
+export function setHasResetFirstPassword(hasResetFirstPassword) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_HAS_RESET_FIRST_PASSWORD,
+			hasResetFirstPassword
+		});
+	};
+}
+
+export function setInResetFirstPasswordMode(inResetFirstPasswordMode) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_IN_RESET_FIRT_PASSWORD_MODE,
+			inResetFirstPasswordMode
+		});
+	};
+}

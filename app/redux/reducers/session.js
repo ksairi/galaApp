@@ -1,23 +1,35 @@
-import createReducer from './lib/createReducer'
-import { ActionsTypes } from '/config/settings'
+import createReducer from "./lib/createReducer";
+import { ActionsTypes } from "/config/settings";
 
 export const isLoggedIn = createReducer(false, {
-  [ActionsTypes.LOG_IN]() {
-    return true
-  },
-  [ActionsTypes.LOG_OUT]() {
-    return false
-  }
-})
+	[ActionsTypes.LOG_IN]() {
+		return true;
+	},
+	[ActionsTypes.LOG_OUT]() {
+		return false;
+	}
+});
 
 export const isAppsFirstTime = createReducer(true, {
-  [ActionsTypes.SET_IS_APPS_FIRST_TIME](state, action){
-    return action.state
-  }
-})
+	[ActionsTypes.SET_IS_APPS_FIRST_TIME](state, action) {
+		return action.state;
+	}
+});
 
-export const autoLoginErrorMessage = createReducer('', {
-  [ActionsTypes.SET_AUTO_LOGIN_ERROR_MESSAGE](state, action){
-    return action.autoLoginErrorMessage
-  }
-})
+export const autoLoginErrorMessage = createReducer("", {
+	[ActionsTypes.SET_AUTO_LOGIN_ERROR_MESSAGE](state, action) {
+		return action.autoLoginErrorMessage;
+	}
+});
+
+export const hasResetFirstPassword = createReducer(false, {
+	[ActionsTypes.SET_HAS_RESET_FIRST_PASSWORD](state, action) {
+		return action.hasResetFirstPassword;
+	}
+});
+
+export const inResetFirstPasswordMode = createReducer(false, {
+	[ActionsTypes.SET_IN_RESET_FIRT_PASSWORD_MODE](state, action) {
+		return action.inResetFirstPasswordMode;
+	}
+});
