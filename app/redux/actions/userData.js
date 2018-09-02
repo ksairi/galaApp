@@ -39,14 +39,26 @@ export function setUserNewPassword(password) {
 	};
 }
 
-export function setProfilePicturePath(path) {
+export function setProfilePicture(profilePicture) {
 	return (dispatch, getState) => {
-		dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE_PATH, path });
+		dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE, profilePicture });
 	};
 }
 
-export function setReceiveNotifications(value) {
+export function setProfilePictureSynched() {
 	return (dispatch, getState) => {
-		dispatch({ type: ActionsTypes.SET_RECEIVE_NOTIFICATIONS, value });
+		dispatch({ type: ActionsTypes.SET_PROFILE_PICTURE_SYNCHED });
+	};
+}
+
+export function setReceiveNotifications(obj) {
+	return (dispatch, getState) => {
+		dispatch({ type: ActionsTypes.SET_RECEIVE_NOTIFICATIONS, obj });
+	};
+}
+
+export function setReceiveNotificationsSynched() {
+	return (dispatch, getState) => {
+		dispatch({ type: ActionsTypes.SET_RECEIVE_NOTIFICATIONS_SYNCHED });
 	};
 }

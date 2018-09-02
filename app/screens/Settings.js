@@ -9,9 +9,9 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import RootWrapper from "/components/presentationals/RootWrapper";
-import { ActionsCreators } from "/redux/actions/";
+import { ActionsCreators } from "/redux/actions";
 import { Screens } from "/config/settings";
-
+import { synchMemberProperties } from "/helpers/UserDataHelper";
 const styles = {
 	title: {
 		fontFamily: "lato-regular",
@@ -35,7 +35,8 @@ const styles = {
 };
 
 @connect(state => ({
-	userData: state.userData
+	receiveNotifications: state.receiveNotifications,
+	userId: state.userData.userId
 }))
 export default class Settings extends React.Component {
 	logout = () => {
@@ -56,6 +57,19 @@ export default class Settings extends React.Component {
 		);
 	};
 
+	onValueChange = value => {
+		const values = {
+			value,
+			synched: false
+		};
+		this.props.dispatch(ActionsCreators.setReceiveNotifications(values));
+
+		synchMemberProperties(this.props.dispatch, {
+			userId: this.props.userId,
+			data: { receiveNotifications: values }
+		});
+	};
+
 	render() {
 		return (
 			<ScrollView
@@ -70,17 +84,15 @@ export default class Settings extends React.Component {
 							<Switch
 								style={{ alignSelf: "flex-end" }}
 								value={
-									this.props.userData.receiveNotifications == null
+									this.props.receiveNotifications == null
 										? true
-										: this.props.userData.receiveNotifications
+										: this.props.receiveNotifications.value
 								}
 								tintColor="grey"
 								onTintColor="white"
 								thumbTintColor="white"
 								onValueChange={value => {
-									this.props.dispatch(
-										ActionsCreators.setReceiveNotifications(value)
-									);
+									this.onValueChange(value);
 								}}
 							/>
 						</View>

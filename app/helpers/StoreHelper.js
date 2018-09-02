@@ -9,7 +9,18 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 
 	dispatch(ActionsCreators.logIn());
 	dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
-	dispatch(ActionsCreators.setUserData(userData));
+	if (userData) {
+		const userDataCopy = { ...userData };
+		delete userDataCopy.receivePushNotifications;
+
+		dispatch(ActionsCreators.setUserData(userDataCopy));
+		dispatch(
+			ActionsCreators.setReceiveNotifications({
+				value: userData.receivePushNotifications,
+				synched: false
+			})
+		);
+	}
 	dispatch(ActionsCreators.setNewMemberData(newMemberData));
 	dispatch(ActionsCreators.setRoutines(routines));
 };

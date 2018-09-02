@@ -15,15 +15,21 @@ import {
 	setNotifiedMessagesSaved
 } from "/helpers/ApiHelper";
 import { sendUnsentMessages } from "/helpers/MessagesHelper";
+import {
+	uploadProfilePicture,
+	synchMemberProperties
+} from "/helpers/UserDataHelper";
 @connect(
 	state => ({
-		userData: state.userData,
+		userId: state.userData.userId,
 		newMemberData: state.newMemberData,
 		messages: state.messages,
 		currentHomeDrawerOption: state.currentHomeDrawerOption,
 		isLoggedIn: state.isLoggedIn,
 		isAppsFirstTime: state.isAppsFirstTime,
-		messages: state.messages
+		messages: state.messages,
+		profilePicture: state.profilePicture,
+		receiveNotifications: state.receiveNotifications
 	}),
 	dispatch =>
 		Object.assign(
@@ -139,10 +145,19 @@ export default class AppContainer extends React.Component {
 			if (this.props.isLoggedIn) {
 				this.props.dispatch(ActionsCreators.fetchUserStore());
 				sendUnsentMessages(
-					this.props.userData.userId,
+					this.props.userId,
 					this.props.messages,
 					this.props.dispatch
 				);
+				if (this.props.profilePicture && !this.props.profilePicture.synched)
+					uploadProfilePicture(this.props.dispatch, {
+						userId: this.props.userId,
+						path: this.props.profilePicture.path
+					});
+				synchMemberProperties(this.props.dispatch, {
+					userId: this.props.userId,
+					data: { receiveNotifications: this.props.receiveNotifications }
+				});
 			}
 		}
 	};

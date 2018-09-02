@@ -6,7 +6,7 @@ import RootWrapper from "/components/presentationals/RootWrapper";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
 import { Screens } from "/config/settings";
-import { ActionsCreators } from "/redux/actions/";
+import { ActionsCreators } from "/redux/actions";
 import { genericBackgroundColor } from "/components/styles";
 import { FontAwesome } from "@expo/vector-icons";
 

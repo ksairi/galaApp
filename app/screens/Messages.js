@@ -12,7 +12,7 @@ import {
 } from "react-native-gifted-chat";
 import Dialog from "react-native-dialog";
 import RootWrapper from "/components/presentationals/RootWrapper";
-import { ActionsCreators } from "/redux/actions/";
+import { ActionsCreators } from "/redux/actions";
 import { MaterialIcons } from "@expo/vector-icons";
 import { sendMessages } from "/helpers/MessagesHelper";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";

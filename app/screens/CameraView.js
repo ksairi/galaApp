@@ -10,8 +10,9 @@ import { connect } from "react-redux";
 import { Camera, FileSystem, Constants } from "expo";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
 import { Messages, Screens } from "/config/settings";
-import { ActionsCreators } from "/redux/actions/";
-
+import { ActionsCreators } from "/redux/actions";
+import { uploadProfilePicture } from "/helpers/UserDataHelper";
+import { getProfilePicturePath } from "/helpers/ImageHelper";
 styles = {
 	camera: {
 		flex: 1,
@@ -176,13 +177,11 @@ export default class CameraView extends React.Component {
 	};
 
 	savePicture = async () => {
-		const picturePath = `${
-			FileSystem.documentDirectory
-		}${Date.now()}-profilePic.jpg`;
+		const picturePath = getProfilePicturePath();
 
 		try {
-			if (this.props.userData.profilePicPath) {
-				await FileSystem.deleteAsync(`${this.props.profilePicturePath}`, {
+			if (this.props.profilePicture) {
+				await FileSystem.deleteAsync(`${this.props.profilePicture.path}`, {
 					idempotent: true
 				});
 			}
@@ -193,7 +192,13 @@ export default class CameraView extends React.Component {
 			this.setState({
 				pictureTaken: null
 			});
-			this.props.dispatch(ActionsCreators.setProfilePicturePath(picturePath));
+			this.props.dispatch(
+				ActionsCreators.setProfilePicture({ path: picturePath, synched: false })
+			);
+			uploadProfilePicture(this.props.dispatch, {
+				path: picturePath,
+				userId: this.props.userData.userId
+			});
 			this.props.navigation.navigate(Screens.Profile);
 		} catch (error) {
 			console.log(error);

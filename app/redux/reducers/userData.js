@@ -9,9 +9,6 @@ export const userData = createReducer(
 		},
 		[ActionsTypes.SET_NEW_PASSWORD](state, action) {
 			return { ...state, password: action.password };
-		},
-		[ActionsTypes.SET_RECEIVE_NOTIFICATIONS](state, action) {
-			return { ...state, receiveNotifications: action.value };
 		}
 	}
 );
@@ -32,8 +29,20 @@ export const newMemberData = createReducer(null, {
 	}
 });
 
-export const profilePicturePath = createReducer(null, {
-	[ActionsTypes.SET_PROFILE_PICTURE_PATH](state, action) {
-		return action.path;
+export const profilePicture = createReducer(null, {
+	[ActionsTypes.SET_PROFILE_PICTURE](state, action) {
+		return action.profilePicture;
+	},
+	[ActionsTypes.SET_PROFILE_PICTURE_SYNCHED](state, action) {
+		return { ...state, synched: true };
+	}
+});
+
+export const receiveNotifications = createReducer(null, {
+	[ActionsTypes.SET_RECEIVE_NOTIFICATIONS](state, action) {
+		return action.obj;
+	},
+	[ActionsTypes.SET_RECEIVE_NOTIFICATIONS_SYNCHED](state, action) {
+		return { ...state, synched: true };
 	}
 });

@@ -7,7 +7,7 @@ import Footer from "/components/presentationals/Footer";
 import GenericText from "/components/presentationals/GenericText";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { Screens } from "/config/settings";
-import { ActionsCreators } from "/redux/actions/";
+import { ActionsCreators } from "/redux/actions";
 
 const styles = {
 	routinesWrapper: {
