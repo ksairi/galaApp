@@ -14,7 +14,7 @@ import RootWrapper from "/components/presentationals/RootWrapper";
 import Footer from "/components/presentationals/Footer";
 import { Screens } from "/config/settings";
 import GenericText from "/components/presentationals/GenericText";
-
+import { getRemoteProfilePicture } from "/helpers/UserDataHelper";
 const styles = {
 	photoContainer: {
 		flex: 1,
@@ -41,15 +41,18 @@ const styles = {
 	}
 };
 
+const NO_PROFILE_PICTURE_PATH = "../images/no_profile_picture.jpg";
+
 @connect(state => ({
 	userData: state.userData,
-	profilePicturePath: state.profilePicturePath,
+	profilePicture: state.profilePicture,
 	orientation: state.currentOrientation
 }))
 export default class Profile extends React.Component {
 	state = {
 		hasProfilePic: false,
-		deviceWidth: Dimensions.get("window").width
+		deviceWidth: Dimensions.get("window").width,
+		imageSource: require(NO_PROFILE_PICTURE_PATH)
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -61,11 +64,7 @@ export default class Profile extends React.Component {
 	}
 
 	componentDidMount = () => {
-		Expo.FileSystem.getInfoAsync(this.props.profilePicturePath)
-			.then(response => {
-				this.setState({ hasProfilePic: response.exists });
-			})
-			.catch(() => {});
+		this.getImageSource();
 	};
 
 	goToSettings = () => {
@@ -79,6 +78,35 @@ export default class Profile extends React.Component {
 		}
 	};
 
+	onErrorLoadProfilePicture = () =>
+		this.setState({
+			imageSource: require(NO_PROFILE_PICTURE_PATH)
+		});
+
+	getImageSource = () => {
+		if (this.props.profilePicture) {
+			this.setState({
+				imageSource: {
+					uri: `${this.props.profilePicture.path}`
+				}
+			});
+		} else {
+			getRemoteProfilePicture(this.props.userData.userId)
+				.then(uri => {
+					if (uri) {
+						this.setState({
+							imageSource: { uri }
+						});
+					}
+				})
+				.catch(() => {
+					this.setState({
+						imageSource: require(NO_PROFILE_PICTURE_PATH)
+					});
+				});
+		}
+	};
+
 	render() {
 		return (
 			<ScrollView
@@ -88,18 +116,13 @@ export default class Profile extends React.Component {
 				<RootWrapper>
 					<View style={styles.photoContainer}>
 						<Image
-							source={
-								this.state.hasProfilePic
-									? {
-											uri: `${this.props.profilePicturePath}`
-									  }
-									: require("../images/no_profile_picture.jpg")
-							}
+							source={this.state.imageSource}
 							style={{
 								width: 100,
 								height: 100,
 								borderRadius: 100 / 2
 							}}
+							//onError={this.onErrorLoadProfilePicture}
 						/>
 						<TouchableOpacity
 							onPress={this.useCamera}

@@ -2,6 +2,9 @@ import { Urls, Messages, ServerProtocol } from "/config/settings.js";
 import { isDeviceConnected } from "./NetworkHelper";
 import API_ACCESS_TOKEN from "/config/apiAccessToken";
 
+const CONTENT_TYPE_MULTI_PART = "multipart/form-data;";
+const CONTENT_TYPE_JSON = "application/json";
+
 exports.login = (userId, password, deviceId) => {
 	const loginParamters = {};
 
@@ -160,15 +163,40 @@ exports.setRealTimeMessagesSaved = params => {
 		});
 };
 
-connectToServer = (url, parameters) => {
+exports.uploadProfilePicture = params => {
+	return connectToServer(
+		Urls.UPLOAD_PROFILE_PICTURE,
+		params,
+		CONTENT_TYPE_MULTI_PART
+	)
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
+exports.synchMemberProperties = params => {
+	return connectToServer(Urls.SYNCH_MEMBER_PROPERTIES, params)
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			throw error;
+		});
+};
+
+connectToServer = (url, parameters, contentType = CONTENT_TYPE_JSON) => {
 	return fetch(url, {
 		method: "POST",
 		headers: {
 			Accept: "application/json",
-			"Content-Type": "application/json",
+			"Content-Type": contentType,
 			Authorization: "Bearer " + API_ACCESS_TOKEN
 		},
-		body: JSON.stringify(parameters)
+		body:
+			contentType == CONTENT_TYPE_JSON ? JSON.stringify(parameters) : parameters
 	})
 		.then(response => {
 			if (response.ok) {
