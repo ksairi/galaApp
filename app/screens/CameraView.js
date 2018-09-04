@@ -222,7 +222,7 @@ export default class CameraView extends React.Component {
 		if (this.camera) {
 			try {
 				const picture = await this.camera.takePictureAsync({
-					quality: 0.5
+					quality: 1
 				});
 				this.setState({ pictureTaken: picture, renderCamera: false });
 			} catch (error) {

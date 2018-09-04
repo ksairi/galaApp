@@ -66,7 +66,7 @@ export default class AppContainer extends React.Component {
 				promotions() {
 					savePromotionsData(notification.data.promotions, props.dispatch);
 					setNotifiedPromotionsSaved({
-						userId: props.userData.userId,
+						userId: props.userId,
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetPromotionsSaved = true;
@@ -83,7 +83,7 @@ export default class AppContainer extends React.Component {
 						)
 					);
 					setNotifiedMessagesSaved({
-						userId: props.userData.userId,
+						userId: props.userId,
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetMessagesSaved = true;
@@ -98,7 +98,7 @@ export default class AppContainer extends React.Component {
 					savePromotionsData(notification.data.promotions, props.dispatch);
 					if (!AppContainer.alreadySetPromotionsSaved) {
 						setNotifiedPromotionsSaved({
-							userId: props.userData.userId,
+							userId: props.userId,
 							notificationId: notification.data.notificationId
 						});
 					}
@@ -118,7 +118,7 @@ export default class AppContainer extends React.Component {
 						);
 
 						setNotifiedMessagesSaved({
-							userId: props.userData.userId,
+							userId: props.userId,
 							notificationId: notification.data.notificationId
 						});
 					}
