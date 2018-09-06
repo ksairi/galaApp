@@ -18,15 +18,11 @@ export function fetchUserStore() {
 		if (getState().userData.userId) {
 			fetchUserData(getState().userData.userId).then(
 				response => {
-					//const { notifications, routines, timetable } = response.data;
 					const { routines } = response.data;
-					//dispatch({ type: ActionsTypes.SET_NOTIFICATIONS, notifications });
 					dispatch({ type: ActionsTypes.SET_ROUTINES, routines });
-					//dispatch({ type: ActionsTypes.SET_TIMETABLE, timetable });
 				},
 				error => {
 					console.log(error);
-					//TODO SHOW AN ERROR SOMEWHERE IN THE SCREEN
 				}
 			);
 		}

@@ -28,30 +28,24 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 exports.setContentServerData = async (contentServerData, dispatch) => {
 	if (contentServerData) {
 		const {
-			loginImages,
+			//loginImages,
 			mainMenuImages,
 			promotions,
-			routinesImages,
-			classesImages,
-			timetableImages,
+			//routinesImages,
+			//classesImages,
+			//timetableImages,
 			timetable,
 			sentMessages,
 			messagesData
 		} = contentServerData;
-		await saveDataToDevice(
+		/*await saveDataToDevice(
 			loginImages,
 			"loginImage",
 			ActionsCreators.setLoginImages,
 			ActionsCreators.removeLoginImage,
 			dispatch
-		);
-		await saveDataToDevice(
-			mainMenuImages,
-			"mainMenuImage",
-			ActionsCreators.setMainMenuImages,
-			ActionsCreators.removeMainMenuImage,
-			dispatch
-		);
+		);*/
+		await saveMainMenuImages(mainMenuImages, dispatch);
 
 		await savePromotionsData(promotions, dispatch);
 
@@ -128,12 +122,19 @@ export const saveDataToDevice = (
 		return Promise.all(newDataPromises)
 			.then(newDataArray => {
 				const dataToAdd = [],
-					dataToRemove = [];
+					dataToRemove = [],
+					newParameters = { indexesToAdd: [], indexesToRemove: [] };
 				newDataArray.forEach(newData => {
 					if (newData.uri) {
 						dataToAdd.push(newData);
+						if (newData.imageIndex) {
+							newParameters.indexesToAdd.push(parseInt(newData.imageIndex));
+						}
 					} else {
-						dataToRemove.push(newData);
+						dataToRemove.push(newData.imageIndex);
+						if (newData.imageIndex) {
+							newParameters.indexesToRemove.push(parseInt(newData.imageIndex));
+						}
 					}
 				});
 				if (dataToAdd.length > 0) {
@@ -143,6 +144,8 @@ export const saveDataToDevice = (
 				if (dataToRemove.length > 0) {
 					dispatch(removeAction(dataToRemove));
 				}
+
+				return newParameters;
 			})
 			.catch(error => {
 				throw error;
@@ -164,6 +167,21 @@ export const savePromotionsData = async (promotions, dispatch) => {
 		dataNewState.data = { lastUpdate: promotions.lastUpdate };
 		dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 	}
+};
+
+export const saveMainMenuImages = async (mainMenuImages, dispatch) => {
+	const updatedIndexes = await saveDataToDevice(
+		mainMenuImages,
+		"mainMenuImage",
+		ActionsCreators.setMainMenuImages,
+		ActionsCreators.removeMainMenuImages,
+		dispatch
+	);
+
+	const dataNewState = {};
+	dataNewState.entity = "mainMenuImages";
+	dataNewState.data = { updatedIndexes };
+	dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 };
 
 export const saveMessagesToDevice = (messagesData, sentMessages, dispatch) => {

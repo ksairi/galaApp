@@ -23,7 +23,19 @@ export const mainMenuImages = createReducer(
 	],
 	{
 		[ActionsTypes.SET_MAIN_MENU_IMAGES](state, action) {
-			return action.mainMenuImages;
+			if (action.mainMenuImages) {
+				return [...state, ...action.mainMenuImages];
+			}
+			return state;
+		},
+		[ActionsTypes.REMOVE_MAIN_MENU_IMAGES](state, action) {
+			if (action.mainMenuImageIndexesToRemove) {
+				return state.filter(
+					image =>
+						!action.mainMenuImageIndexesToRemove.includes(image.imageIndex)
+				);
+			}
+			return state;
 		}
 	}
 );
@@ -91,7 +103,7 @@ export const synchedDataParameters = createReducer(
 	}
 );
 export const loginSynchedDataParameters = createReducer(
-	{ isLoginRequest: true },
+	{ isLoginRequest: true, mainMenuImages: { imagesIndex: [0, 1, 2] } },
 	{
 		[ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS](state, action) {
 			const params = action.loginSynchedDataParameters;
@@ -105,9 +117,26 @@ export const loginSynchedDataParameters = createReducer(
 			entityActiveDataNewState = [
 				...entityActiveDataNewState,
 				...params.activeDataIds
-			];*/
-			const entityNewData = { ...params.data };
-			//entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates
+			];
+			entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates*/
+			var entityNewData = { ...params.data };
+			if (entityNewData && entityNewData.updatedIndexes) {
+				const entityIndexes = [...state[params.entity].imagesIndex];
+				entityNewData.updatedIndexes.indexesToAdd.forEach(index => {
+					entityIndexes.push(index);
+				});
+				entityNewData.updatedIndexes.indexesToRemove.forEach(indexToRemove => {
+					entityIndexes = entityIndexes.filter(index => index != indexToRemove);
+				});
+				entityNewData = entityIndexes;
+				return {
+					...state,
+					[params.entity]: {
+						...state[params.entity],
+						imagesIndex: entityNewData
+					}
+				};
+			}
 			return {
 				...state,
 				[params.entity]: entityNewData

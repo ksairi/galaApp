@@ -15,6 +15,15 @@ export function setMainMenuImages(mainMenuImages) {
 	};
 }
 
+export function removeMainMenuImages(mainMenuImageIndexesToRemove) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.REMOVE_MAIN_MENU_IMAGES,
+			mainMenuImageIndexesToRemove
+		});
+	};
+}
+
 export function setPromotions(promotions) {
 	return (dispatch, getState) => {
 		dispatch({
