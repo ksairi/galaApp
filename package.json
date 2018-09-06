@@ -1,6 +1,6 @@
 {
 	"name": "GalaApp",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"private": true,
 	"devDependencies": {
 		"babel-plugin-module-resolver": "3.1.1",
