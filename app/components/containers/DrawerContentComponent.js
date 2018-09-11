@@ -9,7 +9,7 @@ import * as UserDataHelper from "/helpers/UserDataHelper";
 
 const styles = {
 	drawerItemsWrapper: {
-		paddingTop: Expo.Constants.statusBarHeight + 10,
+		paddingTop: 20,
 		backgroundColor: genericBackgroundColor,
 		alignItems: "flex-start",
 		paddingLeft: 5,

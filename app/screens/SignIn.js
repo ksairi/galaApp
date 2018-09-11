@@ -1,11 +1,6 @@
 import React from "react";
-import {
-	Keyboard,
-	View,
-	KeyboardAvoidingView,
-	Image,
-	Dimensions
-} from "react-native";
+import { Keyboard, View, KeyboardAvoidingView, Dimensions } from "react-native";
+import AutoHeightImage from "react-native-auto-height-image";
 import { connect } from "react-redux";
 import { RkTheme, RkTextInput } from "react-native-ui-kitten";
 import * as Animatable from "react-native-animatable-promise";
@@ -26,31 +21,32 @@ import {
 import { getDeviceId } from "/helpers/NotificationsHelper";
 import { ActionsCreators } from "/redux/actions";
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
-const AnimatedImage = Animatable.createAnimatableComponent(Image);
 
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
 const styles = {
 	animatedLogoInitStyle: { flex: 1, fontSize: 60 },
-	animatedLogoEndStyle: { flex: 0.9, fontSize: 35 },
-	animatedImageInitStyle: {
+	animatedLogoEndStyle: { flex: 0.6, fontSize: 35 },
+	image: {
 		flex: -1,
-		height: 205,
-		width: Dimensions.get("window").width,
-		marginBottom: 10
+		marginBottom: 5,
+		marginTop: 5
 	},
-	animatedImageEndStyle: { height: 110, width: 193, marginBottom: 0 },
-	rootWrapperStyle: { paddingTop: Expo.Constants.statusBarHeight + 10 },
+
+	rootWrapperStyle: { paddingTop: 10 },
 	hiddenKeyboardComponentsStyle: {
 		passwordInputStyle: { marginBottom: 10 },
-		buttonContainerStyle: { flex: 0.7 },
-		linksContainerStyle: { flex: 0.7 }
+		buttonContainerStyle: { flex: 0.65 },
+		buttonStyle: { height: 40 },
+		linksContainerStyle: { flex: 0.7 },
+		firstLinkStyle: { flex: 0.5 },
+		secondLinkStyle: { flex: 0.5 }
 	},
 	showingKeyboardComponentsStyle: {
-		passwordInputStyle: { marginBottom: 0 },
-		buttonContainerStyle: { flex: 0.7 },
-		buttonStyle: { height: 30 },
-		linksContainerStyle: { flex: 0.9 }
+		passwordInputStyle: { marginBottom: 5 },
+		linksContainerStyle: { flex: 0.9 },
+		firstLinkStyle: { flex: 0.3 },
+		secondLinkStyle: { flex: 0.6 }
 	}
 };
 
@@ -105,22 +101,14 @@ export default class SignIn extends React.Component {
 			componentsStyle: styles.showingKeyboardComponentsStyle
 		});
 		this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 500);
-		if (this.animatedImage) {
-			this.animatedImage.transitionTo(styles.animatedImageEndStyle, 500);
-		}
 	};
 
 	_keyboardDidHide = () => {
 		this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
 		this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 500);
-		if (this.animatedImage != null) {
-			this.animatedImage.transitionTo(styles.animatedImageInitStyle, 500);
-		}
 	};
 
 	handleAnimatedLogo = ref => (this.animatedLogo = ref);
-
-	handleAnimatedImage = ref => (this.animatedImage = ref);
 
 	onUserIdChangeText = userId => {
 		this.setState({ userId });
@@ -136,30 +124,32 @@ export default class SignIn extends React.Component {
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
 					<CentredWrapper>
 						<AnimatedLogo
-							style={[styles.animatedLogoInitStyle]}
+							style={styles.animatedLogoInitStyle}
 							ref={this.handleAnimatedLogo}
 						/>
 
-						{this.props.orientation == "portrait" && (
-							<AnimatedImage
-								source={
-									this.props.loginImages.length > 0 &&
-									this.props.loginImages[0].imageIndex == 0
-										? require("../images/login.jpg")
-										: {
-												uri: this.props.loginImages[0].uri
-										  }
-								}
-								style={styles.animatedImageInitStyle}
-								ref={this.handleAnimatedImage}
-							/>
-						)}
+						{this.props.orientation == "portrait" &&
+							this.state.componentsStyle ==
+								styles.hiddenKeyboardComponentsStyle && (
+								<AutoHeightImage
+									source={
+										this.props.loginImages.length > 0 &&
+										this.props.loginImages[0].imageIndex == 0
+											? require("../images/login.jpg")
+											: {
+													uri: this.props.loginImages[0].uri
+											  }
+									}
+									style={styles.image}
+									width={Dimensions.get("window").width}
+								/>
+							)}
 
 						<RkTextInput
 							rkType="rounded inputText"
 							style={{
 								marginBottom: 0,
-								flex: 0.8,
+								flex: 0.5,
 								marginLeft: containerPadding,
 								marginRight: containerPadding
 							}}
@@ -176,14 +166,14 @@ export default class SignIn extends React.Component {
 
 						<RkTextInput
 							rkType="rounded inputText"
-							style={
-								(this.state.componentsStyle.passwordInputStyle,
+							style={[
+								this.state.componentsStyle.passwordInputStyle,
 								{
-									flex: 0.8,
+									flex: 0.5,
 									marginLeft: containerPadding,
 									marginRight: containerPadding
-								})
-							}
+								}
+							]}
 							placeholder="Contraseña"
 							secureTextEntry
 							onChangeText={this.onPasswordChangeText}
@@ -213,7 +203,11 @@ export default class SignIn extends React.Component {
 						</View>
 
 						<View style={this.state.componentsStyle.linksContainerStyle}>
-							<View style={textWithLinkStyle.container}>
+							<View
+								style={[
+									textWithLinkStyle.container,
+									this.state.componentsStyle.firstLinkStyle
+								]}>
 								<GenericText style={textWithLinkStyle.text}>
 									¿No tenés una cuenta?
 								</GenericText>
@@ -225,7 +219,11 @@ export default class SignIn extends React.Component {
 								</GenericLink>
 							</View>
 
-							<View style={textWithLinkStyle.container}>
+							<View
+								style={[
+									textWithLinkStyle.container,
+									this.state.componentsStyle.secondLinkStyle
+								]}>
 								<GenericText style={textWithLinkStyle.text}>
 									¿Olvidaste tu contraseña?
 								</GenericText>

@@ -1,5 +1,5 @@
 import React from "react";
-import { NetInfo } from "react-native";
+import { NetInfo, View, StatusBar } from "react-native";
 import { Notifications } from "expo";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -19,6 +19,14 @@ import {
 	uploadProfilePicture,
 	synchMemberProperties
 } from "/helpers/UserDataHelper";
+
+const MyStatusBar = ({ backgroundColor, ...props }) => (
+	<View
+		style={[{ height: Expo.Constants.statusBarHeight }, { backgroundColor }]}>
+		<StatusBar translucent backgroundColor={backgroundColor} {...props} />
+	</View>
+);
+
 @connect(
 	state => ({
 		userId: state.userData.userId,
@@ -165,6 +173,7 @@ export default class AppContainer extends React.Component {
 	render() {
 		return (
 			<RootView>
+				<MyStatusBar backgroundColor="#5E8D48" barStyle="light-content" />
 				<AppRoutes
 					ref={nav => {
 						this.navigator = nav ? nav._navigation : nav;

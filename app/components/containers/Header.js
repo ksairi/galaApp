@@ -13,7 +13,6 @@ const styles = {
 		flexDirection: "row",
 		alignItems: "flex-start",
 		backgroundColor: "#0b1143",
-		marginTop: Expo.Constants.statusBarHeight,
 		paddingTop: 20,
 		paddingLeft: containerPadding
 	},
