@@ -26,7 +26,7 @@ RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
 const styles = {
 	animatedLogoInitStyle: { flex: 1, fontSize: 60 },
-	animatedLogoEndStyle: { flex: 0.6, fontSize: 35 },
+	animatedLogoEndStyle: { flex: 0.6, fontSize: 45 },
 	image: {
 		flex: -1,
 		marginBottom: 5,
@@ -46,7 +46,19 @@ const styles = {
 		passwordInputStyle: { marginBottom: 5 },
 		linksContainerStyle: { flex: 0.9 },
 		firstLinkStyle: { flex: 0.3 },
-		secondLinkStyle: { flex: 0.6 }
+		secondLinkStyle: { flex: 0.3 }
+	},
+	landscape: {
+		showingKeyboardComponentsStyle: {
+			buttonContainerStyle: { flex: 0.55 },
+			buttonStyle: { height: 30 },
+			buttonContentStyle: { fontSize: 14 },
+			logoStyle: { flex: 0.55, fontSize: 25 },
+			linksContainerStyle: { flex: 0.7 },
+			firstLinkStyle: { flex: 0.5 },
+			secondLinkStyle: { flex: 0.5 },
+			passwordInputStyle: { marginBottom: 0, marginTop: 0 }
+		}
 	}
 };
 
@@ -63,6 +75,7 @@ const styles = {
 }))
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
+	static isKeyboardShowing = false;
 
 	state = {
 		errorMessage: "",
@@ -72,7 +85,20 @@ export default class SignIn extends React.Component {
 		componentsStyle: styles.hiddenKeyboardComponentsStyle
 	};
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.orientation == "landscape" && SignIn.isKeyboardShowing) {
+			return {
+				componentsStyle: {
+					...styles.landscape.showingKeyboardComponentsStyle
+				}
+			};
+		} else {
+			return prevState;
+		}
+	}
+
 	componentDidMount() {
+		Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL);
 		if (this.props.isLoggedIn) {
 			this.setState({
 				userId: this.props.userData.userId,
@@ -96,14 +122,25 @@ export default class SignIn extends React.Component {
 	}
 
 	_keyboardDidShow = () => {
-		this.setState({
-			errorMessage: "",
-			componentsStyle: styles.showingKeyboardComponentsStyle
-		});
-		this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 500);
+		SignIn.isKeyboardShowing = true;
+		if (this.props.orientation != "landscape") {
+			this.setState({
+				componentsStyle: styles.showingKeyboardComponentsStyle
+			});
+			this.animatedLogo.transitionTo(styles.animatedLogoEndStyle, 500);
+		} else {
+			this.setState({
+				componentsStyle: styles.landscape.showingKeyboardComponentsStyle
+			});
+			this.animatedLogo.transitionTo(
+				styles.landscape.showingKeyboardComponentsStyle.logoStyle,
+				500
+			);
+		}
 	};
 
 	_keyboardDidHide = () => {
+		SignIn.isKeyboardShowing = false;
 		this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
 		this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 500);
 	};
@@ -116,6 +153,12 @@ export default class SignIn extends React.Component {
 
 	onPasswordChangeText = password => {
 		this.setState({ password });
+	};
+
+	onInputTextFocus = () => {
+		this.setState({
+			errorMessage: ""
+		});
 	};
 
 	render() {
@@ -162,6 +205,7 @@ export default class SignIn extends React.Component {
 							autoCapitalize="none"
 							autoCorrect={false}
 							value={this.props.isLoggedIn ? this.state.userId : null}
+							onFocus={this.onInputTextFocus}
 						/>
 
 						<RkTextInput
@@ -170,8 +214,8 @@ export default class SignIn extends React.Component {
 								this.state.componentsStyle.passwordInputStyle,
 								{
 									flex: 0.5,
-									marginLeft: containerPadding,
-									marginRight: containerPadding
+									paddingLeft: containerPadding,
+									paddingRight: containerPadding
 								}
 							]}
 							placeholder="Contraseña"
@@ -184,6 +228,7 @@ export default class SignIn extends React.Component {
 							ref="passwordInput"
 							onSubmitEditing={this.signIn}
 							value={this.props.isLoggedIn ? this.state.password : null}
+							onFocus={this.onInputTextFocus}
 						/>
 
 						<View
@@ -197,6 +242,7 @@ export default class SignIn extends React.Component {
 							]}>
 							<Button
 								style={this.state.componentsStyle.buttonStyle}
+								contentStyle={this.state.componentsStyle.buttonContentStyle}
 								text="INICIAR SESIÓN"
 								onPress={this.signIn}
 							/>
@@ -219,27 +265,33 @@ export default class SignIn extends React.Component {
 								</GenericLink>
 							</View>
 
-							<View
-								style={[
-									textWithLinkStyle.container,
-									this.state.componentsStyle.secondLinkStyle
-								]}>
-								<GenericText style={textWithLinkStyle.text}>
-									¿Olvidaste tu contraseña?
-								</GenericText>
-								<GenericLink
-									containerStyle={textWithLinkStyle.link.container}
-									contentStyle={textWithLinkStyle.link.content}
-									onPress={this.goToResetPassword}>
-									Recuperala
-								</GenericLink>
-							</View>
+							{
+								<View
+									style={[
+										textWithLinkStyle.container,
+										this.state.componentsStyle.secondLinkStyle
+									]}>
+									<GenericText style={textWithLinkStyle.text}>
+										¿Olvidaste tu contraseña?
+									</GenericText>
+									<GenericLink
+										containerStyle={textWithLinkStyle.link.container}
+										contentStyle={textWithLinkStyle.link.content}
+										onPress={this.goToResetPassword}>
+										Recuperala
+									</GenericLink>
+								</View>
+							}
 						</View>
 
 						{(this.state.errorMessage != "" ||
 							this.props.autoLoginErrorMessage != "") && (
 							<GenericText
-								style={{ flex: 0.5 }}
+								style={{
+									flex: 0.7,
+									marginLeft: containerPadding,
+									marginRight: containerPadding
+								}}
 								error={
 									this.state.errorMessage ||
 									this.props.autoLoginErrorMessage != ""

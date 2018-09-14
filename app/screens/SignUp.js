@@ -12,7 +12,12 @@ import Button from "/components/presentationals/GenericButton";
 import GenericText from "/components/presentationals/GenericText";
 import GenericLink from "/components/presentationals/GenericLink";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
-import { genericTextInputStyle, textWithLinkStyle } from "/components/styles";
+import {
+	genericTextInputStyle,
+	textWithLinkStyle,
+	containerPadding
+} from "/components/styles";
+import Header from "/components/containers/Header";
 
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
@@ -22,31 +27,29 @@ const styles = {
 		fontFamily: "brother-1816-bold"
 	},
 	hiddenKeyboardComponentsStyle: {
-		rootWrapperStyle: { paddingTop: 15 },
 		buttonContainerStyle: { flex: 1 },
-		buttonContentStyle: { height: 40 }
+		buttonStyle: { height: 40 },
+		memeberAlreadyStyle: { flex: 0.4 }
 	},
 	showingKeyboardComponentsStyle: {
 		textInputStyle: { marginTop: 0, marginBottom: 5, flex: 0.15 },
-		titleStyle: { flex: 0.2 },
-		rootWrapperStyle: { paddingTop: 10, paddingBottom: 5 },
-		buttonContainerStyle: { flex: 0.2 },
-		buttonContentStyle: { height: 30 },
-		memeberAlreadyStyle: { flex: 0.6 }
-	},
-	landscapeComponentsStyle: {
-		textInputStyle: { marginTop: 0 },
-		buttonContentStyle: { height: 25 },
+		titleStyle: { flex: 0.15 },
+		buttonContainerStyle: { flex: 0.17 },
+		buttonStyle: { height: 30 },
+		buttonContentStyle: { fontSize: 14 },
 		memeberAlreadyStyle: { flex: 0.6 }
 	}
 };
 
 @connect(state => ({
 	deviceId: state.deviceId,
-	orientation: state.currentOrientation,
 	loginSynchedDataParameters: state.loginSynchedDataParameters
 }))
 export default class SignUp extends React.Component {
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header navigation={navigation} backScreen={Screens.SignIn} />
+	});
+
 	state = {
 		errorMessage: "",
 		focusPassword: false,
@@ -54,25 +57,8 @@ export default class SignUp extends React.Component {
 		componentsStyle: styles.hiddenKeyboardComponentsStyle
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (nextProps.orientation == "landscape") {
-			return {
-				componentsStyle: {
-					...prevState.componentsStyle,
-					...styles.landscapeComponentsStyle
-				}
-			};
-		} else {
-			return {
-				componentsStyle: {
-					...prevState.componentsStyle,
-					...styles.hiddenKeyboardComponentsStyle
-				}
-			};
-		}
-	}
-
 	componentDidMount() {
+		Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",
 			this._keyboardDidShow
@@ -90,8 +76,7 @@ export default class SignUp extends React.Component {
 
 	_keyboardDidShow = () => {
 		this.setState({
-			componentsStyle: styles.showingKeyboardComponentsStyle,
-			errorMessage: ""
+			componentsStyle: styles.showingKeyboardComponentsStyle
 		});
 	};
 
@@ -188,9 +173,15 @@ export default class SignUp extends React.Component {
 		this.confirmPassword = password;
 	};
 
+	onInputTextOnFocus = () => {
+		this.setState({
+			errorMessage: ""
+		});
+	};
+
 	render() {
 		return (
-			<RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
+			<RootWrapper style={{ paddingBottom: 0 }}>
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
 					<CentredWrapper>
 						<GenericText
@@ -211,6 +202,7 @@ export default class SignUp extends React.Component {
 							autoCorrect={false}
 							onChangeText={this.onFullNameChangeText}
 							onSubmitEditing={this.onSubmitUserFullName}
+							onFocus={this.onInputTextOnFocus}
 						/>
 
 						<RkTextInput
@@ -223,6 +215,7 @@ export default class SignUp extends React.Component {
 							ref="userIdInput"
 							onChangeText={this.onUserIdChangeText}
 							onSubmitEditing={this.onSubmitUserId}
+							onFocus={this.onInputTextOnFocus}
 						/>
 
 						<RkTextInput
@@ -237,6 +230,7 @@ export default class SignUp extends React.Component {
 							ref="passwordInput"
 							onChangeText={this.onPasswordChangeText}
 							onSubmitEditing={this.onSubmitPassword}
+							onFocus={this.onInputTextOnFocus}
 						/>
 
 						<RkTextInput
@@ -251,6 +245,7 @@ export default class SignUp extends React.Component {
 							ref="confirmPasswordInput"
 							onChangeText={this.onConfirmPasswordChangeText}
 							onSubmitEditing={this.signUp}
+							onFocus={this.onInputTextOnFocus}
 						/>
 
 						<View
@@ -259,7 +254,8 @@ export default class SignUp extends React.Component {
 								this.state.componentsStyle.buttonContainerStyle
 							]}>
 							<Button
-								style={this.state.componentsStyle.buttonContentStyle}
+								style={this.state.componentsStyle.buttonStyle}
+								contentStyle={this.state.componentsStyle.buttonContentStyle}
 								text="REGISTRARME"
 								onPress={this.signUp}
 							/>
@@ -283,7 +279,11 @@ export default class SignUp extends React.Component {
 
 						{this.state.errorMessage != "" && (
 							<GenericText
-								style={{ flex: 0.6 }}
+								style={{
+									fontSize: 13,
+									paddingLeft: containerPadding,
+									paddingRight: containerPadding
+								}}
 								error={this.state.errorMessage ? true : false}>
 								{this.state.errorMessage}
 							</GenericText>

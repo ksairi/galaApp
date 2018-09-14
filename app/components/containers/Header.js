@@ -9,11 +9,11 @@ import NetworkHelper from "/helpers/NetworkHelper";
 
 const styles = {
 	wrapper: {
-		flex: 0.15,
+		flex: 1,
 		flexDirection: "row",
 		alignItems: "flex-start",
 		backgroundColor: "#0b1143",
-		paddingTop: 20,
+		paddingTop: 10,
 		paddingLeft: containerPadding
 	},
 	backButton: {
@@ -115,57 +115,53 @@ export default class Header extends React.PureComponent {
 
 	render() {
 		return (
-			<View style={styles.wrapper}>
-				<View style={{ flex: 0.9 }}>
-					{this.props.isHomeHeader ? (
-						<TouchableOpacity
-							onPress={this.onMenuPressed}
-							style={styles.firstButton}>
-							<Icon name="menu" size={20} color="white" />
-						</TouchableOpacity>
-					) : (
-						<TouchableOpacity
-							onPress={this.onBackPressed}
-							style={styles.backButton}>
-							<Icon
-								name="arrow-navigation-white-left"
-								size={20}
-								color="white"
-							/>
-						</TouchableOpacity>
-					)}
-				</View>
-				{this.props.title ? (
-					<View
-						style={{
-							flex: 2.2,
-							flexDirection: "row",
-							justifyContent: "center"
-						}}>
-						<Text style={styles.title}>{this.props.title}</Text>
+			<View style={{ flex: 0.13 }}>
+				<View style={styles.wrapper}>
+					<View style={{ flex: 0.9 }}>
+						{this.props.isHomeHeader ? (
+							<TouchableOpacity
+								onPress={this.onMenuPressed}
+								style={styles.firstButton}>
+								<Icon name="menu" size={20} color="white" />
+							</TouchableOpacity>
+						) : (
+							<TouchableOpacity
+								onPress={this.onBackPressed}
+								style={styles.backButton}>
+								<Icon
+									name="arrow-navigation-white-left"
+									size={20}
+									color="white"
+								/>
+							</TouchableOpacity>
+						)}
 					</View>
-				) : (
-					<View
-						style={{
-							flex: 2.2,
-							flexDirection: "row",
-							justifyContent: "center"
-						}}>
-						<Logo style={[{ fontSize: 50 }, this.state.headerStyle.logo]} />
-					</View>
-				)}
 
-				<View style={{ flex: 1, flexDirection: "row" }}>
-					{!this.state.isDeviceConnected ? (
-						<GenericText
-							style={{
-								backgroundColor: "red"
-							}}>
-							Sin conexión
-						</GenericText>
-					) : (
-						this.showBackToConnection()
-					)}
+					<View
+						style={{
+							flex: 2.2,
+							flexDirection: "row",
+							justifyContent: "center"
+						}}>
+						{this.props.title ? (
+							<Text style={styles.title}>{this.props.title}</Text>
+						) : (
+							<Logo style={[{ fontSize: 40 }, this.state.headerStyle.logo]} />
+						)}
+					</View>
+
+					<View style={{ flex: 1, flexDirection: "row" }}>
+						{!this.state.isDeviceConnected ? (
+							<GenericText
+								style={{
+									backgroundColor: "red"
+								}}>
+								Sin conexión
+							</GenericText>
+						) : (
+							this.showBackToConnection()
+						)}
+					</View>
 				</View>
 			</View>
 		);

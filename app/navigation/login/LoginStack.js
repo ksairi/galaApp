@@ -1,26 +1,23 @@
-import React from "react";
-import { createStackNavigator } from "react-navigation";
+import { createSwitchNavigator, createStackNavigator } from "react-navigation";
 import SignIn from "/screens/SignIn";
 import SignUp from "/screens/SignUp";
 import ResetPassword from "/screens//ResetPassword";
 import { Screens } from "/config/settings";
-import Header from "/components/containers/Header";
 
-export default createStackNavigator(
-	{
-		[Screens.SignIn]: {
-			screen: SignIn
-		},
-		[Screens.SignUp]: {
-			screen: SignUp
-		},
-		[Screens.ResetPassword]: {
-			screen: ResetPassword
-		}
+export default createSwitchNavigator({
+	[Screens.SignIn]: {
+		screen: createStackNavigator({
+			[Screens.SignIn]: { screen: SignIn }
+		})
 	},
-	{
-		navigationOptions: ({ navigation }) => ({
-			header: <Header navigation={navigation} />
+	[Screens.SignUp]: {
+		screen: createStackNavigator({
+			[Screens.SignUp]: { screen: SignUp }
+		})
+	},
+	[Screens.ResetPassword]: {
+		screen: createStackNavigator({
+			[Screens.ResetPassword]: { screen: ResetPassword }
 		})
 	}
-);
+});

@@ -12,44 +12,44 @@ import Button from "/components/presentationals/GenericButton";
 import GenericText from "/components/presentationals/GenericText";
 import GenericLink from "/components/presentationals/GenericLink";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
-import { genericTextInputStyle, textWithLinkStyle } from "/components/styles";
+import {
+	genericTextInputStyle,
+	textWithLinkStyle,
+	containerPadding
+} from "/components/styles";
+import Header from "/components/containers/Header";
 
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
 const styles = {
 	resetPasswordTitle: {
 		fontSize: 16,
-		fontFamily: "brother-1816-bold",
-		marginTop: 10
+		fontFamily: "brother-1816-bold"
 	},
 	hiddenKeyboardComponentsStyle: {
 		rootWrapperStyle: { paddingTop: 15 },
 		inputTextStyle: { flex: 0.15, marginTop: 0 },
-		buttonContainerStyle: { flex: 0.15 },
+		buttonContainerStyle: { flex: 0.25 },
 		messageStyle: { flex: 0.2 },
 		resetPasswordTitle: { flex: 0.1 }
 	},
 	showingKeyboardComponentsStyle: {
-		rootWrapperStyle: { paddingTop: 10, paddingBottom: 10 },
+		rootWrapperStyle: { paddingTop: 5 },
 		inputTextStyle: { flex: 0.1, marginTop: 0 },
 		buttonContainerStyle: { flex: 0.15 },
 		titleStyle: { flex: 0.1 },
 		resetPasswordTitle: { flex: 0.15 }
-	},
-	landscapeComponentsStyle: {
-		resetPasswordTitle: {
-			flex: 0.2
-		},
-		buttonContainerStyle: { flex: 0.3 }
 	}
 };
 
 @connect(state => ({
-	orientation: state.currentOrientation,
 	inResetFirstPasswordMode: state.inResetFirstPasswordMode,
 	userId: state.userData.userId
 }))
 export default class ResetPassword extends React.Component {
+	static navigationOptions = ({ navigation }) => ({
+		header: <Header navigation={navigation} backScreen={Screens.SignIn} />
+	});
 	state = {
 		hasErrors: false,
 		message: "",
@@ -61,25 +61,8 @@ export default class ResetPassword extends React.Component {
 		componentsStyle: styles.hiddenKeyboardComponentsStyle
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		if (nextProps.orientation == "landscape") {
-			return {
-				componentsStyle: {
-					...prevState.componentsStyle,
-					...styles.landscapeComponentsStyle
-				}
-			};
-		} else {
-			return {
-				componentsStyle: {
-					...prevState.componentsStyle,
-					...styles.hiddenKeyboardComponentsStyle
-				}
-			};
-		}
-	}
-
 	componentDidMount() {
+		Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",
 			this._keyboardDidShow
@@ -97,8 +80,7 @@ export default class ResetPassword extends React.Component {
 
 	_keyboardDidShow = () => {
 		this.setState({
-			componentsStyle: styles.showingKeyboardComponentsStyle,
-			message: ""
+			componentsStyle: styles.showingKeyboardComponentsStyle
 		});
 	};
 
@@ -112,6 +94,13 @@ export default class ResetPassword extends React.Component {
 
 	onConfirmPasswordChangeText = confirmPassword => {
 		this.setState({ confirmPassword });
+	};
+
+	onTextInputOnFocus = () => {
+		this.setState({
+			message: "",
+			showBackToSignIn: false
+		});
 	};
 
 	render() {
@@ -140,6 +129,7 @@ export default class ResetPassword extends React.Component {
 								onChangeText={this.onUserIdChangeText}
 								onSubmitEditing={this.onSubmitUserId}
 								value={this.state.userId}
+								onFocus={this.onTextInputOnFocus}
 							/>
 						)}
 
@@ -157,6 +147,7 @@ export default class ResetPassword extends React.Component {
 							onSubmitEditing={this.onSubmitPassword}
 							ref="passwordInput"
 							value={this.state.password}
+							onFocus={this.onTextInputOnFocus}
 						/>
 
 						<RkTextInput
@@ -172,6 +163,7 @@ export default class ResetPassword extends React.Component {
 							onSubmitEditing={this.doResetPassword}
 							ref="confirmPasswordInput"
 							value={this.state.confirmPassword}
+							onFocus={this.onTextInputOnFocus}
 						/>
 
 						<View
@@ -179,7 +171,7 @@ export default class ResetPassword extends React.Component {
 								{ flexDirection: "row" },
 								this.state.componentsStyle.buttonContainerStyle
 							]}>
-							<Button style={{}} text="ENVIAR" onPress={this.doResetPassword} />
+							<Button text="ENVIAR" onPress={this.doResetPassword} />
 						</View>
 
 						{this.state.message != "" && (
@@ -192,7 +184,14 @@ export default class ResetPassword extends React.Component {
 
 						{this.state.showBackToSignIn &&
 							!this.props.inResetFirstPasswordMode && (
-								<View style={[textWithLinkStyle.container, { flex: 0.2 }]}>
+								<View
+									style={[
+										textWithLinkStyle.container,
+										{
+											flex: 0.2,
+											flexDirection: "column"
+										}
+									]}>
 									<GenericText style={textWithLinkStyle.text}>
 										Contraseña actualizada!
 									</GenericText>
