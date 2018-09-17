@@ -25,7 +25,7 @@ const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
 const styles = {
-	animatedLogoInitStyle: { flex: 1, fontSize: 60 },
+	animatedLogoInitStyle: { flex: 1, fontSize: 55 },
 	animatedLogoEndStyle: { flex: 0.6, fontSize: 45 },
 	image: {
 		flex: -1,
@@ -36,7 +36,7 @@ const styles = {
 	rootWrapperStyle: { paddingTop: 10 },
 	hiddenKeyboardComponentsStyle: {
 		passwordInputStyle: { marginBottom: 10 },
-		buttonContainerStyle: { flex: 0.65 },
+		buttonContainerStyle: { flex: 0.68 },
 		buttonStyle: { height: 40 },
 		linksContainerStyle: { flex: 0.7 },
 		firstLinkStyle: { flex: 0.5 },
@@ -214,8 +214,8 @@ export default class SignIn extends React.Component {
 								this.state.componentsStyle.passwordInputStyle,
 								{
 									flex: 0.5,
-									paddingLeft: containerPadding,
-									paddingRight: containerPadding
+									marginLeft: containerPadding,
+									marginRight: containerPadding
 								}
 							]}
 							placeholder="Contraseña"

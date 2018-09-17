@@ -1,9 +1,9 @@
 const SERVER_HOSTNAME_1 = __DEV__
-	? "http://192.168.0.100:3000/"
+	? "http://192.168.0.102:3000/"
 	: "https://aqueous-harbor-62651.herokuapp.com/";
 
 const SERVER_HOSTNAME_2 = __DEV__
-	? "http://192.168.0.100:81/api/"
+	? "http://192.168.0.102:81/api/"
 	: "http://galagym.com/api/";
 
 exports.Urls = {

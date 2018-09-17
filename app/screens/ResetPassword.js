@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Keyboard, KeyboardAvoidingView } from "react-native";
+import { View, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
 import { connect } from "react-redux";
 import { Messages, Screens } from "/config/settings";
 import { resetPassword } from "/helpers/ApiHelper";
@@ -12,11 +12,7 @@ import Button from "/components/presentationals/GenericButton";
 import GenericText from "/components/presentationals/GenericText";
 import GenericLink from "/components/presentationals/GenericLink";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
-import {
-	genericTextInputStyle,
-	textWithLinkStyle,
-	containerPadding
-} from "/components/styles";
+import { genericTextInputStyle, textWithLinkStyle } from "/components/styles";
 import Header from "/components/containers/Header";
 
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
@@ -62,7 +58,9 @@ export default class ResetPassword extends React.Component {
 	};
 
 	componentDidMount() {
-		Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
+		if (Platform.OS === "ios") {
+			Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
+		}
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",
 			this._keyboardDidShow

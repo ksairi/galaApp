@@ -1,12 +1,7 @@
 import React from "react";
-import {
-	View,
-	ScrollView,
-	TouchableOpacity,
-	AppState,
-	Image
-} from "react-native";
+import { View, TouchableOpacity, AppState, Image } from "react-native";
 import { connect } from "react-redux";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import AutoHeightImage from "react-native-auto-height-image";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
@@ -165,10 +160,7 @@ export default class Home extends React.Component {
 
 	render() {
 		return (
-			<ScrollView
-				contentContainerStyle={{
-					flexGrow: 1
-				}}>
+			<GScrollView>
 				<RootWrapper style={{ padding: 0 }}>
 					{this.state.sliderImages.length > 0 &&
 					!this.props.isDownloadingRemoteImages ? (
@@ -276,7 +268,7 @@ export default class Home extends React.Component {
 						<LoadingSpinner visible={true} message={"Cargando"} />
 					)}
 				</RootWrapper>
-			</ScrollView>
+			</GScrollView>
 		);
 	}
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Keyboard, KeyboardAvoidingView, View } from "react-native";
+import { Keyboard, KeyboardAvoidingView, View, Platform } from "react-native";
 import { connect } from "react-redux";
 import { Messages, Screens } from "/config/settings";
 import { register } from "/helpers/LoginHelper";
@@ -58,7 +58,9 @@ export default class SignUp extends React.Component {
 	};
 
 	componentDidMount() {
-		Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
+		if (Platform.OS === "ios") {
+			Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
+		}
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",
 			this._keyboardDidShow

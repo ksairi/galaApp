@@ -1,14 +1,8 @@
 import React from "react";
-import {
-	View,
-	ScrollView,
-	Text,
-	TouchableOpacity,
-	Switch,
-	Alert
-} from "react-native";
+import { View, Text, TouchableOpacity, Switch, Alert } from "react-native";
 import { connect } from "react-redux";
 import RootWrapper from "/components/presentationals/RootWrapper";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import { ActionsCreators } from "/redux/actions";
 import { Screens } from "/config/settings";
 import { synchMemberProperties } from "/helpers/UserDataHelper";
@@ -39,6 +33,9 @@ const styles = {
 	userId: state.userData.userId
 }))
 export default class Settings extends React.Component {
+	state = {
+		receiveNotifications: this.props.receiveNotifications.value
+	};
 	logout = () => {
 		Alert.alert(
 			"",
@@ -57,13 +54,20 @@ export default class Settings extends React.Component {
 		);
 	};
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.receiveNotifications != null) {
+			return { receiveNotifications: nextProps.receiveNotifications.value };
+		}
+		return prevState;
+	}
+
 	onValueChange = value => {
 		const values = {
 			value,
 			synched: false
 		};
 		this.props.dispatch(ActionsCreators.setReceiveNotifications(values));
-
+		this.setState({ receiveNotifications: value });
 		synchMemberProperties(this.props.dispatch, {
 			userId: this.props.userId,
 			data: { receiveNotifications: values }
@@ -71,11 +75,9 @@ export default class Settings extends React.Component {
 	};
 
 	render() {
+		console.log(this.state);
 		return (
-			<ScrollView
-				contentContainerStyle={{
-					flexGrow: 1
-				}}>
+			<GScrollView>
 				<RootWrapper>
 					<Text style={styles.title}>CONFIGURACIÓN DE PERFIL</Text>
 					<View style={styles.settingsWrapper}>
@@ -90,7 +92,9 @@ export default class Settings extends React.Component {
 								}
 								tintColor="grey"
 								onTintColor="white"
-								thumbTintColor="white"
+								thumbTintColor={
+									this.state.receiveNotifications ? "green" : "grey"
+								}
 								onValueChange={value => {
 									this.onValueChange(value);
 								}}
@@ -101,7 +105,7 @@ export default class Settings extends React.Component {
 						</TouchableOpacity>
 					</View>
 				</RootWrapper>
-			</ScrollView>
+			</GScrollView>
 		);
 	}
 }

@@ -1,5 +1,11 @@
 import React from "react";
-import { View, KeyboardAvoidingView, AppState } from "react-native";
+import {
+	View,
+	KeyboardAvoidingView,
+	AppState,
+	Keyboard,
+	Platform
+} from "react-native";
 import { connect } from "react-redux";
 import {
 	GiftedChat,
@@ -141,6 +147,7 @@ export default class Messages extends React.Component {
 	};
 
 	doSendMessages = async messages => {
+		Keyboard.dismiss();
 		try {
 			await sendMessages(
 				this.props.userData.userId,
@@ -254,7 +261,7 @@ export default class Messages extends React.Component {
 
 	render() {
 		return (
-			<RootWrapper style={{ paddingLeft: 0, paddingRight: 0 }}>
+			<RootWrapper style={{ padding: 0 }}>
 				<GiftedChat
 					textInputProps={{ autoFocus: true }}
 					messages={this.props.messages}
@@ -270,13 +277,16 @@ export default class Messages extends React.Component {
 					renderInputToolbar={this.renderInputToolbar}
 					renderSend={this.renderSend}
 					placeholder="Escribí tu mensaje"
+					placeholderTextColor="white"
 					renderLoading={this.renderLoading}
 					onLongPress={this.onPressBubble}
 				/>
-				<KeyboardAvoidingView
-					behavior={"padding"}
-					keyboardVerticalOffset={120}
-				/>
+				{Platform.OS != "ios" && (
+					<KeyboardAvoidingView
+						behavior={"padding"}
+						keyboardVerticalOffset={120}
+					/>
+				)}
 				{this.showUnsentMessageDialog()}
 				{this.showResendDialog()}
 			</RootWrapper>

@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, TouchableOpacity, AppState } from "react-native";
+import { TouchableOpacity, AppState } from "react-native";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import { connect } from "react-redux";
 import { Screens, SectionsData } from "/config/settings";
 import DrawerItem from "/components/presentationals/DrawerItem";
@@ -77,7 +78,7 @@ export default class DrawerContentComponent extends React.PureComponent {
 
 	render() {
 		return (
-			<ScrollView contentContainerStyle={styles.drawerItemsWrapper}>
+			<GScrollView contentContainerStyle={styles.drawerItemsWrapper}>
 				<TouchableOpacity
 					style={{ flex: 1, flexDirection: "row", marginLeft: 13 }}
 					onPress={this.navigateToHome(Screens.Home)}>
@@ -110,7 +111,7 @@ export default class DrawerContentComponent extends React.PureComponent {
 						);
 					}
 				})}
-			</ScrollView>
+			</GScrollView>
 		);
 	}
 }

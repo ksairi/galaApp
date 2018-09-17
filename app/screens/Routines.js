@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, Image, View } from "react-native";
+import { Image, View } from "react-native";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import { RkButton } from "react-native-ui-kitten";
 import { connect } from "react-redux";
 import RootWrapper from "/components/presentationals/RootWrapper";
@@ -58,10 +59,7 @@ export default class Routines extends React.Component {
 
 	render() {
 		return (
-			<ScrollView
-				contentContainerStyle={{
-					flexGrow: 1
-				}}>
+			<GScrollView>
 				<RootWrapper style={{ padding: 0 }}>
 					{this.props.routinesImages.length > 0 && (
 						<Image
@@ -97,7 +95,7 @@ export default class Routines extends React.Component {
 					</View>
 					<Footer />
 				</RootWrapper>
-			</ScrollView>
+			</GScrollView>
 		);
 	}
 }

@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, View, TouchableOpacity, BackHandler } from "react-native";
+import { View, TouchableOpacity, BackHandler } from "react-native";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import { connect } from "react-redux";
 import Timeline from "react-native-timeline-listview";
 import RootWrapper from "/components/presentationals/RootWrapper";
@@ -13,7 +14,7 @@ import { FontAwesome } from "@expo/vector-icons";
 const styles = {
 	exerciseDetail: {
 		fontFamily: "brother-1816-bold",
-		fontSize: 13,
+		fontSize: 12,
 		textAlign: "left",
 		flex: -1,
 		paddingRight: 5
@@ -177,7 +178,7 @@ export default class RoutineDetail extends React.Component {
 	};
 	render() {
 		return (
-			<RootWrapper style={{ backgroundColor: "black" }}>
+			<RootWrapper style={{ backgroundColor: "black", paddingLeft: 5 }}>
 				<View
 					style={{ flexDirection: "row", alignItems: "center", flex: 0.15 }}>
 					<TouchableOpacity onPress={this.goBackToRoutines}>
@@ -194,7 +195,7 @@ export default class RoutineDetail extends React.Component {
 						{this.props.currentRoutine.description.toUpperCase()}
 					</GenericText>
 				</View>
-				<ScrollView
+				<GScrollView
 					contentContainerStyle={{
 						flexGrow: 1,
 						backgroundColor: "white",
@@ -224,7 +225,7 @@ export default class RoutineDetail extends React.Component {
 						renderDetail={this.renderTimeLineDetail}
 						detailContainerStyle={{ marginLeft: -5 }}
 					/>
-				</ScrollView>
+				</GScrollView>
 			</RootWrapper>
 		);
 	}

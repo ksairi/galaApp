@@ -96,7 +96,9 @@ export const saveDataToDevice = (
 			const fileUri =
 				Expo.FileSystem.documentDirectory +
 				prefix +
-				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id);
+				(dataItem.imageIndex ? dataItem.imageIndex : dataItem.id) +
+				"." +
+				dataItem.imageExt;
 			if (dataItem.imageUrl) {
 				dispatch(ActionsCreators.setIsDownloadingRemoteImages(true));
 				return Expo.FileSystem.downloadAsync(dataItem.imageUrl, fileUri)
@@ -106,7 +108,8 @@ export const saveDataToDevice = (
 							uri
 						};
 					})
-					.catch(() => {
+					.catch(error => {
+						console.log(error);
 						throw Messages.NO_SPACE_IN_DISK;
 					});
 			} else {

@@ -63,13 +63,16 @@ export default class Referrals extends React.Component {
 
 	_keyboardDidShow = () => {
 		this.setState({
-			message: null,
 			componentsStyle: styles.showingKeyboardComponentsStyle
 		});
 	};
 
 	_keyboardDidHide = () => {
 		this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
+	};
+
+	onFocus = () => {
+		this.setState({ message: null });
 	};
 
 	render() {
@@ -105,6 +108,7 @@ export default class Referrals extends React.Component {
 						autoCapitalize="none"
 						autoCorrect={false}
 						value={this.state.mail}
+						onFocus={this.onFocus}
 					/>
 				</View>
 				<View style={{ flexDirection: "row" }}>

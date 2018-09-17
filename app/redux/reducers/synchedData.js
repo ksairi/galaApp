@@ -41,6 +41,9 @@ export const mainMenuImages = createReducer(
 );
 export const promotions = createReducer([], {
 	[ActionsTypes.SET_PROMOTIONS](state, action) {
+		if (!action.promotions) {
+			return [];
+		}
 		if (action.promotions.length > 0) {
 			const promotionsAlreadyAdded = [];
 			const newStateWithReplacedItems = state.map(
@@ -102,23 +105,18 @@ export const synchedDataParameters = createReducer(
 		}
 	}
 );
+const loginSynchedDataParametersInitialState = {
+	isLoginRequest: true,
+	mainMenuImages: { imagesIndex: [0, 1, 2] }
+};
 export const loginSynchedDataParameters = createReducer(
-	{ isLoginRequest: true, mainMenuImages: { imagesIndex: [0, 1, 2] } },
+	loginSynchedDataParametersInitialState,
 	{
 		[ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS](state, action) {
 			const params = action.loginSynchedDataParameters;
-			/*const currentParameters =
-				state[params.entity] && state[params.entity].dataIds
-					? state[params.entity].dataIds
-					: [];
-			var entityActiveDataNewState = currentParameters.filter(
-				currentDataId => !params.noActiveDataIds.find(id => id == currentDataId)
-			);
-			entityActiveDataNewState = [
-				...entityActiveDataNewState,
-				...params.activeDataIds
-			];
-			entityNewData.dataIds = [...new Set(entityActiveDataNewState)]; //remove duplicates*/
+			if (!params) {
+				return loginSynchedDataParametersInitialState;
+			}
 			var entityNewData = { ...params.data };
 			if (entityNewData && entityNewData.updatedIndexes) {
 				const entityIndexes = [...state[params.entity].imagesIndex];

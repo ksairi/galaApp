@@ -1,11 +1,6 @@
 import React from "react";
-import {
-	View,
-	ScrollView,
-	TouchableOpacity,
-	Image,
-	Dimensions
-} from "react-native";
+import { View, TouchableOpacity, Image, Dimensions } from "react-native";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import { Permissions } from "expo";
 import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
@@ -109,7 +104,7 @@ export default class Profile extends React.Component {
 
 	render() {
 		return (
-			<ScrollView
+			<GScrollView
 				contentContainerStyle={{
 					flexGrow: 1
 				}}>
@@ -194,7 +189,7 @@ export default class Profile extends React.Component {
 					</View>
 					<Footer />
 				</RootWrapper>
-			</ScrollView>
+			</GScrollView>
 		);
 	}
 }

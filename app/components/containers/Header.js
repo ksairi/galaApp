@@ -20,11 +20,12 @@ const styles = {
 		marginTop: 3,
 		flex: 1
 	},
-	portrait: {},
+	portrait: { logo: { fontSize: 40 }, wrapper: { flex: 0.15 } },
 	landscape: {
-		logo: { fontSize: 30 }
+		logo: { fontSize: 30 },
+		wrapper: { flex: 0.17 }
 	},
-	title: { fontSize: 20, color: "white", fontFamily: "brother-1816-bold" }
+	title: { fontSize: 19, color: "white", fontFamily: "brother-1816-bold" }
 };
 styles.firstButton = styles.backButton;
 
@@ -115,7 +116,7 @@ export default class Header extends React.PureComponent {
 
 	render() {
 		return (
-			<View style={{ flex: 0.13 }}>
+			<View style={this.state.headerStyle.wrapper}>
 				<View style={styles.wrapper}>
 					<View style={{ flex: 0.9 }}>
 						{this.props.isHomeHeader ? (
@@ -139,14 +140,14 @@ export default class Header extends React.PureComponent {
 
 					<View
 						style={{
-							flex: 2.2,
+							flex: 2.4,
 							flexDirection: "row",
 							justifyContent: "center"
 						}}>
 						{this.props.title ? (
 							<Text style={styles.title}>{this.props.title}</Text>
 						) : (
-							<Logo style={[{ fontSize: 40 }, this.state.headerStyle.logo]} />
+							<Logo style={this.state.headerStyle.logo} />
 						)}
 					</View>
 

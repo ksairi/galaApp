@@ -1,5 +1,6 @@
 import React from "react";
-import { ScrollView, Image, View, Dimensions } from "react-native";
+import { View, Dimensions } from "react-native";
+import GScrollView from "/components/presentationals/GenericScrollView";
 import { connect } from "react-redux";
 import Carousel from "react-native-carousel-control-fork";
 import AutoHeightImage from "react-native-auto-height-image";
@@ -120,10 +121,7 @@ export default class TimeTbale extends React.Component {
 
 	render() {
 		return (
-			<ScrollView
-				contentContainerStyle={{
-					flexGrow: 1
-				}}>
+			<GScrollView>
 				<RootWrapper
 					style={{
 						padding: 0
@@ -195,7 +193,7 @@ export default class TimeTbale extends React.Component {
 					</Carousel>
 					<Footer />
 				</RootWrapper>
-			</ScrollView>
+			</GScrollView>
 		);
 	}
 }

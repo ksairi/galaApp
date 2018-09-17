@@ -38,6 +38,8 @@ export default class CheckUserActivity extends React.Component {
 	}
 
 	async checkUserStatus() {
+		//this.props.dispatch(ActionsCreators.setPromotions(null));
+		//this.props.dispatch(ActionsCreators.setLoginSynchedDataParameters(null));
 		if (this.props.isAppsFirstTime) {
 			this.props.navigation.navigate(Screens.Welcome);
 		} else {
