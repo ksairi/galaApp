@@ -1,6 +1,13 @@
 import React from "react";
-import { NetInfo, View, StatusBar } from "react-native";
-import { Notifications } from "expo";
+import {
+	NetInfo,
+	View,
+	StatusBar,
+	AppState,
+	Platform,
+	Vibration
+} from "react-native";
+import { Notifications, Constants } from "expo";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Screens } from "/config/settings";
@@ -21,8 +28,7 @@ import {
 } from "/helpers/UserDataHelper";
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
-	<View
-		style={[{ height: Expo.Constants.statusBarHeight }, { backgroundColor }]}>
+	<View style={[{ height: Constants.statusBarHeight }, { backgroundColor }]}>
 		<StatusBar translucent backgroundColor={backgroundColor} {...props} />
 	</View>
 );
@@ -54,7 +60,6 @@ export default class AppContainer extends React.Component {
 		this.notificationSubscription = Notifications.addListener(
 			this.handleNotification
 		);
-
 		NetInfo.addEventListener("connectionChange", this.handleConnectivityChange);
 	}
 
@@ -68,6 +73,7 @@ export default class AppContainer extends React.Component {
 	}
 
 	handleNotification = async notification => {
+		var localNotificationBody = "";
 		const props = this.props;
 		if (notification.origin === "received") {
 			createNotificationsHanlder({
@@ -78,6 +84,9 @@ export default class AppContainer extends React.Component {
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetPromotionsSaved = true;
+					localNotificationBody =
+						(localNotificationBody == "" ? "" : "\n") +
+						"Hay nuevas promociones!";
 				},
 				messages() {
 					saveMessagesToDevice(
@@ -95,6 +104,9 @@ export default class AppContainer extends React.Component {
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetMessagesSaved = true;
+					localNotificationBody =
+						(localNotificationBody == "" ? "" : "\n") +
+						"Tenés nuevos mensajes!";
 				}
 			})(notification.data);
 		}
@@ -145,6 +157,18 @@ export default class AppContainer extends React.Component {
 			} else {
 				navigator.navigate(Screens.LoginStack);
 			}
+		}
+		if (
+			props.isLoggedIn &&
+			Platform.OS == "ios" &&
+			AppState.currentState === "active" &&
+			notification.origin === "received"
+		) {
+			//remote notifications are not shown when app is active in iOS
+			this.props.dispatch(
+				ActionsCreators.setNotificationsText(localNotificationBody)
+			);
+			Vibration.vibrate();
 		}
 	};
 

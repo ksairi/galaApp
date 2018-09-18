@@ -75,7 +75,6 @@ export default class Settings extends React.Component {
 	};
 
 	render() {
-		console.log(this.state);
 		return (
 			<GScrollView>
 				<RootWrapper>

@@ -67,10 +67,10 @@ export const promotions = createReducer([], {
 	},
 
 	[ActionsTypes.REMOVE_PROMOTION_ITEM](state, action) {
-		if (action.promotionsToDelete.length > 0) {
+		if (action.promotionsIdsToDelete.length > 0) {
 			const updatedState = state.filter(promotion => {
-				return !action.promotionsToDelete.find(
-					promotionToDelete => promotionToDelete.id == promotion.id
+				return !action.promotionsIdsToDelete.find(
+					promotionIdToDelete => promotionIdToDelete == promotion.id
 				);
 			});
 			return updatedState;

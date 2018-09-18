@@ -6,3 +6,12 @@ export const isDownloadingRemoteImages = createReducer(false, {
 		return action.isDownloadingRemoteImages;
 	}
 });
+
+export const notificationsText = createReducer("", {
+	[ActionsTypes.SET_NOTIFICATIONS_TEXT](state, action) {
+		if (!action.notificationsText) {
+			return "";
+		}
+		return action.notificationsText;
+	}
+});

@@ -33,11 +33,11 @@ export function setPromotions(promotions) {
 	};
 }
 
-export function removePromotionItem(promotionsToDelete) {
+export function removePromotionItem(promotionsIdsToDelete) {
 	return (dispatch, getState) => {
 		dispatch({
 			type: ActionsTypes.REMOVE_PROMOTION_ITEM,
-			promotionsToDelete
+			promotionsIdsToDelete
 		});
 	};
 }

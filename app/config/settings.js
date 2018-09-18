@@ -1,9 +1,9 @@
 const SERVER_HOSTNAME_1 = __DEV__
-	? "http://192.168.0.102:3000/"
+	? "http://192.168.0.103:3000/"
 	: "https://aqueous-harbor-62651.herokuapp.com/";
 
 const SERVER_HOSTNAME_2 = __DEV__
-	? "http://192.168.0.102:81/api/"
+	? "http://192.168.0.103:81/api/"
 	: "http://galagym.com/api/";
 
 exports.Urls = {
@@ -93,6 +93,7 @@ exports.ServerProtocol = {
 exports.ActionsTypes = {
 	// Notifications
 	SET_IS_DOWNLOADING_REMOTE_IMAGES: "SET_IS_DOWNLOADING_REMOTE_IMAGES",
+	SET_NOTIFICATIONS_TEXT: "SET_NOTIFICATIONS_TEXT",
 	// Messages
 	SET_MESSAGES: "SET_MESSAGES",
 	SET_SENT_MESSAGES: "SET_SENT_MESSAGES",

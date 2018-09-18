@@ -8,3 +8,12 @@ export function setIsDownloadingRemoteImages(isDownloadingRemoteImages) {
 		});
 	};
 }
+
+export function setNotificationsText(notificationsText) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_NOTIFICATIONS_TEXT,
+			notificationsText
+		});
+	};
+}

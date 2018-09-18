@@ -1,9 +1,10 @@
-export default (handlers) => {
-  return function notificationHandler(data) {
-    if (handlers.hasOwnProperty(Object.keys(data)[0])){
-      return handlers[Object.keys(data)[0]](data)
-    } else {
-      return null
-    }
-  }
-}
+export default handlers => {
+	return function notificationHandler(data) {
+		const hanlder = Object.keys(data).filter(key => key != "notificationId");
+		if (handlers.hasOwnProperty(hanlder)) {
+			return handlers[hanlder](data);
+		} else {
+			return null;
+		}
+	};
+};

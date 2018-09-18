@@ -99,8 +99,19 @@ export default class Messages extends React.Component {
 
 	componentDidMount() {
 		AppState.addEventListener("change", this._handleAppStateChange);
+		this.keyboardDidShowListener = Keyboard.addListener(
+			"keyboardDidShow",
+			this._keyboardDidShow
+		);
 		this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+		this.startPullingMessages();
+	}
 
+	_keyboardDidShow = e => {
+		this.setState({ keyboardHeight: e.endCoordinates.height });
+	};
+
+	startPullingMessages = () => {
 		Messages.intervalId = setInterval(
 			() =>
 				getRealTimeMessages({
@@ -120,7 +131,7 @@ export default class Messages extends React.Component {
 					.catch(() => {}),
 			5000
 		);
-	}
+	};
 
 	componentWillUnmount() {
 		AppState.removeEventListener("change", this._handleAppStateChange);
@@ -132,7 +143,14 @@ export default class Messages extends React.Component {
 			this.state.appState.match(/inactive|background/) &&
 			nextAppState === "active"
 		) {
+			this.startPullingMessages();
 			this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+		}
+		if (
+			this.state.appState === "active" &&
+			(nextAppState === "inactive" || nextAppState === "background")
+		) {
+			clearInterval(Messages.intervalId);
 		}
 		this.setState({ appState: nextAppState });
 	};
@@ -284,7 +302,9 @@ export default class Messages extends React.Component {
 				{Platform.OS != "ios" && (
 					<KeyboardAvoidingView
 						behavior={"padding"}
-						keyboardVerticalOffset={120}
+						keyboardVerticalOffset={
+							this.state.keyboardHeight ? this.state.keyboardHeight - 150 : 100
+						}
 					/>
 				)}
 				{this.showUnsentMessageDialog()}

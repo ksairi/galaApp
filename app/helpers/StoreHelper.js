@@ -134,7 +134,11 @@ export const saveDataToDevice = (
 							newParameters.indexesToAdd.push(parseInt(newData.imageIndex));
 						}
 					} else {
-						dataToRemove.push(newData.imageIndex);
+						if (newData.imageIndex) {
+							dataToRemove.push(newData.imageIndex);
+						} else {
+							dataToRemove.push(newData.id); //promotions
+						}
 						if (newData.imageIndex) {
 							newParameters.indexesToRemove.push(parseInt(newData.imageIndex));
 						}

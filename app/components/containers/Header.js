@@ -1,12 +1,20 @@
 import React from "react";
-import { TouchableOpacity, View, Text, NetInfo } from "react-native";
+import {
+	TouchableOpacity,
+	View,
+	Text,
+	NetInfo,
+	Dimensions,
+	Platform
+} from "react-native";
 import { connect } from "react-redux";
+import * as Animatable from "react-native-animatable-promise";
 import Icon from "/helpers/ImageHelper";
-import { containerPadding } from "/components/styles";
+import { containerPadding, genericBackgroundColor } from "/components/styles";
 import Logo from "components/presentationals/Logo";
 import GenericText from "components/presentationals/GenericText";
 import NetworkHelper from "/helpers/NetworkHelper";
-
+import { ActionsCreators } from "/redux/actions/";
 const styles = {
 	wrapper: {
 		flex: 1,
@@ -29,8 +37,11 @@ const styles = {
 };
 styles.firstButton = styles.backButton;
 
+const AnimatedBanner = Animatable.createAnimatableComponent(View);
+
 @connect(state => ({
-	orientation: state.currentOrientation
+	orientation: state.currentOrientation,
+	newNotificationsText: state.notificationsText
 }))
 export default class Header extends React.PureComponent {
 	static timeoutId;
@@ -52,8 +63,23 @@ export default class Header extends React.PureComponent {
 					? styles.landscape
 					: styles.portrait;
 		}
-
 		return newState;
+	}
+
+	handleBannerRef = ref => (this.animatedBanner = ref);
+
+	hideNotificationsText = () => {
+		setTimeout(() => {
+			this.props.dispatch(ActionsCreators.setNotificationsText(null));
+			this.animatedBanner.transitionTo({ opacity: 0 }, 2000);
+		}, 4000);
+	};
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.newNotificationsText == "") {
+			this.animatedBanner.transitionTo({ opacity: 1 }, 1000);
+			this.hideNotificationsText();
+		}
 	}
 
 	componentDidMount() {
@@ -118,7 +144,36 @@ export default class Header extends React.PureComponent {
 		return (
 			<View style={this.state.headerStyle.wrapper}>
 				<View style={styles.wrapper}>
-					<View style={{ flex: 0.9 }}>
+					{Platform.OS == "ios" && (
+						<AnimatedBanner
+							ref={this.handleBannerRef}
+							style={{
+								position: "absolute",
+								top: 0,
+								left: 0,
+								flexDirection: "row",
+								width: Dimensions.get("window").width,
+								backgroundColor: "yellow",
+								zIndex: 2,
+								height: 30,
+								opacity: 0,
+								alignItems: "center"
+							}}>
+							<GenericText
+								style={{
+									color: genericBackgroundColor,
+									fontFamily: "lato-bold"
+								}}>
+								{this.props.newNotificationsText}
+							</GenericText>
+						</AnimatedBanner>
+					)}
+
+					<View
+						style={{
+							flex: 0.9,
+							zIndex: 1
+						}}>
 						{this.props.isHomeHeader ? (
 							<TouchableOpacity
 								onPress={this.onMenuPressed}
@@ -142,7 +197,8 @@ export default class Header extends React.PureComponent {
 						style={{
 							flex: 2.4,
 							flexDirection: "row",
-							justifyContent: "center"
+							justifyContent: "center",
+							zIndex: 1
 						}}>
 						{this.props.title ? (
 							<Text style={styles.title}>{this.props.title}</Text>
@@ -151,7 +207,7 @@ export default class Header extends React.PureComponent {
 						)}
 					</View>
 
-					<View style={{ flex: 1, flexDirection: "row" }}>
+					<View style={{ flex: 1, flexDirection: "row", zIndex: 1 }}>
 						{!this.state.isDeviceConnected ? (
 							<GenericText
 								style={{
