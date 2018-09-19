@@ -1,5 +1,5 @@
 import React from "react";
-import RNImageSlider from "react-native-image-slider";
+import RNImageSlider from "react-native-image-slider-fork";
 import AutoHeightImage from "react-native-auto-height-image";
 
 export default class ImageSlider extends React.PureComponent {
@@ -8,9 +8,13 @@ export default class ImageSlider extends React.PureComponent {
 			<RNImageSlider
 				autoPlayWithInterval={7000}
 				images={this.props.images}
-				style={{
-					width: this.props.imageWidth
-				}} //default to portrait
+				imagesWidth={this.props.imageWidth}
+				style={[
+					{
+						width: this.props.imageWidth
+					},
+					this.props.style
+				]} //default to portrait
 				customSlide={({ index, item, style, width }) => {
 					return (
 						<AutoHeightImage

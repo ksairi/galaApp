@@ -15,7 +15,7 @@ import ImageSlider from "/components/presentationals/ImageSlider";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { FontAwesome } from "@expo/vector-icons";
 import * as UserDataHelper from "/helpers/UserDataHelper";
-
+import { genericBackgroundColor } from "/components/styles";
 const styles = {
 	imageContainer: {
 		marginTop: 20,
@@ -67,8 +67,6 @@ export default class Home extends React.Component {
 		appState: AppState.currentState,
 		promotionsImageWidth: null
 	};
-
-	static screenDensity = ScreenDimensions.getScreenDensity();
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.newMemberData) {
@@ -140,7 +138,8 @@ export default class Home extends React.Component {
 				this.props.promotions[0].uri,
 				width => {
 					this.setState({
-						promotionsImageWidth: (width * 160) / Home.screenDensity
+						promotionsImageWidth:
+							(width * 160) / ScreenDimensions.getScreenDensity()
 					});
 				},
 				errorMsg => {
@@ -169,6 +168,7 @@ export default class Home extends React.Component {
 								<ImageSlider
 									images={this.state.sliderImages}
 									imageWidth={ScreenDimensions.getPortraitWidth()}
+									style={{ backgroundColor: genericBackgroundColor }}
 								/>
 							</View>
 
