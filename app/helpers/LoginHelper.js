@@ -109,7 +109,6 @@ doFetchDynamicData = async (
 		params.unsentMessages = unsentMessages;
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
-	console.log(dynamicDataResponse);
 	if (hasResponseResults(dynamicDataResponse)) {
 		setContentSavedApi({ userId });
 	}
