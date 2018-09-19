@@ -16,6 +16,7 @@ const styles = {
 		color: "white",
 		flex: 1,
 		input: {
+			height: 25,
 			placeholderTextColor: "white",
 			fontSize: 20,
 			fontFamily: "brother-1816-bold",
@@ -31,20 +32,40 @@ const styles = {
 		rootWrapper: { justifyContent: "flex-start" },
 		title: { fontSize: 20 },
 		description: { fontSize: 18 }
+	},
+	landscapeStyle: {
+		title: { fontSize: 18 },
+		description: { fontSize: 16 }
 	}
 };
 
 RkTheme.setType("RkTextInput", "referralInputText", styles.textInputStyle);
 
-@connect(state => ({ userId: state.userData.userId }))
+@connect(state => ({
+	userId: state.userData.userId,
+	orientation: state.currentOrientation
+}))
 export default class Referrals extends React.Component {
 	state = {
 		spinnerVisible: false,
 		error: false,
 		message: null,
 		componentsStyle: styles.hiddenKeyboardComponentsStyle,
-		mail: null
+		mail: null,
+		landscapeStyle: {}
 	};
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.orientation == "landscape") {
+			return { landscapeStyle: styles.landscapeStyle };
+		}
+		if (nextProps.orientation == "portrait") {
+			return { landscapeStyle: {} };
+		}
+
+		return prevState;
+	}
+
 	componentDidMount() {
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",
@@ -78,25 +99,32 @@ export default class Referrals extends React.Component {
 	render() {
 		return (
 			<RootWrapper style={this.state.componentsStyle.rootWrapper}>
-				<GenericText
-					style={[
-						{
-							fontFamily: "brother-1816-bold",
-							flex: -1,
-							paddingBottom: 10
-						},
-						this.state.componentsStyle.title
-					]}>
-					REFERIDOS
-				</GenericText>
-				<GenericText
-					style={[
-						{ flex: -1, paddingBottom: 10 },
-						this.state.componentsStyle.description
-					]}>
-					Invitá a quien quieras y disfruten ambos de beneficios exclusivos
-				</GenericText>
-				<View style={{ flexDirection: "row", marginBottom: 30 }}>
+				{(this.state.componentsStyle == styles.hiddenKeyboardComponentsStyle ||
+					this.props.orientation == "portrait") && (
+					<View style={{ flex: -1 }}>
+						<GenericText
+							style={[
+								{
+									fontFamily: "brother-1816-bold",
+									flex: -1,
+									paddingBottom: 10
+								},
+								this.state.componentsStyle.title,
+								this.state.landscapeStyle.title
+							]}>
+							REFERIDOS
+						</GenericText>
+						<GenericText
+							style={[
+								{ flex: -1, paddingBottom: 10 },
+								this.state.componentsStyle.description,
+								this.state.landscapeStyle.description
+							]}>
+							Invitá a quien quieras y disfruten ambos de beneficios exclusivos
+						</GenericText>
+					</View>
+				)}
+				<View style={{ flexDirection: "row", marginBottom: 15 }}>
 					<RkTextInput
 						rkType="outline referralInputText"
 						placeholder="INGRESÁ MAIL"
@@ -111,17 +139,6 @@ export default class Referrals extends React.Component {
 						onFocus={this.onFocus}
 					/>
 				</View>
-				<View style={{ flexDirection: "row" }}>
-					<Button
-						text="ENVIAR"
-						onPress={this.sendEmail}
-						style={{ flex: 1 }}
-						contentStyle={{
-							fontFamily: "brother-1816-bold"
-						}}
-					/>
-				</View>
-
 				{this.state.message && (
 					<GenericText
 						style={{

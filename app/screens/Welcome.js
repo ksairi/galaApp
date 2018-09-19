@@ -55,7 +55,7 @@ export default class Welcome extends React.PureComponent {
 			<RootWrapper>
 				<CentredWrapper>
 					<AnimatedLogo
-						style={{ flex: 0.9, fontSize: 80, marginTop: 50 }}
+						style={{ flex: 0.9, fontSize: 75, marginTop: 50 }}
 						ref={this.handleAnimatedLogo}
 					/>
 					<View style={{ flex: 0.95 }}>
