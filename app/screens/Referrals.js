@@ -7,7 +7,6 @@ import LoadingSpinner from "/components/presentationals/LoadingSpinner";
 import { Messages } from "/config/settings";
 import { sendReferral } from "/helpers/ApiHelper";
 import RootWrapper from "/components/presentationals/RootWrapper";
-import Button from "/components/presentationals/GenericButton";
 import { isMailValid } from "/helpers/ValidationHelper";
 
 const styles = {
@@ -34,7 +33,7 @@ const styles = {
 		description: { fontSize: 18 }
 	},
 	landscapeStyle: {
-		title: { fontSize: 18 },
+		title: { fontSize: 20 },
 		description: { fontSize: 16 }
 	}
 };
