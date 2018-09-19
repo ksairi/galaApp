@@ -4,9 +4,9 @@
 		"description": "Mobile App for Gala Fitness Center",
 		"slug": "galaApp",
 		"privacy": "public",
-		"version": "0.1.4",
+		"version": "0.1.6",
 		"githubUrl": "https://github.com/ksairi/galaApp",
-		"sdkVersion": "29.0.0",
+		"sdkVersion": "30.0.0",
 		"splash": {
 			"image": "./assets/splash.png"
 		},
