@@ -84,9 +84,7 @@ export default class AppContainer extends React.Component {
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetPromotionsSaved = true;
-					localNotificationBody =
-						(localNotificationBody == "" ? "" : "\n") +
-						"Hay nuevas promociones!";
+					localNotificationBody = "Hay nuevas promociones!";
 				},
 				messages() {
 					saveMessagesToDevice(
@@ -104,9 +102,7 @@ export default class AppContainer extends React.Component {
 						notificationId: notification.data.notificationId
 					});
 					AppContainer.alreadySetMessagesSaved = true;
-					localNotificationBody =
-						(localNotificationBody == "" ? "" : "\n") +
-						"Tenés nuevos mensajes!";
+					localNotificationBody = "Tenés nuevos mensajes!";
 				}
 			})(notification.data);
 		}

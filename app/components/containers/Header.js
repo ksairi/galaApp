@@ -76,7 +76,7 @@ export default class Header extends React.PureComponent {
 	};
 
 	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.newNotificationsText == "") {
+		if (this.props.newNotificationsText != "") {
 			this.animatedBanner.transitionTo({ opacity: 1 }, 1000);
 			this.hideNotificationsText();
 		}
