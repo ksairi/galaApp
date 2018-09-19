@@ -32,12 +32,13 @@ const styles = {
 		memeberAlreadyStyle: { flex: 0.4 }
 	},
 	showingKeyboardComponentsStyle: {
-		textInputStyle: { marginTop: 0, marginBottom: 5, flex: 0.15 },
+		textInputStyle: { marginTop: 0, marginBottom: 3, flex: 0.15 },
 		titleStyle: { flex: 0.15 },
 		buttonContainerStyle: { flex: 0.17 },
 		buttonStyle: { height: 30 },
 		buttonContentStyle: { fontSize: 14 },
-		memeberAlreadyStyle: { flex: 0.6 }
+		memeberAlreadyStyle: { flex: 0.6 },
+		confirmPassInputStyle: { marginBottom: 0 }
 	}
 };
 
@@ -237,7 +238,10 @@ export default class SignUp extends React.Component {
 
 						<RkTextInput
 							rkType="rounded inputText"
-							style={this.state.componentsStyle.textInputStyle}
+							style={[
+								this.state.componentsStyle.textInputStyle,
+								this.state.componentsStyle.confirmPassInputStyle
+							]}
 							placeholder="Confirmar Contraseña"
 							secureTextEntry
 							autoCapitalize="none"
