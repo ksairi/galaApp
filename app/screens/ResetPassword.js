@@ -25,7 +25,7 @@ RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
 const styles = {
 	resetPasswordTitle: {
-		fontSize: 16,
+		fontSize: 15,
 		fontFamily: "brother-1816-bold"
 	},
 	hiddenKeyboardComponentsStyle: {
