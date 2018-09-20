@@ -184,7 +184,7 @@ export default class RoutineDetail extends React.Component {
 					<TouchableOpacity onPress={this.goBackToRoutines}>
 						<Icon
 							name="arrow-navigation-white-left"
-							style={{ fontSize: 25, color: "white" }}
+							style={{ fontSize: 25, color: "white", marginLeft: 15 }}
 						/>
 					</TouchableOpacity>
 					<GenericText
