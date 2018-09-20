@@ -5,7 +5,9 @@ import {
 	Text,
 	NetInfo,
 	Dimensions,
-	Platform
+	Platform,
+	TouchableWithoutFeedback,
+	Keyboard
 } from "react-native";
 import { connect } from "react-redux";
 import * as Animatable from "react-native-animatable-promise";
@@ -142,85 +144,87 @@ export default class Header extends React.PureComponent {
 
 	render() {
 		return (
-			<View style={this.state.headerStyle.wrapper}>
-				<View style={styles.wrapper}>
-					{Platform.OS == "ios" && (
-						<AnimatedBanner
-							ref={this.handleBannerRef}
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={this.state.headerStyle.wrapper}>
+					<View style={styles.wrapper}>
+						{Platform.OS == "ios" && (
+							<AnimatedBanner
+								ref={this.handleBannerRef}
+								style={{
+									position: "absolute",
+									top: 0,
+									left: 0,
+									flexDirection: "row",
+									width: Dimensions.get("window").width,
+									backgroundColor: "yellow",
+									zIndex: 2,
+									height: 30,
+									opacity: 0,
+									alignItems: "center"
+								}}>
+								<GenericText
+									style={{
+										color: genericBackgroundColor,
+										fontFamily: "lato-bold"
+									}}>
+									{this.props.newNotificationsText}
+								</GenericText>
+							</AnimatedBanner>
+						)}
+
+						<View
 							style={{
-								position: "absolute",
-								top: 0,
-								left: 0,
-								flexDirection: "row",
-								width: Dimensions.get("window").width,
-								backgroundColor: "yellow",
-								zIndex: 2,
-								height: 30,
-								opacity: 0,
-								alignItems: "center"
+								flex: 0.9,
+								zIndex: 1
 							}}>
-							<GenericText
-								style={{
-									color: genericBackgroundColor,
-									fontFamily: "lato-bold"
-								}}>
-								{this.props.newNotificationsText}
-							</GenericText>
-						</AnimatedBanner>
-					)}
+							{this.props.isHomeHeader ? (
+								<TouchableOpacity
+									onPress={this.onMenuPressed}
+									style={styles.firstButton}>
+									<Icon name="menu" size={20} color="white" />
+								</TouchableOpacity>
+							) : (
+								<TouchableOpacity
+									onPress={this.onBackPressed}
+									style={styles.backButton}>
+									<Icon
+										name="arrow-navigation-white-left"
+										size={20}
+										color="white"
+									/>
+								</TouchableOpacity>
+							)}
+						</View>
 
-					<View
-						style={{
-							flex: 0.9,
-							zIndex: 1
-						}}>
-						{this.props.isHomeHeader ? (
-							<TouchableOpacity
-								onPress={this.onMenuPressed}
-								style={styles.firstButton}>
-								<Icon name="menu" size={20} color="white" />
-							</TouchableOpacity>
-						) : (
-							<TouchableOpacity
-								onPress={this.onBackPressed}
-								style={styles.backButton}>
-								<Icon
-									name="arrow-navigation-white-left"
-									size={20}
-									color="white"
-								/>
-							</TouchableOpacity>
-						)}
-					</View>
+						<View
+							style={{
+								flex: 2.4,
+								flexDirection: "row",
+								justifyContent: "center",
+								zIndex: 1
+							}}>
+							{this.props.title ? (
+								<Text style={styles.title}>{this.props.title}</Text>
+							) : (
+								<Logo style={this.state.headerStyle.logo} />
+							)}
+						</View>
 
-					<View
-						style={{
-							flex: 2.4,
-							flexDirection: "row",
-							justifyContent: "center",
-							zIndex: 1
-						}}>
-						{this.props.title ? (
-							<Text style={styles.title}>{this.props.title}</Text>
-						) : (
-							<Logo style={this.state.headerStyle.logo} />
-						)}
-					</View>
-
-					<View style={{ flex: 1, flexDirection: "row", zIndex: 1 }}>
-						{!this.state.isDeviceConnected ? (
-							<GenericText
-								style={{
-									backgroundColor: "red"
-								}}>
-								Sin conexión
-							</GenericText>
-						) : (
-							this.showBackToConnection()
-						)}
+						<View style={{ flex: 1, flexDirection: "row", zIndex: 1 }}>
+							{!this.state.isDeviceConnected ? (
+								<GenericText
+									style={{
+										backgroundColor: "red"
+									}}>
+									Sin conexión
+								</GenericText>
+							) : (
+								this.showBackToConnection()
+							)}
+						</View>
 					</View>
 				</View>
-			</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Keyboard, View } from "react-native";
+import { Keyboard, View, TouchableWithoutFeedback } from "react-native";
 import { connect } from "react-redux";
 import { RkTextInput, RkTheme } from "react-native-ui-kitten";
 import GenericText from "/components/presentationals/GenericText";
@@ -97,60 +97,66 @@ export default class Referrals extends React.Component {
 
 	render() {
 		return (
-			<RootWrapper style={this.state.componentsStyle.rootWrapper}>
-				{(this.state.componentsStyle == styles.hiddenKeyboardComponentsStyle ||
-					this.props.orientation == "portrait") && (
-					<View style={{ flex: -1 }}>
-						<GenericText
-							style={[
-								{
-									fontFamily: "brother-1816-bold",
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={{ flex: 1 }}>
+					<RootWrapper style={this.state.componentsStyle.rootWrapper}>
+						{(this.state.componentsStyle ==
+							styles.hiddenKeyboardComponentsStyle ||
+							this.props.orientation == "portrait") && (
+							<View style={{ flex: -1 }}>
+								<GenericText
+									style={[
+										{
+											fontFamily: "brother-1816-bold",
+											flex: -1,
+											paddingBottom: 10
+										},
+										this.state.componentsStyle.title,
+										this.state.landscapeStyle.title
+									]}>
+									REFERIDOS
+								</GenericText>
+								<GenericText
+									style={[
+										{ flex: -1, paddingBottom: 10 },
+										this.state.componentsStyle.description,
+										this.state.landscapeStyle.description
+									]}>
+									Invitá a quien quieras y disfruten ambos de beneficios
+									exclusivos
+								</GenericText>
+							</View>
+						)}
+						<View style={{ flexDirection: "row", marginBottom: 15 }}>
+							<RkTextInput
+								rkType="outline referralInputText"
+								placeholder="INGRESÁ MAIL"
+								autoFocus
+								onChangeText={pMail => this.setState({ mail: pMail })}
+								onSubmitEditing={this.sendEmail}
+								keyboardType="email-address"
+								returnKeyType="send"
+								autoCapitalize="none"
+								autoCorrect={false}
+								value={this.state.mail}
+								onFocus={this.onFocus}
+							/>
+						</View>
+						{this.state.message && (
+							<GenericText
+								style={{
+									fontSize: 17,
 									flex: -1,
-									paddingBottom: 10
-								},
-								this.state.componentsStyle.title,
-								this.state.landscapeStyle.title
-							]}>
-							REFERIDOS
-						</GenericText>
-						<GenericText
-							style={[
-								{ flex: -1, paddingBottom: 10 },
-								this.state.componentsStyle.description,
-								this.state.landscapeStyle.description
-							]}>
-							Invitá a quien quieras y disfruten ambos de beneficios exclusivos
-						</GenericText>
-					</View>
-				)}
-				<View style={{ flexDirection: "row", marginBottom: 15 }}>
-					<RkTextInput
-						rkType="outline referralInputText"
-						placeholder="INGRESÁ MAIL"
-						autoFocus
-						onChangeText={pMail => this.setState({ mail: pMail })}
-						onSubmitEditing={this.sendEmail}
-						keyboardType="email-address"
-						returnKeyType="send"
-						autoCapitalize="none"
-						autoCorrect={false}
-						value={this.state.mail}
-						onFocus={this.onFocus}
-					/>
+									paddingTop: 10
+								}}
+								error={this.state.error}>
+								{this.state.message}
+							</GenericText>
+						)}
+						<LoadingSpinner visible={this.state.spinnerVisible} />
+					</RootWrapper>
 				</View>
-				{this.state.message && (
-					<GenericText
-						style={{
-							fontSize: 17,
-							flex: -1,
-							paddingTop: 10
-						}}
-						error={this.state.error}>
-						{this.state.message}
-					</GenericText>
-				)}
-				<LoadingSpinner visible={this.state.spinnerVisible} />
-			</RootWrapper>
+			</TouchableWithoutFeedback>
 		);
 	}
 

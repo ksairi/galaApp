@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
+import {
+	View,
+	Keyboard,
+	KeyboardAvoidingView,
+	Platform,
+	TouchableWithoutFeedback
+} from "react-native";
 import { connect } from "react-redux";
 import { Messages, Screens } from "/config/settings";
 import { resetPassword } from "/helpers/ApiHelper";
@@ -103,109 +109,113 @@ export default class ResetPassword extends React.Component {
 
 	render() {
 		return (
-			<RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<CentredWrapper>
-						<GenericText
-							style={[
-								styles.resetPasswordTitle,
-								this.state.componentsStyle.resetPasswordTitle
-							]}>
-							{this.props.inResetFirstPasswordMode
-								? "INGRESÁ UNA NUEVA CONTRASEÑA"
-								: "RECUPERÁ TU CONTRASEÑA"}
-						</GenericText>
-						{!this.props.inResetFirstPasswordMode && (
-							<RkTextInput
-								rkType="rounded inputText"
-								style={this.state.componentsStyle.inputTextStyle}
-								autoFocus
-								keyboardType="numeric"
-								placeholder="DNI"
-								returnKeyType="next"
-								autoCorrect={false}
-								onChangeText={this.onUserIdChangeText}
-								onSubmitEditing={this.onSubmitUserId}
-								value={this.state.userId}
-								onFocus={this.onTextInputOnFocus}
-							/>
-						)}
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={{ flex: 1 }}>
+					<RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
+						<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+							<CentredWrapper>
+								<GenericText
+									style={[
+										styles.resetPasswordTitle,
+										this.state.componentsStyle.resetPasswordTitle
+									]}>
+									{this.props.inResetFirstPasswordMode
+										? "INGRESÁ UNA NUEVA CONTRASEÑA"
+										: "RECUPERÁ TU CONTRASEÑA"}
+								</GenericText>
+								{!this.props.inResetFirstPasswordMode && (
+									<RkTextInput
+										rkType="rounded inputText"
+										style={this.state.componentsStyle.inputTextStyle}
+										autoFocus
+										keyboardType="numeric"
+										placeholder="DNI"
+										returnKeyType="next"
+										autoCorrect={false}
+										onChangeText={this.onUserIdChangeText}
+										onSubmitEditing={this.onSubmitUserId}
+										value={this.state.userId}
+										onFocus={this.onTextInputOnFocus}
+									/>
+								)}
 
-						<RkTextInput
-							rkType="rounded inputText"
-							style={this.state.componentsStyle.inputTextStyle}
-							placeholder="Contraseña"
-							autoFocus={this.props.inResetFirstPasswordMode}
-							secureTextEntry
-							autoCapitalize="none"
-							autoCorrect={false}
-							returnKeyType="next"
-							keyboardType="default"
-							onChangeText={password => this.setState({ password })}
-							onSubmitEditing={this.onSubmitPassword}
-							ref="passwordInput"
-							value={this.state.password}
-							onFocus={this.onTextInputOnFocus}
-						/>
+								<RkTextInput
+									rkType="rounded inputText"
+									style={this.state.componentsStyle.inputTextStyle}
+									placeholder="Contraseña"
+									autoFocus={this.props.inResetFirstPasswordMode}
+									secureTextEntry
+									autoCapitalize="none"
+									autoCorrect={false}
+									returnKeyType="next"
+									keyboardType="default"
+									onChangeText={password => this.setState({ password })}
+									onSubmitEditing={this.onSubmitPassword}
+									ref="passwordInput"
+									value={this.state.password}
+									onFocus={this.onTextInputOnFocus}
+								/>
 
-						<RkTextInput
-							rkType="rounded inputText"
-							style={this.state.componentsStyle.inputTextStyle}
-							placeholder="Confirmá la contraseña"
-							secureTextEntry
-							autoCapitalize="none"
-							autoCorrect={false}
-							returnKeyType="done"
-							keyboardType="default"
-							onChangeText={this.onConfirmPasswordChangeText}
-							onSubmitEditing={this.doResetPassword}
-							ref="confirmPasswordInput"
-							value={this.state.confirmPassword}
-							onFocus={this.onTextInputOnFocus}
-						/>
+								<RkTextInput
+									rkType="rounded inputText"
+									style={this.state.componentsStyle.inputTextStyle}
+									placeholder="Confirmá la contraseña"
+									secureTextEntry
+									autoCapitalize="none"
+									autoCorrect={false}
+									returnKeyType="done"
+									keyboardType="default"
+									onChangeText={this.onConfirmPasswordChangeText}
+									onSubmitEditing={this.doResetPassword}
+									ref="confirmPasswordInput"
+									value={this.state.confirmPassword}
+									onFocus={this.onTextInputOnFocus}
+								/>
 
-						<View
-							style={[
-								{ flexDirection: "row" },
-								this.state.componentsStyle.buttonContainerStyle
-							]}>
-							<Button text="ENVIAR" onPress={this.doResetPassword} />
-						</View>
-
-						{this.state.message != "" && (
-							<GenericText
-								style={this.state.componentsStyle.messageStyle}
-								error={this.state.hasErrors}>
-								{this.state.message}
-							</GenericText>
-						)}
-
-						{this.state.showBackToSignIn &&
-							!this.props.inResetFirstPasswordMode && (
 								<View
 									style={[
-										textWithLinkStyle.container,
-										{
-											flex: 0.2,
-											flexDirection: "column"
-										}
+										{ flexDirection: "row" },
+										this.state.componentsStyle.buttonContainerStyle
 									]}>
-									<GenericText style={textWithLinkStyle.text}>
-										Contraseña actualizada!
-									</GenericText>
-									<GenericLink
-										containerStyle={textWithLinkStyle.link.container}
-										contentStyle={textWithLinkStyle.link.content}
-										onPress={this.goToSignIn}>
-										Volvé a loguearte
-									</GenericLink>
+									<Button text="ENVIAR" onPress={this.doResetPassword} />
 								</View>
-							)}
 
-						<LoadingSpinner visible={this.state.spinnerVisible} />
-					</CentredWrapper>
-				</KeyboardAvoidingView>
-			</RootWrapper>
+								{this.state.message != "" && (
+									<GenericText
+										style={this.state.componentsStyle.messageStyle}
+										error={this.state.hasErrors}>
+										{this.state.message}
+									</GenericText>
+								)}
+
+								{this.state.showBackToSignIn &&
+									!this.props.inResetFirstPasswordMode && (
+										<View
+											style={[
+												textWithLinkStyle.container,
+												{
+													flex: 0.2,
+													flexDirection: "column"
+												}
+											]}>
+											<GenericText style={textWithLinkStyle.text}>
+												Contraseña actualizada!
+											</GenericText>
+											<GenericLink
+												containerStyle={textWithLinkStyle.link.container}
+												contentStyle={textWithLinkStyle.link.content}
+												onPress={this.goToSignIn}>
+												Volvé a loguearte
+											</GenericLink>
+										</View>
+									)}
+
+								<LoadingSpinner visible={this.state.spinnerVisible} />
+							</CentredWrapper>
+						</KeyboardAvoidingView>
+					</RootWrapper>
+				</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 

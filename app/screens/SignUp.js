@@ -1,5 +1,11 @@
 import React from "react";
-import { Keyboard, KeyboardAvoidingView, View, Platform } from "react-native";
+import {
+	Keyboard,
+	KeyboardAvoidingView,
+	View,
+	Platform,
+	TouchableWithoutFeedback
+} from "react-native";
 import { connect } from "react-redux";
 import { Messages, Screens } from "/config/settings";
 import { register } from "/helpers/LoginHelper";
@@ -184,121 +190,125 @@ export default class SignUp extends React.Component {
 
 	render() {
 		return (
-			<RootWrapper style={{ paddingBottom: 0 }}>
-				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-					<CentredWrapper>
-						<GenericText
-							style={[
-								styles.registerAccountTitle,
-								this.state.componentsStyle.titleStyle
-							]}>
-							REGISTRAR CUENTA
-						</GenericText>
-						<RkTextInput
-							rkType="rounded inputText"
-							style={this.state.componentsStyle.textInputStyle}
-							placeholder="Nombre"
-							autoFocus
-							returnKeyType="next"
-							keyboardType="default"
-							autoCapitalize="words"
-							autoCorrect={false}
-							onChangeText={this.onFullNameChangeText}
-							onSubmitEditing={this.onSubmitUserFullName}
-							onFocus={this.onInputTextOnFocus}
-						/>
+			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+				<View style={{ flex: 1 }}>
+					<RootWrapper style={{ paddingBottom: 0 }}>
+						<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+							<CentredWrapper>
+								<GenericText
+									style={[
+										styles.registerAccountTitle,
+										this.state.componentsStyle.titleStyle
+									]}>
+									REGISTRAR CUENTA
+								</GenericText>
+								<RkTextInput
+									rkType="rounded inputText"
+									style={this.state.componentsStyle.textInputStyle}
+									placeholder="Nombre"
+									autoFocus
+									returnKeyType="next"
+									keyboardType="default"
+									autoCapitalize="words"
+									autoCorrect={false}
+									onChangeText={this.onFullNameChangeText}
+									onSubmitEditing={this.onSubmitUserFullName}
+									onFocus={this.onInputTextOnFocus}
+								/>
 
-						<RkTextInput
-							rkType="rounded inputText"
-							style={this.state.componentsStyle.textInputStyle}
-							placeholder="DNI"
-							returnKeyType="next"
-							keyboardType="numeric"
-							autoCorrect={false}
-							ref="userIdInput"
-							onChangeText={this.onUserIdChangeText}
-							onSubmitEditing={this.onSubmitUserId}
-							onFocus={this.onInputTextOnFocus}
-						/>
+								<RkTextInput
+									rkType="rounded inputText"
+									style={this.state.componentsStyle.textInputStyle}
+									placeholder="DNI"
+									returnKeyType="next"
+									keyboardType="numeric"
+									autoCorrect={false}
+									ref="userIdInput"
+									onChangeText={this.onUserIdChangeText}
+									onSubmitEditing={this.onSubmitUserId}
+									onFocus={this.onInputTextOnFocus}
+								/>
 
-						<RkTextInput
-							rkType="rounded inputText"
-							style={this.state.componentsStyle.textInputStyle}
-							placeholder="Contraseña"
-							secureTextEntry
-							autoCapitalize="none"
-							autoCorrect={false}
-							returnKeyType="next"
-							keyboardType="default"
-							ref="passwordInput"
-							onChangeText={this.onPasswordChangeText}
-							onSubmitEditing={this.onSubmitPassword}
-							onFocus={this.onInputTextOnFocus}
-						/>
+								<RkTextInput
+									rkType="rounded inputText"
+									style={this.state.componentsStyle.textInputStyle}
+									placeholder="Contraseña"
+									secureTextEntry
+									autoCapitalize="none"
+									autoCorrect={false}
+									returnKeyType="next"
+									keyboardType="default"
+									ref="passwordInput"
+									onChangeText={this.onPasswordChangeText}
+									onSubmitEditing={this.onSubmitPassword}
+									onFocus={this.onInputTextOnFocus}
+								/>
 
-						<RkTextInput
-							rkType="rounded inputText"
-							style={[
-								this.state.componentsStyle.textInputStyle,
-								this.state.componentsStyle.confirmPassInputStyle
-							]}
-							placeholder="Confirmar Contraseña"
-							secureTextEntry
-							autoCapitalize="none"
-							autoCorrect={false}
-							returnKeyType="done"
-							keyboardType="default"
-							ref="confirmPasswordInput"
-							onChangeText={this.onConfirmPasswordChangeText}
-							onSubmitEditing={this.signUp}
-							onFocus={this.onInputTextOnFocus}
-						/>
+								<RkTextInput
+									rkType="rounded inputText"
+									style={[
+										this.state.componentsStyle.textInputStyle,
+										this.state.componentsStyle.confirmPassInputStyle
+									]}
+									placeholder="Confirmar Contraseña"
+									secureTextEntry
+									autoCapitalize="none"
+									autoCorrect={false}
+									returnKeyType="done"
+									keyboardType="default"
+									ref="confirmPasswordInput"
+									onChangeText={this.onConfirmPasswordChangeText}
+									onSubmitEditing={this.signUp}
+									onFocus={this.onInputTextOnFocus}
+								/>
 
-						<View
-							style={[
-								{ flexDirection: "row" },
-								this.state.componentsStyle.buttonContainerStyle
-							]}>
-							<Button
-								style={this.state.componentsStyle.buttonStyle}
-								contentStyle={this.state.componentsStyle.buttonContentStyle}
-								text="REGISTRARME"
-								onPress={this.signUp}
-							/>
-						</View>
+								<View
+									style={[
+										{ flexDirection: "row" },
+										this.state.componentsStyle.buttonContainerStyle
+									]}>
+									<Button
+										style={this.state.componentsStyle.buttonStyle}
+										contentStyle={this.state.componentsStyle.buttonContentStyle}
+										text="REGISTRARME"
+										onPress={this.signUp}
+									/>
+								</View>
 
-						<View
-							style={[
-								textWithLinkStyle.container,
-								this.state.componentsStyle.memeberAlreadyStyle
-							]}>
-							<GenericText style={textWithLinkStyle.text}>
-								¿Ya tenés una cuenta?
-							</GenericText>
-							<GenericLink
-								containerStyle={textWithLinkStyle.link.container}
-								contentStyle={textWithLinkStyle.link.content}
-								onPress={this.goToSignIn}>
-								Iniciá Sesión
-							</GenericLink>
-						</View>
+								<View
+									style={[
+										textWithLinkStyle.container,
+										this.state.componentsStyle.memeberAlreadyStyle
+									]}>
+									<GenericText style={textWithLinkStyle.text}>
+										¿Ya tenés una cuenta?
+									</GenericText>
+									<GenericLink
+										containerStyle={textWithLinkStyle.link.container}
+										contentStyle={textWithLinkStyle.link.content}
+										onPress={this.goToSignIn}>
+										Iniciá Sesión
+									</GenericLink>
+								</View>
 
-						{this.state.errorMessage != "" && (
-							<GenericText
-								style={{
-									fontSize: 13,
-									paddingLeft: containerPadding,
-									paddingRight: containerPadding
-								}}
-								error={this.state.errorMessage ? true : false}>
-								{this.state.errorMessage}
-							</GenericText>
-						)}
+								{this.state.errorMessage != "" && (
+									<GenericText
+										style={{
+											fontSize: 13,
+											paddingLeft: containerPadding,
+											paddingRight: containerPadding
+										}}
+										error={this.state.errorMessage ? true : false}>
+										{this.state.errorMessage}
+									</GenericText>
+								)}
 
-						<LoadingSpinner visible={this.state.spinnerVisible} />
-					</CentredWrapper>
-				</KeyboardAvoidingView>
-			</RootWrapper>
+								<LoadingSpinner visible={this.state.spinnerVisible} />
+							</CentredWrapper>
+						</KeyboardAvoidingView>
+					</RootWrapper>
+				</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }
