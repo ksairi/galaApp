@@ -7,6 +7,7 @@ import {
 	Platform,
 	Vibration
 } from "react-native";
+import { SafeAreaView } from "react-navigation";
 import { Notifications, Constants } from "expo";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -27,11 +28,26 @@ import {
 	synchMemberProperties
 } from "/helpers/UserDataHelper";
 
-const MyStatusBar = ({ backgroundColor, ...props }) => (
-	<View style={[{ height: Constants.statusBarHeight }, { backgroundColor }]}>
-		<StatusBar translucent backgroundColor={backgroundColor} {...props} />
-	</View>
-);
+const MyStatusBar = ({ backgroundColor, ...props }) => {
+	if (!props.hidden) {
+		if (Platform.OS == "ios") {
+			return (
+				<SafeAreaView style={[{ height: 0 }, { backgroundColor }]}>
+					<StatusBar translucent backgroundColor={backgroundColor} {...props} />
+				</SafeAreaView>
+			);
+		} else {
+			return (
+				<View
+					style={[{ height: Constants.statusBarHeight }, { backgroundColor }]}>
+					<StatusBar translucent backgroundColor={backgroundColor} {...props} />
+				</View>
+			);
+		}
+	} else {
+		return null;
+	}
+};
 
 @connect(
 	state => ({
@@ -43,7 +59,8 @@ const MyStatusBar = ({ backgroundColor, ...props }) => (
 		isAppsFirstTime: state.isAppsFirstTime,
 		messages: state.messages,
 		profilePicture: state.profilePicture,
-		receiveNotifications: state.receiveNotifications
+		receiveNotifications: state.receiveNotifications,
+		orientation: state.currentOrientation
 	}),
 	dispatch =>
 		Object.assign(
@@ -193,7 +210,11 @@ export default class AppContainer extends React.Component {
 	render() {
 		return (
 			<RootView>
-				<MyStatusBar backgroundColor="#5E8D48" barStyle="light-content" />
+				<MyStatusBar
+					backgroundColor="#5E8D48"
+					barStyle="light-content"
+					hidden={Platform.OS == "ios" && this.props.orientation == "landscape"}
+				/>
 				<AppRoutes
 					ref={nav => {
 						this.navigator = nav ? nav._navigation : nav;

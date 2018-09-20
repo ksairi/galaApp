@@ -28,10 +28,21 @@ const styles = {
 		paddingRight: 10,
 		flex: 1.2,
 		fontFamily: "lato-regular"
+	},
+	landscapeStyle: {
+		logo: {
+			marginTop: 20,
+			flex: 0.7
+		}
 	}
 };
-@connect()
+@connect(state => ({
+	orientation: state.currentOrientation
+}))
 export default class Welcome extends React.PureComponent {
+	state = {
+		componentsStyle: null
+	};
 	goToLogin = () => {
 		this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false));
 		this.props.navigation.navigate(Screens.LoginStack);
@@ -41,6 +52,17 @@ export default class Welcome extends React.PureComponent {
 	handleAnimatedTitle = ref => (this.animatedTitle = ref);
 	handleAnimatedBody = ref => (this.animatedBody = ref);
 	handleAnimatedButton = ref => (this.animatedButton = ref);
+
+	static getDerivedStateFromProps(nextProps, prevState) {
+		if (nextProps.orientation) {
+			if (nextProps.orientation == "landscape") {
+				return { componentsStyle: styles.landscapeStyle };
+			} else {
+				return { componentsStyle: {} };
+			}
+		}
+		return prevState;
+	}
 
 	componentDidMount() {
 		const duration = 2000;
@@ -55,7 +77,10 @@ export default class Welcome extends React.PureComponent {
 			<RootWrapper>
 				<CentredWrapper>
 					<AnimatedLogo
-						style={{ flex: 0.9, fontSize: 75, marginTop: 50 }}
+						style={[
+							{ flex: 0.9, fontSize: 75, marginTop: 50 },
+							this.state.componentsStyle.logo
+						]}
 						ref={this.handleAnimatedLogo}
 					/>
 					<View style={{ flex: 0.95 }}>

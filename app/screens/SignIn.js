@@ -1,5 +1,11 @@
 import React from "react";
-import { Keyboard, View, KeyboardAvoidingView, Dimensions } from "react-native";
+import {
+	Keyboard,
+	View,
+	KeyboardAvoidingView,
+	Dimensions,
+	Platform
+} from "react-native";
 import AutoHeightImage from "react-native-auto-height-image";
 import { connect } from "react-redux";
 import { RkTheme, RkTextInput } from "react-native-ui-kitten";
@@ -33,7 +39,7 @@ const styles = {
 		marginTop: 5
 	},
 
-	rootWrapperStyle: { paddingTop: 10 },
+	rootWrapperStyle: { paddingTop: 10, padding: 0 },
 	hiddenKeyboardComponentsStyle: {
 		passwordInputStyle: { marginBottom: 10 },
 		buttonContainerStyle: { flex: 0.68 },
@@ -50,10 +56,10 @@ const styles = {
 	},
 	landscape: {
 		showingKeyboardComponentsStyle: {
-			buttonContainerStyle: { flex: 0.55 },
-			buttonStyle: { height: 30 },
-			buttonContentStyle: { fontSize: 14 },
-			logoStyle: { flex: 0.55, fontSize: 25 },
+			buttonContainerStyle: { flex: 0.47 },
+			buttonStyle: { height: 28 },
+			buttonContentStyle: { fontSize: 12 },
+			logoStyle: { flex: 0.45, fontSize: 23 },
 			linksContainerStyle: { flex: 0.7 },
 			firstLinkStyle: { flex: 0.5 },
 			secondLinkStyle: { flex: 0.5 },
@@ -163,7 +169,16 @@ export default class SignIn extends React.Component {
 
 	render() {
 		return (
-			<RootWrapper style={[styles.rootWrapperStyle, { padding: 0 }]}>
+			<RootWrapper
+				style={[
+					styles.rootWrapperStyle,
+					{
+						marginTop:
+							Platform.OS == "ios" && this.props.orientation == "landscape"
+								? 20
+								: 0
+					}
+				]}>
 				<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
 					<CentredWrapper>
 						<AnimatedLogo
