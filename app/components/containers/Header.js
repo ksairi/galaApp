@@ -198,7 +198,7 @@ export default class Header extends React.PureComponent {
 
 						<View
 							style={{
-								flex: 2.4,
+								flex: 2.5,
 								flexDirection: "row",
 								justifyContent: "center",
 								zIndex: 1

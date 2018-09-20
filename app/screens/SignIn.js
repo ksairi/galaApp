@@ -166,6 +166,7 @@ export default class SignIn extends React.Component {
 		this.setState({
 			errorMessage: ""
 		});
+		this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	};
 
 	render() {
@@ -357,6 +358,7 @@ export default class SignIn extends React.Component {
 				this.props.navigation.navigate(Screens.ResetPassword);
 			}
 		} catch (errorMessage) {
+			console.log(errorMessage);
 			this.setState({ spinnerVisible: false });
 			if (
 				Messages.CHECK_INTERNET_CONNECTION == errorMessage &&
