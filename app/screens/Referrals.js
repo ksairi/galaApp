@@ -95,9 +95,13 @@ export default class Referrals extends React.Component {
 		this.setState({ message: null });
 	};
 
+	hideKeyboard = () => {
+		Keyboard.dismiss();
+	};
+
 	render() {
 		return (
-			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={{ flex: 1 }}>
 					<RootWrapper style={this.state.componentsStyle.rootWrapper}>
 						{(this.state.componentsStyle ==

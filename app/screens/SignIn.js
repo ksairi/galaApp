@@ -169,9 +169,13 @@ export default class SignIn extends React.Component {
 		this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	};
 
+	hideKeyboard = ()=>{
+		Keyboard.dismiss()
+	}
+
 	render() {
 		return (
-			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={{ flex: 1 }}>
 					<RootWrapper
 						style={[

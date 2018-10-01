@@ -142,9 +142,13 @@ export default class Header extends React.PureComponent {
 		}
 	};
 
+	hideKeyboard = () => {
+		Keyboard.dismiss();
+	};
+
 	render() {
 		return (
-			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={this.state.headerStyle.wrapper}>
 					<View style={styles.wrapper}>
 						{Platform.OS == "ios" && (

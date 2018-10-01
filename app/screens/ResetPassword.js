@@ -107,9 +107,13 @@ export default class ResetPassword extends React.Component {
 		});
 	};
 
+	hideKeyboard = () => {
+		Keyboard.dismiss();
+	};
+
 	render() {
 		return (
-			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={{ flex: 1 }}>
 					<RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
 						<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">

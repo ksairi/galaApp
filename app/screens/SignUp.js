@@ -188,9 +188,13 @@ export default class SignUp extends React.Component {
 		});
 	};
 
+	hideKeyboard = () => {
+		Keyboard.dismiss();
+	};
+
 	render() {
 		return (
-			<TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={{ flex: 1 }}>
 					<RootWrapper style={{ paddingBottom: 0 }}>
 						<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
