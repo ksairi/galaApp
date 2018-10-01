@@ -1,14 +1,7 @@
 import React from "react";
-import {
-	NetInfo,
-	View,
-	StatusBar,
-	AppState,
-	Platform,
-	Vibration
-} from "react-native";
-import { SafeAreaView } from "react-navigation";
-import { Notifications, Constants } from "expo";
+import { NetInfo, AppState, Platform, Vibration } from "react-native";
+import StatusBar from "/components/presentationals/StatusBar";
+import { Notifications } from "expo";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Screens } from "/config/settings";
@@ -27,28 +20,6 @@ import {
 	uploadProfilePicture,
 	synchMemberProperties
 } from "/helpers/UserDataHelper";
-
-const MyStatusBar = ({ backgroundColor, ...props }) => {
-	if (!props.hidden) {
-		if (Platform.OS == "ios") {
-			return (
-				<SafeAreaView style={[{ height: 0 }, { backgroundColor }]}>
-					<StatusBar translucent backgroundColor={backgroundColor} {...props} />
-				</SafeAreaView>
-			);
-		} else {
-			return (
-				<View
-					style={[{ height: Constants.statusBarHeight }, { backgroundColor }]}>
-					<StatusBar translucent backgroundColor={backgroundColor} {...props} />
-				</View>
-			);
-		}
-	} else {
-		return null;
-	}
-};
-
 @connect(
 	state => ({
 		userId: state.userData.userId,
@@ -111,7 +82,7 @@ export default class AppContainer extends React.Component {
 					);
 					props.dispatch(
 						ActionsCreators.setNewMessagesCount(
-							notification.data.messages.messages.length
+							notification.data.messages.length
 						)
 					);
 					setNotifiedMessagesSaved({
@@ -210,7 +181,7 @@ export default class AppContainer extends React.Component {
 	render() {
 		return (
 			<RootView>
-				<MyStatusBar
+				<StatusBar
 					backgroundColor="#5E8D48"
 					barStyle="light-content"
 					hidden={Platform.OS == "ios" && this.props.orientation == "landscape"}
