@@ -4,7 +4,8 @@ import {
 	KeyboardAvoidingView,
 	AppState,
 	Keyboard,
-	Platform
+	Platform,
+	TouchableWithoutFeedback
 } from "react-native";
 import { connect } from "react-redux";
 import {
@@ -116,15 +117,14 @@ export default class Messages extends React.Component {
 			() =>
 				getRealTimeMessages({
 					userId: this.props.userData.userId,
-					lastSynchedMessageTimestamp: this.props.loginSynchedDataParameters
-						.messages
-						? this.props.loginSynchedDataParameters.messages
-								.lastMessageTimestamp
-						: null
+					lastSynchedMessageIndex:
+						this.props.messages && this.props.messages.length > 0
+							? this.props.messages[this.props.messages.length - 1].index
+							: null
 				})
-					.then(messagesData => {
-						if (messagesData && messagesData.messages.length > 0) {
-							saveMessagesToDevice(messagesData, null, this.props.dispatch);
+					.then(messages => {
+						if (messages && messages.length > 0) {
+							saveMessagesToDevice(messages, null, this.props.dispatch);
 							setRealTimeMessagesSaved({ userId: this.props.userData.userId });
 						}
 					})
@@ -156,16 +156,11 @@ export default class Messages extends React.Component {
 	};
 
 	onSend = async (messages = []) => {
-		var nextIndex = this.props.messages.length;
-		messages.forEach(newMessage => {
-			newMessage.index = nextIndex++;
-		});
 		this.props.dispatch(ActionsCreators.setMessages(messages));
 		this.doSendMessages(messages);
 	};
 
 	doSendMessages = async messages => {
-		Keyboard.dismiss();
 		try {
 			await sendMessages(
 				this.props.userData.userId,
@@ -277,39 +272,49 @@ export default class Messages extends React.Component {
 		</Dialog.Container>
 	);
 
+	hideKeyboard = () => {
+		Keyboard.dismiss();
+	};
+
 	render() {
 		return (
-			<RootWrapper style={{ padding: 0 }}>
-				<GiftedChat
-					textInputProps={{ autoFocus: true }}
-					messages={this.props.messages}
-					onSend={messages => this.onSend(messages)}
-					user={{
-						_id: this.props.userData.userId
-					}}
-					isAnimated={true}
-					renderComposer={this.renderComposer}
-					renderTime={this.renderTimeFormat}
-					renderDay={this.renderDay}
-					renderBubble={this.renderBubble}
-					renderInputToolbar={this.renderInputToolbar}
-					renderSend={this.renderSend}
-					placeholder="Escribí tu mensaje"
-					placeholderTextColor="white"
-					renderLoading={this.renderLoading}
-					onLongPress={this.onPressBubble}
-				/>
-				{Platform.OS != "ios" && (
-					<KeyboardAvoidingView
-						behavior={"padding"}
-						keyboardVerticalOffset={
-							this.state.keyboardHeight ? this.state.keyboardHeight - 150 : 100
-						}
-					/>
-				)}
-				{this.showUnsentMessageDialog()}
-				{this.showResendDialog()}
-			</RootWrapper>
+			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
+				<View style={{ flex: 1 }}>
+					<RootWrapper style={{ padding: 0 }}>
+						<GiftedChat
+							textInputProps={{ autoFocus: true }}
+							messages={this.props.messages}
+							onSend={messages => this.onSend(messages)}
+							user={{
+								_id: this.props.userData.userId
+							}}
+							isAnimated={true}
+							renderComposer={this.renderComposer}
+							renderTime={this.renderTimeFormat}
+							renderDay={this.renderDay}
+							renderBubble={this.renderBubble}
+							renderInputToolbar={this.renderInputToolbar}
+							renderSend={this.renderSend}
+							placeholder="Escribí tu mensaje"
+							placeholderTextColor="white"
+							renderLoading={this.renderLoading}
+							onLongPress={this.onPressBubble}
+						/>
+						{Platform.OS != "ios" && (
+							<KeyboardAvoidingView
+								behavior={"padding"}
+								keyboardVerticalOffset={
+									this.state.keyboardHeight
+										? this.state.keyboardHeight - 150
+										: 100
+								}
+							/>
+						)}
+						{this.showUnsentMessageDialog()}
+						{this.showResendDialog()}
+					</RootWrapper>
+				</View>
+			</TouchableWithoutFeedback>
 		);
 	}
 }

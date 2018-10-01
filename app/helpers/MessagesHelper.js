@@ -21,7 +21,8 @@ export const sendUnsentMessages = async (userId, messages, dispatch) => {
 
 export const getUnsentMessages = messages => {
 	if (messages != null) {
-		return messages.filter(message => !message.serverTime);
+		const unsentMessages = messages.filter(message => !message.serverTime);
+		return unsentMessages.reverse();
 	}
 	return null;
 };

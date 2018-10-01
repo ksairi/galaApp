@@ -36,7 +36,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 			//timetableImages,
 			timetable,
 			sentMessages,
-			messagesData
+			messages
 		} = contentServerData;
 		/*await saveDataToDevice(
 			loginImages,
@@ -73,7 +73,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 				dispatch
 			);*/
 		saveTimetableToDevice(timetable, dispatch);
-		saveMessagesToDevice(messagesData, sentMessages, dispatch);
+		saveMessagesToDevice(messages, sentMessages, dispatch);
 	}
 };
 
@@ -191,37 +191,39 @@ export const saveMainMenuImages = async (mainMenuImages, dispatch) => {
 	dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 };
 
-export const saveMessagesToDevice = (messagesData, sentMessages, dispatch) => {
-	if (messagesData) {
-		dispatch(ActionsCreators.setMessages(messagesData.messages));
+export const saveMessagesToDevice = (messages, sentMessages, dispatch) => {
+	if (messages && messages.length > 0) {
+		dispatch(ActionsCreators.setMessages(messages));
 	}
-	if (sentMessages) {
+	if (sentMessages && sentMessages.length > 0) {
 		dispatch(ActionsCreators.setSentMessages(sentMessages));
 	}
 
 	setMessageLoginSynchedDataParameters(
-		messagesData ? messagesData.lastMessageTimestamp : null,
+		messages && messages.length > 0
+			? messages[messages.length - 1].index
+			: null,
 		sentMessages,
 		dispatch
 	);
 };
 
 export const setMessageLoginSynchedDataParameters = (
-	lastMessageTs,
+	lastMessageIndex,
 	sentMessages,
 	dispatch
 ) => {
-	var newLastMessageTs = null;
+	var newLastMessageIndex = null;
 	if (sentMessages && sentMessages.length > 0) {
-		newLastMessageTs = sentMessages[0].serverTime;
+		newLastMessageIndex = sentMessages[sentMessages.length - 1].index;
 	} else {
-		newLastMessageTs = lastMessageTs;
+		newLastMessageIndex = lastMessageIndex;
 	}
-	if (newLastMessageTs) {
+	if (newLastMessageIndex != null) {
 		dispatch(
 			ActionsCreators.setLoginSynchedDataParameters({
 				entity: "messages",
-				data: { lastMessageTimestamp: newLastMessageTs }
+				data: { lastMessageIndex: newLastMessageIndex }
 			})
 		);
 	}
