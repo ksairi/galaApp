@@ -159,8 +159,14 @@ export default class Messages extends React.Component {
 	};
 
 	onSend = async (messages = []) => {
-		this.props.dispatch(ActionsCreators.setMessages(messages));
-		this.doSendMessages(messages);
+		console.log(messages);
+		const unSentMsgs = messages.map(message => ({
+			...message,
+			createdAt: null
+		}));
+		console.log(unSentMsgs);
+		this.props.dispatch(ActionsCreators.setMessages(unSentMsgs));
+		this.doSendMessages(unSentMsgs);
 	};
 
 	doSendMessages = async messages => {

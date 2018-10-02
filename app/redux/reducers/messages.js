@@ -24,6 +24,7 @@ export const messages = createReducer([], {
 			if (index != -1) {
 				stateCopy[index].serverTime = messageWithServerStamp.serverTime;
 				stateCopy[index].index = messageWithServerStamp.index;
+				stateCopy[index].createdAt = new Date();
 			}
 		});
 		return stateCopy;
