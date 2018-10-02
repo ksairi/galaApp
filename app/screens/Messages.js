@@ -122,14 +122,17 @@ export default class Messages extends React.Component {
 			userId: this.props.userData.userId,
 			lastSynchedMessageIndex:
 				this.props.messages && this.props.messages.length > 0
-					? this.props.messages[this.props.messages.length - 1].index
+					? this.props.messages[0].index
 					: null,
 			hasClientLeftChat
 		})
 			.then(messages => {
 				if (messages && messages.length > 0) {
 					saveMessagesToDevice(messages, null, this.props.dispatch);
-					setRealTimeMessagesSaved({ userId: this.props.userData.userId });
+					setRealTimeMessagesSaved({
+						userId: this.props.userData.userId,
+						lastMessageIndex: messages[messages.length - 1].index
+					});
 				}
 			})
 			.catch(() => {});
@@ -159,12 +162,10 @@ export default class Messages extends React.Component {
 	};
 
 	onSend = async (messages = []) => {
-		console.log(messages);
 		const unSentMsgs = messages.map(message => ({
 			...message,
 			createdAt: null
 		}));
-		console.log(unSentMsgs);
 		this.props.dispatch(ActionsCreators.setMessages(unSentMsgs));
 		this.doSendMessages(unSentMsgs);
 	};
@@ -176,6 +177,10 @@ export default class Messages extends React.Component {
 				messages,
 				this.props.dispatch
 			);
+			setRealTimeMessagesSaved({
+				userId: this.props.userData.userId,
+				lastMessageIndex: this.props.messages[0].index
+			});
 		} catch (err) {
 			this.setState({ showFirstUnsentMessageDialog: true });
 		}

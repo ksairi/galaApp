@@ -110,7 +110,16 @@ doFetchDynamicData = async (
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
 	if (hasResponseResults(dynamicDataResponse)) {
-		setContentSavedApi({ userId });
+		var lastMessageIndex = null;
+		if (
+			dynamicDataResponse.messages &&
+			dynamicDataResponse.messages.length > 0
+		) {
+			lastMessageIndex =
+				dynamicDataResponse.messages[dynamicDataResponse.messages.length - 1]
+					.index;
+		}
+		setContentSavedApi({ userId, lastMessageIndex });
 	}
 	await setContentServerData(dynamicDataResponse, dispatch);
 };
@@ -119,8 +128,7 @@ hasResponseResults = response =>
 	(response.promotions &&
 		response.promotions.data &&
 		response.promotions.data.length > 0) ||
-	(response.messagesData && response.messagesData.messages.length > 0) ||
-	(response.messagesData && response.messagesData.messages.length > 0) ||
+	(response.messages && response.messages.length > 0) ||
 	(response.sentMessages && response.sentMessages.length > 0);
 
 exports.doFetchDynamicData = doFetchDynamicData;

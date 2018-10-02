@@ -87,7 +87,10 @@ export default class AppContainer extends React.Component {
 					);
 					setNotifiedMessagesSaved({
 						userId: props.userId,
-						notificationId: notification.data.notificationId
+						notificationId: notification.data.notificationId,
+						lastMessageIndex:
+							notification.data.messages[notification.data.messages.length - 1]
+								.index
 					});
 					AppContainer.alreadySetMessagesSaved = true;
 					localNotificationBody = "Tenés nuevos mensajes!";
@@ -123,7 +126,11 @@ export default class AppContainer extends React.Component {
 
 						setNotifiedMessagesSaved({
 							userId: props.userId,
-							notificationId: notification.data.notificationId
+							notificationId: notification.data.notificationId,
+							lastMessageIndex:
+								notification.data.messages[
+									notification.data.messages.length - 1
+								].index
 						});
 					}
 				}
