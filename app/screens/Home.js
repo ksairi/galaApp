@@ -16,6 +16,8 @@ import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { FontAwesome } from "@expo/vector-icons";
 import * as UserDataHelper from "/helpers/UserDataHelper";
 import { genericBackgroundColor } from "/components/styles";
+import * as Animatable from "react-native-animatable-promise";
+
 const styles = {
 	imageContainer: {
 		marginTop: 20,
@@ -51,6 +53,8 @@ const styles = {
 		marginTop: 5
 	}
 };
+
+const AnimatedSlider = Animatable.createAnimatableComponent(ImageSlider);
 
 @connect(state => ({
 	userData: state.userData,
@@ -165,14 +169,19 @@ export default class Home extends React.Component {
 					!this.props.isDownloadingRemoteImages ? (
 						<CentredWrapper>
 							<View style={styles.imageContainer}>
-								<ImageSlider
+								<AnimatedSlider
+									useNativeDriver={true}
+									animation={"zoomIn"}
 									images={this.state.sliderImages}
 									imageWidth={ScreenDimensions.getPortraitWidth()}
 									style={{ backgroundColor: genericBackgroundColor }}
 								/>
 							</View>
 
-							<View style={styles.buttonsContainer}>
+							<Animatable.View
+								useNativeDriver={true}
+								animation={"slideInRight"}
+								style={styles.buttonsContainer}>
 								{SectionsData.map((sectionData, index) => {
 									if (
 										sectionData.screen != Screens.NewMember ||
@@ -209,7 +218,7 @@ export default class Home extends React.Component {
 										);
 									}
 								})}
-							</View>
+							</Animatable.View>
 							<View style={styles.promotionsContainer}>
 								<GenericText
 									style={{ fontFamily: "brother-1816-bold", fontSize: 35 }}>

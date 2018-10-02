@@ -8,6 +8,7 @@ import RootWrapper from "/components/presentationals/RootWrapper";
 import Footer from "/components/presentationals/Footer";
 import GenericText from "/components/presentationals/GenericText";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
+import * as Animatable from "react-native-animatable-promise";
 
 const styles = {
 	timetableDay: {
@@ -71,6 +72,8 @@ const timetableDaysMetadata = [
 
 const carouselOffset = 50;
 
+AnimatedCarousel = Animatable.createAnimatableComponent(Carousel);
+
 @connect(state => ({
 	timetable: state.timetable,
 	orientation: state.currentOrientation
@@ -126,7 +129,10 @@ export default class TimeTbale extends React.Component {
 					style={{
 						padding: 0
 					}}>
-					<Carousel
+					<AnimatedCarousel
+						useNativeDriver={true}
+						animation="zoomIn"
+						style={{ backgroundColor: "black", paddingLeft: 5 }}
 						pageStyle={{
 							paddingLeft: 0,
 							paddingRight: 0,
@@ -190,7 +196,7 @@ export default class TimeTbale extends React.Component {
 								</View>
 							</View>
 						))}
-					</Carousel>
+					</AnimatedCarousel>
 					<Footer />
 				</RootWrapper>
 			</GScrollView>

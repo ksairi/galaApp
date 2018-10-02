@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import { View } from "react-native";
 import GScrollView from "/components/presentationals/GenericScrollView";
 import { RkButton } from "react-native-ui-kitten";
 import { connect } from "react-redux";
@@ -9,11 +9,12 @@ import GenericText from "/components/presentationals/GenericText";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { Screens } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
+import * as Animatable from "react-native-animatable-promise";
 
 const styles = {
 	routinesWrapper: {
 		flex: 1,
-		marginBottom: 40
+		marginBottom: 17
 	}
 };
 
@@ -29,7 +30,10 @@ export default class Routines extends React.Component {
 
 	showRoutines = () =>
 		this.props.routines.map((routine, index) => (
-			<View
+			<Animatable.View
+				useNativeDriver={true}
+				animation={index % 2 == 0 ? "slideInLeft" : "slideInRight"}
+				duration={1500}
 				key={index}
 				style={{
 					flexDirection: "row",
@@ -54,7 +58,7 @@ export default class Routines extends React.Component {
 					onPress={this.seeRoutine(routine)}>
 					{routine.description.toUpperCase()}
 				</RkButton>
-			</View>
+			</Animatable.View>
 		));
 
 	render() {
@@ -62,7 +66,10 @@ export default class Routines extends React.Component {
 			<GScrollView>
 				<RootWrapper style={{ padding: 0 }}>
 					{this.props.routinesImages.length > 0 && (
-						<Image
+						<Animatable.Image
+							useNativeDriver={true}
+							animation="slideInDown"
+							duration={1500}
 							source={
 								this.props.routinesImages[0].imageIndex == 0
 									? require("../images/routines.jpg")

@@ -10,6 +10,7 @@ import { Screens } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import { genericBackgroundColor } from "/components/styles";
 import { FontAwesome } from "@expo/vector-icons";
+import * as Animatable from "react-native-animatable-promise";
 
 const styles = {
 	exerciseDetail: {
@@ -32,6 +33,7 @@ const styles = {
 		paddingBottom: 10
 	}
 };
+const AnimatedWrapper = Animatable.createAnimatableComponent(RootWrapper);
 
 @connect(state => ({
 	currentRoutine: state.currentRoutine
@@ -178,7 +180,10 @@ export default class RoutineDetail extends React.Component {
 	};
 	render() {
 		return (
-			<RootWrapper style={{ backgroundColor: "black", paddingLeft: 5 }}>
+			<AnimatedWrapper
+				useNativeDriver={true}
+				animation="zoomIn"
+				style={{ backgroundColor: "black", paddingLeft: 5 }}>
 				<View
 					style={{ flexDirection: "row", alignItems: "center", flex: 0.15 }}>
 					<TouchableOpacity onPress={this.goBackToRoutines}>
@@ -226,7 +231,7 @@ export default class RoutineDetail extends React.Component {
 						detailContainerStyle={{ marginLeft: -5 }}
 					/>
 				</GScrollView>
-			</RootWrapper>
+			</AnimatedWrapper>
 		);
 	}
 }

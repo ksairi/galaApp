@@ -153,6 +153,7 @@ export default class Header extends React.PureComponent {
 					<View style={styles.wrapper}>
 						{Platform.OS == "ios" && (
 							<AnimatedBanner
+								useNativeDriver={true}
 								ref={this.handleBannerRef}
 								style={{
 									position: "absolute",

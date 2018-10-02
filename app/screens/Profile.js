@@ -10,6 +10,8 @@ import Footer from "/components/presentationals/Footer";
 import { Screens } from "/config/settings";
 import GenericText from "/components/presentationals/GenericText";
 import { getRemoteProfilePicture } from "/helpers/UserDataHelper";
+import * as Animatable from "react-native-animatable-promise";
+
 const styles = {
 	photoContainer: {
 		flex: 1,
@@ -109,7 +111,10 @@ export default class Profile extends React.Component {
 					flexGrow: 1
 				}}>
 				<RootWrapper>
-					<View style={styles.photoContainer}>
+					<Animatable.View
+						useNativeDriver={true}
+						animation={"slideInLeft"}
+						style={styles.photoContainer}>
 						<Image
 							source={this.state.imageSource}
 							style={{
@@ -134,42 +139,49 @@ export default class Profile extends React.Component {
 							}}>
 							<FontAwesome name="camera-retro" size={32} />
 						</TouchableOpacity>
-					</View>
-					<GenericText
-						style={{
-							fontFamily: "brother-1816-bold",
-							fontSize: 22,
-							flex: 0.6
-						}}>
-						MI INFORMACIÓN
-					</GenericText>
-					<View style={styles.userDataContainer}>
-						<View style={styles.userDataRow}>
-							<GenericText style={styles.label}>Nombre</GenericText>
-							<GenericText style={styles.userData}>
-								{this.props.userData.name}
-							</GenericText>
-						</View>
-						{
+					</Animatable.View>
+					<Animatable.View useNativeDriver={true} animation={"slideInRight"}>
+						<GenericText
+							style={{
+								fontFamily: "brother-1816-bold",
+								fontSize: 22,
+								flex: 0.6
+							}}>
+							MI INFORMACIÓN
+						</GenericText>
+						<View style={styles.userDataContainer}>
 							<View style={styles.userDataRow}>
-								<GenericText style={styles.label}>Email</GenericText>
-								<GenericText style={[styles.userData, { fontSize: 16 }]}>
-									{this.props.userData.mail ? this.props.userData.mail : "N/D"}
-								</GenericText>
-							</View>
-						}
-						{
-							<View style={styles.userDataRow}>
-								<GenericText style={styles.label}>Teléfono</GenericText>
+								<GenericText style={styles.label}>Nombre</GenericText>
 								<GenericText style={styles.userData}>
-									{this.props.userData.phoneNumber
-										? this.props.userData.phoneNumber
-										: "N/D"}
+									{this.props.userData.name}
 								</GenericText>
 							</View>
-						}
-					</View>
-					<View style={{ flexDirection: "row", flex: 1 }}>
+							{
+								<View style={styles.userDataRow}>
+									<GenericText style={styles.label}>Email</GenericText>
+									<GenericText style={[styles.userData, { fontSize: 16 }]}>
+										{this.props.userData.mail
+											? this.props.userData.mail
+											: "N/D"}
+									</GenericText>
+								</View>
+							}
+							{
+								<View style={styles.userDataRow}>
+									<GenericText style={styles.label}>Teléfono</GenericText>
+									<GenericText style={styles.userData}>
+										{this.props.userData.phoneNumber
+											? this.props.userData.phoneNumber
+											: "N/D"}
+									</GenericText>
+								</View>
+							}
+						</View>
+					</Animatable.View>
+					<Animatable.View
+						useNativeDriver={true}
+						animation={"slideInLeft"}
+						style={{ flexDirection: "row", flex: 1 }}>
 						<RkButton
 							shapeType="outline"
 							style={{
@@ -186,7 +198,7 @@ export default class Profile extends React.Component {
 							onPress={this.goToSettings}>
 							CONFIGURACIÓN
 						</RkButton>
-					</View>
+					</Animatable.View>
 					<Footer />
 				</RootWrapper>
 			</GScrollView>

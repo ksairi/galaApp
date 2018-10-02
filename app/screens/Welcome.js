@@ -77,6 +77,7 @@ export default class Welcome extends React.PureComponent {
 			<RootWrapper>
 				<CentredWrapper>
 					<AnimatedLogo
+						useNativeDriver={true}
 						style={[
 							{ flex: 0.9, fontSize: 75, marginTop: 50 },
 							this.state.componentsStyle.logo
@@ -84,10 +85,14 @@ export default class Welcome extends React.PureComponent {
 						ref={this.handleAnimatedLogo}
 					/>
 					<View style={{ flex: 0.95 }}>
-						<AnimatedText style={styles.welcome} ref={this.handleAnimatedTitle}>
+						<AnimatedText
+							useNativeDriver={true}
+							style={styles.welcome}
+							ref={this.handleAnimatedTitle}>
 							¡BIENVENIDO!
 						</AnimatedText>
 						<AnimatedText
+							useNativeDriver={true}
 							style={styles.welcomeDescription}
 							ref={this.handleAnimatedBody}>
 							Dentro de la app podrás encontrar tus rutinas, clases y todas
