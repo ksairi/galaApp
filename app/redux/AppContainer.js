@@ -60,7 +60,7 @@ export default class AppContainer extends React.Component {
 		);
 	}
 
-	handleNotification = async notification => {
+	handleNotification = notification => {
 		var localNotificationBody = "";
 		const props = this.props;
 		if (notification.origin === "received") {
