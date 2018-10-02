@@ -129,7 +129,7 @@ const drawerNavigator = createDrawerNavigator(
 const defaultGetStateForAction = drawerNavigator.router.getStateForAction;
 
 drawerNavigator.router.getStateForAction = (action, state) => {
-	if (state && action.type === "Navigation/OPEN_DRAWER") {
+	if (state && action.type === "Navigation/DRAWER_OPENED") {
 		Keyboard.dismiss();
 	}
 	return defaultGetStateForAction(action, state);
