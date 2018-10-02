@@ -113,29 +113,32 @@ export default class Messages extends React.Component {
 	};
 
 	startPullingMessages = () => {
-		Messages.intervalId = setInterval(
-			() =>
-				getRealTimeMessages({
-					userId: this.props.userData.userId,
-					lastSynchedMessageIndex:
-						this.props.messages && this.props.messages.length > 0
-							? this.props.messages[this.props.messages.length - 1].index
-							: null
-				})
-					.then(messages => {
-						if (messages && messages.length > 0) {
-							saveMessagesToDevice(messages, null, this.props.dispatch);
-							setRealTimeMessagesSaved({ userId: this.props.userData.userId });
-						}
-					})
-					.catch(() => {}),
-			5000
-		);
+		this.doGetRealTimeMessages();
+		Messages.intervalId = setInterval(() => this.doGetRealTimeMessages(), 5000);
+	};
+
+	doGetRealTimeMessages = (hasClientLeftChat = false) => {
+		getRealTimeMessages({
+			userId: this.props.userData.userId,
+			lastSynchedMessageIndex:
+				this.props.messages && this.props.messages.length > 0
+					? this.props.messages[this.props.messages.length - 1].index
+					: null,
+			hasClientLeftChat
+		})
+			.then(messages => {
+				if (messages && messages.length > 0) {
+					saveMessagesToDevice(messages, null, this.props.dispatch);
+					setRealTimeMessagesSaved({ userId: this.props.userData.userId });
+				}
+			})
+			.catch(() => {});
 	};
 
 	componentWillUnmount() {
 		AppState.removeEventListener("change", this._handleAppStateChange);
 		clearInterval(Messages.intervalId);
+		this.doGetRealTimeMessages(true);
 	}
 
 	_handleAppStateChange = nextAppState => {
