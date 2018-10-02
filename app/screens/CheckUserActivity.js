@@ -37,7 +37,7 @@ export default class CheckUserActivity extends React.Component {
 		this.checkUserStatus();
 	}
 
-	async checkUserStatus() {
+	checkUserStatus = async () => {
 		if (this.props.isAppsFirstTime) {
 			this.props.navigation.navigate(Screens.Welcome);
 		} else {
@@ -72,7 +72,7 @@ export default class CheckUserActivity extends React.Component {
 				this.props.navigation.navigate(Screens.LoginStack);
 			}
 		}
-	}
+	};
 
 	render() {
 		return (
