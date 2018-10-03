@@ -94,24 +94,29 @@ export default class Messages extends React.Component {
 		return prevState;
 	}
 	componentDidUpdate(prevProps, prevState) {
-		if (prevState.hasNewMessages) {
+		if (this.props.newMessagesCount > 0) {
 			this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
 		}
 	}
 
 	componentDidMount() {
+		this._mounted = true;
 		AnalyticsHelper.setPageHit(Screens.Messages);
 		AppState.addEventListener("change", this._handleAppStateChange);
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",
 			this._keyboardDidShow
 		);
-		this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+		if (this.props.newMessagesCount > 0) {
+			this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+		}
 		this.startPullingMessages();
 	}
 
 	_keyboardDidShow = e => {
-		this.setState({ keyboardHeight: e.endCoordinates.height });
+		if (this._mounted) {
+			this.setState({ keyboardHeight: e.endCoordinates.height });
+		}
 	};
 
 	startPullingMessages = () => {
@@ -141,6 +146,7 @@ export default class Messages extends React.Component {
 	};
 
 	componentWillUnmount() {
+		this._mounted = false;
 		AppState.removeEventListener("change", this._handleAppStateChange);
 		clearInterval(Messages.intervalId);
 		this.doGetRealTimeMessages(true);
@@ -152,13 +158,16 @@ export default class Messages extends React.Component {
 			nextAppState === "active"
 		) {
 			this.startPullingMessages();
-			this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+			if (this.props.newMessagesCount > 0) {
+				this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+			}
 		}
 		if (
 			this.state.appState === "active" &&
 			(nextAppState === "inactive" || nextAppState === "background")
 		) {
 			clearInterval(Messages.intervalId);
+			this.doGetRealTimeMessages(true);
 		}
 		this.setState({ appState: nextAppState });
 	};
