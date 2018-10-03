@@ -22,7 +22,7 @@ const styles = {
 		flex: 1,
 		flexDirection: "row",
 		alignItems: "flex-start",
-		backgroundColor: "#0b1143",
+		backgroundColor: genericBackgroundColor,
 		paddingTop: 10,
 		paddingLeft: containerPadding
 	},
