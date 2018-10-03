@@ -4,7 +4,11 @@ import StatusBar from "/components/presentationals/StatusBar";
 import { Notifications } from "expo";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { Screens } from "/config/settings";
+import {
+	Screens,
+	AnalitycsEventsLabels,
+	Notifications as NotificationsData
+} from "/config/settings";
 import { ActionsCreators } from "./actions";
 import AppRoutes from "/navigation/";
 import NetworkHelper from "/helpers/NetworkHelper";
@@ -20,6 +24,8 @@ import {
 	uploadProfilePicture,
 	synchMemberProperties
 } from "/helpers/UserDataHelper";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
+
 @connect(
 	state => ({
 		userId: state.userData.userId,
@@ -64,6 +70,15 @@ export default class AppContainer extends React.Component {
 		var localNotificationBody = "";
 		const props = this.props;
 		if (notification.origin === "received") {
+			AnalyticsHelper.setEvent(
+				`${AnalitycsEventsLabels.notificationReceivedOf} ${
+					AnalitycsEventsLabels[
+						Object.keys(notification.data).filter(
+							key => key != NotificationsData.idFieldName
+						)
+					]
+				}`
+			);
 			createNotificationsHanlder({
 				promotions() {
 					savePromotionsData(notification.data.promotions, props.dispatch);
@@ -104,6 +119,11 @@ export default class AppContainer extends React.Component {
 				promotions() {
 					savePromotionsData(notification.data.promotions, props.dispatch);
 					if (!AppContainer.alreadySetPromotionsSaved) {
+						AnalyticsHelper.setEvent(
+							`${AnalitycsEventsLabels.notificationReceivedOf} ${
+								AnalitycsEventsLabels.promotions
+							}`
+						);
 						setNotifiedPromotionsSaved({
 							userId: props.userId,
 							notificationId: notification.data.notificationId
@@ -112,6 +132,11 @@ export default class AppContainer extends React.Component {
 				},
 				messages() {
 					if (!AppContainer.alreadySetMessagesSaved) {
+						AnalyticsHelper.setEvent(
+							`${AnalitycsEventsLabels.notificationReceivedOf} ${
+								AnalitycsEventsLabels.messages
+							}`
+						);
 						saveMessagesToDevice(
 							notification.data.messages,
 							null,

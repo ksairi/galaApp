@@ -17,6 +17,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import * as UserDataHelper from "/helpers/UserDataHelper";
 import { genericBackgroundColor } from "/components/styles";
 import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const styles = {
 	imageContainer: {
@@ -131,6 +132,7 @@ export default class Home extends React.Component {
 	};
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.Home);
 		AppState.addEventListener("change", this._handleAppStateChange);
 		if (this.props.currentHomeDrawerOption != "") {
 			this.props.navigation.navigate(this.props.currentHomeDrawerOption);

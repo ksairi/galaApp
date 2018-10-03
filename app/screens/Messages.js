@@ -28,7 +28,8 @@ import {
 	setRealTimeMessagesSaved
 } from "/helpers/ApiHelper";
 import { saveMessagesToDevice } from "/helpers/StoreHelper";
-
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
+import { Screens } from "config/settings";
 const styles = {
 	textInputStyle: {
 		fontSize: 21,
@@ -99,6 +100,7 @@ export default class Messages extends React.Component {
 	}
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.Messages);
 		AppState.addEventListener("change", this._handleAppStateChange);
 		this.keyboardDidShowListener = Keyboard.addListener(
 			"keyboardDidShow",

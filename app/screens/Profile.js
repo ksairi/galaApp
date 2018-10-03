@@ -11,6 +11,7 @@ import { Screens } from "/config/settings";
 import GenericText from "/components/presentationals/GenericText";
 import { getRemoteProfilePicture } from "/helpers/UserDataHelper";
 import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const styles = {
 	photoContainer: {
@@ -61,6 +62,7 @@ export default class Profile extends React.Component {
 	}
 
 	componentDidMount = () => {
+		AnalyticsHelper.setPageHit(Screens.Profile);
 		this.getImageSource();
 	};
 

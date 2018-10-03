@@ -121,6 +121,7 @@ exports.ActionsTypes = {
 	SET_AUTO_LOGIN_ERROR_MESSAGE: "SET_AUTO_LOGIN_ERROR_MESSAGE",
 	SET_HAS_RESET_FIRST_PASSWORD: "SET_HAS_RESET_FIRST_PASSWORD",
 	SET_IN_RESET_FIRT_PASSWORD_MODE: "SET_IN_RESET_FIRT_PASSWORD_MODE",
+	SET_IS_SAVING_NOTIFICATIONS_DATA: "SET_IS_SAVING_NOTIFICATIONS_DATA",
 
 	//Navigation
 	SET_CURRENT_HOME_DRAWER_OPTION: "SET_CURRENT_HOME_DRAWER_OPTION",
@@ -226,3 +227,15 @@ export const SectionsData = [
 		homeStyle: { fontSize: 40, color: "white" }
 	}
 ];
+
+export const AnalitycsEventsLabels = {
+	signOut: "cerró sesión",
+	takeProfilePicture: "sacó foto de perfil",
+	notificationReceivedOf: "recibió notificación de",
+	messages: "mensajes",
+	promotions: "promociones"
+};
+
+export const Notifications = {
+	idFieldName: "notificationId"
+};

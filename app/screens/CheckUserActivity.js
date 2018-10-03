@@ -6,6 +6,7 @@ import { Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
 import { ActionsCreators } from "/redux/actions";
 import { getDeviceId } from "/helpers/NotificationsHelper";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const styles = {
 	container: {
@@ -35,6 +36,9 @@ export default class CheckUserActivity extends React.Component {
 	constructor(props) {
 		super(props);
 		this.checkUserStatus();
+	}
+	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.CheckUserActivity);
 	}
 
 	checkUserStatus = async () => {

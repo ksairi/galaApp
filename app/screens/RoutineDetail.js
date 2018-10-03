@@ -11,6 +11,7 @@ import { ActionsCreators } from "/redux/actions";
 import { genericBackgroundColor } from "/components/styles";
 import { FontAwesome } from "@expo/vector-icons";
 import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const styles = {
 	exerciseDetail: {
@@ -42,6 +43,7 @@ export default class RoutineDetail extends React.Component {
 	state = {};
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.RoutineDetail);
 		BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 	}
 

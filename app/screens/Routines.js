@@ -10,6 +10,7 @@ import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { Screens } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const styles = {
 	routinesWrapper: {
@@ -23,6 +24,10 @@ const styles = {
 	routinesImages: state.routinesImages
 }))
 export default class Routines extends React.Component {
+	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.Routines);
+	}
+
 	seeRoutine = routine => () => {
 		this.props.dispatch(ActionsCreators.setCurrentRoutine(routine));
 		this.props.navigation.navigate(Screens.RoutineDetail);

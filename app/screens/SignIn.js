@@ -27,6 +27,8 @@ import {
 } from "/components/styles";
 import { getDeviceId } from "/helpers/NotificationsHelper";
 import { ActionsCreators } from "/redux/actions";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
+
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
@@ -105,6 +107,7 @@ export default class SignIn extends React.Component {
 	}
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.SignIn);
 		Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL);
 		if (this.props.isLoggedIn) {
 			this.setState({

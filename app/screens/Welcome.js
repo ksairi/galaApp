@@ -9,6 +9,7 @@ import { ActionsCreators } from "/redux/actions";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import Logo from "/components/presentationals/Logo";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 const AnimatedText = Animatable.createAnimatableComponent(Text);
@@ -65,6 +66,7 @@ export default class Welcome extends React.PureComponent {
 	}
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.Welcome);
 		const duration = 2000;
 		this.animatedLogo.bounceInLeft(duration);
 		this.animatedTitle.bounceInRight(duration);

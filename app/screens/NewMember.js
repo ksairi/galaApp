@@ -6,6 +6,7 @@ import RootWrapper from "/components/presentationals/RootWrapper";
 import * as UserDataHelper from "/helpers/UserDataHelper";
 import { Screens } from "../config/settings";
 import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 @connect(state => ({
 	newMemberData: state.newMemberData
@@ -27,6 +28,7 @@ export default class NewMember extends React.Component {
 	}
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.NewMember);
 		AppState.addEventListener("change", this._handleAppStateChange);
 	}
 

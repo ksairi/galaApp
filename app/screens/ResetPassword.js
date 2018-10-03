@@ -20,6 +20,7 @@ import GenericLink from "/components/presentationals/GenericLink";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
 import { genericTextInputStyle, textWithLinkStyle } from "/components/styles";
 import Header from "/components/containers/Header";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
 
@@ -64,6 +65,7 @@ export default class ResetPassword extends React.Component {
 	};
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.ResetPassword);
 		if (Platform.OS === "ios") {
 			Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
 		}

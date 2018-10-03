@@ -4,8 +4,10 @@ import { connect } from "react-redux";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import GScrollView from "/components/presentationals/GenericScrollView";
 import { ActionsCreators } from "/redux/actions";
-import { Screens } from "/config/settings";
+import { Screens, AnalitycsEventsLabels } from "/config/settings";
 import { synchMemberProperties } from "/helpers/UserDataHelper";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
+
 const styles = {
 	title: {
 		fontFamily: "lato-regular",
@@ -45,6 +47,8 @@ export default class Settings extends React.Component {
 				{
 					text: "Sí",
 					onPress: () => {
+						AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
+
 						this.props.navigation.navigate(Screens.LoginStack);
 						this.props.dispatch(ActionsCreators.logout());
 					}
@@ -53,6 +57,10 @@ export default class Settings extends React.Component {
 			{ cancelable: true }
 		);
 	};
+
+	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.Settings);
+	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.receiveNotifications != null) {

@@ -9,10 +9,12 @@ import {
 import { connect } from "react-redux";
 import { Camera, FileSystem, Constants } from "expo";
 import { Ionicons, MaterialIcons, Entypo } from "@expo/vector-icons";
-import { Messages, Screens } from "/config/settings";
+import { Messages, Screens, AnalitycsEventsLabels } from "/config/settings";
 import { ActionsCreators } from "/redux/actions";
 import { uploadProfilePicture } from "/helpers/UserDataHelper";
 import { getProfilePicturePath } from "/helpers/ImageHelper";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
+
 styles = {
 	camera: {
 		flex: 1,
@@ -71,6 +73,7 @@ export default class CameraView extends React.Component {
 	};
 
 	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.CameraView);
 		BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
 	}
 
@@ -225,6 +228,7 @@ export default class CameraView extends React.Component {
 					quality: 1
 				});
 				this.setState({ pictureTaken: picture, renderCamera: false });
+				AnalyticsHelper.setEvent(AnalitycsEventsLabels.takeProfilePicture);
 			} catch (error) {
 				console.log(error);
 				this.showAlert(Messages.NO_SPACE_IN_DISK);

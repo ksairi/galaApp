@@ -9,6 +9,8 @@ import Footer from "/components/presentationals/Footer";
 import GenericText from "/components/presentationals/GenericText";
 import * as ScreenDimensions from "/utils/ScreenDimensions";
 import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "/helpers/AnalyticsHelper";
+import { Screens } from "/config/settings";
 
 const styles = {
 	timetableDay: {
@@ -83,6 +85,10 @@ export default class TimeTbale extends React.Component {
 		portraitWidth: Dimensions.get("window").width
 	};
 	static currentIndex = null;
+
+	componentDidMount() {
+		AnalyticsHelper.setPageHit(Screens.Timetable);
+	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		if (nextProps.orientation) {
