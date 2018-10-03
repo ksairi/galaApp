@@ -27,7 +27,7 @@ export default class Footer extends React.PureComponent {
 		return (
 			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
 				<View style={{ flexDirection: "row", flex: -1, paddingBottom: 20 }}>
-					<RkButton
+					{/*<RkButton
 						rkType="rounded"
 						style={styles.button}
 						onPress={this.openUrl("https://twitter.com/galagym?")}>
@@ -40,7 +40,7 @@ export default class Footer extends React.PureComponent {
 							"https://www.facebook.com/pg/GalaGymBA/posts/"
 						)}>
 						<Icon name="g+" size={iconFontSize} color="white" />
-					</RkButton>
+					</RkButton>*/}
 					<RkButton
 						rkType="rounded"
 						style={styles.button}
