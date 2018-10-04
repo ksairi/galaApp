@@ -8,10 +8,10 @@
 		"githubUrl": "https://github.com/ksairi/galaApp",
 		"sdkVersion": "30.0.0",
 		"splash": {
-			"image": "./app/assets/images/splash.png"
+			"image": "app/assets/images/splash.png"
 		},
 		"assetBundlePatterns": [
-			"./app/assets/*",
+			"app/assets/**",
 			"node_modules/@expo/vector-icons/fonts/FontAwesome.ttf",
 			"node_modules/@expo/vector-icons/fonts/Ionicons.ttf",
 			"node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf",
@@ -22,7 +22,7 @@
 		},
 		"android": {
 			"package": "com.gala.galaapp",
-			"googleServicesFile": "./google-services.json"
+			"googleServicesFile": "google-services.json"
 		}
 	}
 }
