@@ -14,6 +14,7 @@ import * as messagesReducer from "./messages";
 
 const rootPresistConfig = {
 	key: "root",
+	timeout: 10000,
 	storage: storage,
 	stateReconciler: autoMergeLevel2,
 	blacklist: ["currentOrientation", "currentRoutine"]

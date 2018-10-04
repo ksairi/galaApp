@@ -91,15 +91,21 @@ export default class Home extends React.Component {
 				//local images
 				switch (item.imageIndex) {
 					case 0: {
-						sliderImages.push(require("../images/main_menu_slider_0.jpg"));
+						sliderImages.push(
+							require("../assets/images/main_menu_slider_0.jpg")
+						);
 						break;
 					}
 					case 1: {
-						sliderImages.push(require("../images/main_menu_slider_1.jpg"));
+						sliderImages.push(
+							require("../assets/images/main_menu_slider_1.jpg")
+						);
 						break;
 					}
 					case 2: {
-						sliderImages.push(require("../images/main_menu_slider_2.jpg"));
+						sliderImages.push(
+							require("../assets/images/main_menu_slider_2.jpg")
+						);
 						break;
 					}
 				}

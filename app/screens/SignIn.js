@@ -204,7 +204,7 @@ export default class SignIn extends React.Component {
 											source={
 												this.props.loginImages.length > 0 &&
 												this.props.loginImages[0].imageIndex == 0
-													? require("../images/login.jpg")
+													? require("../assets/images/login.jpg")
 													: {
 															uri: this.props.loginImages[0].uri
 													  }

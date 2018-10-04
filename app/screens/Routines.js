@@ -77,7 +77,7 @@ export default class Routines extends React.Component {
 							duration={1500}
 							source={
 								this.props.routinesImages[0].imageIndex == 0
-									? require("../images/routines.jpg")
+									? require("../assets/images/routines.jpg")
 									: {
 											uri: this.props.routinesImages[0].uri
 									  }

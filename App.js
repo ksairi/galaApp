@@ -15,10 +15,10 @@ export default class App extends React.Component {
 
 	async _cacheResourcesAsync() {
 		await Font.loadAsync({
-			"lato-regular": require("./assets/fonts/Lato-Regular.ttf"),
-			"lato-bold": require("./assets/fonts/Lato-Bold.ttf"),
-			"brother-1816-bold": require("./assets/fonts/Brother-1816-Bold.otf"),
-			icomoon: require("./assets/fonts/icomoon.ttf")
+			"lato-regular": require("assets/fonts/Lato-Regular.ttf"),
+			"lato-bold": require("assets/fonts/Lato-Bold.ttf"),
+			"brother-1816-bold": require("assets/fonts/Brother-1816-Bold.otf"),
+			icomoon: require("assets/fonts/icomoon.ttf")
 		});
 	}
 	render() {

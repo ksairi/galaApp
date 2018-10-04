@@ -48,27 +48,27 @@ const styles = {
 const timetableDaysMetadata = [
 	{
 		day: "LUNES",
-		image: require("../images/timetable_mon.jpg")
+		image: require("../assets/images/timetable_mon.jpg")
 	},
 	{
 		day: "MARTES",
-		image: require("../images/timetable_tue.jpg")
+		image: require("../assets/images/timetable_tue.jpg")
 	},
 	{
 		day: "MIÉRCOLES",
-		image: require("../images/timetable_wed.jpg")
+		image: require("../assets/images/timetable_wed.jpg")
 	},
 	{
 		day: "JUEVES",
-		image: require("../images/timetable_thu.jpg")
+		image: require("../assets/images/timetable_thu.jpg")
 	},
 	{
 		day: "VIERNES",
-		image: require("../images/timetable_fri.jpg")
+		image: require("../assets/images/timetable_fri.jpg")
 	},
 	{
 		day: "SÁBADO",
-		image: require("../images/timetable_sat.jpg")
+		image: require("../assets/images/timetable_sat.jpg")
 	}
 ];
 

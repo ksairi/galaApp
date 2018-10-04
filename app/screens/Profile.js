@@ -39,7 +39,7 @@ const styles = {
 	}
 };
 
-const NO_PROFILE_PICTURE_PATH = "../images/no_profile_picture.jpg";
+const NO_PROFILE_PICTURE_PATH = "../assets/images/no_profile_picture.jpg";
 
 @connect(state => ({
 	userData: state.userData,

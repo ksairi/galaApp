@@ -33,3 +33,9 @@ export const inResetFirstPasswordMode = createReducer(false, {
 		return action.inResetFirstPasswordMode;
 	}
 });
+
+export const isSavingNotificationsData = createReducer(false, {
+	[ActionsTypes.SET_IS_SAVING_NOTIFICATIONS_DATA](state, action) {
+		return action.isSavingNotificationsData;
+	}
+});

@@ -43,3 +43,12 @@ export function setInResetFirstPasswordMode(inResetFirstPasswordMode) {
 		});
 	};
 }
+
+export function setIsSavingNotificationsData(isSavingNotificationsData) {
+	return (dispatch, getState) => {
+		dispatch({
+			type: ActionsTypes.SET_IS_SAVING_NOTIFICATIONS_DATA,
+			isSavingNotificationsData
+		});
+	};
+}
