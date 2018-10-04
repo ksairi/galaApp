@@ -4,7 +4,8 @@ import {
 	KeyboardAvoidingView,
 	View,
 	Platform,
-	TouchableWithoutFeedback
+	TouchableWithoutFeedback,
+	BackHandler
 } from "react-native";
 import { connect } from "react-redux";
 import { Messages, Screens } from "/config/settings";
@@ -78,7 +79,13 @@ export default class SignUp extends React.Component {
 			"keyboardDidHide",
 			this._keyboardDidHide
 		);
+		BackHandler.addEventListener("hardwareBackPress", this.goBack);
 	}
+
+	goBack = () => {
+		this.props.navigation.navigate(Screens.SignIn);
+		return true;
+	};
 
 	componentWillUnmount() {
 		this.keyboardDidShowListener.remove();
