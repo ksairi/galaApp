@@ -104,7 +104,6 @@ export default class TimeTbale extends React.Component {
 				};
 			}
 		}
-
 		return prevState;
 	}
 
@@ -128,6 +127,52 @@ export default class TimeTbale extends React.Component {
 		Carousel.currentIndex = position;
 	};
 
+	getTimeTable = () =>
+		timetableDaysMetadata.map((dayMetadata, index) => (
+			<View key={index} style={styles.timetableDay}>
+				<View
+					style={{
+						borderTopLeftRadius: 15,
+						borderTopRightRadius: 15,
+						overflow: "hidden",
+						alignSelf: "center"
+					}}>
+					<AutoHeightImage
+						source={dayMetadata.image}
+						width={ScreenDimensions.getPortraitWidth() - carouselOffset}
+					/>
+				</View>
+				<View
+					style={{
+						paddingLeft: 15,
+						paddingRight: 15
+					}}>
+					<GenericText style={styles.day}>{dayMetadata.day}</GenericText>
+
+					<View>
+						<GenericText style={styles.dayMessage}>
+							{this.props.timetable[index].message}
+						</GenericText>
+						{this.props.timetable[index].data.map((timetableData, index) => (
+							<View
+								key={index}
+								style={{
+									flex: 1,
+									flexDirection: "row",
+									paddingBottom: 10
+								}}>
+								<GenericText style={styles.className}>
+									{timetableData.class}
+								</GenericText>
+								<GenericText style={styles.classTime}>
+									{timetableData.time}
+								</GenericText>
+							</View>
+						))}
+					</View>
+				</View>
+			</View>
+		));
 	render() {
 		return (
 			<GScrollView>
@@ -153,55 +198,7 @@ export default class TimeTbale extends React.Component {
 						}}
 						swipeThreshold={0.1}
 						onPageChange={this.onPageChange}>
-						{timetableDaysMetadata.map((dayMetadata, index) => (
-							<View key={index} style={styles.timetableDay}>
-								<View
-									style={{
-										borderTopLeftRadius: 15,
-										borderTopRightRadius: 15,
-										overflow: "hidden",
-										alignSelf: "center"
-									}}>
-									<AutoHeightImage
-										source={dayMetadata.image}
-										width={ScreenDimensions.getPortraitWidth() - carouselOffset}
-									/>
-								</View>
-								<View
-									style={{
-										paddingLeft: 15,
-										paddingRight: 15
-									}}>
-									<GenericText style={styles.day}>
-										{dayMetadata.day}
-									</GenericText>
-
-									<View>
-										<GenericText style={styles.dayMessage}>
-											{this.props.timetable[index].message}
-										</GenericText>
-										{this.props.timetable[index].data.map(
-											(timetableData, index) => (
-												<View
-													key={index}
-													style={{
-														flex: 1,
-														flexDirection: "row",
-														paddingBottom: 10
-													}}>
-													<GenericText style={styles.className}>
-														{timetableData.class}
-													</GenericText>
-													<GenericText style={styles.classTime}>
-														{timetableData.time}
-													</GenericText>
-												</View>
-											)
-										)}
-									</View>
-								</View>
-							</View>
-						))}
+						{this.getTimeTable()}
 					</AnimatedCarousel>
 					<Footer />
 				</RootWrapper>
