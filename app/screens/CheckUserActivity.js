@@ -7,7 +7,7 @@ import { login } from "/helpers/LoginHelper";
 import { ActionsCreators } from "/redux/actions";
 import { getDeviceId } from "/helpers/NotificationsHelper";
 import AnalyticsHelper from "/helpers/AnalyticsHelper";
-
+import { Messages } from "/config/settings";
 const styles = {
 	container: {
 		flex: 1,
@@ -69,8 +69,15 @@ export default class CheckUserActivity extends React.Component {
 						this.props.navigation.navigate(Screens.ResetPassword);
 					}
 				} catch (error) {
-					this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(error));
-					this.props.navigation.navigate(Screens.LoginStack);
+					if (Messages.CHECK_INTERNET_CONNECTION == error) {
+						//offline login
+						this.props.navigation.navigate(Screens.HomeStack);
+					} else {
+						this.props.dispatch(
+							ActionsCreators.setAutoLoginErrorMessage(error)
+						);
+						this.props.navigation.navigate(Screens.LoginStack);
+					}
 				}
 			} else {
 				this.props.navigation.navigate(Screens.LoginStack);
