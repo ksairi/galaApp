@@ -8,7 +8,7 @@
 		"githubUrl": "https://github.com/ksairi/galaApp",
 		"sdkVersion": "30.0.0",
 		"splash": {
-			"image": "app/assets/images/splash.png"
+			"image": "./assets/splash.png"
 		},
 		"assetBundlePatterns": [
 			"app/assets/**",
