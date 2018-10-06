@@ -106,6 +106,10 @@ export default class ResetPassword extends React.Component {
 		this.setState({ userId });
 	};
 
+	onPasswordChangeText = password => {
+		this.setState({ password });
+	};
+
 	onConfirmPasswordChangeText = confirmPassword => {
 		this.setState({ confirmPassword });
 	};
@@ -163,7 +167,7 @@ export default class ResetPassword extends React.Component {
 									autoCorrect={false}
 									returnKeyType="next"
 									keyboardType="default"
-									onChangeText={password => this.setState({ password })}
+									onChangeText={this.onPasswordChangeText}
 									onSubmitEditing={this.onSubmitPassword}
 									ref="passwordInput"
 									value={this.state.password}

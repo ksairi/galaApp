@@ -17,14 +17,6 @@ export function setIsAppsFirstTime(state) {
 		dispatch({ type: ActionsTypes.SET_IS_APPS_FIRST_TIME, state });
 	};
 }
-export function setAutoLoginErrorMessage(autoLoginErrorMessage) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: ActionsTypes.SET_AUTO_LOGIN_ERROR_MESSAGE,
-			autoLoginErrorMessage
-		});
-	};
-}
 
 export function setHasResetFirstPassword(hasResetFirstPassword) {
 	return (dispatch, getState) => {

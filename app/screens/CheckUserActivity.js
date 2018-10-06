@@ -15,7 +15,9 @@ const styles = {
 		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
-		backgroundColor: genericBackgroundColor
+		backgroundColor: genericBackgroundColor,
+		paddingLeft: 10,
+		paddingRight: 10
 	}
 };
 
@@ -27,7 +29,8 @@ const styles = {
 	loginSynchedDataParameters: state.loginSynchedDataParameters,
 	deviceId: state.deviceId,
 	messages: state.messages,
-	hasResetFirstPassword: state.hasResetFirstPassword
+	hasResetFirstPassword: state.hasResetFirstPassword,
+	userData: state.userData
 }))
 export default class CheckUserActivity extends React.Component {
 	static isInLoggingProcess = false;
@@ -58,24 +61,19 @@ export default class CheckUserActivity extends React.Component {
 						this.props.messages,
 						this.props.dispatch
 					);
-					setTimeout(() => {
-						if (this.props.hasResetFirstPassword) {
-							this.props.navigation.navigate(Screens.HomeStack);
-						} else {
-							this.props.dispatch(
-								ActionsCreators.setInResetFirstPasswordMode(true)
-							);
-							this.props.navigation.navigate(Screens.ResetPassword);
-						}
-					}, 4000);
+					if (this.props.hasResetFirstPassword) {
+						this.props.navigation.navigate(Screens.HomeStack);
+					} else {
+						this.props.dispatch(
+							ActionsCreators.setInResetFirstPasswordMode(true)
+						);
+						this.props.navigation.navigate(Screens.ResetPassword);
+					}
 				} catch (error) {
 					if (Messages.CHECK_INTERNET_CONNECTION == error) {
 						//offline login
 						this.props.navigation.navigate(Screens.HomeStack);
 					} else {
-						this.props.dispatch(
-							ActionsCreators.setAutoLoginErrorMessage(error)
-						);
 						this.props.navigation.navigate(Screens.LoginStack);
 					}
 				}
@@ -96,10 +94,14 @@ export default class CheckUserActivity extends React.Component {
 						iterationCount="infinite"
 						style={{
 							fontFamily: "lato-bold",
-							fontSize: 30,
+							fontSize: 20,
 							color: "white"
 						}}>
-						Loguiandote...
+						Qué bueno que volviste{" "}
+						{this.props.userData && this.props.userData.name
+							? this.props.userData.name.split(" ")[0]
+							: null}
+						!
 					</Text>
 				)}
 			</View>

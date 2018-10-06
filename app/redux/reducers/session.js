@@ -16,12 +16,6 @@ export const isAppsFirstTime = createReducer(true, {
 	}
 });
 
-export const autoLoginErrorMessage = createReducer("", {
-	[ActionsTypes.SET_AUTO_LOGIN_ERROR_MESSAGE](state, action) {
-		return action.autoLoginErrorMessage;
-	}
-});
-
 export const hasResetFirstPassword = createReducer(false, {
 	[ActionsTypes.SET_HAS_RESET_FIRST_PASSWORD](state, action) {
 		return action.hasResetFirstPassword;

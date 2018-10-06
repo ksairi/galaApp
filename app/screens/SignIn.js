@@ -74,7 +74,6 @@ const styles = {
 @connect(state => ({
 	userData: state.userData,
 	isLoggedIn: state.isLoggedIn,
-	autoLoginErrorMessage: state.autoLoginErrorMessage,
 	orientation: state.currentOrientation,
 	loginImages: state.loginImages,
 	loginSynchedDataParameters: state.loginSynchedDataParameters,
@@ -85,12 +84,12 @@ const styles = {
 export default class SignIn extends React.Component {
 	static navigationOptions = { header: null };
 	static isKeyboardShowing = false;
+	static userId = null;
+	static password = null;
 
 	state = {
 		errorMessage: "",
 		spinnerVisible: false,
-		userId: "",
-		password: "",
 		componentsStyle: styles.hiddenKeyboardComponentsStyle
 	};
 
@@ -158,18 +157,17 @@ export default class SignIn extends React.Component {
 	handleAnimatedLogo = ref => (this.animatedLogo = ref);
 
 	onUserIdChangeText = userId => {
-		this.setState({ userId });
+		SignIn.userId = userId;
 	};
 
 	onPasswordChangeText = password => {
-		this.setState({ password });
+		SignIn.password = password;
 	};
 
 	onInputTextFocus = () => {
 		this.setState({
 			errorMessage: ""
 		});
-		this.props.dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	};
 
 	hideKeyboard = () => {
@@ -230,7 +228,6 @@ export default class SignIn extends React.Component {
 									returnKeyType="next"
 									autoCapitalize="none"
 									autoCorrect={false}
-									value={this.props.isLoggedIn ? this.state.userId : null}
 									onFocus={this.onInputTextFocus}
 								/>
 
@@ -253,7 +250,6 @@ export default class SignIn extends React.Component {
 									keyboardType="default"
 									ref="passwordInput"
 									onSubmitEditing={this.signIn}
-									value={this.props.isLoggedIn ? this.state.password : null}
 									onFocus={this.onInputTextFocus}
 								/>
 
@@ -310,22 +306,15 @@ export default class SignIn extends React.Component {
 									}
 								</View>
 
-								{(this.state.errorMessage != "" ||
-									this.props.autoLoginErrorMessage != "") && (
+								{this.state.errorMessage != "" && (
 									<GenericText
 										style={{
 											flex: 0.7,
 											marginLeft: containerPadding,
 											marginRight: containerPadding
 										}}
-										error={
-											this.state.errorMessage ||
-											this.props.autoLoginErrorMessage != ""
-												? true
-												: false
-										}>
+										error={this.state.errorMessage ? true : false}>
 										{this.state.errorMessage}
-										{this.props.autoLoginErrorMessage}
 									</GenericText>
 								)}
 
@@ -340,7 +329,7 @@ export default class SignIn extends React.Component {
 
 	signIn = async () => {
 		Keyboard.dismiss();
-		if (!this.state.userId || !this.state.password) {
+		if (!SignIn.userId || !SignIn.password) {
 			this.setState({ errorMessage: Messages.INVALID_USER_ID_PASSWORD });
 			return;
 		}
@@ -350,8 +339,8 @@ export default class SignIn extends React.Component {
 				? this.props.deviceId
 				: await getDeviceId(this.props.dispatch);
 			await login(
-				this.state.userId,
-				this.state.password,
+				SignIn.userId,
+				SignIn.password,
 				deviceId,
 				this.props.loginSynchedDataParameters,
 				this.props.messages,
@@ -368,8 +357,8 @@ export default class SignIn extends React.Component {
 			this.setState({ spinnerVisible: false });
 			if (
 				Messages.CHECK_INTERNET_CONNECTION == errorMessage &&
-				this.state.userId == this.props.userData.userId &&
-				this.state.password == this.props.userData.password
+				SignIn.userId == this.props.userData.userId &&
+				SignIn.password == this.props.userData.password
 			) {
 				//offline login
 				this.props.navigation.navigate(Screens.HomeStack);
@@ -380,7 +369,7 @@ export default class SignIn extends React.Component {
 	};
 
 	onSubmitUserId = () => {
-		if (!this.state.password) {
+		if (!SignIn.password) {
 			this.refs.passwordInput._focusInput();
 		} else {
 			this.signIn();

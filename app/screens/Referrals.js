@@ -101,7 +101,12 @@ export default class Referrals extends React.Component {
 		Keyboard.dismiss();
 	};
 
+	onMailChange = mail => {
+		this.setState({ mail });
+	};
+
 	render() {
+		console.log(this.state);
 		return (
 			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={{ flex: 1 }}>
@@ -138,7 +143,7 @@ export default class Referrals extends React.Component {
 								rkType="outline referralInputText"
 								placeholder="INGRESÁ MAIL"
 								autoFocus
-								onChangeText={pMail => this.setState({ mail: pMail })}
+								onChangeText={this.onMailChange}
 								onSubmitEditing={this.sendEmail}
 								keyboardType="email-address"
 								returnKeyType="send"
@@ -172,10 +177,10 @@ export default class Referrals extends React.Component {
 			this.setState({ message: Messages.INVALID_MAIL, error: true });
 			return;
 		}
-		this.setState({ message: null, spinnerVisible: true });
+		this.setState({ spinnerVisible: true });
 		if (this.props.userId !== null) {
 			sendReferral(this.props.userId, this.state.mail)
-				.then(response => {
+				.then(() => {
 					this.setState({
 						message: `Listo! ${
 							this.state.mail

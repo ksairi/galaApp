@@ -1,5 +1,4 @@
 import { ActionsCreators } from "/redux/actions";
-import { syncLocalStorage } from "/helpers/ApiHelper";
 import { Messages } from "/config/settings";
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
@@ -8,7 +7,6 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
 	userData.password = password;
 
 	dispatch(ActionsCreators.logIn());
-	dispatch(ActionsCreators.setAutoLoginErrorMessage(""));
 	if (userData) {
 		const userDataCopy = { ...userData };
 		delete userDataCopy.receivePushNotifications;

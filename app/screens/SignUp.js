@@ -59,6 +59,11 @@ export default class SignUp extends React.Component {
 		header: <Header navigation={navigation} backScreen={Screens.SignIn} />
 	});
 
+	static userfullName = null;
+	static userId = null;
+	static password = null;
+	static confirmPassword = null;
+
 	state = {
 		errorMessage: "",
 		focusPassword: false,
@@ -109,20 +114,20 @@ export default class SignUp extends React.Component {
 		Keyboard.dismiss();
 		var errorMessage;
 
-		if (!this.userFullName || !this.userId || !this.password) {
+		if (!SignUp.userfullName || !SignUp.userId || !SignUp.password) {
 			this.setState({ errorMessage: Messages.INCOMPLETE_INPUT_DATA });
 			return;
 		}
 
-		errorMessage = ValidationHelper.userIdWithErrors(this.userId);
+		errorMessage = ValidationHelper.userIdWithErrors(SignUp.userId);
 		if (errorMessage) {
 			this.setState({ errorMessage });
 			return;
 		}
 
 		errorMessage = ValidationHelper.passwordsWithErrors(
-			this.password,
-			this.confirmPassword
+			SignUp.password,
+			SignUp.confirmPassword
 		);
 		if (errorMessage) {
 			this.setState({ errorMessage });
@@ -135,9 +140,9 @@ export default class SignUp extends React.Component {
 				? this.props.deviceId
 				: await getDeviceId(this.props.dispatch);
 			await register(
-				this.userFullName,
-				this.userId,
-				this.password,
+				SignUp.userfullName,
+				SignUp.userId,
+				SignUp.password,
 				deviceId,
 				this.props.loginSynchedDataParameters,
 				this.props.dispatch
@@ -150,7 +155,7 @@ export default class SignUp extends React.Component {
 	};
 
 	onSubmitUserFullName = () => {
-		if (!this.userId) {
+		if (!SignUp.userId) {
 			this.refs.userIdInput._focusInput();
 		} else {
 			this.signUp();
@@ -158,7 +163,7 @@ export default class SignUp extends React.Component {
 	};
 
 	onSubmitUserId = () => {
-		if (!this.password) {
+		if (!SignUp.password) {
 			this.refs.passwordInput._focusInput();
 		} else {
 			this.signUp();
@@ -166,7 +171,7 @@ export default class SignUp extends React.Component {
 	};
 
 	onSubmitPassword = () => {
-		if (!this.confirmPassword) {
+		if (!SignUp.confirmPassword) {
 			this.refs.confirmPasswordInput._focusInput();
 		} else {
 			this.signUp();
@@ -177,19 +182,19 @@ export default class SignUp extends React.Component {
 	};
 
 	onFullNameChangeText = fullName => {
-		this.userFullName = fullName;
+		SignUp.userfullName = fullName;
 	};
 
 	onUserIdChangeText = userId => {
-		this.userId = userId;
+		SignUp.userId = userId;
 	};
 
 	onPasswordChangeText = password => {
-		this.password = password;
+		SignUp.password = password;
 	};
 
 	onConfirmPasswordChangeText = password => {
-		this.confirmPassword = password;
+		SignUp.confirmPassword = password;
 	};
 
 	onInputTextOnFocus = () => {
