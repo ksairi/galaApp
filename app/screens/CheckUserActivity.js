@@ -1,6 +1,5 @@
 import React from "react";
 import { View } from "react-native";
-import LoadingSpinner from "/components/presentationals/LoadingSpinner";
 import { connect } from "react-redux";
 import { Screens } from "/config/settings";
 import { login } from "/helpers/LoginHelper";
@@ -8,15 +7,15 @@ import { ActionsCreators } from "/redux/actions";
 import { getDeviceId } from "/helpers/NotificationsHelper";
 import AnalyticsHelper from "/helpers/AnalyticsHelper";
 import { Messages } from "/config/settings";
+import { Text } from "react-native-animatable-promise";
+import { genericBackgroundColor } from "/components/styles";
+
 const styles = {
 	container: {
 		flex: 1,
-		justifyContent: "center"
-	},
-	horizontal: {
-		flexDirection: "row",
-		justifyContent: "space-around",
-		padding: 10
+		justifyContent: "center",
+		alignItems: "center",
+		backgroundColor: genericBackgroundColor
 	}
 };
 
@@ -59,15 +58,16 @@ export default class CheckUserActivity extends React.Component {
 						this.props.messages,
 						this.props.dispatch
 					);
-
-					if (this.props.hasResetFirstPassword) {
-						this.props.navigation.navigate(Screens.HomeStack);
-					} else {
-						this.props.dispatch(
-							ActionsCreators.setInResetFirstPasswordMode(true)
-						);
-						this.props.navigation.navigate(Screens.ResetPassword);
-					}
+					setTimeout(() => {
+						if (this.props.hasResetFirstPassword) {
+							this.props.navigation.navigate(Screens.HomeStack);
+						} else {
+							this.props.dispatch(
+								ActionsCreators.setInResetFirstPasswordMode(true)
+							);
+							this.props.navigation.navigate(Screens.ResetPassword);
+						}
+					}, 4000);
 				} catch (error) {
 					if (Messages.CHECK_INTERNET_CONNECTION == error) {
 						//offline login
@@ -89,7 +89,18 @@ export default class CheckUserActivity extends React.Component {
 		return (
 			<View style={styles.container}>
 				{CheckUserActivity.isInLoggingProcess && (
-					<LoadingSpinner visible={true} message={"Loguiando"} />
+					<Text
+						useNativeDriver={true}
+						animation="pulse"
+						duration={1500}
+						iterationCount="infinite"
+						style={{
+							fontFamily: "lato-bold",
+							fontSize: 30,
+							color: "white"
+						}}>
+						Loguiandote...
+					</Text>
 				)}
 			</View>
 		);
