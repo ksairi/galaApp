@@ -94,7 +94,12 @@ exports.fetchUserData = userId => {
 };
 
 exports.fetchDynamicData = params => {
-	return connectToServer(Urls.FETCH_DYNAMIC_DATA, params)
+	return connectToServer(
+		Urls.FETCH_DYNAMIC_DATA,
+		params,
+		CONTENT_TYPE_JSON,
+		15000
+	)
 		.then(response => {
 			return response;
 		})
@@ -187,7 +192,21 @@ exports.synchMemberProperties = params => {
 		});
 };
 
-connectToServer = (url, parameters, contentType = CONTENT_TYPE_JSON) => {
+connectToServer = (
+	url,
+	parameters,
+	contentType = CONTENT_TYPE_JSON,
+	timeout = 10000
+) => {
+	return Promise.race([
+		timeoutFetch(url, parameters, contentType),
+		new Promise((_, reject) =>
+			setTimeout(() => reject(Messages.SERVER_ERROR), timeout)
+		)
+	]);
+};
+
+timeoutFetch = (url, parameters, contentType) => {
 	return fetch(url, {
 		method: "POST",
 		headers: {
