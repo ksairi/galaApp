@@ -11,3 +11,7 @@
 ### icomoonConfig.json
 
 **Icons hosted in [Icomoon](https://icomoon.io/app)**
+
+### app/config/devHosts.js
+
+**Export constants DEV_SERVER_HOSTNAME_1 and DEV_SERVER_HOSTNAME_2 to valid local addresses**

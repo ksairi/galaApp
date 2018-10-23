@@ -1,10 +1,11 @@
+import { DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2 } from "./devHosts";
+
 const SERVER_HOSTNAME_1 = __DEV__
-	? "http://192.168.0.104:3000/"
+	? DEV_SERVER_HOSTNAME_1
 	: "https://aqueous-harbor-62651.herokuapp.com/";
 
-const SERVER_HOSTNAME_2 = __DEV__
-	? "http://192.168.0.104:81/api/"
-	: "http://galagym.com/api/";
+const SERVER_HOSTNAME_2 =
+	(__DEV__ ? DEV_SERVER_HOSTNAME_2 : "http://galagym.com") + "/api/";
 
 exports.Urls = {
 	LOGIN: SERVER_HOSTNAME_1 + "login",
