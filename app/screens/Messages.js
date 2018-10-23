@@ -38,13 +38,13 @@ const styles = {
 		lineHeight: 26
 	},
 	bubbleTextStyle: {
-		right: {
-			color: "white",
+		left: {
+			color: "black",
 			fontFamily: "lato-regular",
 			fontSize: 21,
 			lineHeight: 27
 		},
-		left: {
+		right: {
 			color: "white",
 			fontFamily: "lato-regular",
 			fontSize: 21,
@@ -60,7 +60,7 @@ const styles = {
 	},
 	bubbleWrapperStyleMessageSynched: {
 		left: {
-			backgroundColor: "#2f396c",
+			backgroundColor: "#cacaca",
 			paddingTop: 8
 		},
 		right: {
