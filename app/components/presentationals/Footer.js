@@ -3,6 +3,7 @@ import { View, Linking } from "react-native";
 import { RkButton } from "react-native-ui-kitten";
 import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
+import { FontAwesome } from "@expo/vector-icons";
 
 const styles = {
 	button: {
@@ -27,20 +28,20 @@ export default class Footer extends React.PureComponent {
 		return (
 			<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
 				<View style={{ flexDirection: "row", flex: -1, paddingBottom: 20 }}>
-					{/*<RkButton
+					<RkButton
 						rkType="rounded"
 						style={styles.button}
-						onPress={this.openUrl("https://twitter.com/galagym?")}>
+						onPress={this.openUrl("https://www.instagram.com/gala.gym/")}>
 						<Icon name="instagram" size={iconFontSize} color="white" />
 					</RkButton>
 					<RkButton
 						rkType="rounded"
 						style={styles.button}
 						onPress={this.openUrl(
-							"https://www.facebook.com/pg/GalaGymBA/posts/"
+							"https://www.youtube.com/channel/UCFxjOj3tJ3Zfe9nEKNzCyDw"
 						)}>
-						<Icon name="g+" size={iconFontSize} color="white" />
-					</RkButton>*/}
+						<FontAwesome name="youtube" size={37} color="white" />
+					</RkButton>
 					<RkButton
 						rkType="rounded"
 						style={styles.button}
