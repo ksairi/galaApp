@@ -1,12 +1,13 @@
 {
 	"expo": {
-		"name": "GalaApp",
+		"name": "Gala",
 		"description": "Mobile App for Gala Fitness Center",
 		"slug": "galaApp",
 		"privacy": "public",
-		"version": "0.1.8",
+		"version": "1.0",
 		"githubUrl": "https://github.com/ksairi/galaApp",
 		"sdkVersion": "30.0.0",
+		"primaryColor": "#0b1143",
 		"splash": {
 			"image": "./assets/splash.png",
 			"backgroundColor": "#000000"
@@ -19,12 +20,43 @@
 			"node_modules/@expo/vector-icons/fonts/MaterialIcons.ttf",
 			"node_modules/@expo/vector-icons/fonts/Entypo.ttf"
 		],
-		"updates": {
-			"enabled": false
-		},
 		"android": {
 			"package": "com.gala.galaapp",
-			"googleServicesFile": "google-services.json"
-		}
+			"versionCode": 1,
+			"googleServicesFile": "google-services.json",
+			"playStoreUrl": "https://play.google.com/",
+			"permissions": [],
+			"config": {
+				"fabric": {
+					"apiKey": "9bee6df4340001230738b6a0e01b9e4e00f3efdb",
+
+					"buildSecret": "41b61f5edb02c34da3a438cb375bd3a7b9fd77f8235c28e4250d646a9df2ea91"
+				}
+			},
+			"splash": {
+				"backgroundColor": "#000000",
+				"resizeMode": "contain",
+				"mdpi": "./assets/splash_a_X1.png",
+				"hdpi": "./assets/splash_a_X1_5.png",
+				"xhdpi": "./assets/splash_a_X2.png",
+				"xxhdpi": "./assets/splash_a_X3.png",
+				"xxxhdpi": "./assets/splash_a_X4.png"
+			}
+		},
+		"ios": {
+			"bundleIdentifier": "com.gala.galaapp",
+			"buildNumber": "1.0",
+			"supportsTablet": true,
+			"isTabletOnly": false,
+			"infoPlist": {},
+			"associatedDomains": [],
+			"usesIcloudStorage": false
+		},
+		"notification": {
+			"icon": "./app/assets/icons/notification_icon.png",
+			"color": "#000000",
+			"androidCollapsedTitle": "Nuevas notificaciones"
+		},
+		"icon": "./assets/app_icon.png"
 	}
 }
