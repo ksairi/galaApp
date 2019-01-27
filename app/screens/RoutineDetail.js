@@ -64,7 +64,7 @@ export default class RoutineDetail extends React.Component {
 
 	static getRoutineFormattedData(routine) {
 		const result = [];
-		routine.exercises.forEach((exercise, index) => {
+		routine.ejercicios.forEach((exercise, index) => {
 			const exerciseData = {};
 			exerciseData.time = index + 1;
 			exerciseData.title = exercise.name.toUpperCase();
