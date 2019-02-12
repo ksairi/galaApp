@@ -29,7 +29,6 @@
 			"config": {
 				"fabric": {
 					"apiKey": "9bee6df4340001230738b6a0e01b9e4e00f3efdb",
-
 					"buildSecret": "41b61f5edb02c34da3a438cb375bd3a7b9fd77f8235c28e4250d646a9df2ea91"
 				}
 			},
@@ -49,8 +48,13 @@
 			"supportsTablet": true,
 			"isTabletOnly": false,
 			"infoPlist": {},
-			"associatedDomains": [],
-			"usesIcloudStorage": false
+			"associatedDomains": ["applinks:y0by.app.link"],
+			"usesIcloudStorage": false,
+			"config":{
+				"branch":{
+					"apiKey":"key_live_koQaRLNk7qcj8XnpstDv4goasBbEaAc2"
+				}
+			}
 		},
 		"notification": {
 			"icon": "./app/assets/icons/notification_icon.png",
