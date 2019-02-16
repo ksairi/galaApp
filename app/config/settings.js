@@ -2,7 +2,7 @@ import { DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2 } from "./devHosts";
 
 const SERVER_HOSTNAME_1 = __DEV__
 	? DEV_SERVER_HOSTNAME_1
-	: "https://aqueous-harbor-62651.herokuapp.com/";
+	: "http://galagym.sytes.net:1082/";
 
 const SERVER_HOSTNAME_2 =
 	(__DEV__ ? DEV_SERVER_HOSTNAME_2 : "http://galagym.com") + "/api/";
