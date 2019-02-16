@@ -99,7 +99,7 @@ export const saveDataToDevice = (
 				dataItem.imageExt;
 			if (dataItem.imageUrl) {
 				dispatch(ActionsCreators.setIsDownloadingRemoteImages(true));
-				return Expo.FileSystem.downloadAsync(dataItem.imageUrl, fileUri)
+				return Expo.FileSystem.downloadAsync(encodeURI(dataItem.imageUrl), fileUri)
 					.then(({ uri }) => {
 						return {
 							...dataItem,
