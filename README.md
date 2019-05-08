@@ -8,7 +8,7 @@
 
 **File to be created to export the identication token for server**
 
-### icomoonConfig.json
+### app/assets/icons/icomoonConfig.json
 
 **Icons hosted in [Icomoon](https://icomoon.io/app)**
 
