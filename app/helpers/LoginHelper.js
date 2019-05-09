@@ -28,7 +28,6 @@ exports.login = async (
 		)
 	);
 	const unsentMessages = getUnsentMessages(messages);
-	console.log(loginResponse.data.userData.name)
 	await fetchDynamicData(
 		loginResponse,
 		loginResponse.data.userData.name,
