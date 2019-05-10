@@ -12,7 +12,7 @@ import {
 import { ActionsCreators } from "./actions";
 import AppRoutes from "/navigation/";
 import NetworkHelper from "/helpers/NetworkHelper";
-import { savePromotionsData, saveMessagesToDevice } from "/helpers/StoreHelper";
+import { saveMessagesToDevice } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
 import {
@@ -80,15 +80,6 @@ export default class AppContainer extends React.Component {
 				}`
 			);
 			createNotificationsHanlder({
-				promotions() {
-					savePromotionsData(notification.data.promotions, props.dispatch);
-					setNotifiedPromotionsSaved({
-						userId: props.userId,
-						notificationId: notification.data.notificationId
-					});
-					AppContainer.alreadySetPromotionsSaved = true;
-					localNotificationBody = "Hay nuevas promociones!";
-				},
 				messages() {
 					saveMessagesToDevice(
 						notification.data.messages,
@@ -116,20 +107,6 @@ export default class AppContainer extends React.Component {
 		if (notification.origin === "selected") {
 			const navigator = this.navigator;
 			createNotificationsHanlder({
-				promotions() {
-					savePromotionsData(notification.data.promotions, props.dispatch);
-					if (!AppContainer.alreadySetPromotionsSaved) {
-						AnalyticsHelper.setEvent(
-							`${AnalitycsEventsLabels.notificationReceivedOf} ${
-								AnalitycsEventsLabels.promotions
-							}`
-						);
-						setNotifiedPromotionsSaved({
-							userId: props.userId,
-							notificationId: notification.data.notificationId
-						});
-					}
-				},
 				messages() {
 					if (!AppContainer.alreadySetMessagesSaved) {
 						AnalyticsHelper.setEvent(

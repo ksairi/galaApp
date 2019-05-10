@@ -45,8 +45,6 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 		);*/
 		await saveMainMenuImages(mainMenuImages, dispatch);
 
-		await savePromotionsData(promotions, dispatch);
-
 		/*saveDataToDevice(
 				routinesImages,
 				"routinesImage",
@@ -155,22 +153,6 @@ export const saveDataToDevice = (
 			.catch(error => {
 				throw error;
 			});
-	}
-};
-
-export const savePromotionsData = async (promotions, dispatch) => {
-	await saveDataToDevice(
-		promotions.data,
-		"promotionImage",
-		ActionsCreators.setPromotions,
-		ActionsCreators.removePromotionItem,
-		dispatch
-	);
-	if (promotions.lastUpdate) {
-		const dataNewState = {};
-		dataNewState.entity = "promotions";
-		dataNewState.data = { lastUpdate: promotions.lastUpdate };
-		dispatch(ActionsCreators.setLoginSynchedDataParameters(dataNewState));
 	}
 };
 
