@@ -78,14 +78,6 @@ export const promotions = createReducer([], {
 		return state;
 	}
 });
-export const routinesImages = createReducer([{ imageIndex: 0 }], {
-	[ActionsTypes.SET_ROUTINES_IMAGES](state, action) {
-		if (action.routinesImages.length > 0) {
-			return action.routinesImages;
-		}
-		return state;
-	}
-});
 export const classesImages = createReducer([], {
 	[ActionsTypes.SET_CLASSES_IMAGES](state, action) {
 		return action.classesImages;

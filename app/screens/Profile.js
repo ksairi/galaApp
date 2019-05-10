@@ -6,7 +6,6 @@ import { FontAwesome } from "@expo/vector-icons";
 import { connect } from "react-redux";
 import { RkButton } from "react-native-ui-kitten";
 import RootWrapper from "/components/presentationals/RootWrapper";
-import Footer from "/components/presentationals/Footer";
 import { Screens } from "/config/settings";
 import GenericText from "/components/presentationals/GenericText";
 import { getRemoteProfilePicture } from "/helpers/UserDataHelper";
@@ -201,7 +200,6 @@ export default class Profile extends React.Component {
 							CONFIGURACIÓN
 						</RkButton>
 					</Animatable.View>
-					<Footer />
 				</RootWrapper>
 			</GScrollView>
 		);

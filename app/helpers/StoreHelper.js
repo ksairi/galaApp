@@ -28,8 +28,6 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 		const {
 			//loginImages,
 			mainMenuImages,
-			promotions,
-			//routinesImages,
 			//classesImages,
 			//timetableImages,
 			timetable,
@@ -46,7 +44,6 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
 		await saveMainMenuImages(mainMenuImages, dispatch);
 
 		/*saveDataToDevice(
-				routinesImages,
 				"routinesImage",
 				ActionsCreators.setRoutinesImages,
 				ActionsCreators.
@@ -133,7 +130,7 @@ export const saveDataToDevice = (
 						if (newData.imageIndex) {
 							dataToRemove.push(newData.imageIndex);
 						} else {
-							dataToRemove.push(newData.id); //promotions
+							dataToRemove.push(newData.id);
 						}
 						if (newData.imageIndex) {
 							newParameters.indexesToRemove.push(parseInt(newData.imageIndex));

@@ -17,8 +17,6 @@ exports.Urls = {
 	FETCH_USER_DATA: SERVER_HOSTNAME_1 + "fetchUserData",
 	FETCH_DYNAMIC_DATA: SERVER_HOSTNAME_2 + "fetchDynamicData.php",
 	SET_CONTENT_SAVED: SERVER_HOSTNAME_2 + "setContentSaved.php",
-	SET_NOTIFIED_PROMOTIONS_SAVED:
-		SERVER_HOSTNAME_2 + "setNotifiedPromotionsSaved.php",
 	SEND_MESSAGES: SERVER_HOSTNAME_2 + "sendMessages.php",
 	SET_NOTIFIED_MESSAGES_SAVED:
 		SERVER_HOSTNAME_2 + "setNotifiedMessagesSaved.php",
@@ -131,11 +129,7 @@ exports.ActionsTypes = {
 	//Synched Data
 	SET_LOGIN_IMAGES: "SET_LOGIN_IMAGES",
 	SET_MAIN_MENU_IMAGES: "SET_MAIN_MENU_IMAGES",
-	REMOVE_MAIN_MENU_IMAGES: "REMOVE_MAIN_MENU_IMAGES",
-	SET_PROMOTIONS: "SET_PROMOTIONS",
-	REMOVE_PROMOTION_ITEM: "REMOVE_PROMOTION_ITEM",
 	SET_SYNCHED_DATA_PARAMETERS: "SET_SYNCHED_DATA_PARAMETERS",
-	SET_ROUTINES_IMAGES: "SET_ROUTINES_IMAGES",
 	SET_CLASSES_IMAGES: "SET_CLASSES_IMAGES",
 	SET_TIMETABLE_IMAGES: "SET_TIMETABLE_IMAGES",
 	SET_LOGIN_SYNCHED_DATA_PARAMETERS: "SET_LOGIN_SYNCHED_DATA_PARAMETERS"
@@ -232,8 +226,7 @@ export const AnalitycsEventsLabels = {
 	signOut: "cerró sesión",
 	takeProfilePicture: "sacó foto de perfil",
 	notificationReceivedOf: "recibió notificación de",
-	messages: "mensajes",
-	promotions: "promociones"
+	messages: "mensajes"
 };
 
 export const Notifications = {

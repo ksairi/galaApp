@@ -106,7 +106,6 @@ export default class Referrals extends React.Component {
 	};
 
 	render() {
-		console.log(this.state);
 		return (
 			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
 				<View style={{ flex: 1 }}>

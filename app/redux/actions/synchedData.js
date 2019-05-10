@@ -24,33 +24,6 @@ export function removeMainMenuImages(mainMenuImageIndexesToRemove) {
 	};
 }
 
-export function setPromotions(promotions) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: ActionsTypes.SET_PROMOTIONS,
-			promotions
-		});
-	};
-}
-
-export function removePromotionItem(promotionsIdsToDelete) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: ActionsTypes.REMOVE_PROMOTION_ITEM,
-			promotionsIdsToDelete
-		});
-	};
-}
-
-export function setRoutinesImages(routinesImages) {
-	return (dispatch, getState) => {
-		dispatch({
-			type: ActionsTypes.SET_ROUTINES_IMAGES,
-			routinesImages
-		});
-	};
-}
-
 export function setClassesImages(classesImages) {
 	return (dispatch, getState) => {
 		dispatch({

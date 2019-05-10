@@ -3,11 +3,8 @@ import { View, Dimensions } from "react-native";
 import GScrollView from "/components/presentationals/GenericScrollView";
 import { connect } from "react-redux";
 import Carousel from "react-native-carousel-control-fork";
-import AutoHeightImage from "react-native-auto-height-image";
 import RootWrapper from "/components/presentationals/RootWrapper";
-import Footer from "/components/presentationals/Footer";
 import GenericText from "/components/presentationals/GenericText";
-import * as ScreenDimensions from "/utils/ScreenDimensions";
 import * as Animatable from "react-native-animatable-promise";
 import AnalyticsHelper from "/helpers/AnalyticsHelper";
 import { Screens } from "/config/settings";
@@ -132,18 +129,6 @@ export default class TimeTbale extends React.Component {
 			<View key={index} style={styles.timetableDay}>
 				<View
 					style={{
-						borderTopLeftRadius: 15,
-						borderTopRightRadius: 15,
-						overflow: "hidden",
-						alignSelf: "center"
-					}}>
-					<AutoHeightImage
-						source={dayMetadata.image}
-						width={ScreenDimensions.getPortraitWidth() - carouselOffset}
-					/>
-				</View>
-				<View
-					style={{
 						paddingLeft: 15,
 						paddingRight: 15
 					}}>
@@ -200,7 +185,6 @@ export default class TimeTbale extends React.Component {
 						onPageChange={this.onPageChange}>
 						{this.getTimeTable()}
 					</AnimatedCarousel>
-					<Footer />
 				</RootWrapper>
 			</GScrollView>
 		);

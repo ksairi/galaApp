@@ -2,7 +2,6 @@ import React from "react";
 import { View, TouchableOpacity, AppState, Image } from "react-native";
 import { connect } from "react-redux";
 import GScrollView from "/components/presentationals/GenericScrollView";
-import AutoHeightImage from "react-native-auto-height-image";
 import RootWrapper from "/components/presentationals/RootWrapper";
 import CentredWrapper from "/components/presentationals/CentredWrapper";
 import { ActionsCreators } from "/redux/actions";
@@ -11,32 +10,19 @@ import Icon from "/helpers/ImageHelper";
 import GenericText from "/components/presentationals/GenericText";
 import Footer from "/components/presentationals/Footer";
 import LoadingSpinner from "/components/presentationals/LoadingSpinner";
-import ImageSlider from "/components/presentationals/ImageSlider";
-import * as ScreenDimensions from "/utils/ScreenDimensions";
 import { FontAwesome } from "@expo/vector-icons";
 import * as UserDataHelper from "/helpers/UserDataHelper";
-import { genericBackgroundColor } from "/components/styles";
 import * as Animatable from "react-native-animatable-promise";
 import AnalyticsHelper from "/helpers/AnalyticsHelper";
 
 const styles = {
-	imageContainer: {
-		marginTop: 20,
-		flex: -1
-	},
+
 	buttonsContainer: {
 		flex: 0.2,
 		flexDirection: "row",
 		flexWrap: "wrap",
 		justifyContent: "center",
 		marginTop: 20
-	},
-	promotionsContainer: {
-		marginTop: 30,
-		marginBottom: 60,
-		marginLeft: 20,
-		marginRight: 20,
-		flex: 1
 	},
 	buttonWrapper: {
 		flex: 1.5,
@@ -55,22 +41,17 @@ const styles = {
 	}
 };
 
-const AnimatedSlider = Animatable.createAnimatableComponent(ImageSlider);
-
 @connect(state => ({
 	userData: state.userData,
 	isUsingCache: state.isUsingCache,
 	currentHomeDrawerOption: state.currentHomeDrawerOption,
 	mainMenuImages: state.mainMenuImages,
-	promotions: state.promotions,
 	newMemberData: state.newMemberData,
 	isDownloadingRemoteImages: state.isDownloadingRemoteImages
 }))
 export default class Home extends React.Component {
 	state = {
-		sliderImages: [],
-		appState: AppState.currentState,
-		promotionsImageWidth: null
+		appState: AppState.currentState
 	};
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -83,42 +64,6 @@ export default class Home extends React.Component {
 		}
 		return prevState;
 	}
-
-	loadSliderImages = () => {
-		var sliderImages = [];
-		this.props.mainMenuImages.map((item, index) => {
-			if (item.local) {
-				//local images
-				switch (item.imageIndex) {
-					case 0: {
-						sliderImages.push(
-							require("../assets/images/main_menu_slider_0.jpg")
-						);
-						break;
-					}
-					case 1: {
-						sliderImages.push(
-							require("../assets/images/main_menu_slider_1.jpg")
-						);
-						break;
-					}
-					case 2: {
-						sliderImages.push(
-							require("../assets/images/main_menu_slider_2.jpg")
-						);
-						break;
-					}
-				}
-			} else {
-				//dynamic images
-				sliderImages.push({ uri: item.uri });
-			}
-		});
-
-		this.setState({
-			sliderImages
-		});
-	};
 
 	_handleAppStateChange = nextAppState => {
 		if (
@@ -144,21 +89,6 @@ export default class Home extends React.Component {
 			this.props.navigation.navigate(this.props.currentHomeDrawerOption);
 			this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
 		}
-		this.loadSliderImages();
-		if (this.props.promotions[0]) {
-			Image.getSize(
-				this.props.promotions[0].uri,
-				width => {
-					this.setState({
-						promotionsImageWidth:
-							(width * 160) / ScreenDimensions.getScreenDensity()
-					});
-				},
-				errorMsg => {
-					console.log(errorMsg);
-				}
-			);
-		}
 	}
 
 	componentWillUnmount() {
@@ -173,19 +103,8 @@ export default class Home extends React.Component {
 		return (
 			<GScrollView>
 				<RootWrapper style={{ padding: 0 }}>
-					{this.state.sliderImages.length > 0 &&
-					!this.props.isDownloadingRemoteImages ? (
+					{!this.props.isDownloadingRemoteImages ? (
 						<CentredWrapper>
-							<View style={styles.imageContainer}>
-								<AnimatedSlider
-									useNativeDriver={true}
-									animation={"zoomIn"}
-									images={this.state.sliderImages}
-									imageWidth={ScreenDimensions.getPortraitWidth()}
-									style={{ backgroundColor: genericBackgroundColor }}
-								/>
-							</View>
-
 							<Animatable.View
 								useNativeDriver={true}
 								animation={"slideInRight"}
@@ -227,58 +146,6 @@ export default class Home extends React.Component {
 									}
 								})}
 							</Animatable.View>
-							<View style={styles.promotionsContainer}>
-								<GenericText
-									style={{ fontFamily: "brother-1816-bold", fontSize: 35 }}>
-									¡ENTERATE!
-								</GenericText>
-								{this.props.promotions &&
-									this.props.promotions.map((promotion, index) => (
-										<View
-											key={index}
-											style={{
-												backgroundColor: "#12194d",
-												paddingTop: 15,
-												marginTop: 15
-											}}>
-											<GenericText
-												style={{
-													fontFamily: "brother-1816-bold",
-													fontSize: 20,
-													flex: -1,
-													paddingLeft: 5,
-													paddingRight: 5
-												}}>
-												{promotion.title}
-											</GenericText>
-											<GenericText
-												style={{
-													fontFamily: "lato-regular",
-													fontSize: 15,
-													marginTop: 10,
-													flex: -1,
-													paddingLeft: 5,
-													paddingRight: 5
-												}}>
-												{promotion.subtitle}
-											</GenericText>
-											<AutoHeightImage
-												source={{
-													uri: promotion.uri
-												}}
-												width={
-													this.state.promotionsImageWidth
-														? this.state.promotionsImageWidth
-														: 0
-												}
-												style={{
-													alignSelf: "center",
-													marginTop: 15
-												}}
-											/>
-										</View>
-									))}
-							</View>
 							<Footer />
 						</CentredWrapper>
 					) : (

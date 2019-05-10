@@ -16,7 +16,6 @@ import { saveMessagesToDevice } from "/helpers/StoreHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import RootView from "/components/containers/RootView";
 import {
-	setNotifiedPromotionsSaved,
 	setNotifiedMessagesSaved
 } from "/helpers/ApiHelper";
 import { sendUnsentMessages } from "/helpers/MessagesHelper";
@@ -47,7 +46,6 @@ import AnalyticsHelper from "/helpers/AnalyticsHelper";
 		)
 )
 export default class AppContainer extends React.Component {
-	static alreadySetPromotionsSaved = false;
 	static alreadySetMessagesSaved = false;
 
 	componentDidMount() {
@@ -142,11 +140,7 @@ export default class AppContainer extends React.Component {
 					Object.keys(notification.data)[0]
 						.charAt(0)
 						.toUpperCase() + Object.keys(notification.data)[0].slice(1);
-				if (section == "Promotions") {
-					navigator.navigate(Screens.Home);
-				} else {
 					navigator.navigate(section);
-				}
 			} else {
 				navigator.navigate(Screens.LoginStack);
 			}

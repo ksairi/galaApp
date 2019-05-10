@@ -7,7 +7,7 @@ export default class AnalyticsHelper {
 		if (!__DEV__) {
 			AnalyticsHelper.analytics
 				.hit(new PageHit(screenName))
-				.then(() => console.log(`success pageHit ${screenName}`))
+				.then(() => {})
 				.catch(e => console.log(e.message));
 		}
 	};
@@ -16,7 +16,7 @@ export default class AnalyticsHelper {
 		if (!__DEV__) {
 			AnalyticsHelper.analytics
 				.event(new Event("General", "Acciones", actionLabel))
-				.then(() => console.log(`success event ${actionLabel}`))
+				.then(() => {})
 				.catch(e => console.log(e.message));
 		}
 	};

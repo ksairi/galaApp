@@ -109,7 +109,6 @@ doFetchDynamicData = async (
 		params.unsentMessages = unsentMessages;
 	}
 	const dynamicDataResponse = await fetchDynamicDataApi(params);
-	console.log(dynamicDataResponse)
 	if (hasResponseResults(dynamicDataResponse)) {
 		var lastMessageIndex = null;
 		if (
@@ -126,9 +125,6 @@ doFetchDynamicData = async (
 };
 
 hasResponseResults = response =>
-	(response.promotions &&
-		response.promotions.data &&
-		response.promotions.data.length > 0) ||
 	(response.messages && response.messages.length > 0) ||
 	(response.sentMessages && response.sentMessages.length > 0);
 
