@@ -1,35 +1,35 @@
-import createReducer from "./lib/createReducer";
-import { ActionsTypes } from "/config/settings";
+import createReducer from './lib/createReducer'
+import { ActionsTypes } from '/config/settings'
 
 export const isLoggedIn = createReducer(false, {
-	[ActionsTypes.LOG_IN]() {
-		return true;
-	},
-	[ActionsTypes.LOG_OUT]() {
-		return false;
-	}
-});
+  [ActionsTypes.LOG_IN] () {
+    return true
+  },
+  [ActionsTypes.LOG_OUT] () {
+    return false
+  }
+})
 
 export const isAppsFirstTime = createReducer(true, {
-	[ActionsTypes.SET_IS_APPS_FIRST_TIME](state, action) {
-		return action.state;
-	}
-});
+  [ActionsTypes.SET_IS_APPS_FIRST_TIME] (state, action) {
+    return action.state
+  }
+})
 
 export const hasResetFirstPassword = createReducer(false, {
-	[ActionsTypes.SET_HAS_RESET_FIRST_PASSWORD](state, action) {
-		return action.hasResetFirstPassword;
-	}
-});
+  [ActionsTypes.SET_HAS_RESET_FIRST_PASSWORD] (state, action) {
+    return action.hasResetFirstPassword
+  }
+})
 
 export const inResetFirstPasswordMode = createReducer(false, {
-	[ActionsTypes.SET_IN_RESET_FIRT_PASSWORD_MODE](state, action) {
-		return action.inResetFirstPasswordMode;
-	}
-});
+  [ActionsTypes.SET_IN_RESET_FIRT_PASSWORD_MODE] (state, action) {
+    return action.inResetFirstPasswordMode
+  }
+})
 
 export const isSavingNotificationsData = createReducer(false, {
-	[ActionsTypes.SET_IS_SAVING_NOTIFICATIONS_DATA](state, action) {
-		return action.isSavingNotificationsData;
-	}
-});
+  [ActionsTypes.SET_IS_SAVING_NOTIFICATIONS_DATA] (state, action) {
+    return action.isSavingNotificationsData
+  }
+})

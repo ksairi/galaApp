@@ -1,333 +1,333 @@
-import React from "react";
+import React from 'react'
 import {
-	Keyboard,
-	KeyboardAvoidingView,
-	View,
-	Platform,
-	TouchableWithoutFeedback,
-	BackHandler
-} from "react-native";
-import { connect } from "react-redux";
-import { Messages, Screens } from "/config/settings";
-import { register } from "/helpers/LoginHelper";
-import ValidationHelper from "/helpers/ValidationHelper";
-import { getDeviceId } from "/helpers/NotificationsHelper";
-import { RkTheme, RkTextInput } from "react-native-ui-kitten";
-import RootWrapper from "/components/presentationals/RootWrapper";
-import CentredWrapper from "/components/presentationals/CentredWrapper";
-import Button from "/components/presentationals/GenericButton";
-import GenericText from "/components/presentationals/GenericText";
-import GenericLink from "/components/presentationals/GenericLink";
-import LoadingSpinner from "/components/presentationals/LoadingSpinner";
+  Keyboard,
+  KeyboardAvoidingView,
+  View,
+  Platform,
+  TouchableWithoutFeedback,
+  BackHandler
+} from 'react-native'
+import { connect } from 'react-redux'
+import { Messages, Screens } from '/config/settings'
+import { register } from '/helpers/LoginHelper'
+import ValidationHelper from '/helpers/ValidationHelper'
+import { getDeviceId } from '/helpers/NotificationsHelper'
+import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
+import RootWrapper from '/components/presentationals/RootWrapper'
+import CentredWrapper from '/components/presentationals/CentredWrapper'
+import Button from '/components/presentationals/GenericButton'
+import GenericText from '/components/presentationals/GenericText'
+import GenericLink from '/components/presentationals/GenericLink'
+import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import {
-	genericTextInputStyle,
-	textWithLinkStyle,
-	containerPadding
-} from "/components/styles";
-import Header from "/components/containers/Header";
-import AnalyticsHelper from "/helpers/AnalyticsHelper";
+  genericTextInputStyle,
+  textWithLinkStyle,
+  containerPadding
+} from '/components/styles'
+import Header from '/components/containers/Header'
+import AnalyticsHelper from '/helpers/AnalyticsHelper'
 
-RkTheme.setType("RkTextInput", "inputText", genericTextInputStyle);
+RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
-	registerAccountTitle: {
-		fontSize: 16,
-		fontFamily: "brother-1816-bold"
-	},
-	hiddenKeyboardComponentsStyle: {
-		buttonContainerStyle: { flex: 1 },
-		buttonStyle: { height: 40 },
-		memeberAlreadyStyle: { flex: 0.4 }
-	},
-	showingKeyboardComponentsStyle: {
-		textInputStyle: { marginTop: 0, marginBottom: 3, flex: 0.15 },
-		titleStyle: { flex: 0.15 },
-		buttonContainerStyle: { flex: 0.17 },
-		buttonStyle: { height: 30 },
-		buttonContentStyle: { fontSize: 14 },
-		memeberAlreadyStyle: { flex: 0.6 },
-		confirmPassInputStyle: { marginBottom: 0 }
-	}
-};
+  registerAccountTitle: {
+    fontSize: 16,
+    fontFamily: 'brother-1816-bold'
+  },
+  hiddenKeyboardComponentsStyle: {
+    buttonContainerStyle: { flex: 1 },
+    buttonStyle: { height: 40 },
+    memeberAlreadyStyle: { flex: 0.4 }
+  },
+  showingKeyboardComponentsStyle: {
+    textInputStyle: { marginTop: 0, marginBottom: 3, flex: 0.15 },
+    titleStyle: { flex: 0.15 },
+    buttonContainerStyle: { flex: 0.17 },
+    buttonStyle: { height: 30 },
+    buttonContentStyle: { fontSize: 14 },
+    memeberAlreadyStyle: { flex: 0.6 },
+    confirmPassInputStyle: { marginBottom: 0 }
+  }
+}
 
 @connect(state => ({
-	deviceId: state.deviceId,
-	loginSynchedDataParameters: state.loginSynchedDataParameters
+  deviceId: state.deviceId,
+  loginSynchedDataParameters: state.loginSynchedDataParameters
 }))
 export default class SignUp extends React.Component {
-	static navigationOptions = ({ navigation }) => ({
-		header: <Header navigation={navigation} backScreen={Screens.SignIn} />
-	});
+  static navigationOptions = ({ navigation }) => ({
+    header: <Header navigation={navigation} backScreen={Screens.SignIn} />
+  })
 
-	static userfullName = null;
-	static userId = null;
-	static password = null;
-	static confirmPassword = null;
+  static userfullName = null
+  static userId = null
+  static password = null
+  static confirmPassword = null
 
-	state = {
-		errorMessage: "",
-		focusPassword: false,
-		spinnerVisible: false,
-		componentsStyle: styles.hiddenKeyboardComponentsStyle
-	};
+  state = {
+    errorMessage: '',
+    focusPassword: false,
+    spinnerVisible: false,
+    componentsStyle: styles.hiddenKeyboardComponentsStyle
+  }
 
-	componentDidMount() {
-		AnalyticsHelper.setPageHit(Screens.SignUp);
-		if (Platform.OS === "ios") {
-			Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT);
-		}
-		this.keyboardDidShowListener = Keyboard.addListener(
-			"keyboardDidShow",
-			this._keyboardDidShow
-		);
-		this.keyboardDidHideListener = Keyboard.addListener(
-			"keyboardDidHide",
-			this._keyboardDidHide
-		);
-		BackHandler.addEventListener("hardwareBackPress", this.goBack);
-	}
+  componentDidMount () {
+    AnalyticsHelper.setPageHit(Screens.SignUp)
+    if (Platform.OS === 'ios') {
+      Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT)
+    }
+    this.keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      this._keyboardDidShow
+    )
+    this.keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      this._keyboardDidHide
+    )
+    BackHandler.addEventListener('hardwareBackPress', this.goBack)
+  }
 
-	goBack = () => {
-		this.props.navigation.navigate(Screens.SignIn);
-		return true;
-	};
+  goBack = () => {
+    this.props.navigation.navigate(Screens.SignIn)
+    return true
+  }
 
-	componentWillUnmount() {
-		this.keyboardDidShowListener.remove();
-		this.keyboardDidHideListener.remove();
-		BackHandler.removeEventListener("hardwareBackPress", this.goBack);
-	}
+  componentWillUnmount () {
+    this.keyboardDidShowListener.remove()
+    this.keyboardDidHideListener.remove()
+    BackHandler.removeEventListener('hardwareBackPress', this.goBack)
+  }
 
-	_keyboardDidShow = () => {
-		this.setState({
-			componentsStyle: styles.showingKeyboardComponentsStyle
-		});
-	};
+  _keyboardDidShow = () => {
+    this.setState({
+      componentsStyle: styles.showingKeyboardComponentsStyle
+    })
+  }
 
-	_keyboardDidHide = () => {
-		if (this) {
-			this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle });
-		}
-	};
+  _keyboardDidHide = () => {
+    if (this) {
+      this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle })
+    }
+  }
 
-	signUp = async () => {
-		Keyboard.dismiss();
-		var errorMessage;
+  signUp = async () => {
+    Keyboard.dismiss()
+    var errorMessage
 
-		if (!SignUp.userfullName || !SignUp.userId || !SignUp.password) {
-			this.setState({ errorMessage: Messages.INCOMPLETE_INPUT_DATA });
-			return;
-		}
+    if (!SignUp.userfullName || !SignUp.userId || !SignUp.password) {
+      this.setState({ errorMessage: Messages.INCOMPLETE_INPUT_DATA })
+      return
+    }
 
-		errorMessage = ValidationHelper.userIdWithErrors(SignUp.userId);
-		if (errorMessage) {
-			this.setState({ errorMessage });
-			return;
-		}
+    errorMessage = ValidationHelper.userIdWithErrors(SignUp.userId)
+    if (errorMessage) {
+      this.setState({ errorMessage })
+      return
+    }
 
-		errorMessage = ValidationHelper.passwordsWithErrors(
-			SignUp.password,
-			SignUp.confirmPassword
-		);
-		if (errorMessage) {
-			this.setState({ errorMessage });
-			return;
-		}
+    errorMessage = ValidationHelper.passwordsWithErrors(
+      SignUp.password,
+      SignUp.confirmPassword
+    )
+    if (errorMessage) {
+      this.setState({ errorMessage })
+      return
+    }
 
-		this.setState({ errorMessage: "", spinnerVisible: true });
-		try {
-			const deviceId = this.props.deviceId
-				? this.props.deviceId
-				: await getDeviceId(this.props.dispatch);
-			await register(
-				SignUp.userfullName,
-				SignUp.userId,
-				SignUp.password,
-				deviceId,
-				this.props.loginSynchedDataParameters,
-				this.props.dispatch
-			);
-			this.setState({ spinnerVisible: false });
-			this.props.navigation.navigate(Screens.HomeStack);
-		} catch (errorMessage) {
-			this.setState({ spinnerVisible: false, errorMessage });
-		}
-	};
+    this.setState({ errorMessage: '', spinnerVisible: true })
+    try {
+      const deviceId = this.props.deviceId
+        ? this.props.deviceId
+        : await getDeviceId(this.props.dispatch)
+      await register(
+        SignUp.userfullName,
+        SignUp.userId,
+        SignUp.password,
+        deviceId,
+        this.props.loginSynchedDataParameters,
+        this.props.dispatch
+      )
+      this.setState({ spinnerVisible: false })
+      this.props.navigation.navigate(Screens.HomeStack)
+    } catch (errorMessage) {
+      this.setState({ spinnerVisible: false, errorMessage })
+    }
+  }
 
-	onSubmitUserFullName = () => {
-		if (!SignUp.userId) {
-			this.refs.userIdInput._focusInput();
-		} else {
-			this.signUp();
-		}
-	};
+  onSubmitUserFullName = () => {
+    if (!SignUp.userId) {
+      this.refs.userIdInput._focusInput()
+    } else {
+      this.signUp()
+    }
+  }
 
-	onSubmitUserId = () => {
-		if (!SignUp.password) {
-			this.refs.passwordInput._focusInput();
-		} else {
-			this.signUp();
-		}
-	};
+  onSubmitUserId = () => {
+    if (!SignUp.password) {
+      this.refs.passwordInput._focusInput()
+    } else {
+      this.signUp()
+    }
+  }
 
-	onSubmitPassword = () => {
-		if (!SignUp.confirmPassword) {
-			this.refs.confirmPasswordInput._focusInput();
-		} else {
-			this.signUp();
-		}
-	};
-	goToSignIn = () => {
-		this.props.navigation.navigate(Screens.SignIn);
-	};
+  onSubmitPassword = () => {
+    if (!SignUp.confirmPassword) {
+      this.refs.confirmPasswordInput._focusInput()
+    } else {
+      this.signUp()
+    }
+  }
+  goToSignIn = () => {
+    this.props.navigation.navigate(Screens.SignIn)
+  }
 
-	onFullNameChangeText = fullName => {
-		SignUp.userfullName = fullName;
-	};
+  onFullNameChangeText = fullName => {
+    SignUp.userfullName = fullName
+  }
 
-	onUserIdChangeText = userId => {
-		SignUp.userId = userId;
-	};
+  onUserIdChangeText = userId => {
+    SignUp.userId = userId
+  }
 
-	onPasswordChangeText = password => {
-		SignUp.password = password;
-	};
+  onPasswordChangeText = password => {
+    SignUp.password = password
+  }
 
-	onConfirmPasswordChangeText = password => {
-		SignUp.confirmPassword = password;
-	};
+  onConfirmPasswordChangeText = password => {
+    SignUp.confirmPassword = password
+  }
 
-	onInputTextOnFocus = () => {
-		this.setState({
-			errorMessage: ""
-		});
-	};
+  onInputTextOnFocus = () => {
+    this.setState({
+      errorMessage: ''
+    })
+  }
 
-	hideKeyboard = () => {
-		Keyboard.dismiss();
-	};
+  hideKeyboard = () => {
+    Keyboard.dismiss()
+  }
 
-	render() {
-		return (
-			<TouchableWithoutFeedback onPress={this.hideKeyboard}>
-				<View style={{ flex: 1 }}>
-					<RootWrapper style={{ paddingBottom: 0 }}>
-						<KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
-							<CentredWrapper>
-								<GenericText
-									style={[
-										styles.registerAccountTitle,
-										this.state.componentsStyle.titleStyle
-									]}>
-									REGISTRAR CUENTA
-								</GenericText>
-								<RkTextInput
-									rkType="rounded inputText"
-									style={this.state.componentsStyle.textInputStyle}
-									placeholder="Nombre"
-									autoFocus
-									returnKeyType="next"
-									keyboardType="default"
-									autoCapitalize="words"
-									autoCorrect={false}
-									onChangeText={this.onFullNameChangeText}
-									onSubmitEditing={this.onSubmitUserFullName}
-									onFocus={this.onInputTextOnFocus}
-								/>
+  render () {
+    return (
+      <TouchableWithoutFeedback onPress={this.hideKeyboard}>
+        <View style={{ flex: 1 }}>
+          <RootWrapper style={{ paddingBottom: 0 }}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+              <CentredWrapper>
+                <GenericText
+                  style={[
+                    styles.registerAccountTitle,
+                    this.state.componentsStyle.titleStyle
+                  ]}>
+                  REGISTRAR CUENTA
+                </GenericText>
+                <RkTextInput
+                  rkType='rounded inputText'
+                  style={this.state.componentsStyle.textInputStyle}
+                  placeholder='Nombre'
+                  autoFocus
+                  returnKeyType='next'
+                  keyboardType='default'
+                  autoCapitalize='words'
+                  autoCorrect={false}
+                  onChangeText={this.onFullNameChangeText}
+                  onSubmitEditing={this.onSubmitUserFullName}
+                  onFocus={this.onInputTextOnFocus}
+                />
 
-								<RkTextInput
-									rkType="rounded inputText"
-									style={this.state.componentsStyle.textInputStyle}
-									placeholder="DNI"
-									returnKeyType="next"
-									keyboardType="numeric"
-									autoCorrect={false}
-									ref="userIdInput"
-									onChangeText={this.onUserIdChangeText}
-									onSubmitEditing={this.onSubmitUserId}
-									onFocus={this.onInputTextOnFocus}
-								/>
+                <RkTextInput
+                  rkType='rounded inputText'
+                  style={this.state.componentsStyle.textInputStyle}
+                  placeholder='DNI'
+                  returnKeyType='next'
+                  keyboardType='numeric'
+                  autoCorrect={false}
+                  ref='userIdInput'
+                  onChangeText={this.onUserIdChangeText}
+                  onSubmitEditing={this.onSubmitUserId}
+                  onFocus={this.onInputTextOnFocus}
+                />
 
-								<RkTextInput
-									rkType="rounded inputText"
-									style={this.state.componentsStyle.textInputStyle}
-									placeholder="Contraseña"
-									secureTextEntry
-									autoCapitalize="none"
-									autoCorrect={false}
-									returnKeyType="next"
-									keyboardType="default"
-									ref="passwordInput"
-									onChangeText={this.onPasswordChangeText}
-									onSubmitEditing={this.onSubmitPassword}
-									onFocus={this.onInputTextOnFocus}
-								/>
+                <RkTextInput
+                  rkType='rounded inputText'
+                  style={this.state.componentsStyle.textInputStyle}
+                  placeholder='Contraseña'
+                  secureTextEntry
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  returnKeyType='next'
+                  keyboardType='default'
+                  ref='passwordInput'
+                  onChangeText={this.onPasswordChangeText}
+                  onSubmitEditing={this.onSubmitPassword}
+                  onFocus={this.onInputTextOnFocus}
+                />
 
-								<RkTextInput
-									rkType="rounded inputText"
-									style={[
-										this.state.componentsStyle.textInputStyle,
-										this.state.componentsStyle.confirmPassInputStyle
-									]}
-									placeholder="Confirmar Contraseña"
-									secureTextEntry
-									autoCapitalize="none"
-									autoCorrect={false}
-									returnKeyType="done"
-									keyboardType="default"
-									ref="confirmPasswordInput"
-									onChangeText={this.onConfirmPasswordChangeText}
-									onSubmitEditing={this.signUp}
-									onFocus={this.onInputTextOnFocus}
-								/>
+                <RkTextInput
+                  rkType='rounded inputText'
+                  style={[
+                    this.state.componentsStyle.textInputStyle,
+                    this.state.componentsStyle.confirmPassInputStyle
+                  ]}
+                  placeholder='Confirmar Contraseña'
+                  secureTextEntry
+                  autoCapitalize='none'
+                  autoCorrect={false}
+                  returnKeyType='done'
+                  keyboardType='default'
+                  ref='confirmPasswordInput'
+                  onChangeText={this.onConfirmPasswordChangeText}
+                  onSubmitEditing={this.signUp}
+                  onFocus={this.onInputTextOnFocus}
+                />
 
-								<View
-									style={[
-										{ flexDirection: "row" },
-										this.state.componentsStyle.buttonContainerStyle
-									]}>
-									<Button
-										style={this.state.componentsStyle.buttonStyle}
-										contentStyle={this.state.componentsStyle.buttonContentStyle}
-										text="REGISTRARME"
-										onPress={this.signUp}
-									/>
-								</View>
+                <View
+                  style={[
+                    { flexDirection: 'row' },
+                    this.state.componentsStyle.buttonContainerStyle
+                  ]}>
+                  <Button
+                    style={this.state.componentsStyle.buttonStyle}
+                    contentStyle={this.state.componentsStyle.buttonContentStyle}
+                    text='REGISTRARME'
+                    onPress={this.signUp}
+                  />
+                </View>
 
-								<View
-									style={[
-										textWithLinkStyle.container,
-										this.state.componentsStyle.memeberAlreadyStyle
-									]}>
-									<GenericText style={textWithLinkStyle.text}>
-										¿Ya tenés una cuenta?
-									</GenericText>
-									<GenericLink
-										containerStyle={textWithLinkStyle.link.container}
-										contentStyle={textWithLinkStyle.link.content}
-										onPress={this.goToSignIn}>
-										Iniciá Sesión
-									</GenericLink>
-								</View>
+                <View
+                  style={[
+                    textWithLinkStyle.container,
+                    this.state.componentsStyle.memeberAlreadyStyle
+                  ]}>
+                  <GenericText style={textWithLinkStyle.text}>
+                    ¿Ya tenés una cuenta?
+                  </GenericText>
+                  <GenericLink
+                    containerStyle={textWithLinkStyle.link.container}
+                    contentStyle={textWithLinkStyle.link.content}
+                    onPress={this.goToSignIn}>
+                    Iniciá Sesión
+                  </GenericLink>
+                </View>
 
-								{this.state.errorMessage != "" && (
-									<GenericText
-										style={{
-											fontSize: 13,
-											paddingLeft: containerPadding,
-											paddingRight: containerPadding
-										}}
-										error={this.state.errorMessage ? true : false}>
-										{this.state.errorMessage}
-									</GenericText>
-								)}
+                {this.state.errorMessage !== '' && (
+                  <GenericText
+                    style={{
+                      fontSize: 13,
+                      paddingLeft: containerPadding,
+                      paddingRight: containerPadding
+                    }}
+                    error={this.state.errorMessage || false}>
+                    {this.state.errorMessage}
+                  </GenericText>
+                )}
 
-								<LoadingSpinner visible={this.state.spinnerVisible} />
-							</CentredWrapper>
-						</KeyboardAvoidingView>
-					</RootWrapper>
-				</View>
-			</TouchableWithoutFeedback>
-		);
-	}
+                <LoadingSpinner visible={this.state.spinnerVisible} />
+              </CentredWrapper>
+            </KeyboardAvoidingView>
+          </RootWrapper>
+        </View>
+      </TouchableWithoutFeedback>
+    )
+  }
 }
