@@ -204,7 +204,6 @@ export default class CameraView extends React.Component {
 			});
 			this.props.navigation.navigate(Screens.Profile);
 		} catch (error) {
-			console.log(error);
 			this.showAlert(Messages.NO_SPACE_IN_DISK);
 		}
 	};
@@ -230,7 +229,6 @@ export default class CameraView extends React.Component {
 				this.setState({ pictureTaken: picture, renderCamera: false });
 				AnalyticsHelper.setEvent(AnalitycsEventsLabels.takeProfilePicture);
 			} catch (error) {
-				console.log(error);
 				this.showAlert(Messages.NO_SPACE_IN_DISK);
 			}
 		}

@@ -8,7 +8,7 @@ export default class AnalyticsHelper {
 			AnalyticsHelper.analytics
 				.hit(new PageHit(screenName))
 				.then(() => {})
-				.catch(e => console.log(e.message));
+				.catch(() => {});
 		}
 	};
 
@@ -17,7 +17,7 @@ export default class AnalyticsHelper {
 			AnalyticsHelper.analytics
 				.event(new Event("General", "Acciones", actionLabel))
 				.then(() => {})
-				.catch(e => console.log(e.message));
+				.catch(() => {});
 		}
 	};
 }

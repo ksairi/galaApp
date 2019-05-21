@@ -22,7 +22,6 @@ export function fetchUserStore() {
 					dispatch({ type: ActionsTypes.SET_ROUTINES, routines });
 				},
 				error => {
-					console.log(error);
 				}
 			);
 		}

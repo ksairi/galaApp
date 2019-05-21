@@ -102,7 +102,6 @@ export const saveDataToDevice = (
 						};
 					})
 					.catch(error => {
-						console.log(error);
 						throw Messages.NO_SPACE_IN_DISK;
 					});
 			} else {
@@ -111,7 +110,6 @@ export const saveDataToDevice = (
 						return dataItem;
 					})
 					.catch(error => {
-						console.log(error);
 					});
 			}
 		});
