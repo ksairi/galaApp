@@ -69,7 +69,7 @@ const timetableDaysMetadata = [
   }
 ]
 
-const carouselOffset = 50
+const carouselOffset = 10
 
 const AnimatedCarousel = Animatable.createAnimatableComponent(Carousel)
 

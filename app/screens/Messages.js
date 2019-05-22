@@ -121,6 +121,9 @@ export default class Messages extends React.Component {
 
   startPullingMessages = () => {
     this.doGetRealTimeMessages()
+    if (!Messages.intervalId) {
+      clearInterval(Messages.intervalId)
+    }
     Messages.intervalId = setInterval(() => this.doGetRealTimeMessages(), 5000)
   }
 
