@@ -8,7 +8,7 @@
 		"githubUrl": "https://github.com/ksairi/galaApp",
 		"sdkVersion": "30.0.0",
 		"primaryColor": "#0b1143",
-		"scheme": "galaApp",
+		"scheme": "galaapp",
 		"splash": {
 			"image": "./assets/splash.png",
 			"backgroundColor": "#000000",
@@ -29,7 +29,7 @@
 		],
 		"ios": {
 			"bundleIdentifier": "com.gala.galaapp",
-			"buildNumber": "1.0",
+			"buildNumber": "2",
 			"supportsTablet": true,
 			"isTabletOnly": false,
 			"infoPlist": {},

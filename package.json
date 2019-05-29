@@ -21,7 +21,9 @@
 		"react-devtools": "react-devtools",
 		"flow": "flow",
 		"lint": "node_modules/standard/bin/cmd.js",
-		"lint:fix": "node_modules/standard/bin/cmd.js --fix"
+		"lint:fix": "node_modules/standard/bin/cmd.js --fix",
+		"deploy:ios": "expo build:ios && expo upload:ios",
+		"deploy:android": "expo build:android && expo upload:android"
 	},
 	"jest": {
 		"preset": "jest-expo"
