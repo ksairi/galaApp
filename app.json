@@ -8,7 +8,7 @@
 		"githubUrl": "https://github.com/ksairi/galaApp",
 		"sdkVersion": "30.0.0",
 		"primaryColor": "#0b1143",
-		"scheme": "galaApp",
+		"scheme": "galaapp",
 		"splash": {
 			"image": "./assets/splash.png",
 			"backgroundColor": "#ffffff"
@@ -32,20 +32,11 @@
 					"apiKey": "9bee6df4340001230738b6a0e01b9e4e00f3efdb",
 					"buildSecret": "41b61f5edb02c34da3a438cb375bd3a7b9fd77f8235c28e4250d646a9df2ea91"
 				}
-			},
-			"splash": {
-				"backgroundColor": "#ffffff",
-				"resizeMode": "contain",
-				"mdpi": "./assets/splash_a_X1.png",
-				"hdpi": "./assets/splash_a_X1_5.png",
-				"xhdpi": "./assets/splash_a_X2.png",
-				"xxhdpi": "./assets/splash_a_X3.png",
-				"xxxhdpi": "./assets/splash_a_X4.png"
 			}
 		},
 		"ios": {
 			"bundleIdentifier": "com.gala.galaapp",
-			"buildNumber": "1.0",
+			"buildNumber": "2",
 			"supportsTablet": true,
 			"isTabletOnly": false,
 			"infoPlist": {},

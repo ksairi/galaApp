@@ -4,13 +4,13 @@ import { createLogger } from 'redux-logger'
 import { persistStore } from 'redux-persist'
 import persistedReducer from './reducers'
 
-const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__  })
+const loggerMiddleware = createLogger({ predicate: (getState, action) => __DEV__ })
 
 const enhancer = compose(
-	applyMiddleware(
-	  thunkMiddleware, // lets us dispatch() functions
-	  loggerMiddleware
-	)
+  applyMiddleware(
+    thunkMiddleware, // lets us dispatch() functions
+    loggerMiddleware
+  )
 )
 
 export default () => {

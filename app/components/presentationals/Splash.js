@@ -1,6 +1,6 @@
-import React from "react";
-import { View } from "react-native";
-import { Image } from "react-native-animatable-promise";
+import React from 'react'
+import { View } from 'react-native'
+import { Image } from 'react-native-animatable-promise'
 
 export default class Splash extends React.PureComponent {
 	render() {
@@ -8,14 +8,11 @@ export default class Splash extends React.PureComponent {
 			<View style={{ flex: 1, backgroundColor: "#ffffff", alignItems: 'center' }}>
 				<Image
 					useNativeDriver={true}
-					animation="swing"
-					iterationCount="infinite"
-					duration={2000}
+					animation="fadeOutRightBig"
+					duration={6000}
 					style={{
-						flex: 1,
-						resizeMode: "contain",
-						width: 170,
-						height: 170
+						flex:1,
+						resizeMode: "contain"
 					}}
 					source={require("../../../assets/splash.png")}
 					onLoadEnd={

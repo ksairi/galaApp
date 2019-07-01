@@ -1,12 +1,15 @@
 {
-	"name": "GalaApp",
+	"name": "galapp",
 	"version": "0.1.8",
 	"private": true,
 	"devDependencies": {
 		"babel-plugin-module-resolver": "3.1.1",
 		"flow-bin": "0.81.0",
 		"jest-expo": "30.0.0",
-		"react-test-renderer": "16.5.2"
+		"react-test-renderer": "16.5.2",
+		"babel-core": "^6.26.3",
+		"babel-eslint": "^6.0.1",
+		"standard": "^7.1.2"
 	},
 	"main": "./node_modules/expo/AppEntry.js",
 	"scripts": {
@@ -16,10 +19,23 @@
 		"ios": "expo start --ios",
 		"test": "jest",
 		"react-devtools": "react-devtools",
-		"flow": "flow"
+		"flow": "flow",
+		"lint": "node_modules/standard/bin/cmd.js",
+		"lint:fix": "node_modules/standard/bin/cmd.js --fix",
+		"deploy:ios": "expo build:ios && expo upload:ios",
+		"deploy:android": "expo build:android && expo upload:android"
 	},
 	"jest": {
 		"preset": "jest-expo"
+	},
+	"standard": {
+		"parser": "babel-eslint",
+		"globals": [
+			"__DEV__",
+			"FormData",
+			"Expo",
+			"fetch"
+		]
 	},
 	"dependencies": {
 		"expo": "30.0.0",
