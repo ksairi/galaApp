@@ -11,7 +11,7 @@
 		"scheme": "galaApp",
 		"splash": {
 			"image": "./assets/splash.png",
-			"backgroundColor": "#000000"
+			"backgroundColor": "#ffffff"
 		},
 		"assetBundlePatterns": [
 			"app/assets/**",
@@ -34,7 +34,7 @@
 				}
 			},
 			"splash": {
-				"backgroundColor": "#000000",
+				"backgroundColor": "#ffffff",
 				"resizeMode": "contain",
 				"mdpi": "./assets/splash_a_X1.png",
 				"hdpi": "./assets/splash_a_X1_5.png",

@@ -5,7 +5,7 @@ import { Image } from "react-native-animatable-promise";
 export default class Splash extends React.PureComponent {
 	render() {
 		return (
-			<View style={{ flex: 1, backgroundColor: "#000000" }}>
+			<View style={{ flex: 1, backgroundColor: "#ffffff", alignItems: 'center' }}>
 				<Image
 					useNativeDriver={true}
 					animation="swing"
@@ -14,8 +14,8 @@ export default class Splash extends React.PureComponent {
 					style={{
 						flex: 1,
 						resizeMode: "contain",
-						width: undefined,
-						height: undefined
+						width: 170,
+						height: 170
 					}}
 					source={require("../../../assets/splash.png")}
 					onLoadEnd={
