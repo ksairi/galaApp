@@ -9,7 +9,7 @@ import {
 } from 'react-native'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { connect } from 'react-redux'
-import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
+// import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import * as Animatable from 'react-native-animatable-promise'
 import { Messages, Screens } from '/config/settings'
 import { login } from '/helpers/LoginHelper'
@@ -31,7 +31,7 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
 
-RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
+// RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   animatedLogoInitStyle: { flex: 1, fontSize: 55 },
@@ -210,7 +210,7 @@ export default class SignIn extends React.Component {
                     />
                   )}
 
-                <RkTextInput
+                {/* <RkTextInput
                   rkType='rounded inputText'
                   style={{
                     marginBottom: 0,
@@ -249,7 +249,7 @@ export default class SignIn extends React.Component {
                   ref='passwordInput'
                   onSubmitEditing={this.signIn}
                   onFocus={this.onInputTextFocus}
-                />
+                /> */}
 
                 <View
                   style={[

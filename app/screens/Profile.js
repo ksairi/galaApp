@@ -4,7 +4,7 @@ import GScrollView from '/components/presentationals/GenericScrollView'
 import { Permissions } from 'expo'
 import { FontAwesome } from '@expo/vector-icons'
 import { connect } from 'react-redux'
-import { RkButton } from 'react-native-ui-kitten'
+// import { RkButton } from 'react-native-ui-kitten'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import { Screens } from '/config/settings'
 import GenericText from '/components/presentationals/GenericText'
@@ -182,7 +182,7 @@ export default class Profile extends React.Component {
             useNativeDriver
             animation={'slideInLeft'}
             style={{ flexDirection: 'row', flex: 1 }}>
-            <RkButton
+            {/* <RkButton
               shapeType='outline'
               style={{
                 backgroundColor: '#12194d',
@@ -197,7 +197,7 @@ export default class Profile extends React.Component {
               }}
               onPress={this.goToSettings}>
               CONFIGURACIÓN
-            </RkButton>
+            </RkButton> */}
           </Animatable.View>
         </RootWrapper>
       </GScrollView>

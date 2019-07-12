@@ -3,12 +3,9 @@
 	"version": "0.1.8",
 	"private": true,
 	"devDependencies": {
-		"babel-plugin-module-resolver": "3.1.1",
-		"flow-bin": "0.81.0",
-		"jest-expo": "30.0.0",
-		"react-test-renderer": "16.5.2",
-		"babel-core": "^6.26.3",
 		"babel-eslint": "^6.0.1",
+		"babel-plugin-module-resolver": "3.1.1",
+		"babel-preset-expo": "^5.0.0",
 		"standard": "^7.1.2"
 	},
 	"main": "./node_modules/expo/AppEntry.js",
@@ -38,10 +35,11 @@
 		]
 	},
 	"dependencies": {
-		"expo": "30.0.0",
+		"expo": "33.0.0",
 		"expo-analytics": "1.0.7",
-		"react": "16.5.2",
-		"react-native": "https://github.com/expo/react-native/archive/sdk-30.0.0.tar.gz",
+		"expo-constants": "~5.0.0",
+		"react": "16.8.3",
+		"react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
 		"react-native-animatable-promise": "1.2.4",
 		"react-native-auto-height-image": "1.0.1",
 		"react-native-carousel-control-fork": "https://github.com/ksairi/react-native-carousel-control/archive/v1.0.tar.gz",
@@ -50,7 +48,6 @@
 		"react-native-image-slider-fork": "https://github.com/ksairi/react-native-image-slider/archive/v1.0.tar.gz",
 		"react-native-loading-spinner-overlay": "0.5.2",
 		"react-native-timeline-listview": "0.2.3",
-		"react-native-ui-kitten": "3.0.0",
 		"react-navigation": "2.17.0",
 		"react-redux": "5.0.7",
 		"redux": "4.0.0",

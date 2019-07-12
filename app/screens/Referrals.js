@@ -1,7 +1,7 @@
 import React from 'react'
 import { Keyboard, View, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
-import { RkTextInput, RkTheme } from 'react-native-ui-kitten'
+// import { RkTextInput, RkTheme } from 'react-native-ui-kitten'
 import GenericText from '/components/presentationals/GenericText'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import { Messages, Screens } from '/config/settings'
@@ -39,7 +39,7 @@ const styles = {
   }
 }
 
-RkTheme.setType('RkTextInput', 'referralInputText', styles.textInputStyle)
+// RkTheme.setType('RkTextInput', 'referralInputText', styles.textInputStyle)
 
 @connect(state => ({
   userId: state.userData.userId,
@@ -138,7 +138,7 @@ export default class Referrals extends React.Component {
               </View>
             )}
             <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-              <RkTextInput
+              {/* <RkTextInput
                 rkType='outline referralInputText'
                 placeholder='INGRESÁ MAIL'
                 autoFocus
@@ -150,7 +150,7 @@ export default class Referrals extends React.Component {
                 autoCorrect={false}
                 value={this.state.mail}
                 onFocus={this.onFocus}
-              />
+              /> */}
             </View>
             {this.state.message && (
               <GenericText

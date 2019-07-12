@@ -12,7 +12,7 @@ import { Messages, Screens } from '/config/settings'
 import { resetPassword } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { ActionsCreators } from '/redux/actions'
-import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
+// import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/GenericButton'
@@ -23,7 +23,7 @@ import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
 import Header from '/components/containers/Header'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 
-RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
+// RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   resetPasswordTitle: {
@@ -141,7 +141,7 @@ export default class ResetPassword extends React.Component {
                     ? 'INGRESÁ UNA NUEVA CONTRASEÑA'
                     : 'RECUPERÁ TU CONTRASEÑA'}
                 </GenericText>
-                {!this.props.inResetFirstPasswordMode && (
+                {/* {!this.props.inResetFirstPasswordMode && (
                   <RkTextInput
                     rkType='rounded inputText'
                     style={this.state.componentsStyle.inputTextStyle}
@@ -188,7 +188,7 @@ export default class ResetPassword extends React.Component {
                   ref='confirmPasswordInput'
                   value={this.state.confirmPassword}
                   onFocus={this.onTextInputOnFocus}
-                />
+                /> */}
 
                 <View
                   style={[

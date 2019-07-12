@@ -1,6 +1,7 @@
 import React from 'react'
 import { View, StatusBar, Platform } from 'react-native'
 import { SafeAreaView } from 'react-navigation'
+import Constants from 'expo-constants'
 
 export default class MyStatusBar extends React.PureComponent {
   render () {
@@ -23,7 +24,7 @@ export default class MyStatusBar extends React.PureComponent {
         return (
           <View
             style={[
-              { height: Expo.Constants.statusBarHeight },
+              { height: Constants.statusBarHeight },
               { backgroundColor: this.props.backgroundColor }
             ]}>
             <StatusBar

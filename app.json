@@ -6,7 +6,7 @@
 		"privacy": "public",
 		"version": "1.0",
 		"githubUrl": "https://github.com/ksairi/galaApp",
-		"sdkVersion": "30.0.0",
+		"sdkVersion": "33.0.0",
 		"primaryColor": "#0b1143",
 		"scheme": "galaapp",
 		"splash": {

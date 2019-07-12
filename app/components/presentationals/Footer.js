@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Linking } from 'react-native'
-import { RkButton } from 'react-native-ui-kitten'
+// import { RkButton } from 'react-native-ui-kitten'
 import Icon from '/helpers/ImageHelper'
 import GenericText from '/components/presentationals/GenericText'
 import { FontAwesome } from '@expo/vector-icons'
@@ -28,7 +28,7 @@ export default class Footer extends React.PureComponent {
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <View style={{ flexDirection: 'row', flex: -1, paddingBottom: 20 }}>
-          <RkButton
+          {/* <RkButton
             rkType='rounded'
             style={styles.button}
             onPress={this.openUrl('https://www.instagram.com/gala.gym/')}>
@@ -49,7 +49,7 @@ export default class Footer extends React.PureComponent {
               'https://www.facebook.com/pg/GalaGymBA/posts/'
             )}>
             <Icon name='facebook' size={iconFontSize} color='white' />
-          </RkButton>
+          </RkButton> */}
         </View>
         <View
           style={{ flex: -1, alignItems: 'center', justifyContent: 'center' }}>

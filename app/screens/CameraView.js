@@ -7,7 +7,8 @@ import {
   ImageBackground
 } from 'react-native'
 import { connect } from 'react-redux'
-import { Camera, FileSystem, Constants } from 'expo'
+import { Camera, FileSystem } from 'expo'
+import Constants from 'expo-constants'
 import { Ionicons, MaterialIcons, Entypo } from '@expo/vector-icons'
 import { Messages, Screens, AnalitycsEventsLabels } from '/config/settings'
 import { ActionsCreators } from '/redux/actions'

@@ -12,7 +12,7 @@ import { Messages, Screens } from '/config/settings'
 import { register } from '/helpers/LoginHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { getDeviceId } from '/helpers/NotificationsHelper'
-import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
+// import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/GenericButton'
@@ -27,7 +27,7 @@ import {
 import Header from '/components/containers/Header'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 
-RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
+// RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   registerAccountTitle: {
@@ -221,7 +221,7 @@ export default class SignUp extends React.Component {
                   ]}>
                   REGISTRAR CUENTA
                 </GenericText>
-                <RkTextInput
+                {/* <RkTextInput
                   rkType='rounded inputText'
                   style={this.state.componentsStyle.textInputStyle}
                   placeholder='Nombre'
@@ -279,7 +279,7 @@ export default class SignUp extends React.Component {
                   onChangeText={this.onConfirmPasswordChangeText}
                   onSubmitEditing={this.signUp}
                   onFocus={this.onInputTextOnFocus}
-                />
+                /> */}
 
                 <View
                   style={[

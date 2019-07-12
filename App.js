@@ -1,4 +1,5 @@
 import React from 'react'
+import { YellowBox } from 'react-native'
 import { Provider } from 'react-redux'
 import { Font, SplashScreen } from 'expo'
 import { PersistGate } from 'redux-persist/integration/react'
@@ -69,4 +70,4 @@ export default class App extends React.Component {
   }
 }
 
-console.ignoredYellowBox = ['Setting a timer', 'Remote debugger']
+YellowBox.ignoreWarnings(['Setting a timer', 'Remote debugger', 'Warning: ListView is deprecated'])

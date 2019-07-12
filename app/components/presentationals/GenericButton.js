@@ -1,5 +1,5 @@
 import React from 'react'
-import { RkButton } from 'react-native-ui-kitten'
+// import { RkButton } from 'react-native-ui-kitten'
 
 const styles = {
   buttonStyle: {
@@ -19,14 +19,14 @@ export default class GenericButton extends React.PureComponent {
     if (this.props.shapeType) {
       shapeType = this.props.shapeType
     }
-    return (
-      <RkButton
-        rkType={shapeType}
-        style={[styles.buttonStyle, this.props.style]}
-        contentStyle={[styles.buttonContent, this.props.contentStyle]}
-        onPress={this.props.onPress}>
-        {this.props.text}
-      </RkButton>
+    return (null
+      // <RkButton
+      //   rkType={shapeType}
+      //   style={[styles.buttonStyle, this.props.style]}
+      //   contentStyle={[styles.buttonContent, this.props.contentStyle]}
+      //   onPress={this.props.onPress}>
+      //   {this.props.text}
+      // </RkButton>
     )
   }
 }
