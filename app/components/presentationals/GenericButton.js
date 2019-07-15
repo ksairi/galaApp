@@ -1,32 +1,32 @@
-import React from 'react'
-// import { RkButton } from 'react-native-ui-kitten'
+import React, {Component} from 'react'
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native'
 
-const styles = {
-  buttonStyle: {
-    backgroundColor: '#6b35e3',
-    flex: 1
+export default class App extends Component {
+  render () {
+    return (
+      <TouchableOpacity style={[styles.container, this.props.containerStyle]} onPress={this.props.onPress}>
+        <View style={[styles.myButton, this.props.buttonStyle]}>
+          <Text style={[styles.text, this.props.textStyle]}>{this.props.text}</Text>
+        </View>
+      </TouchableOpacity>
+    )
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: 'transparent'
   },
-  buttonContent: {
+  myButton: {
+    padding: 15,
+    borderRadius: 40,
+    backgroundColor: '#6b35e3',
+    alignItems: 'center'
+  },
+  text: {
     color: 'white',
     fontSize: 19,
     fontFamily: 'lato-regular'
   }
-}
-
-export default class GenericButton extends React.PureComponent {
-  render () {
-    var shapeType = 'rounded'
-    if (this.props.shapeType) {
-      shapeType = this.props.shapeType
-    }
-    return (null
-      // <RkButton
-      //   rkType={shapeType}
-      //   style={[styles.buttonStyle, this.props.style]}
-      //   contentStyle={[styles.buttonContent, this.props.contentStyle]}
-      //   onPress={this.props.onPress}>
-      //   {this.props.text}
-      // </RkButton>
-    )
-  }
-}
+})

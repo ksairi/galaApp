@@ -103,7 +103,7 @@ export default class Welcome extends React.PureComponent {
           </View>
           <View style={{ flexDirection: 'row', flex: 0.4 }}>
             <AnimatedButton
-              contentStyle={{ fontFamily: 'brother-1816-bold' }}
+              textStyle={{ fontFamily: 'brother-1816-bold', fontSize: 21 }}
               text='EXPLORÁ LA APP'
               onPress={this.goToLogin}
               ref={this.handleAnimatedButton}

@@ -7,9 +7,9 @@ import {
   Platform,
   TouchableWithoutFeedback
 } from 'react-native'
+import { ScreenOrientation } from 'expo'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { connect } from 'react-redux'
-// import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import * as Animatable from 'react-native-animatable-promise'
 import { Messages, Screens } from '/config/settings'
 import { login } from '/helpers/LoginHelper'
@@ -28,10 +28,9 @@ import {
 import { getDeviceId } from '/helpers/NotificationsHelper'
 import { ActionsCreators } from '/redux/actions'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import RoundedTextInput from '/components/presentationals/RoundedTextInput'
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
-
-// RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
 
 const styles = {
   animatedLogoInitStyle: { flex: 1, fontSize: 55 },
@@ -44,15 +43,15 @@ const styles = {
 
   rootWrapperStyle: { paddingTop: 10, padding: 0 },
   hiddenKeyboardComponentsStyle: {
-    passwordInputStyle: { marginBottom: 10 },
+    passwordContainerStyle: { marginBottom: 10 },
     buttonContainerStyle: { flex: 0.68 },
-    buttonStyle: { height: 40 },
+    buttonStyle: { height: 50 },
     linksContainerStyle: { flex: 0.7 },
     firstLinkStyle: { flex: 0.5 },
     secondLinkStyle: { flex: 0.5 }
   },
   showingKeyboardComponentsStyle: {
-    passwordInputStyle: { marginBottom: 5 },
+    passwordContainerStyle: { marginBottom: 5 },
     linksContainerStyle: { flex: 0.9 },
     firstLinkStyle: { flex: 0.3 },
     secondLinkStyle: { flex: 0.3 }
@@ -60,13 +59,15 @@ const styles = {
   landscape: {
     showingKeyboardComponentsStyle: {
       buttonContainerStyle: { flex: 0.47 },
-      buttonStyle: { height: 28 },
-      buttonContentStyle: { fontSize: 12 },
+      buttonStyle: { height: 45 },
+      textStyle: { fontSize: 12 },
       logoStyle: { flex: 0.45, fontSize: 23 },
       linksContainerStyle: { flex: 0.7 },
-      firstLinkStyle: { flex: 0.5 },
+      firstLinkStyle: { flex: 0.3 },
       secondLinkStyle: { flex: 0.5 },
-      passwordInputStyle: { marginBottom: 0, marginTop: 0 }
+      passwordContainerStyle: { marginBottom: 0, marginTop: 0, flex: 0.4 },
+      inputStyle: {height: 30},
+      inputContainerStyle: {flex: 0.4}
     }
   }
 }
@@ -107,7 +108,7 @@ export default class SignIn extends React.Component {
 
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.SignIn)
-    Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.ALL)
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL)
     if (this.props.isLoggedIn) {
       this.setState({
         userId: this.props.userData.userId,
@@ -210,46 +211,48 @@ export default class SignIn extends React.Component {
                     />
                   )}
 
-                {/* <RkTextInput
-                  rkType='rounded inputText'
-                  style={{
+                <RoundedTextInput
+                  containerStyle={[{
                     marginBottom: 0,
-                    flex: 0.5,
                     marginLeft: containerPadding,
                     marginRight: containerPadding
+                  }, genericTextInputStyle.container,
+                  this.state.componentsStyle.inputContainerStyle]}
+                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputStyle]}
+                  inputProps={{
+                    placeholder: 'DNI',
+                    keyboardType: 'numeric',
+                    autoFocus: true,
+                    onChangeText: this.onUserIdChangeText,
+                    onSubmitEditing: this.onSubmitUserId,
+                    returnKeyType: 'next',
+                    autoCapitalize: 'none',
+                    autoCorrectfalse: true,
+                    onFocus: this.onInputTextFocus
                   }}
-                  placeholder='DNI'
-                  keyboardType='numeric'
-                  autoFocus
-                  onChangeText={this.onUserIdChangeText}
-                  onSubmitEditing={this.onSubmitUserId}
-                  returnKeyType='next'
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  onFocus={this.onInputTextFocus}
                 />
 
-                <RkTextInput
-                  rkType='rounded inputText'
-                  style={[
-                    this.state.componentsStyle.passwordInputStyle,
+                <RoundedTextInput
+                  containerStyle={[
                     {
-                      flex: 0.5,
                       marginLeft: containerPadding,
                       marginRight: containerPadding
-                    }
-                  ]}
-                  placeholder='Contraseña'
-                  secureTextEntry
-                  onChangeText={this.onPasswordChangeText}
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  returnKeyType='done'
-                  keyboardType='default'
-                  ref='passwordInput'
-                  onSubmitEditing={this.signIn}
-                  onFocus={this.onInputTextFocus}
-                /> */}
+                    }, genericTextInputStyle.container,
+                    this.state.componentsStyle.passwordContainerStyle]}
+                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputStyle]}
+                  inputProps={{
+                    placeholder: 'Contraseña',
+                    secureTextEntry: true,
+                    onChangeText: this.onPasswordChangeText,
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
+                    returnKeyType: 'done',
+                    keyboardType: 'default',
+                    ref: 'passwordInput',
+                    onSubmitEditing: this.signIn,
+                    onFocus: this.onInputTextFocus
+                  }}
+                />
 
                 <View
                   style={[
@@ -261,8 +264,8 @@ export default class SignIn extends React.Component {
                     this.state.componentsStyle.buttonContainerStyle
                   ]}>
                   <Button
-                    style={this.state.componentsStyle.buttonStyle}
-                    contentStyle={this.state.componentsStyle.buttonContentStyle}
+                    buttonStyle={this.state.componentsStyle.buttonStyle}
+                    textStyle={this.state.componentsStyle.textStyle}
                     text='INICIAR SESIÓN'
                     onPress={this.signIn}
                   />

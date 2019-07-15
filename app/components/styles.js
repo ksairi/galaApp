@@ -1,10 +1,10 @@
 export const genericBackgroundColor = '#0b1143'
 export const genericTextInputStyle = {
-  backgroundColor: '#12194d',
-  color: 'white',
-  flex: 1,
+  container: {
+    flex: 1
+  },
   input: {
-    placeholderTextColor: 'white',
+    color: 'white',
     fontSize: 20,
     fontFamily: 'lato-regular'
   }
