@@ -7,12 +7,12 @@ import {
   TouchableWithoutFeedback,
   BackHandler
 } from 'react-native'
+import { ScreenOrientation } from 'expo'
 import { connect } from 'react-redux'
 import { Messages, Screens } from '/config/settings'
 import { resetPassword } from '/helpers/ApiHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { ActionsCreators } from '/redux/actions'
-// import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/GenericButton'
@@ -22,8 +22,7 @@ import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
 import Header from '/components/containers/Header'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
-
-// RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
+import RoundedTextInput from '/components/presentationals/RoundedTextInput'
 
 const styles = {
   resetPasswordTitle: {
@@ -31,15 +30,17 @@ const styles = {
     fontFamily: 'brother-1816-bold'
   },
   hiddenKeyboardComponentsStyle: {
+    textInputContainerStyle: { flex: 0.15 },
     rootWrapperStyle: { paddingTop: 15 },
-    inputTextStyle: { flex: 0.15, marginTop: 0 },
-    buttonContainerStyle: { flex: 0.25 },
+    inputTextStyle: { flex: 0.4, marginTop: 0 },
+    buttonContainerStyle: { flex: 0.2 },
     messageStyle: { flex: 0.2 },
     resetPasswordTitle: { flex: 0.1 }
   },
   showingKeyboardComponentsStyle: {
+    textInputContainerStyle: { flex: 0.17 },
     rootWrapperStyle: { paddingTop: 5 },
-    inputTextStyle: { flex: 0.1, marginTop: 0 },
+    inputTextStyle: { flex: 0.45, marginTop: 0 },
     buttonContainerStyle: { flex: 0.15 },
     titleStyle: { flex: 0.1 },
     resetPasswordTitle: { flex: 0.15 }
@@ -68,7 +69,7 @@ export default class ResetPassword extends React.Component {
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.ResetPassword)
     if (Platform.OS === 'ios') {
-      Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT)
+      ScreenOrientation.lockAsync(Expo.ScreenOrientation.OrientationLock.PORTRAIT)
     }
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -141,55 +142,62 @@ export default class ResetPassword extends React.Component {
                     ? 'INGRESÁ UNA NUEVA CONTRASEÑA'
                     : 'RECUPERÁ TU CONTRASEÑA'}
                 </GenericText>
-                {/* {!this.props.inResetFirstPasswordMode && (
-                  <RkTextInput
-                    rkType='rounded inputText'
-                    style={this.state.componentsStyle.inputTextStyle}
-                    autoFocus
-                    keyboardType='numeric'
-                    placeholder='DNI'
-                    returnKeyType='next'
-                    autoCorrect={false}
-                    onChangeText={this.onUserIdChangeText}
-                    onSubmitEditing={this.onSubmitUserId}
-                    value={this.state.userId}
-                    onFocus={this.onTextInputOnFocus}
-                  />
-                )}
 
-                <RkTextInput
-                  rkType='rounded inputText'
-                  style={this.state.componentsStyle.inputTextStyle}
-                  placeholder='Contraseña'
-                  autoFocus={this.props.inResetFirstPasswordMode}
-                  secureTextEntry
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  returnKeyType='next'
-                  keyboardType='default'
-                  onChangeText={this.onPasswordChangeText}
-                  onSubmitEditing={this.onSubmitPassword}
-                  ref='passwordInput'
-                  value={this.state.password}
-                  onFocus={this.onTextInputOnFocus}
+                {!this.props.inResetFirstPasswordMode && (
+
+                  <RoundedTextInput
+                    containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                    inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputTextStyle]}
+                    inputProps={{
+                      placeholder: 'DNI',
+                      keyboardType: 'numeric',
+                      autoFocus: true,
+                      onChangeText: this.onUserIdChangeText,
+                      onSubmitEditing: this.onSubmitUserId,
+                      returnKeyType: 'next',
+                      autoCorrect: false,
+                      value: this.state.userId,
+                      onFocus: this.onTextInputOnFocus
+                    }}
+                />
+                )}
+                <RoundedTextInput
+                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputTextStyle]}
+                  inputProps={{
+                    placeholder: 'Contraseña',
+                    autoFocus: this.props.inResetFirstPasswordMode,
+                    secureTextEntry: true,
+                    onChangeText: this.onPasswordChangeText,
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
+                    returnKeyType: 'next',
+                    keyboardType: 'default',
+                    ref: 'passwordInput',
+                    onSubmitEditing: this.onSubmitPassword,
+                    onFocus: this.onTextInputOnFocus
+                  }}
                 />
 
-                <RkTextInput
-                  rkType='rounded inputText'
-                  style={this.state.componentsStyle.inputTextStyle}
-                  placeholder='Confirmá la contraseña'
-                  secureTextEntry
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  returnKeyType='done'
-                  keyboardType='default'
-                  onChangeText={this.onConfirmPasswordChangeText}
-                  onSubmitEditing={this.doResetPassword}
-                  ref='confirmPasswordInput'
-                  value={this.state.confirmPassword}
-                  onFocus={this.onTextInputOnFocus}
-                /> */}
-
+                <RoundedTextInput
+                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  inputStyle={[
+                    genericTextInputStyle.input,
+                    this.state.componentsStyle.inputTextStyle
+                  ]}
+                  inputProps={{
+                    placeholder: 'Confirmar Contraseña',
+                    secureTextEntry: true,
+                    onChangeText: this.onConfirmPasswordChangeText,
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
+                    returnKeyType: 'done',
+                    keyboardType: 'default',
+                    ref: 'confirmPasswordInput',
+                    onSubmitEditing: this.doResetPassword,
+                    onFocus: this.onTextInputOnFocus
+                  }}
+                />
                 <View
                   style={[
                     { flexDirection: 'row' },

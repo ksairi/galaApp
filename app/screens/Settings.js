@@ -9,12 +9,6 @@ import { synchMemberProperties } from '/helpers/UserDataHelper'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 
 const styles = {
-  title: {
-    fontFamily:	'lato-regular',
-    fontSize: 20,
-    flex: 0.1,
-    color: 'white'
-  },
   settingsWrapper: { flex: 0.4 },
   settingItem: {
     flexDirection: 'row',
@@ -86,7 +80,6 @@ export default class Settings extends React.Component {
     return (
       <GScrollView>
         <RootWrapper>
-          <Text style={styles.title}>CONFIGURACIÓN DE PERFIL</Text>
           <View style={styles.settingsWrapper}>
             <View style={styles.settingItem}>
               <Text style={styles.settingText}>Recibir Notificaciones</Text>
@@ -97,11 +90,8 @@ export default class Settings extends React.Component {
                     ? true
                     : this.props.receiveNotifications.value
                 }
-                tintColor='grey'
-                onTintColor='white'
-                thumbTintColor={
-                  this.state.receiveNotifications ? 'green' : 'grey'
-                }
+                ios_backgroundColor='grey'
+                trackColor='green'
                 onValueChange={value => {
                   this.onValueChange(value)
                 }}

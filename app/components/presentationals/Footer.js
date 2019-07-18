@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Linking } from 'react-native'
-// import { RkButton } from 'react-native-ui-kitten'
+import Button from '/components/presentationals/GenericButton'
 import Icon from '/helpers/ImageHelper'
 import GenericText from '/components/presentationals/GenericText'
 import { FontAwesome } from '@expo/vector-icons'
@@ -9,7 +9,7 @@ const styles = {
   button: {
     backgroundColor: '#12194d',
     width: 70,
-    height: 60,
+    height: 70,
     marginRight: 20
   },
   text: {
@@ -26,30 +26,27 @@ export default class Footer extends React.PureComponent {
   render () {
     const iconFontSize = 30
     return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <View style={{ flexDirection: 'row', flex: -1, paddingBottom: 20 }}>
-          {/* <RkButton
-            rkType='rounded'
-            style={styles.button}
+      <View style={{ flex: 1 }}>
+        <View style={{ flexDirection: 'row', flex: -1, paddingTop: 20 }}>
+          <Button
+            buttonStyle={styles.button}
             onPress={this.openUrl('https://www.instagram.com/gala.gym/')}>
             <Icon name='instagram' size={iconFontSize} color='white' />
-          </RkButton>
-          <RkButton
-            rkType='rounded'
-            style={styles.button}
+          </Button>
+          <Button
+            buttonStyle={styles.button}
             onPress={this.openUrl(
               'https://www.youtube.com/channel/UCFxjOj3tJ3Zfe9nEKNzCyDw'
             )}>
             <FontAwesome name='youtube' size={37} color='white' />
-          </RkButton>
-          <RkButton
-            rkType='rounded'
-            style={styles.button}
+          </Button>
+          <Button
+            buttonStyle={styles.button}
             onPress={this.openUrl(
               'https://www.facebook.com/pg/GalaGymBA/posts/'
             )}>
             <Icon name='facebook' size={iconFontSize} color='white' />
-          </RkButton> */}
+          </Button>
         </View>
         <View
           style={{ flex: -1, alignItems: 'center', justifyContent: 'center' }}>

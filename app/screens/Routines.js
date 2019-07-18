@@ -1,7 +1,7 @@
 import React from 'react'
 import { View } from 'react-native'
 import GScrollView from '/components/presentationals/GenericScrollView'
-// import { RkButton } from 'react-native-ui-kitten'
+import Button from '/components/presentationals/GenericButton'
 import { connect } from 'react-redux'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import GenericText from '/components/presentationals/GenericText'
@@ -59,22 +59,21 @@ export default class Routines extends React.Component {
           marginRight: 20,
           marginTop: 15
         }}>
-        {/* <RkButton
-          shapeType='outline'
-          style={{
+        <Button
+          buttonStyle={{
             backgroundColor: '#12194d',
             flex: 1,
             paddingLeft: 10,
             justifyContent: 'flex-start',
             height: 60
           }}
-          contentStyle={{
-            fontSize: 22,
+          textStyle={{
+            fontSize: 20,
             fontFamily: 'brother-1816-bold'
           }}
-          onPress={this.seeRoutine(routine)}>
-          {routine.description.toUpperCase()}
-        </RkButton> */}
+          onPress={this.seeRoutine(routine)}
+          text={routine.description.toUpperCase()}
+        />
       </Animatable.View>
     ))
     return (

@@ -227,7 +227,7 @@ export default class SignIn extends React.Component {
                     onSubmitEditing: this.onSubmitUserId,
                     returnKeyType: 'next',
                     autoCapitalize: 'none',
-                    autoCorrectfalse: true,
+                    autoCorrect: true,
                     onFocus: this.onInputTextFocus
                   }}
                 />

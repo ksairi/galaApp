@@ -6,7 +6,8 @@ export default class App extends Component {
     return (
       <TouchableOpacity style={[styles.container, this.props.containerStyle]} onPress={this.props.onPress}>
         <View style={[styles.myButton, this.props.buttonStyle]}>
-          <Text style={[styles.text, this.props.textStyle]}>{this.props.text}</Text>
+          {this.props.text && <Text style={[styles.text, this.props.textStyle]}>{this.props.text}</Text>}
+          {this.props.children}
         </View>
       </TouchableOpacity>
     )
@@ -22,7 +23,8 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 40,
     backgroundColor: '#6b35e3',
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   text: {
     color: 'white',

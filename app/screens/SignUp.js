@@ -7,12 +7,12 @@ import {
   TouchableWithoutFeedback,
   BackHandler
 } from 'react-native'
+import { ScreenOrientation } from 'expo'
 import { connect } from 'react-redux'
 import { Messages, Screens } from '/config/settings'
 import { register } from '/helpers/LoginHelper'
 import ValidationHelper from '/helpers/ValidationHelper'
 import { getDeviceId } from '/helpers/NotificationsHelper'
-// import { RkTheme, RkTextInput } from 'react-native-ui-kitten'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import Button from '/components/presentationals/GenericButton'
@@ -26,8 +26,7 @@ import {
 } from '/components/styles'
 import Header from '/components/containers/Header'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
-
-// RkTheme.setType('RkTextInput', 'inputText', genericTextInputStyle)
+import RoundedTextInput from '/components/presentationals/RoundedTextInput'
 
 const styles = {
   registerAccountTitle: {
@@ -35,16 +34,18 @@ const styles = {
     fontFamily: 'brother-1816-bold'
   },
   hiddenKeyboardComponentsStyle: {
+    textInputContainerStyle: { marginTop: 10, marginBottom: 10 },
     buttonContainerStyle: { flex: 1 },
-    buttonStyle: { height: 40 },
+    buttonStyle: { height: 50 },
     memeberAlreadyStyle: { flex: 0.4 }
   },
   showingKeyboardComponentsStyle: {
-    textInputStyle: { marginTop: 0, marginBottom: 3, flex: 0.15 },
+    textInputStyle: { flex: 0.6 },
+    textInputContainerStyle: { flex: 0.3 },
     titleStyle: { flex: 0.15 },
-    buttonContainerStyle: { flex: 0.17 },
-    buttonStyle: { height: 30 },
-    buttonContentStyle: { fontSize: 14 },
+    buttonContainerStyle: { flex: 0.30 },
+    buttonStyle: { height: 50 },
+    buttonContentStyle: { fontSize: 15 },
     memeberAlreadyStyle: { flex: 0.6 },
     confirmPassInputStyle: { marginBottom: 0 }
   }
@@ -74,7 +75,7 @@ export default class SignUp extends React.Component {
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.SignUp)
     if (Platform.OS === 'ios') {
-      Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT)
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
     }
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',
@@ -221,65 +222,74 @@ export default class SignUp extends React.Component {
                   ]}>
                   REGISTRAR CUENTA
                 </GenericText>
-                {/* <RkTextInput
-                  rkType='rounded inputText'
-                  style={this.state.componentsStyle.textInputStyle}
-                  placeholder='Nombre'
-                  autoFocus
-                  returnKeyType='next'
-                  keyboardType='default'
-                  autoCapitalize='words'
-                  autoCorrect={false}
-                  onChangeText={this.onFullNameChangeText}
-                  onSubmitEditing={this.onSubmitUserFullName}
-                  onFocus={this.onInputTextOnFocus}
+
+                <RoundedTextInput
+                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.textInputStyle]}
+                  inputProps={{
+                    placeholder: 'DNI',
+                    keyboardType: 'numeric',
+                    autoFocus: true,
+                    onChangeText: this.onUserIdChangeText,
+                    onSubmitEditing: this.onSubmitUserId,
+                    returnKeyType: 'next',
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
+                    onFocus: this.onInputTextOnFocus
+                  }}
+                />
+                <RoundedTextInput
+                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.textInputStyle]}
+                  inputProps={{
+                    placeholder: 'Nombre',
+                    onChangeText: this.onFullNameChangeText,
+                    onSubmitEditing: this.onSubmitUserFullName,
+                    returnKeyType: 'next',
+                    keyboardType: 'default',
+                    autoCapitalize: 'words',
+                    autoCorrect: false,
+                    onFocus: this.onInputTextOnFocus
+                  }}
                 />
 
-                <RkTextInput
-                  rkType='rounded inputText'
-                  style={this.state.componentsStyle.textInputStyle}
-                  placeholder='DNI'
-                  returnKeyType='next'
-                  keyboardType='numeric'
-                  autoCorrect={false}
-                  ref='userIdInput'
-                  onChangeText={this.onUserIdChangeText}
-                  onSubmitEditing={this.onSubmitUserId}
-                  onFocus={this.onInputTextOnFocus}
+                <RoundedTextInput
+                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.textInputStyle]}
+                  inputProps={{
+                    placeholder: 'Contraseña',
+                    secureTextEntry: true,
+                    onChangeText: this.onPasswordChangeText,
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
+                    returnKeyType: 'next',
+                    keyboardType: 'default',
+                    ref: 'passwordInput',
+                    onSubmitEditing: this.onSubmitPassword,
+                    onFocus: this.onInputTextOnFocus
+                  }}
                 />
 
-                <RkTextInput
-                  rkType='rounded inputText'
-                  style={this.state.componentsStyle.textInputStyle}
-                  placeholder='Contraseña'
-                  secureTextEntry
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  returnKeyType='next'
-                  keyboardType='default'
-                  ref='passwordInput'
-                  onChangeText={this.onPasswordChangeText}
-                  onSubmitEditing={this.onSubmitPassword}
-                  onFocus={this.onInputTextOnFocus}
-                />
-
-                <RkTextInput
-                  rkType='rounded inputText'
-                  style={[
+                <RoundedTextInput
+                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  inputStyle={[
+                    genericTextInputStyle.input,
                     this.state.componentsStyle.textInputStyle,
                     this.state.componentsStyle.confirmPassInputStyle
                   ]}
-                  placeholder='Confirmar Contraseña'
-                  secureTextEntry
-                  autoCapitalize='none'
-                  autoCorrect={false}
-                  returnKeyType='done'
-                  keyboardType='default'
-                  ref='confirmPasswordInput'
-                  onChangeText={this.onConfirmPasswordChangeText}
-                  onSubmitEditing={this.signUp}
-                  onFocus={this.onInputTextOnFocus}
-                /> */}
+                  inputProps={{
+                    placeholder: 'Confirmar Contraseña',
+                    secureTextEntry: true,
+                    onChangeText: this.onConfirmPasswordChangeText,
+                    autoCapitalize: 'none',
+                    autoCorrect: false,
+                    returnKeyType: 'done',
+                    keyboardType: 'default',
+                    ref: 'confirmPasswordInput',
+                    onSubmitEditing: this.signUp,
+                    onFocus: this.onInputTextOnFocus
+                  }}
+                />
 
                 <View
                   style={[
@@ -287,8 +297,8 @@ export default class SignUp extends React.Component {
                     this.state.componentsStyle.buttonContainerStyle
                   ]}>
                   <Button
-                    style={this.state.componentsStyle.buttonStyle}
-                    contentStyle={this.state.componentsStyle.buttonContentStyle}
+                    buttonStyle={this.state.componentsStyle.buttonStyle}
+                    textStyle={this.state.componentsStyle.buttonContentStyle}
                     text='REGISTRARME'
                     onPress={this.signUp}
                   />

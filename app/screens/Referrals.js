@@ -1,7 +1,7 @@
 import React from 'react'
 import { Keyboard, View, TouchableWithoutFeedback } from 'react-native'
 import { connect } from 'react-redux'
-// import { RkTextInput, RkTheme } from 'react-native-ui-kitten'
+import RoundedTextInput from '/components/presentationals/RoundedTextInput'
 import GenericText from '/components/presentationals/GenericText'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import { Messages, Screens } from '/config/settings'
@@ -9,20 +9,9 @@ import { sendReferral } from '/helpers/ApiHelper'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import { isMailValid } from '/helpers/ValidationHelper'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import { genericTextInputStyle } from '/components/styles'
 
 const styles = {
-  textInputStyle: {
-    backgroundColor: '#12194d',
-    color: 'white',
-    flex: 1,
-    input: {
-      height: 25,
-      placeholderTextColor: 'white',
-      fontSize: 20,
-      fontFamily: 'brother-1816-bold',
-      textAlign: 'center'
-    }
-  },
   hiddenKeyboardComponentsStyle: {
     rootWrapper: { justifyContent: 'center' },
     title: { fontSize: 27 },
@@ -30,16 +19,13 @@ const styles = {
   },
   showingKeyboardComponentsStyle: {
     rootWrapper: { justifyContent: 'flex-start' },
-    title: { fontSize: 20 },
-    description: { fontSize: 18 }
+    title: { fontSize: 24, marginTop: 20 },
+    description: { fontSize: 22 }
   },
   landscapeStyle: {
-    title: { fontSize: 20 },
-    description: { fontSize: 16 }
+    textInput: { marginTop: 15 }
   }
 }
-
-// RkTheme.setType('RkTextInput', 'referralInputText', styles.textInputStyle)
 
 @connect(state => ({
   userId: state.userData.userId,
@@ -137,21 +123,23 @@ export default class Referrals extends React.Component {
                 </GenericText>
               </View>
             )}
-            <View style={{ flexDirection: 'row', marginBottom: 15 }}>
-              {/* <RkTextInput
-                rkType='outline referralInputText'
-                placeholder='INGRESÁ MAIL'
-                autoFocus
-                onChangeText={this.onMailChange}
-                onSubmitEditing={this.sendEmail}
-                keyboardType='email-address'
-                returnKeyType='send'
-                autoCapitalize='none'
-                autoCorrect={false}
-                value={this.state.mail}
-                onFocus={this.onFocus}
-              /> */}
-            </View>
+
+            <RoundedTextInput
+              containerStyle={[{flex: -1, alignItems: 'center'}, this.state.landscapeStyle.textInput]}
+              inputStyle={[genericTextInputStyle.input, {textAlign: 'center'}]}
+              inputProps={{
+                placeholder: 'INGRESÁ MAIL',
+                autoFocus: true,
+                onChangeText: this.onMailChange,
+                onSubmitEditing: this.sendEmail,
+                keyboardType: 'email-address',
+                returnKeyType: 'send',
+                autoCapitalize: 'none',
+                autoCorrect: false,
+                value: this.state.mail,
+                onFocus: this.onFocus
+              }}
+            />
             {this.state.message && (
               <GenericText
                 style={{
