@@ -11,7 +11,7 @@ export default class GenericScrollView extends React.PureComponent {
           },
           this.props.contentContainerStyle
         ]}
-        style={{ backgroundColor: '#12194d' }}>
+        style={[ {backgroundColor: '#12194d'}, this.props.containerStyle ]}>
         {this.props.children}
       </ScrollView>
     )

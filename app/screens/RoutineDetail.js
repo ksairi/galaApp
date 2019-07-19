@@ -16,10 +16,10 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
 const styles = {
   exerciseDetail: {
     fontFamily: 'brother-1816-bold',
-    fontSize: 12,
+    fontSize: 11.5,
     textAlign: 'left',
     flex: -1,
-    paddingRight: 5
+    paddingRight: 2
   },
   exerciseDetailLabel: {
     color: 'grey'
@@ -184,7 +184,7 @@ export default class RoutineDetail extends React.Component {
         animation='zoomIn'
         style={{ backgroundColor: 'black', paddingLeft: 5 }}>
         <View
-          style={{ flexDirection: 'row', alignItems: 'center', flex: 0.15 }}>
+          style={{ flexDirection: 'row', alignItems: 'center', height:30, marginTop: 5 }}>
           <TouchableOpacity onPress={this.goBackToRoutines}>
             <Icon
               name='arrow-navigation-white-left'
@@ -194,18 +194,19 @@ export default class RoutineDetail extends React.Component {
           <GenericText
             style={{
               fontFamily: 'brother-1816-bold',
-              fontSize: 17
+              fontSize: 17,
+              marginTop: 2
             }}>
             {this.props.currentRoutine.description.toUpperCase()}
           </GenericText>
         </View>
         <GScrollView
           contentContainerStyle={{
-            flexGrow: 1,
             backgroundColor: 'white',
             paddingLeft: 10,
             paddingRight: 3
-          }}>
+          }}
+          containerStyle={{marginLeft: 10, marginTop: 5}}>
           <Timeline
             style={{ marginTop: 20 }}
             circleSize={20}
