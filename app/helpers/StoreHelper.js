@@ -1,5 +1,6 @@
 import { ActionsCreators } from '/redux/actions'
 import { Messages } from '/config/settings'
+import * as FileSystem from 'expo-file-system'
 
 exports.setInitialData = (loginServerData, userId, password, dispatch) => {
   const { userData, newMemberData, routines } = loginServerData
@@ -87,14 +88,14 @@ export const saveDataToDevice = (
   if (data) {
     const newDataPromises = data.map(dataItem => {
       const fileUri =
-        Expo.FileSystem.documentDirectory +
+        FileSystem.documentDirectory +
         prefix +
         (dataItem.imageIndex ? dataItem.imageIndex : dataItem.id) +
         '.' +
         dataItem.imageExt
       if (dataItem.imageUrl) {
         dispatch(ActionsCreators.setIsDownloadingRemoteImages(true))
-        return Expo.FileSystem.downloadAsync(encodeURI(dataItem.imageUrl), fileUri)
+        return FileSystem.downloadAsync(encodeURI(dataItem.imageUrl), fileUri)
           .then(({ uri }) => {
             return {
               ...dataItem,
@@ -105,7 +106,7 @@ export const saveDataToDevice = (
             throw Messages.NO_SPACE_IN_DISK
           })
       } else {
-        return Expo.FileSystem.deleteAsync(fileUri, { idempotent: false })
+        return FileSystem.deleteAsync(fileUri, { idempotent: false })
           .then(() => {
             return dataItem
           })

@@ -6,7 +6,7 @@
 		"privacy": "public",
 		"version": "1.0",
 		"githubUrl": "https://github.com/ksairi/galaApp",
-		"sdkVersion": "33.0.0",
+		"sdkVersion": "34.0.0",
 		"primaryColor": "#0b1143",
 		"scheme": "galaapp",
 		"splash": {
@@ -23,7 +23,7 @@
 		],
 		"android": {
 			"package": "com.gala.galaapp",
-			"versionCode": 2,
+			"versionCode": 4,
 			"googleServicesFile": "google-services.json",
 			"playStoreUrl": "https://play.google.com/",
 			"permissions": [],
@@ -36,10 +36,12 @@
 		},
 		"ios": {
 			"bundleIdentifier": "com.gala.galaapp",
-			"buildNumber": "2",
+			"buildNumber": "3",
 			"supportsTablet": true,
 			"isTabletOnly": false,
-			"infoPlist": {},
+			"infoPlist": {
+        "NSCameraUsageDescription": "Permite el accesso para poder sacar una foto de perfil"
+      },
 			"associatedDomains": ["applinks:y0by.app.link"],
 			"usesIcloudStorage": false,
 			"config":{

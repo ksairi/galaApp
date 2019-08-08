@@ -69,7 +69,7 @@ export default class ResetPassword extends React.Component {
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.ResetPassword)
     if (Platform.OS === 'ios') {
-      ScreenOrientation.lockAsync(Expo.ScreenOrientation.OrientationLock.PORTRAIT)
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
     }
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',

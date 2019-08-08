@@ -20,7 +20,7 @@
 		"lint": "node_modules/standard/bin/cmd.js",
 		"lint:fix": "node_modules/standard/bin/cmd.js --fix",
 		"deploy:ios": "expo build:ios && expo upload:ios",
-		"deploy:android": "expo build:android && expo upload:android"
+		"deploy:android": "expo build:android -t app-bundle && expo upload:android"
 	},
 	"jest": {
 		"preset": "jest-expo"
@@ -30,17 +30,19 @@
 		"globals": [
 			"__DEV__",
 			"FormData",
-			"Expo",
 			"fetch"
 		]
 	},
 	"dependencies": {
-		"expo": "33.0.0",
-		"expo-analytics": "1.0.7",
-    "expo-constants": "~5.0.0",
-    "expo-permissions": "~5.0.0",
+		"expo": "^34.0.3",
+		"expo-analytics": "1.0.11",
+		"expo-camera": "~6.0.0",
+		"expo-constants": "~6.0.0",
+		"expo-file-system": "~6.0.0",
+		"expo-font": "~6.0.1",
+		"expo-permissions": "~6.0.0",
 		"react": "16.8.3",
-		"react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+		"react-native": "https://github.com/expo/react-native/archive/sdk-34.0.0.tar.gz",
 		"react-native-animatable-promise": "1.2.4",
 		"react-native-auto-height-image": "1.0.1",
 		"react-native-carousel-control-fork": "https://github.com/ksairi/react-native-carousel-control/archive/v1.0.tar.gz",

@@ -5,6 +5,7 @@ import {
 import { ActionsCreators } from '/redux/actions'
 import { Urls } from '/config/settings'
 import { getProfilePicturePath } from '/helpers/ImageHelper'
+import * as FileSystem from 'expo-file-system'
 
 export const getFreeEntryDaysLeft = date =>
   30 - Math.floor((Date.now() - date) / (1000 * 3600 * 24))
@@ -27,7 +28,7 @@ export const uploadProfilePicture = (dispatch, profilePicture) => {
 
 export const getRemoteProfilePicture = userId => {
   const fileUri = getProfilePicturePath()
-  return Expo.FileSystem.downloadAsync(Urls.PROFILE_PICTURES + userId, fileUri)
+  return FileSystem.downloadAsync(Urls.PROFILE_PICTURES + userId, fileUri)
     .then(({ uri, status }) => {
       return status === 200 ? uri : null
     })

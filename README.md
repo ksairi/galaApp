@@ -17,4 +17,4 @@
 **Export constants DEV_SERVER_HOSTNAME_1 and DEV_SERVER_HOSTNAME_2 to valid local addresses**
 
 ### google-services.json
-**Add google-services.json before building**
+**Add and empty google-services.json ({}) before building. Get the production one from [here](https://console.firebase.google.com)** 
