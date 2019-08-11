@@ -213,7 +213,7 @@ const timeoutFetch = (url, parameters, contentType) => {
     headers: {
       Accept: 'application/json',
       'Content-Type': contentType,
-      Authorization: 'Bearer ' + API_ACCESS_TOKEN
+      authorization: 'Bearer ' + API_ACCESS_TOKEN
     },
     body:
       contentType === CONTENT_TYPE_JSON ? JSON.stringify(params) : params
