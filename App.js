@@ -37,6 +37,7 @@ export default class App extends React.Component {
       'lato-regular': require('assets/fonts/Lato-Regular.ttf'),
       'lato-bold': require('assets/fonts/Lato-Bold.ttf'),
       'brother-1816-bold': require('assets/fonts/Brother-1816-Bold.otf'),
+      'Roboto': require('assets/fonts/Roboto.otf'),
       icomoon: require('assets/fonts/icomoon.ttf')
     })
   }

@@ -207,13 +207,13 @@ const connectToServer = (
 }
 
 const timeoutFetch = (url, parameters, contentType) => {
-  const params = contentType === CONTENT_TYPE_JSON ? {...parameters, authorization: 'Bearer ' + API_ACCESS_TOKEN} : parameters
+  const params = contentType === CONTENT_TYPE_JSON ? {...parameters, authorization: API_ACCESS_TOKEN} : parameters
   return fetch(url, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': contentType,
-      authorization: 'Bearer ' + API_ACCESS_TOKEN
+      authorization: API_ACCESS_TOKEN
     },
     body:
       contentType === CONTENT_TYPE_JSON ? JSON.stringify(params) : params

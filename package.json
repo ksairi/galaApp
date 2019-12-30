@@ -16,6 +16,7 @@
 		"react-devtools": "react-devtools",
 		"lint": "node_modules/standard/bin/cmd.js",
 		"lint:fix": "node_modules/standard/bin/cmd.js --fix",
+		"nexus5:android":"emulator -avd Nexus_5_API_28 &",
 		"publish:prod":"expo publish",
 		"deploy:ios": "expo build:ios && expo upload:ios",
 		"deploy:android": "expo build:android -t app-bundle && expo upload:android"

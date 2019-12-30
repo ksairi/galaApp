@@ -6,7 +6,7 @@
 
 ### app/config/apiAccessToken.js
 
-**File to be created to export the identication token for server**
+**File to be created to export the identification token for server (including prefix 'Bearer')**
 
 ### app/assets/icons/icomoonConfig.json
 
