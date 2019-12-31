@@ -69,7 +69,7 @@ export default class AppContainer extends React.Component {
     if (notification.origin === 'received') {
       AnalyticsHelper.setEvent(
         `${AnalitycsEventsLabels.notificationReceivedOf} ${
-          AnalitycsEventsLabels[Object.keys(notification.data).filter(key => key !== NotificationsData.idFieldName)]
+        AnalitycsEventsLabels[Object.keys(notification.data).filter(key => key !== NotificationsData.idFieldName)]
         }`
       )
       createNotificationsHanlder({
@@ -104,7 +104,7 @@ export default class AppContainer extends React.Component {
           if (!AppContainer.alreadySetMessagesSaved) {
             AnalyticsHelper.setEvent(
               `${AnalitycsEventsLabels.notificationReceivedOf} ${
-                AnalitycsEventsLabels.messages
+              AnalitycsEventsLabels.messages
               }`
             )
             saveMessagesToDevice(

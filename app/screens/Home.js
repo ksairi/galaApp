@@ -15,8 +15,8 @@ import * as Animatable from 'react-native-animatable-promise'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import ImageSlider from '/components/presentationals/ImageSlider'
 import { genericBackgroundColor } from '/components/styles'
-import {TimetableItem} from '/components/presentationals/TimetableItem'
-import {RoutineItem} from '/components/presentationals/RoutineItem'
+import { TimetableItem } from '/components/presentationals/TimetableItem'
+import { RoutineItem } from '/components/presentationals/RoutineItem'
 
 const styles = {
 
@@ -128,7 +128,8 @@ export default class Home extends React.Component {
   loadTimetableSliderImages = () => {
     var timetableSliderImages = []
     for (let i = 0; i < 5; i++) {
-      timetableSliderImages.push(require(`../assets/images/timetable-image-${i}.jpg`))
+      // timetableSliderImages.push(require(`../assets/images/timetable-image-${i}.jpg`))
+      timetableSliderImages.push(require('../assets/images/login.jpg'))
     }
     this.setState(timetableSliderImages)
   }
@@ -136,7 +137,8 @@ export default class Home extends React.Component {
   loadRoutinesSliderImages = () => {
     var routinesSliderImages = []
     for (let i = 0; i < 5; i++) {
-      routinesSliderImages.push(require(`../assets/images/routine-image-${i}.jpg`))
+      // routinesSliderImages.push(require(`../assets/images/routine-image-${i}.jpg`))
+      routinesSliderImages.push(require('../assets/images/login.jpg'))
     }
     this.setState(routinesSliderImages)
   }
@@ -225,7 +227,7 @@ export default class Home extends React.Component {
                               name={sectionData.icon}
                               style={sectionData.homeStyle}
                             />
-                          )}
+                            )}
                           <GenericText style={styles.label}>
                             {sectionData.label}
                           </GenericText>

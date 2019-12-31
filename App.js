@@ -16,12 +16,12 @@ export default class App extends React.Component {
     showSplashImage: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     SplashScreen.preventAutoHide()
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this._cacheResourcesAsync()
       .then(() => {
         this.setState({ showSplashImage: true, haveResourcesLoaded: true })
@@ -32,12 +32,12 @@ export default class App extends React.Component {
     ${error.stack}`)
       )
   }
-  _cacheResourcesAsync () {
+  _cacheResourcesAsync() {
     return Font.loadAsync({
       'lato-regular': require('assets/fonts/Lato-Regular.ttf'),
       'lato-bold': require('assets/fonts/Lato-Bold.ttf'),
       'brother-1816-bold': require('assets/fonts/Brother-1816-Bold.otf'),
-      'Roboto': require('assets/fonts/Roboto.otf'),
+      'Roboto': require('assets/fonts/Roboto-Regular.ttf'),
       icomoon: require('assets/fonts/icomoon.ttf')
     })
   }
@@ -52,7 +52,7 @@ export default class App extends React.Component {
     }, 2000)
   }
 
-  render () {
+  render() {
     const { haveResourcesLoaded, showSplashImage } = this.state
     if (!haveResourcesLoaded) {
       return null
