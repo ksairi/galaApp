@@ -1,23 +1,24 @@
 import React from 'react'
 import RNImageSlider from 'react-native-image-slider-fork'
 
-export default class ImageSlider extends React.PureComponent {
+export default class Slider extends React.PureComponent {
   render () {
+    console.log(this.props)
     const {Component} = this.props
     return (
       <RNImageSlider
         autoPlayWithInterval={7000}
-        images={this.props.images}
-        imagesWidth={this.props.imageWidth}
+        images={this.props.items}
+        imagesWidth={this.props.itemWidth}
         style={[
           {
-            width: this.props.imageWidth
+            width: this.props.itemWidth
           },
           this.props.style
         ]} // default to portrait
-        customSlide={({ index, item, style, width }) => {
+        customSlide={({ index, item }) => {
           return (
-            <Component image={item} data={this.props.arrayData[index]} />
+            <Component key={index} data={item} />
           )
         }}
       />

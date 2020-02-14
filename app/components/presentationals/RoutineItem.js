@@ -1,12 +1,11 @@
 import React from 'react'
-import {View, Image, Text} from 'react-native'
-export default ({index, image, data}) => (
+import {View, Text} from 'react-native'
+export default ({index, data}) => (
   <View key={index} style={styles.wrapper}>
-    <Image styles={styles.img} source={image} />
     <View styles={styles.dataWrapper}>
       <Text styles={styles.name}>{data.name}</Text>
       <Text styles={styles.length}>
-        {data.minutes ? `${data.minutes}' min` : `${data.repetitions} repeticiones`}
+        {data.minutes ? `${data.minutes} min` : `${data.repetitions} repeticiones`}
       </Text>
         {data.series && <Text styles={styles.length}>
           {`${data.series} series`}

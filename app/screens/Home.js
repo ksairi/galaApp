@@ -13,10 +13,10 @@ import { FontAwesome } from '@expo/vector-icons'
 import * as UserDataHelper from '/helpers/UserDataHelper'
 import * as Animatable from 'react-native-animatable-promise'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
-import ImageSlider from '/components/presentationals/ImageSlider'
+import Slider from '/components/presentationals/Slider'
 import { genericBackgroundColor } from '/components/styles'
-import { TimetableItem } from '/components/presentationals/TimetableItem'
-import { RoutineItem } from '/components/presentationals/RoutineItem'
+import TimetableItem from '/components/presentationals/TimetableItem'
+import RoutineItem from '/components/presentationals/RoutineItem'
 
 const styles = {
 
@@ -55,7 +55,7 @@ const styles = {
   },
   sliderTitleWrapper: {
     width: 360,
-    height: 520
+    flexDirection: 'row'
   },
   title: {
     width: 225,
@@ -80,8 +80,8 @@ const styles = {
   }
 }
 
-const AnimatedTimetableSlider = Animatable.createAnimatableComponent(ImageSlider)
-const AnimatedRoutinesSlider = Animatable.createAnimatableComponent(ImageSlider)
+const AnimatedTimetableSlider = Animatable.createAnimatableComponent(Slider)
+const AnimatedRoutinesSlider = Animatable.createAnimatableComponent(Slider)
 
 @connect(state => ({
   userData: state.userData,
@@ -92,9 +92,7 @@ const AnimatedRoutinesSlider = Animatable.createAnimatableComponent(ImageSlider)
 }))
 export default class Home extends React.Component {
   state = {
-    appState: AppState.currentState,
-    timetableSliderImages: [],
-    routinesSliderImages: []
+    appState: AppState.currentState
   }
 
   static getDerivedStateFromProps (nextProps, prevState) {
@@ -125,24 +123,6 @@ export default class Home extends React.Component {
     this.setState({ appState: nextAppState })
   }
 
-  loadTimetableSliderImages = () => {
-    var timetableSliderImages = []
-    for (let i = 0; i < 5; i++) {
-      // timetableSliderImages.push(require(`../assets/images/timetable-image-${i}.jpg`))
-      timetableSliderImages.push(require('../assets/images/login.jpg'))
-    }
-    this.setState(timetableSliderImages)
-  }
-
-  loadRoutinesSliderImages = () => {
-    var routinesSliderImages = []
-    for (let i = 0; i < 5; i++) {
-      // routinesSliderImages.push(require(`../assets/images/routine-image-${i}.jpg`))
-      routinesSliderImages.push(require('../assets/images/login.jpg'))
-    }
-    this.setState(routinesSliderImages)
-  }
-
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.Home)
     AppState.addEventListener('change', this._handleAppStateChange)
@@ -150,8 +130,6 @@ export default class Home extends React.Component {
       this.props.navigation.navigate(this.props.currentHomeDrawerOption)
       this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(''))
     }
-    this.loadTimetableSliderImages()
-    this.loadRoutinesSliderImages()
   }
 
   componentWillUnmount () {
@@ -164,6 +142,16 @@ export default class Home extends React.Component {
   goToScreen = (screen) => () => { this.props.navigation.navigate(screen) }
 
   render () {
+    let todayClassesData = this.props.timetable[new Date().getDay() === 0 ? new Date().getDay() : new Date().getDay() - 1].data
+    const uniqueTodayClasses = []
+    const map = new Map()
+    for (const item of todayClassesData) {
+      if (!map.has(item.class)) {
+        map.set(item.class, true)    // set any value to Map
+        uniqueTodayClasses.push(item)
+      }
+    }
+    const activeRoutine = this.props.routines.filter(routine => routine.isActive)[0]
     return (
       <GScrollView>
         <RootWrapper style={{ padding: 0 }}>
@@ -171,31 +159,33 @@ export default class Home extends React.Component {
             <View style={styles.imageContainer}>
               <View style={styles.sliderTitleWrapper}>
                 <Text style={styles.title}>Próximas clases</Text>
-                <TouchableOpacity onPress={this.goToScreen(Screens.Timetable)}
-                  style={styles.link}>Ver cronograma ></TouchableOpacity>
+                <TouchableOpacity onPress={this.goToScreen(Screens.Timetable)}>
+                  <Text style={styles.link}>Ver cronograma ></Text>
+                </TouchableOpacity>
               </View>
               <AnimatedTimetableSlider
                 useNativeDriver
                 animation={"zoomIn"}
-                images={this.state.timetableSliderImages}
+                items={uniqueTodayClasses}
                 style={{ backgroundColor: genericBackgroundColor }}
                 Component={TimetableItem}
-                arrayData={this.props.timetable}
               />
             </View>
             <View style={styles.imageContainer}>
               <View style={styles.sliderTitleWrapper}>
-                <Text style={styles.title}>Mi rutina</Text>
-                <TouchableOpacity onPress={this.goToScreen(Screens.Routines)} style={styles.link}>Empezar ></TouchableOpacity>
+                <Text style={styles.title}>Mis rutinas</Text>
+                <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
+                  <Text style={styles.link}>Empezar ></Text></TouchableOpacity>
               </View>
-              <AnimatedRoutinesSlider
-                useNativeDriver
-                animation={"zoomIn"}
-                images={this.state.routinesSliderImages}
-                style={{ backgroundColor: genericBackgroundColor }}
-                Component={RoutineItem}
-                arrayData={this.props.routines}
-              />
+              {activeRoutine && activeRoutine.ejercicios &&
+                <AnimatedRoutinesSlider
+                  useNativeDriver
+                  animation={"zoomIn"}
+                  items={activeRoutine.ejercicios}
+                  style={{ backgroundColor: genericBackgroundColor }}
+                  Component={RoutineItem}
+                />
+              }
             </View>
             <Animatable.View
               useNativeDriver

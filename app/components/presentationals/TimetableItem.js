@@ -1,35 +1,24 @@
 import React from 'react'
-import {View, ImageBackground, Text} from 'react-native'
+import {View, Text} from 'react-native'
 export default ({index, image, data}) => (
-  <View key={index} style={{marginHorizontal: 5}}>
-    <ImageBackground styles={styles.imgWrapper} source={image} />
-    <View styles={styles.dataWrapper}>
-      <Text styles={styles.time}>{data.time}</Text>
-      <Text styles={styles.saloon}>{data.saloon}</Text>
-    </View>
+  <View key={index} style={styles.wrapper}>
     <View style={styles.classWrapper}>
       <Text styles={styles.class}>{data.class}</Text>
+      <Text styles={styles.time}>{data.time}</Text>
     </View>
   </View>
 )
 
 const styles = {
-  imgWrapper: {
-    width: 250,
-    height: 124,
-    opacity: 0.45,
-    borderRadius: 5
-  },
-  dataWrapper: {
-    width: 250,
-    height: 196,
-    borderRadius: 5,
-    backgroundColor: '#002db9',
+  wrapper: {
+    width: 140,
+    height: 60,
+    borderRadius: 4,
+    backgroundColor: '#324664',
+    marginHorizontal: 5,
     flexDirection: 'row'
   },
   time: {
-    width: 44,
-    height: 16,
     fontFamily: 'Roboto',
     fontSize: 14,
     fontWeight: 'bold',
@@ -37,32 +26,20 @@ const styles = {
     letterSpacing: 0,
     color: '#00ffb4'
   },
-  saloon: {
-    width: 172,
-    height: 18,
-    fontFamily: 'Roboto',
-    fontSize: 15,
-    fontWeight: '500',
-    fontStyle: 'normal',
-    letterSpacing: 0,
-    color: '#ffffff'
-  },
   classWrapper: {
-    width: 68,
-    height: 38,
+    width: 140,
+    height: 60,
+    borderRadius: 5,
     backgroundColor: '#00ffb4',
-    marginTop: -50,
-    marginLeft: -5
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   class: {
-    width: 57,
-    height: 22,
-    fontFamily: 'Roboto',
+    fontFamily: 'lato-bold',
     fontSize: 18,
-    fontWeight: '500',
-    fontStyle: 'normal',
     letterSpacing: -0.28,
-    color: '#000000'
+    color: '#002db9'
   }
 }
 
