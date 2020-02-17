@@ -3,7 +3,6 @@ import RNImageSlider from 'react-native-image-slider-fork'
 
 export default class Slider extends React.PureComponent {
   render () {
-    console.log(this.props)
     const {Component} = this.props
     return (
       <RNImageSlider
@@ -16,9 +15,9 @@ export default class Slider extends React.PureComponent {
           },
           this.props.style
         ]} // default to portrait
-        customSlide={({ index, item }) => {
+        customSlide={({ index, item, style }) => {
           return (
-            <Component key={index} data={item} />
+            <Component {...{style}} key={index} data={item} />
           )
         }}
       />

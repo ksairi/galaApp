@@ -2,58 +2,42 @@ import React from 'react'
 import {View, Text} from 'react-native'
 export default ({index, data}) => (
   <View key={index} style={styles.wrapper}>
-    <View styles={styles.dataWrapper}>
-      <Text styles={styles.name}>{data.name}</Text>
-      <Text styles={styles.length}>
-        {data.minutes ? `${data.minutes} min` : `${data.repetitions} repeticiones`}
+    <Text style={styles.name}>{data.name}</Text>
+    <Text style={styles.length}>
+      {data.minutes ? `${data.minutes} min` : `${data.repetitions} repeticiones`}
+    </Text>
+      {data.series && <Text style={styles.length}>
+        {`${data.series} series`}
       </Text>
-        {data.series && <Text styles={styles.length}>
-          {`${data.series} series`}
-        </Text>
-      }
-    </View>
+    }
   </View>
 )
 
 const styles = {
   wrapper: {
-    width: 260,
-    height: 128,
+    width: 140,
+    height: 90,
     borderRadius: 4,
-    backgroundColor: '#324664',
+    backgroundColor: '#002db9',
     marginHorizontal: 5,
-    flexDirection: 'row'
-  },
-  img: {
-    width: 144,
-    height: 124
-  },
-  dataWrapper: {
-    justifyContent: 'center',
     alignItems: 'center',
-    flexDirection: 'row'
+    justifyContent: 'center',
+    flexWrap: 'wrap'
   },
   name: {
-    width: 108,
-    height: 21,
-    fontFamily: 'Roboto',
+    fontFamily: 'lato-bold',
     fontSize: 18,
-    fontWeight: '500',
+    fontWeight: 'bold',
     fontStyle: 'normal',
     letterSpacing: 0,
-    color: '#ffffff'
+    color: 'white'
   },
   length: {
-    width: 134,
-    height: 17,
     fontFamily: 'Roboto',
-    fontSize: 12,
-    fontWeight: 'normal',
-    fontStyle: 'normal',
-    lineHeight: 17,
-    letterSpacing: 0,
-    color: '#e4e8f0',
-    marginTop: 5
+    fontSize: 14,
+    letterSpacing: -0.28,
+    color: 'white',
+    marginVertical: 3
   }
 }
 

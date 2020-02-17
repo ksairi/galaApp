@@ -54,13 +54,15 @@ const styles = {
     flex: 1
   },
   sliderTitleWrapper: {
-    width: 360,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingBottom: 10
   },
   title: {
     width: 225,
     height: 24,
-    fontFamily: 'Roboto',
+    fontFamily: 'lato-bold',
     fontSize: 20,
     fontWeight: '500',
     fontStyle: 'normal',
@@ -70,7 +72,7 @@ const styles = {
   link: {
     width: 119,
     height: 16,
-    fontFamily: 'Roboto',
+    fontFamily: 'lato-regular',
     fontSize: 14,
     fontWeight: '500',
     fontStyle: 'normal',
