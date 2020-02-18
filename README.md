@@ -18,3 +18,17 @@
 
 ### google-services.json
 **Add and empty google-services.json ({}) before building. Get the production one from [here](https://console.firebase.google.com)** 
+
+### Instructions to get private key needed to deploy to google play
+
+- **[Go to Google Play Console](https://play.google.com/apps/publish)**
+
+- **Click the Settings menu entry, followed by API access**
+
+- **Click in 'View in Google Developers Console'**
+
+- **Edit the service account**
+
+- **Create Key and save it as .json extension**
+
+- **Save it and provide the path when asked during deployment**
