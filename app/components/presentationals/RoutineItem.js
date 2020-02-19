@@ -6,7 +6,7 @@ export default ({index, data}) => (
     <Text style={styles.length}>
       {data.minutes ? `${data.minutes} min` : `${data.repetitions} repeticiones`}
     </Text>
-      {data.series && <Text style={styles.length}>
+      {data.series !== null && <Text style={styles.length}>
         {`${data.series} series`}
       </Text>
     }

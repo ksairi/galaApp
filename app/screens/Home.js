@@ -179,7 +179,7 @@ export default class Home extends React.Component {
                 <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
                   <Text style={styles.link}>Empezar ></Text></TouchableOpacity>
               </View>
-              {activeRoutine && activeRoutine.ejercicios &&
+              {activeRoutine !== null && activeRoutine.ejercicios !== null &&
                 <AnimatedRoutinesSlider
                   useNativeDriver
                   animation={"zoomIn"}
