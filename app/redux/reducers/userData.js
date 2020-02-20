@@ -5,7 +5,7 @@ export const userData = createReducer(
   {},
   {
     [ActionsTypes.SET_USER_DATA] (state, action) {
-      return action.userData
+      return {...state, ...action.userData}
     },
     [ActionsTypes.SET_NEW_PASSWORD] (state, action) {
       return { ...state, password: action.password }

@@ -13,12 +13,6 @@ exports.setInitialData = (loginServerData, userId, password, dispatch) => {
     delete userDataCopy.receivePushNotifications
 
     dispatch(ActionsCreators.setUserData(userDataCopy))
-    dispatch(
-      ActionsCreators.setReceiveNotifications({
-        value: userData.receivePushNotifications,
-        synched: false
-      })
-    )
   }
   dispatch(ActionsCreators.setNewMemberData(newMemberData))
   dispatch(ActionsCreators.setRoutines(routines))
@@ -28,12 +22,13 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
   if (contentServerData) {
     const {
       // loginImages,
-      mainMenuImages,
+      // mainMenuImages,
       // classesImages,
       // timetableImages,
       timetable,
       sentMessages,
-      messages
+      messages,
+      userData
     } = contentServerData
     /* await saveDataToDevice(
       loginImages,
@@ -42,7 +37,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
       ActionsCreators.removeLoginImage,
       dispatch
     )*/
-    await saveMainMenuImages(mainMenuImages, dispatch)
+    // await saveMainMenuImages(mainMenuImages, dispatch)
 
     /* saveDataToDevice(
         'routinesImage',
@@ -68,6 +63,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
       )*/
     saveTimetableToDevice(timetable, dispatch)
     saveMessagesToDevice(messages, sentMessages, dispatch)
+    saveMemberPropertiesToDevice(userData, dispatch)
   }
 }
 
@@ -181,6 +177,17 @@ export const saveMessagesToDevice = (messages, sentMessages, dispatch) => {
       : null,
     sentMessages,
     dispatch
+  )
+}
+
+const saveMemberPropertiesToDevice = (userData, dispatch) => {
+  console.log(userData)
+  dispatch(ActionsCreators.setUserData(userData))
+  dispatch(
+    ActionsCreators.setReceiveNotifications({
+      value: Boolean(parseInt((userData.receivePushNotifications))),
+      synched: false
+    })
   )
 }
 
