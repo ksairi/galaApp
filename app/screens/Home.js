@@ -171,6 +171,7 @@ export default class Home extends React.Component {
                 items={uniqueTodayClasses}
                 style={{ backgroundColor: genericBackgroundColor }}
                 Component={TimetableItem}
+                customButtons={(position, move) => null}
               />
             </View>
             <View style={styles.imageContainer}>
@@ -186,6 +187,7 @@ export default class Home extends React.Component {
                   items={activeRoutine.ejercicios}
                   style={{ backgroundColor: genericBackgroundColor }}
                   Component={RoutineItem}
+                  customButtons={(position, move) => null}
                 />
               }
             </View>

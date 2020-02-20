@@ -3,9 +3,10 @@ import RNImageSlider from 'react-native-image-slider-fork'
 
 export default class Slider extends React.PureComponent {
   render () {
-    const {Component} = this.props
+    const {Component, ...rest} = this.props
     return (
       <RNImageSlider
+        {...rest}
         autoPlayWithInterval={7000}
         images={this.props.items}
         imagesWidth={this.props.itemWidth}
