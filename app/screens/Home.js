@@ -21,7 +21,7 @@ import RoutineItem from '/components/presentationals/RoutineItem'
 const styles = {
 
   buttonsContainer: {
-    flex: 0.2,
+    flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
@@ -42,9 +42,9 @@ const styles = {
     fontFamily: 'brother-1816-bold',
     marginTop: 5
   },
-  imageContainer: {
+  carouselContainer: {
     marginTop: 20,
-    flex: -1
+    flex: 1
   },
   promotionsContainer: {
     marginTop: 30,
@@ -158,7 +158,7 @@ export default class Home extends React.Component {
       <GScrollView>
         <RootWrapper style={{ padding: 0 }}>
           <CentredWrapper>
-            <View style={styles.imageContainer}>
+            <View style={styles.carouselContainer}>
               <View style={styles.sliderTitleWrapper}>
                 <Text style={styles.title}>Próximas clases</Text>
                 <TouchableOpacity onPress={this.goToScreen(Screens.Timetable)}>
@@ -171,26 +171,26 @@ export default class Home extends React.Component {
                 items={uniqueTodayClasses}
                 style={{ backgroundColor: genericBackgroundColor }}
                 Component={TimetableItem}
-                customButtons={(position, move) => null}
+                customButtons={() => null}
               />
             </View>
-            <View style={styles.imageContainer}>
-              <View style={styles.sliderTitleWrapper}>
-                <Text style={styles.title}>Mis rutinas</Text>
-                <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
-                  <Text style={styles.link}>Empezar ></Text></TouchableOpacity>
-              </View>
-              {activeRoutine !== null && activeRoutine.ejercicios !== null &&
+            {!!activeRoutine && activeRoutine.ejercicios !== null &&
+              <View style={styles.carouselContainer}>
+                <View style={styles.sliderTitleWrapper}>
+                  <Text style={styles.title}>Mis rutinas</Text>
+                  <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
+                    <Text style={styles.link}>Empezar ></Text></TouchableOpacity>
+                </View>
                 <AnimatedRoutinesSlider
                   useNativeDriver
                   animation={"zoomIn"}
                   items={activeRoutine.ejercicios}
                   style={{ backgroundColor: genericBackgroundColor }}
                   Component={RoutineItem}
-                  customButtons={(position, move) => null}
+                  customButtons={() => null}
                 />
-              }
-            </View>
+              </View>
+            }
             <Animatable.View
               useNativeDriver
               animation={'slideInRight'}

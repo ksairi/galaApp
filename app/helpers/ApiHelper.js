@@ -223,6 +223,7 @@ const timeoutFetch = (url, parameters, contentType) => {
         try {
           return response.json()
         } catch (e) {
+          console.log(e)
           throw Messages.SERVER_ERROR
         }
       } else {
@@ -240,6 +241,7 @@ const timeoutFetch = (url, parameters, contentType) => {
       return isDeviceConnected().then(isConnected => {
         if (isConnected) {
           if (error && error.message) {
+            console.log(error)
             // for unified Error:Network request failed
             throw Messages.SERVER_ERROR
           }
