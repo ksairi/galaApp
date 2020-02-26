@@ -23,10 +23,14 @@
 		],
 		"android": {
 			"package": "com.gala.galaapp",
-			"versionCode": 5,
+			"versionCode": 9,
 			"googleServicesFile": "google-services.json",
 			"playStoreUrl": "https://play.google.com/",
-			"permissions": [],
+			"permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
 			"config": {
 				"fabric": {
 					"apiKey": "9bee6df4340001230738b6a0e01b9e4e00f3efdb",
