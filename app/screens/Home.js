@@ -54,13 +54,13 @@ const styles = {
     flex: 1
   },
   sliderTitleWrapper: {
+    justifyContent: 'space-between',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingHorizontal: 10
   },
   title: {
-    width: 225,
     height: 24,
     fontFamily: 'lato-bold',
     fontSize: 20,
@@ -70,8 +70,7 @@ const styles = {
     color: '#ffffff'
   },
   link: {
-    width: 119,
-    height: 16,
+    height: 19,
     fontFamily: 'lato-regular',
     fontSize: 14,
     fontWeight: '500',
