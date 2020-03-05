@@ -128,11 +128,7 @@ export default class AppContainer extends React.Component {
         }
       })(notification.data)
       if (props.isLoggedIn) {
-        const section =
-          Object.keys(notification.data)[0]
-            .charAt(0)
-            .toUpperCase() + Object.keys(notification.data)[0].slice(1)
-        navigator.navigate(section)
+        navigator.navigate(notification.data.destScreen)
       } else {
         navigator.navigate(Screens.LoginStack)
       }
