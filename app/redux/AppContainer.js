@@ -63,7 +63,7 @@ export default class AppContainer extends React.Component {
     )
   }
 
-  handleNotification = notification => {
+  handleNotification = async (notification) => {
     var localNotificationBody = ''
     const props = this.props
     if (notification.origin === 'received') {
@@ -144,6 +144,10 @@ export default class AppContainer extends React.Component {
         ActionsCreators.setNotificationsText(localNotificationBody)
       )
       Vibration.vibrate()
+    }
+    if (Platform.OS === 'ios') {
+      const badgeNumber = await Notifications.getBadgeNumberAsync()
+      await Notifications.setBadgeNumberAsync(badgeNumber + notification.data.messages.length)
     }
   }
 

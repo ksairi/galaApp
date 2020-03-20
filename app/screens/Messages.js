@@ -30,6 +30,8 @@ import {
 import { saveMessagesToDevice } from '/helpers/StoreHelper'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import { Screens } from 'config/settings'
+import { Notifications } from 'expo'
+
 const styles = {
   textInputStyle: {
     fontSize: 21,
@@ -93,9 +95,12 @@ export default class Messages extends React.Component {
     }
     return prevState
   }
-  componentDidUpdate (prevProps, prevState) {
+  async componentDidUpdate (prevProps, prevState) {
     if (this.props.newMessagesCount > 0) {
       this.props.dispatch(ActionsCreators.setNewMessagesCount(null))
+    }
+    if (Platform.OS === 'ios') {
+      await Notifications.setBadgeNumberAsync(0)
     }
   }
 
