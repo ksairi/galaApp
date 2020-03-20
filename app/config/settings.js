@@ -229,5 +229,5 @@ export const AnalitycsEventsLabels = {
 }
 
 export const Notifications = {
-  idFieldName: 'notificationId'
+  handlerFieldName: 'handler'
 }
