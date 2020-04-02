@@ -30,14 +30,18 @@ const styles = {
     fontWeight: 'bold',
     fontStyle: 'normal',
     letterSpacing: 0,
-    color: 'white'
+    color: 'white',
+    textAlign: 'center',
+    width: '100%',
+    marginBottom: 3
+
   },
   length: {
     fontFamily: 'Roboto',
     fontSize: 14,
-    letterSpacing: -0.28,
     color: 'white',
-    marginVertical: 3
+    textAlign: 'center',
+    width: '100%'
   }
 }
 

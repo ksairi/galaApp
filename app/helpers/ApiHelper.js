@@ -1,5 +1,5 @@
 import { Urls, Messages, ServerProtocol } from '/config/settings.js'
-import { isDeviceConnected } from './NetworkHelper'
+import {isConnected} from 'helpers/NetworkHelper'
 import API_ACCESS_TOKEN from '/config/apiAccessToken'
 
 const CONTENT_TYPE_MULTI_PART = 'multipart/form-data'
@@ -206,7 +206,7 @@ const connectToServer = (
   ])
 }
 
-const timeoutFetch = (url, parameters, contentType) => {
+let timeoutFetch = (url, parameters, contentType) => {
   const params = contentType === CONTENT_TYPE_JSON ? {...parameters, authorization: API_ACCESS_TOKEN} : parameters
   return fetch(url, {
     method: 'POST',
@@ -237,18 +237,16 @@ const timeoutFetch = (url, parameters, contentType) => {
         return responseJson
       }
     })
-    .catch(error => {
-      return isDeviceConnected().then(isConnected => {
-        if (isConnected) {
-          if (error && error.message) {
-            console.log(error)
-            // for unified Error:Network request failed
-            throw Messages.SERVER_ERROR
-          }
-          throw error || Messages.SERVER_ERROR
-        } else {
-          throw Messages.CHECK_INTERNET_CONNECTION
+    .catch(async(error) => {
+      const isInternetReachable = await isConnected()
+      if (isInternetReachable) {
+        if (error && error.message) {
+          // for unified Error:Network request failed
+          throw Messages.SERVER_ERROR
         }
-      })
+        throw error || Messages.SERVER_ERROR
+      } else {
+        throw Messages.CHECK_INTERNET_CONNECTION
+      }
     })
 }

@@ -7,7 +7,7 @@ import {
   TouchableWithoutFeedback,
   BackHandler
 } from 'react-native'
-import { ScreenOrientation } from 'expo'
+import * as ScreenOrientation from 'expo-screen-orientation'
 import { connect } from 'react-redux'
 import { Messages, Screens } from '/config/settings'
 import { resetPassword } from '/helpers/ApiHelper'

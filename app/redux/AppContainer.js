@@ -1,5 +1,6 @@
 import React from 'react'
-import { NetInfo, AppState, Platform, Vibration } from 'react-native'
+import { AppState, Platform, Vibration } from 'react-native'
+import NetInfo from '@react-native-community/netinfo'
 import StatusBar from '/components/presentationals/StatusBar'
 import { Notifications } from 'expo'
 import { connect } from 'react-redux'
@@ -11,7 +12,7 @@ import {
 } from '/config/settings'
 import { ActionsCreators } from './actions'
 import AppRoutes from '/navigation/'
-import NetworkHelper from '/helpers/NetworkHelper'
+import {isConnected} from '/helpers/NetworkHelper'
 import { saveMessagesToDevice } from '/helpers/StoreHelper'
 import createNotificationsHanlder from './lib/createHandler'
 import RootView from '/components/containers/RootView'
@@ -46,21 +47,19 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
 )
 export default class AppContainer extends React.Component {
   static alreadySetMessagesSaved = false
+  static unsubscribe
 
   componentDidMount () {
     this.notificationSubscription = Notifications.addListener(
       this.handleNotification
     )
-    NetInfo.addEventListener('connectionChange', this.handleConnectivityChange)
+    AppContainer.unsubscribe = NetInfo.addEventListener(this.handleConnectivityChange)
   }
 
   componentWillUnmount () {
     this.notificationSubscription.remove()
 
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this.handleConnectivityChange
-    )
+    AppContainer.unsubscribe()
   }
 
   handleNotification = async (notification) => {
@@ -151,8 +150,8 @@ export default class AppContainer extends React.Component {
     }
   }
 
-  handleConnectivityChange = connectionInfo => {
-    if (NetworkHelper.isDeviceConnected(connectionInfo)) {
+  handleConnectivityChange = async(connectionInfo) => {
+    if (await isConnected(connectionInfo)) {
       if (this.props.isLoggedIn) {
         this.props.dispatch(ActionsCreators.fetchUserStore())
         sendUnsentMessages(

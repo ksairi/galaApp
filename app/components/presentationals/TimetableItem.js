@@ -21,8 +21,9 @@ const styles = {
   class: {
     fontFamily: 'lato-bold',
     fontSize: 14,
-    letterSpacing: -0.28,
-    color: '#002db9'
+    color: '#002db9',
+    textAlign: 'center',
+    width: '100%'
   },
   time: {
     fontFamily: 'Roboto',
@@ -30,7 +31,9 @@ const styles = {
     fontWeight: 'bold',
     fontStyle: 'normal',
     color: '#002db9',
-    marginTop: 5
+    marginTop: 5,
+    textAlign: 'center',
+    width: '100%'
   }
 }
 

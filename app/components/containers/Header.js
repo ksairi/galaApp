@@ -3,20 +3,21 @@ import {
   TouchableOpacity,
   View,
   Text,
-  NetInfo,
   Dimensions,
   Platform,
   TouchableWithoutFeedback,
   Keyboard
 } from 'react-native'
+import NetInfo from '@react-native-community/netinfo'
 import { connect } from 'react-redux'
 import * as Animatable from 'react-native-animatable-promise'
 import Icon from '/helpers/ImageHelper'
 import { containerPadding, genericBackgroundColor } from '/components/styles'
-import Logo from 'components/presentationals/Logo'
-import GenericText from 'components/presentationals/GenericText'
-import NetworkHelper from '/helpers/NetworkHelper'
+import Logo from '/components/presentationals/Logo'
+import GenericText from '/components/presentationals/GenericText'
+import {isConnected} from '/helpers/NetworkHelper'
 import { ActionsCreators } from '/redux/actions/'
+
 const styles = {
   wrapper: {
     flex: 1,
@@ -47,7 +48,7 @@ const AnimatedBanner = Animatable.createAnimatableComponent(View)
 }))
 export default class Header extends React.PureComponent {
   static timeoutId
-
+  static unsubscribe
   state = {
     isDeviceConnected: true,
     wasDeviceDisconnected: false,
@@ -82,34 +83,37 @@ export default class Header extends React.PureComponent {
       this.animatedBanner.transitionTo({ opacity: 1 }, 1000)
       this.hideNotificationsText()
     }
-  }
-
-  componentDidMount () {
-    NetInfo.addEventListener('connectionChange', this.handleConnectivityChange)
-    NetworkHelper.isDeviceConnected().then(isDeviceConnected => {
+    if (prevProps.isDeviceConnected !== this.props.isDeviceConnected) {
       this.setState({
-        isDeviceConnected,
-        wasDeviceDisconnected: !isDeviceConnected,
-        hideConnectedMessage: isDeviceConnected
+        isDeviceConnected: this.props.isDeviceConnected,
+        wasDeviceDisconnected: !this.props.isDeviceConnected,
+        hideConnectedMessage: this.props.isDeviceConnected
       })
-    })
+    }
   }
 
-  componentWillUnmount () {
-    NetInfo.removeEventListener(
-      'connectionChange',
-      this.handleConnectivityChange
-    )
-    clearTimeout(Header.timeoutId)
-  }
-
-  handleConnectivityChange = connectionInfo => {
-    const isDeviceConnected = NetworkHelper.isDeviceConnected(connectionInfo)
+  handleConnectivityChange = async (connectionInfo) => {
+    const isDeviceConnected = await isConnected(connectionInfo)
     this.setState({
       isDeviceConnected,
       wasDeviceDisconnected: isDeviceConnected,
       hideConnectedMessage: !isDeviceConnected
     })
+  }
+
+  async componentDidMount () {
+    Header.unsubscribe = NetInfo.addEventListener(this.handleConnectivityChange)
+    const isDeviceConnected = await isConnected()
+    this.setState({
+      isDeviceConnected,
+      wasDeviceDisconnected: !isDeviceConnected,
+      hideConnectedMessage: isDeviceConnected
+    })
+  }
+
+  componentWillUnmount () {
+    Header.unsubscribe()
+    clearTimeout(Header.timeoutId)
   }
 
   showBackToConnection = () => {

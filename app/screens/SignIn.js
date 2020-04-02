@@ -7,7 +7,7 @@ import {
   Platform,
   TouchableWithoutFeedback
 } from 'react-native'
-import { ScreenOrientation } from 'expo'
+import * as ScreenOrientation from 'expo-screen-orientation'
 import AutoHeightImage from 'react-native-auto-height-image'
 import { connect } from 'react-redux'
 import * as Animatable from 'react-native-animatable-promise'
