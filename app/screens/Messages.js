@@ -1,9 +1,7 @@
 import React from 'react'
 import {
   View,
-  KeyboardAvoidingView,
   AppState,
-  Keyboard,
   Platform,
   TouchableWithoutFeedback
 } from 'react-native'
@@ -108,20 +106,10 @@ export default class Messages extends React.Component {
     this._mounted = true
     AnalyticsHelper.setPageHit(Screens.Messages)
     AppState.addEventListener('change', this._handleAppStateChange)
-    this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      this._keyboardDidShow
-    )
     if (this.props.newMessagesCount > 0) {
       this.props.dispatch(ActionsCreators.setNewMessagesCount(null))
     }
     this.startPullingMessages()
-  }
-
-  _keyboardDidShow = e => {
-    if (this._mounted) {
-      this.setState({ keyboardHeight: e.endCoordinates.height })
-    }
   }
 
   startPullingMessages = () => {
@@ -305,48 +293,32 @@ export default class Messages extends React.Component {
     </Dialog.Container>
   )
 
-  hideKeyboard = () => {
-    Keyboard.dismiss()
-  }
-
   render () {
     return (
-      <TouchableWithoutFeedback onPress={this.hideKeyboard}>
-        <View style={{ flex: 1 }}>
-          <RootWrapper style={{ padding: 0 }}>
-            <GiftedChat
-              textInputProps={{ autoFocus: true }}
-              messages={this.props.messages}
-              onSend={messages => this.onSend(messages)}
-              user={{
-                _id: this.props.userData.userId
-              }}
-              isAnimated
-              renderComposer={this.renderComposer}
-              renderTime={this.renderTimeFormat}
-              renderDay={this.renderDay}
-              renderBubble={this.renderBubble}
-              renderInputToolbar={this.renderInputToolbar}
-              renderSend={this.renderSend}
-              placeholder='Escribí tu mensaje'
-              placeholderTextColor='white'
-              renderLoading={this.renderLoading}
-              onLongPress={this.onPressBubble}
-            />
-            {Platform.OS !== 'ios' && (
-              <KeyboardAvoidingView
-                behavior={'padding'}
-                keyboardVerticalOffset={
-                  this.state.keyboardHeight
-                    ? this.state.keyboardHeight - 150
-                    : 100
-                }
-              />
-            )}
-            {this.showUnsentMessageDialog()}
-            {this.showResendDialog()}
-          </RootWrapper>
-        </View>
+      <TouchableWithoutFeedback>
+        <RootWrapper style={[{ padding: 0 }, { marginBottom: Platform.OS === 'android' ? -10 : 0 }]}>
+          <GiftedChat
+            textInputProps={{ autoFocus: true }}
+            messages={this.props.messages}
+            onSend={messages => this.onSend(messages)}
+            user={{
+              _id: this.props.userData.userId
+            }}
+            isAnimated
+            renderComposer={this.renderComposer}
+            renderTime={this.renderTimeFormat}
+            renderDay={this.renderDay}
+            renderBubble={this.renderBubble}
+            renderInputToolbar={this.renderInputToolbar}
+            renderSend={this.renderSend}
+            placeholder='Escribí tu mensaje'
+            placeholderTextColor='white'
+            renderLoading={this.renderLoading}
+            onLongPress={this.onPressBubble}
+          />
+          {this.showUnsentMessageDialog()}
+          {this.showResendDialog()}
+        </RootWrapper>
       </TouchableWithoutFeedback>
     )
   }
