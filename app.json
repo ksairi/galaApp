@@ -22,7 +22,7 @@
     ],
     "android": {
       "package": "com.gala.galaapp",
-      "versionCode": 9,
+      "versionCode": 10,
       "googleServicesFile": "google-services.json",
       "playStoreUrl": "https://play.google.com/",
       "permissions": [
@@ -39,7 +39,7 @@
     },
     "ios": {
       "bundleIdentifier": "com.gala.galaapp",
-      "buildNumber": "5",
+      "buildNumber": "6",
       "supportsTablet": true,
       "isTabletOnly": false,
       "infoPlist": {

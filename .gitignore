@@ -4,4 +4,3 @@ npm-debug.*
 app/config/apiAccessToken.js
 app/config/devHosts.js
 private-key.json
-google-services.json

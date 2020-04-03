@@ -16,9 +16,6 @@
 
 **Export constants DEV_SERVER_HOSTNAME_1 and DEV_SERVER_HOSTNAME_2 to valid local addresses**
 
-### google-services.json
-**Add and empty google-services.json ({}) before building. Get the production one from [here](https://console.firebase.google.com)** 
-
 ### Instructions to get private key needed to deploy to google play
 
 - **[Go to Google Play Console](https://play.google.com/apps/publish)**
