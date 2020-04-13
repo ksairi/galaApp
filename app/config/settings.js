@@ -74,7 +74,8 @@ export const Screens = {
   HomeStack: 'homeStack',
   Settings: 'Settings',
   CameraView: 'CameraView',
-  NewMember: 'NewMember'
+  NewMember: 'NewMember',
+  VideoPlayer: 'VideoPlayer'
 }
 
 exports.SignUpConstraints = {

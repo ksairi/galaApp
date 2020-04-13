@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import GScrollView from '/components/presentationals/GenericScrollView'
 import Button from '/components/presentationals/GenericButton'
 import { connect } from 'react-redux'
@@ -21,6 +21,11 @@ const styles = {
   routines: state.routines
 }))
 export default class Routines extends React.Component {
+
+  state = {
+    videoUrl: null
+  }
+
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.Routines)
   }
@@ -28,6 +33,13 @@ export default class Routines extends React.Component {
   seeRoutine = routine => () => {
     this.props.dispatch(ActionsCreators.setCurrentRoutine(routine))
     this.props.navigation.navigate(Screens.RoutineDetail)
+  }
+
+  showIntroVideo = (videoUrl) => () => {
+    this.props.navigation.navigate(Screens.VideoPlayer, {
+      source: {uri: 'https://galagym.com/routines-videos/big_buck_bunny.mp4'},
+      backScreen: Screens.Routines
+    })
   }
 
   showRoutines = () => {
@@ -54,7 +66,6 @@ export default class Routines extends React.Component {
         duration={1500}
         key={index}
         style={{
-          flexDirection: 'row',
           marginLeft: 20,
           marginRight: 20,
           marginTop: 15
@@ -74,6 +85,12 @@ export default class Routines extends React.Component {
           onPress={this.seeRoutine(routine)}
           text={routine.description.toUpperCase()}
         />
+
+        <TouchableOpacity onPress={this.showIntroVideo(routine.videoUrl)}>
+          <Text style={{fontSize: 14, fontFamily: 'lato-regular', marginTop: 10, alignSelf: 'center', color: 'white'}}>
+            Ver intro
+          </Text>
+        </TouchableOpacity>
       </Animatable.View>
     ))
     return (

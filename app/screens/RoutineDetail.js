@@ -88,17 +88,37 @@ export default class RoutineDetail extends React.Component {
     this.props.navigation.navigate(Screens.Routines)
   }
 
+  showVideo = (videoUrl) => () => {
+    this.props.navigation.navigate(Screens.VideoPlayer, {
+      source: {uri: 'https://galagym.com/routines-videos/big_buck_bunny.mp4'},
+      backScreen: Screens.RoutineDetail
+    })
+  }
+
   renderTimeLineDetail = rowData => {
     let title = (
-      <GenericText
-        style={{
-          color: 'black',
-          fontFamily: 'brother-1816-bold',
-          fontSize: 16,
-          textAlign: 'left'
-        }}>
-        {rowData.title}
-      </GenericText>
+      <View style={{ flexDirection: 'row' }}>
+        <GenericText
+          style={{
+            color: 'black',
+            fontFamily: 'brother-1816-bold',
+            fontSize: 16,
+            textAlign: 'left'
+          }}>
+          {rowData.title}
+        </GenericText>
+        <TouchableOpacity onPress={this.showVideo(rowData.videoUrl)}>
+          <GenericText
+            style={{
+              color: 'black',
+              fontFamily: 'lato-regular',
+              fontSize: 13,
+              marginRight: 15
+            }}>
+            Ver Video
+          </GenericText>
+        </TouchableOpacity>
+      </View>
     )
     var desc = null
 
@@ -184,7 +204,7 @@ export default class RoutineDetail extends React.Component {
         animation='zoomIn'
         style={{ backgroundColor: 'black', paddingLeft: 5 }}>
         <View
-          style={{ flexDirection: 'row', alignItems: 'center', height:30, marginTop: 5 }}>
+          style={{ flexDirection: 'row', alignItems: 'center', height: 30, marginTop: 5 }}>
           <TouchableOpacity onPress={this.goBackToRoutines}>
             <Icon
               name='arrow-navigation-white-left'

@@ -53,7 +53,8 @@
         "branch": {
           "apiKey": "key_live_koQaRLNk7qcj8XnpstDv4goasBbEaAc2"
         }
-      }
+      },
+      "requireFullScreen": true
     },
     "notification": {
       "icon": "./app/assets/icons/notification_icon.png",
