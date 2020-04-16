@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {Fragment} from 'react'
 import { View, Text, TouchableOpacity } from 'react-native'
 import GScrollView from '/components/presentationals/GenericScrollView'
 import Button from '/components/presentationals/GenericButton'
@@ -12,8 +12,8 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
 
 const styles = {
   routinesWrapper: {
-    flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop:30
   }
 }
 
@@ -35,31 +35,30 @@ export default class Routines extends React.Component {
     this.props.navigation.navigate(Screens.RoutineDetail)
   }
 
-  showIntroVideo = (videoUrl) => () => {
+  showIntroVideo = (uri) => () => {
     this.props.navigation.navigate(Screens.VideoPlayer, {
-      source: {uri: 'https://galagym.com/routines-videos/big_buck_bunny.mp4'},
+      source: {uri},
       backScreen: Screens.Routines
     })
   }
 
-  showRoutines = () => {
-    const title =
-      <Animatable.View
-        useNativeDriver
-        animation={'slideInDown'}
-        duration={1500}
-        style={{
-          flexDirection: 'row',
-          marginLeft: 20,
-          marginRight: 20,
-          marginTop: 15
-        }}>
-        <GenericText style={{ fontSize: 26, fontFamily: 'brother-1816-bold' }}>
-          TUS RUTINAS
-        </GenericText>
-      </Animatable.View>
+  showTitle = () =>
+    <Animatable.View
+      useNativeDriver
+      animation={'slideInDown'}
+      duration={1500}
+      style={{
+        flexDirection: 'row',
+        marginTop: 20,
+        marginBottom: 30
+      }}>
+      <GenericText style={{ fontSize: 26, fontFamily: 'brother-1816-bold', alignSelf: 'center' }}>
+        TUS RUTINAS
+      </GenericText>
+    </Animatable.View>
 
-    const routines = this.props.routines.map((routine, index) => (
+  showRoutines = (pRoutines, title) => {
+    const routines = pRoutines.map((routine, index) => (
       <Animatable.View
         useNativeDriver
         animation={index % 2 === 0 ? 'slideInLeft' : 'slideInRight'}
@@ -68,12 +67,15 @@ export default class Routines extends React.Component {
         style={{
           marginLeft: 20,
           marginRight: 20,
-          marginTop: 15
+          marginTop: 15,
+          flexDirection: 'row',
+          justifyContent:'center',
+          alignItems: 'center'
         }}>
         <Button
           buttonStyle={{
             backgroundColor: '#12194d',
-            flex: 1,
+            flex: 2,
             paddingLeft: 10,
             justifyContent: 'flex-start',
             height: 60
@@ -86,30 +88,47 @@ export default class Routines extends React.Component {
           text={routine.description.toUpperCase()}
         />
 
-        <TouchableOpacity onPress={this.showIntroVideo(routine.videoUrl)}>
-          <Text style={{fontSize: 14, fontFamily: 'lato-regular', marginTop: 10, alignSelf: 'center', color: 'white'}}>
-            Ver intro
-          </Text>
-        </TouchableOpacity>
+        {
+          routine.link && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link)}>
+            <Text style={{fontSize: 13, fontFamily: 'lato-regular', alignSelf: 'center', color: 'white'}}>
+              Video
+            </Text>
+
+          </TouchableOpacity>
+        }
       </Animatable.View>
     ))
     return (
       <View>
-        {title}
-        {routines}
+        <GenericText
+          style={{fontSize: 21, fontFamily: 'lato-regular', paddingBottom: 10}}>{title}</GenericText>
+        <View>{routines}</View>
       </View>
     )
   }
 
   render () {
+    const personalRoutines = this.props.routines.filter(routine => !routine.generica)
+    const generalRoutines = this.props.routines.filter(routine => routine.generica)
     return (
       <GScrollView>
         <RootWrapper style={{ padding: 0 }}>
-          <View style={styles.routinesWrapper}>
             {this.props.routines.length > 0 ? (
-              this.showRoutines()
+              <Fragment>
+                <View style={{alignItems: 'flex-start'}}>
+                  {this.showTitle()}
+                </View>
+                <View style={styles.routinesWrapper}>
+                  <View>
+                    {this.showRoutines(personalRoutines, 'PERSONALES')}
+                  </View>
+                  <View style={{marginTop: 60}}>
+                    {this.showRoutines(generalRoutines, 'GENERALES')}
+                  </View>
+                </View>
+              </Fragment>
             ) : (
-              <View style={{ alignItems: 'center', marginTop: 20 }}>
+              <View style={{ alignItems: 'center', marginTop: 50 }}>
                 <GenericText
                   style={{ fontFamily: 'brother-1816-bold', fontSize: 22 }}>
                   ¡Ups!
@@ -120,7 +139,6 @@ export default class Routines extends React.Component {
                 <GenericText style={{ fontSize: 18 }}>disponibles</GenericText>
               </View>
             )}
-          </View>
         </RootWrapper>
       </GScrollView>
     )

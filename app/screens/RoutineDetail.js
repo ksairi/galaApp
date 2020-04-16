@@ -74,6 +74,8 @@ export default class RoutineDetail extends React.Component {
       exerciseData.minutes = exercise.minutes
       exerciseData.series = exercise.series
       exerciseData.type = exercise.type
+      exerciseData.recovery = exercise.recuperacion
+      exerciseData.link = exercise.link
       result.push(exerciseData)
     })
     return result
@@ -88,9 +90,9 @@ export default class RoutineDetail extends React.Component {
     this.props.navigation.navigate(Screens.Routines)
   }
 
-  showVideo = (videoUrl) => () => {
+  showVideo = (uri) => () => {
     this.props.navigation.navigate(Screens.VideoPlayer, {
-      source: {uri: 'https://galagym.com/routines-videos/big_buck_bunny.mp4'},
+      source: {uri},
       backScreen: Screens.RoutineDetail
     })
   }
@@ -107,7 +109,7 @@ export default class RoutineDetail extends React.Component {
           }}>
           {rowData.title}
         </GenericText>
-        <TouchableOpacity onPress={this.showVideo(rowData.videoUrl)}>
+        {rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link)}>
           <GenericText
             style={{
               color: 'black',
@@ -118,9 +120,11 @@ export default class RoutineDetail extends React.Component {
             Ver Video
           </GenericText>
         </TouchableOpacity>
+        }
       </View>
     )
     var desc = null
+    var recovery = null
 
     desc = (
       <GenericText
@@ -130,6 +134,18 @@ export default class RoutineDetail extends React.Component {
           textAlign: 'left'
         }}>
         {rowData.description}
+      </GenericText>
+    )
+
+    recovery = (
+      <GenericText
+        style={{
+          color: 'black',
+          fontFamily: 'lato-regular',
+          textAlign: 'left',
+          marginTop: 10
+        }}>
+        Recuperación: {rowData.recovery} segundos
       </GenericText>
     )
 
@@ -165,7 +181,7 @@ export default class RoutineDetail extends React.Component {
           name='repeat'
           style={{
             fontSize: 20,
-            paddingLeft: 0,
+            paddingLeft: 5,
             paddingRight: 3,
             color: 'black'
           }}
@@ -194,6 +210,7 @@ export default class RoutineDetail extends React.Component {
         {title}
         {exerciseDetails}
         {desc}
+        {rowData.recovery && recovery}
       </View>
     )
   }

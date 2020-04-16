@@ -24,6 +24,8 @@ import React, { useEffect, useState } from 'react'
 import * as ScreenOrientation from 'expo-screen-orientation'
 import { genericBackgroundColor } from '/components/styles'
 
+import { Ionicons } from '@expo/vector-icons'
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const IOS_THUMB_IMAGE = require('/assets/images/thumb.png')
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -156,6 +158,15 @@ const VideoPlayer = (props) => {
     return () => {
       BackHandler.removeEventListener('hardwareBackPress', handleBackPress)
     }
+  }, [])
+
+  useEffect(() => {
+    async function autoStart () {
+      if (playbackInstance !== null) {
+        await playbackInstance.setStatusAsync({ shouldPlay: true })
+      }
+    }
+    autoStart()
   }, [])
 
   const switchToLandscape = async () => {
@@ -588,7 +599,6 @@ const VideoPlayer = (props) => {
           (playbackState === PlaybackStates.Playing || playbackState === PlaybackStates.Paused) && (
           <CenteredView
             pointerEvents={controlsState === ControlStates.Hidden ? 'none' : 'auto'}
-            // @ts-ignore
             style={{ opacity: controlsOpacity }}
           >
             <Control center callback={togglePlay}>
@@ -612,14 +622,19 @@ const VideoPlayer = (props) => {
         {playbackState === PlaybackStates.Error && <ErrorText text={error} />}
 
         {/* Close */}
-        <TouchableOpacity style={{
+        <TouchableOpacity hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }} style={{
           position: 'absolute'
         }} onPress={() => navigation.navigate(backScreen)}>
-          <Animated.View style={{opacity: controlsOpacity, width: layout.width, paddingRight: 10,
-            paddingTop: 5, fontFamily: 'lato-regular'}}>
-            <Text style={{color: 'white', alignSelf: 'flex-end'}}>
-              Cerrar
-            </Text>
+          <Animated.View style={{opacity: controlsOpacity, paddingLeft: 10,
+            paddingTop: 5}}>
+            <Ionicons
+              name='ios-arrow-round-back'
+              size={30}
+              color='white'
+              style={{
+                alignSelf: 'flex-start'
+              }}
+          />
           </Animated.View>
         </TouchableOpacity>
 

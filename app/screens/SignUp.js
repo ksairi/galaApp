@@ -75,7 +75,7 @@ export default class SignUp extends React.Component {
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.SignUp)
     if (Platform.OS === 'ios') {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT)
+      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
     }
     this.keyboardDidShowListener = Keyboard.addListener(
       'keyboardDidShow',

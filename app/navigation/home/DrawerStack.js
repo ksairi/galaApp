@@ -10,7 +10,8 @@ import RoutineDetail from '/screens/RoutineDetail'
 import Messages from '/screens/Messages'
 import Referrals from '/screens/Referrals'
 import CameraView from '/screens/CameraView'
-import NewMember from '/screens/NewMember'
+// import NewMember from '/screens/NewMember'
+import LiveClass from '/screens/LiveClass'
 import DrawerContentComponent from '/components/containers/DrawerContentComponent'
 import Header from '/components/containers/Header'
 
@@ -23,15 +24,15 @@ const HomeNavigator = createStackNavigator(
   }
 )
 
-const NewMemberNavigator = createStackNavigator({
-  [Screens.NewMember]: { screen: NewMember }
-},
-  {
-    navigationOptions: ({ navigation }) => ({
-      header: <Header navigation={navigation} isHomeHeader />
-    })
-  }
-)
+// const NewMemberNavigator = createStackNavigator({
+//   [Screens.NewMember]: { screen: NewMember }
+// },
+//   {
+//     navigationOptions: ({ navigation }) => ({
+//       header: <Header navigation={navigation} isHomeHeader />
+//     })
+//   }
+// )
 
 const ProfileNavigator = createStackNavigator({
   [Screens.Profile]: { screen: Profile }
@@ -98,7 +99,8 @@ const ReferralsNavigator = createStackNavigator(
 const drawerNavigator = createDrawerNavigator(
   {
     [Screens.Home]: { screen: HomeNavigator },
-    [Screens.NewMember]: { screen: NewMemberNavigator },
+    [Screens.LiveClass]: { screen: LiveClass },
+    // [Screens.NewMember]: { screen: NewMemberNavigator },
     [Screens.Profile]: { screen: ProfileNavigator },
     [Screens.Routines]: { screen: RoutinesNavigator },
     [Screens.RoutineDetail]: { screen: RoutineDetailNavigator },

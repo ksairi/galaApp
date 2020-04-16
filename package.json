@@ -53,6 +53,7 @@
     "react-native-image-slider-fork": "https://github.com/ksairi/react-native-image-slider/archive/v1.0.tar.gz",
     "react-native-loading-spinner-overlay": "0.5.2",
     "react-native-timeline-listview": "ksairi/react-native-timeline-deprecated-listview.git#master",
+    "react-native-webview": "8.1.1",
     "react-navigation": "2.17.0",
     "react-redux": "5.0.7",
     "redux": "4.0.0",

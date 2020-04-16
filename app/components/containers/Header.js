@@ -155,7 +155,7 @@ export default class Header extends React.PureComponent {
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
         <View style={this.state.headerStyle.wrapper}>
           <View style={styles.wrapper}>
-            {Platform.OS === 'ios' && (
+            {Platform.OS === 'ios' && this.props.newNotificationsText !== '' && (
               <AnimatedBanner
                 useNativeDriver
                 ref={this.handleBannerRef}

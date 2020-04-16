@@ -108,7 +108,7 @@ export default class SignIn extends React.Component {
 
   componentDidMount () {
     AnalyticsHelper.setPageHit(Screens.SignIn)
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.ALL)
+    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
     if (this.props.isLoggedIn) {
       this.setState({
         userId: this.props.userData.userId,

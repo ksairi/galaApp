@@ -5,7 +5,7 @@ const SERVER_HOSTNAME_1 = __DEV__
         : 'http://galagym.sytes.net:1082/'
 
 const SERVER_HOSTNAME_2 =
-        (__DEV__ ? DEV_SERVER_HOSTNAME_2 : 'http://galagym.com') + '/api/'
+        (__DEV__ ? DEV_SERVER_HOSTNAME_2 : 'https://galagym.com') + '/api/'
 
 exports.Urls = {
   LOGIN: SERVER_HOSTNAME_1 + 'login',
@@ -75,7 +75,8 @@ export const Screens = {
   Settings: 'Settings',
   CameraView: 'CameraView',
   NewMember: 'NewMember',
-  VideoPlayer: 'VideoPlayer'
+  VideoPlayer: 'VideoPlayer',
+  LiveClass: 'LiveClass'
 }
 
 exports.SignUpConstraints = {
@@ -137,17 +138,30 @@ exports.ActionsTypes = {
 
 export const SectionsData = [
   {
-    icon: 'exclamation',
-    label: 'SOCIO NUEVO',
-    screen: Screens.NewMember,
+    icon: 'video-camera',
+    label: 'CLASE EN VIVO',
+    screen: Screens.LiveClass,
     otherIcon: true,
     drawerStyle: {
-      icon: { marginTop: 5, paddingLeft: 15, fontSize: 30 },
-      label: { marginTop: 10, color: 'green', fontFamily: 'lato-regular' },
+      icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
+      label: { marginTop: 5 },
       arrow: { marginTop: 15 }
     },
-    homeStyle: { fontSize: 40, color: 'white' }
+    homeStyle: { fontSize: 40, color: 'white' },
+    needsActiveUser: true
   },
+  // {
+  //   icon: 'exclamation',
+  //   label: 'SOCIO NUEVO',
+  //   screen: Screens.NewMember,
+  //   otherIcon: true,
+  //   drawerStyle: {
+  //     icon: { marginTop: 5, paddingLeft: 15, fontSize: 30 },
+  //     label: { marginTop: 10, color: 'green', fontFamily: 'lato-regular' },
+  //     arrow: { marginTop: 15 }
+  //   },
+  //   homeStyle: { fontSize: 40, color: 'white' }
+  // },
   {
     icon: 'user-icon',
     label: 'MI PERFIL',

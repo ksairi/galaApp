@@ -25,7 +25,8 @@ const styles = {
 
 @connect(state => ({
   newMemberData: state.newMemberData,
-  newMessagesCount: state.newMessagesCount
+  newMessagesCount: state.newMessagesCount,
+  routines: state.routines
 }))
 export default class DrawerContentComponent extends React.PureComponent {
   state = {
@@ -83,11 +84,12 @@ nextProps.newMemberData.freeEntryData.date
         </TouchableOpacity>
         {SectionsData.map((drawerItem, index) => {
           if (
-            drawerItem.screen !== Screens.NewMember ||
-            (drawerItem.screen === Screens.NewMember &&
-              this.state.freeEntryDaysLeft &&
-              this.state.freeEntryDaysLeft > 0)
-          ) {
+              (drawerItem.screen !== Screens.NewMember &&
+              drawerItem.screen !== Screens.LiveClass) ||
+              (drawerItem.screen === Screens.NewMember &&
+                this.state.freeEntryDaysLeft && this.state.freeEntryDaysLeft > 0) ||
+                (drawerItem.screen === Screens.LiveClass && this.props.routines.length > 0)
+            ) {
             return (
               <DrawerItem
                 key={index}

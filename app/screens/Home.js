@@ -61,16 +61,11 @@ const styles = {
     paddingHorizontal: 10
   },
   title: {
-    height: 24,
     fontFamily: 'lato-bold',
     fontSize: 20,
-    fontWeight: '500',
-    fontStyle: 'normal',
-    letterSpacing: 0,
     color: '#ffffff'
   },
   link: {
-    height: 19,
     fontFamily: 'lato-regular',
     fontSize: 14,
     fontWeight: '500',
@@ -196,11 +191,16 @@ export default class Home extends React.Component {
               style={styles.buttonsContainer}>
               {SectionsData.map((sectionData, index) => {
                 if (
-                  sectionData.screen !== Screens.NewMember ||
-                  (sectionData.screen === Screens.NewMember &&
-                    this.state.freeEntryDaysLeft &&
-                    this.state.freeEntryDaysLeft > 0)
-                ) {
+                    (sectionData.screen !== Screens.NewMember &&
+                      sectionData.screen !== Screens.LiveClass) ||
+                    (sectionData.screen === Screens.NewMember &&
+                      this.state.freeEntryDaysLeft &&
+                      this.state.freeEntryDaysLeft > 0) ||
+                    (
+                      sectionData.screen === Screens.LiveClass &&
+                      this.props.routines.length > 0
+                    )
+                  ) {
                   return (
                     <TouchableOpacity
                       key={index}
