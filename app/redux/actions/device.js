@@ -6,6 +6,12 @@ export function setCurrentOrientation (orientation) {
   }
 }
 
+export function setHiddenStatusBar (value) {
+  return (dispatch, getState) => {
+    dispatch({ type: ActionsTypes.SET_HIDDEN_STATUS_BAR, value })
+  }
+}
+
 export function setDeviceId (deviceId) {
   return (dispatch, getState) => {
     dispatch({ type: ActionsTypes.SET_DEVICE_ID, deviceId })

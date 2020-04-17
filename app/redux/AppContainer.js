@@ -36,7 +36,8 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
     isAppsFirstTime: state.isAppsFirstTime,
     profilePicture: state.profilePicture,
     receiveNotifications: state.receiveNotifications,
-    orientation: state.currentOrientation
+    orientation: state.currentOrientation,
+    statusBarIsHidden: state.statusBarIsHidden
   }),
   dispatch =>
     Object.assign(
@@ -179,7 +180,7 @@ export default class AppContainer extends React.Component {
         <StatusBar
           backgroundColor='#5E8D48'
           barStyle='light-content'
-          hidden={Platform.OS === 'ios' && this.props.orientation === 'landscape'}
+          hidden={(this.props.statusBarIsHidden && Platform.OS !== 'ios') || (Platform.OS === 'ios' && this.props.orientation === 'landscape')}
         />
         <AppRoutes
           ref={nav => {

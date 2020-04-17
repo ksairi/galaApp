@@ -18,3 +18,8 @@ export const deviceId = createReducer(null, {
     return action.deviceId
   }
 })
+export const statusBarIsHidden = createReducer(false, {
+  [ActionsTypes.SET_HIDDEN_STATUS_BAR] (state, action) {
+    return action.value
+  }
+})
