@@ -13,7 +13,7 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
 const styles = {
   routinesWrapper: {
     justifyContent: 'center',
-    marginTop:30
+    marginTop: 30
   }
 }
 
@@ -69,7 +69,7 @@ export default class Routines extends React.Component {
           marginRight: 20,
           marginTop: 15,
           flexDirection: 'row',
-          justifyContent:'center',
+          justifyContent: 'center',
           alignItems: 'center'
         }}>
         <Button
@@ -89,7 +89,7 @@ export default class Routines extends React.Component {
         />
 
         {
-          routine.link && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link)}>
+          routine.link !== '' && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link)}>
             <Text style={{fontSize: 13, fontFamily: 'lato-regular', alignSelf: 'center', color: 'white'}}>
               Video
             </Text>
@@ -108,8 +108,9 @@ export default class Routines extends React.Component {
   }
 
   render () {
-    const personalRoutines = this.props.routines.filter(routine => !routine.generica)
-    const generalRoutines = this.props.routines.filter(routine => routine.generica)
+    const validRoutines = this.props.routines.filter(routine => routine.ejercicios.length)
+    const personalRoutines = validRoutines.filter(routine => !routine.generica)
+    const generalRoutines = validRoutines.filter(routine => routine.generica)
     return (
       <GScrollView>
         <RootWrapper style={{ padding: 0 }}>

@@ -138,19 +138,19 @@ exports.ActionsTypes = {
 }
 
 export const SectionsData = [
-  {
-    icon: 'video-camera',
-    label: 'CLASE EN VIVO',
-    screen: Screens.LiveClass,
-    otherIcon: true,
-    drawerStyle: {
-      icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
-      label: { marginTop: 5 },
-      arrow: { marginTop: 15 }
-    },
-    homeStyle: { fontSize: 40, color: 'white' },
-    needsActiveUser: true
-  },
+  // {
+  //   icon: 'video-camera',
+  //   label: 'CLASE EN VIVO',
+  //   screen: Screens.LiveClass,
+  //   otherIcon: true,
+  //   drawerStyle: {
+  //     icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
+  //     label: { marginTop: 5 },
+  //     arrow: { marginTop: 15 }
+  //   },
+  //   homeStyle: { fontSize: 40, color: 'white' },
+  //   needsActiveUser: true
+  // },
   // {
   //   icon: 'exclamation',
   //   label: 'SOCIO NUEVO',
@@ -241,7 +241,9 @@ export const AnalitycsEventsLabels = {
   signOut: 'cerró sesión',
   takeProfilePicture: 'sacó foto de perfil',
   notificationReceivedOf: 'recibió notificación de',
-  messages: 'mensajes'
+  messages: 'mensajes',
+  videoPlayer: 'video-rutinas-ejercicios',
+  liveClass: 'clase en vivo en zoom'
 }
 
 export const Notifications = {
