@@ -89,7 +89,7 @@ export default class Routines extends React.Component {
         />
 
         {
-          routine.link !== '' && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link)}>
+          routine.link !== '' && routine.link !== null && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link)}>
             <Text style={{fontSize: 13, fontFamily: 'lato-regular', alignSelf: 'center', color: 'white'}}>
               Video
             </Text>

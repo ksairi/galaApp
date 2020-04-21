@@ -109,7 +109,7 @@ export default class RoutineDetail extends React.Component {
           }}>
           {rowData.title}
         </GenericText>
-        {rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link)}>
+        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link)}>
           <GenericText
             style={{
               color: 'black',
