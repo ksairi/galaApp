@@ -1,4 +1,5 @@
 import React from 'react'
+import {Text} from 'react-native'
 import { WebView } from 'react-native-webview'
 import { connect } from 'react-redux'
 import RootWrapper from '/components/presentationals/RootWrapper'
@@ -6,13 +7,36 @@ import { Screens } from '../config/settings'
 import API_ACCESS_TOKEN from '/config/apiAccessToken'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import { AnalitycsEventsLabels } from '/config/settings'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
+
 @connect(state => ({
   userData: state.userData
 }))
 export default class LiveClass extends React.Component {
+  state = {
+    loading: true
+  }
 
-  componentDidMount () {
+  injectedJs = `
+    setTimeout(function () {
+      var startAudioButton = document.getElementById('pc-join');
+      var startFSButton = document.getElementsByClassName('full-screen-widget ax-outline')[0];
+      startFSButton.click();
+      startAudioButton.click();
+    }, 15000);
+      true;
+  `
+
+  async componentDidMount () {
     AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass)
+    setTimeout(() => {
+      this.setState({loading: false})
+    }, 15000)
+    activateKeepAwake()
+  }
+
+  componentWillUnmount () {
+    deactivateKeepAwake()
   }
 
   onNavigationStateChange = (data) => {
@@ -27,7 +51,14 @@ export default class LiveClass extends React.Component {
         style={{
           justifyContent: 'center'
         }}>
-        <WebView style={{marginTop: 20}} source={{ uri: `https://galagym.com/free-classes/zoom?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange} />
+        {this.state.loading && <Text style={{alignSelf: 'center', color: 'white', fontFamily: 'lato-regular'}}>
+          Cargando...
+        </Text>
+        }
+        <WebView style={{marginTop: 20}} source={{ uri: `https://galagym.com/free-classes/zoom?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange}
+          injectedJavaScript={this.injectedJs}
+          mediaPlaybackRequiresUserAction={false}
+        />
       </RootWrapper>
     )
   }
