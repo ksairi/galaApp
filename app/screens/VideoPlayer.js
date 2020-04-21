@@ -12,7 +12,7 @@ import { AnalitycsEventsLabels } from '/config/settings'
   userData: state.userData
 
 }))
-export default class LiveClass extends React.Component {
+export default class VideoPlayer extends React.Component {
 
   state = { showBack: false }
 

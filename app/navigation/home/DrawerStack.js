@@ -99,7 +99,7 @@ const ReferralsNavigator = createStackNavigator(
 const drawerNavigator = createDrawerNavigator(
   {
     [Screens.Home]: { screen: HomeNavigator },
-    // [Screens.LiveClass]: { screen: LiveClass },
+    [Screens.LiveClass]: { screen: LiveClass },
     // [Screens.NewMember]: { screen: NewMemberNavigator },
     [Screens.Profile]: { screen: ProfileNavigator },
     [Screens.Routines]: { screen: RoutinesNavigator },

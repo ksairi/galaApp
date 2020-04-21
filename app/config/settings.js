@@ -138,19 +138,19 @@ exports.ActionsTypes = {
 }
 
 export const SectionsData = [
-  // {
-  //   icon: 'video-camera',
-  //   label: 'CLASE EN VIVO',
-  //   screen: Screens.LiveClass,
-  //   otherIcon: true,
-  //   drawerStyle: {
-  //     icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
-  //     label: { marginTop: 5 },
-  //     arrow: { marginTop: 15 }
-  //   },
-  //   homeStyle: { fontSize: 40, color: 'white' },
-  //   needsActiveUser: true
-  // },
+  {
+    icon: 'video-camera',
+    label: 'CLASE EN VIVO',
+    screen: Screens.LiveClass,
+    otherIcon: true,
+    drawerStyle: {
+      icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
+      label: { marginTop: 5 },
+      arrow: { marginTop: 15 }
+    },
+    homeStyle: { fontSize: 40, color: 'white' },
+    needsActiveUser: true
+  },
   // {
   //   icon: 'exclamation',
   //   label: 'SOCIO NUEVO',
