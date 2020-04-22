@@ -57,6 +57,8 @@ export default class Routines extends React.Component {
       </GenericText>
     </Animatable.View>
 
+  isRoutineDescLong = (description) => description.length > 30
+
   showRoutines = (pRoutines, title) => {
     const routines = pRoutines.map((routine, index) => (
       <Animatable.View
@@ -78,13 +80,12 @@ export default class Routines extends React.Component {
             flex: 2,
             marginLeft: 70,
             justifyContent: 'flex-start',
-            height: routine.description.length > 30 ? 85 : 50
+            height: 50
 
           }}
           textStyle={{
-            fontSize: 14,
-            fontFamily: 'brother-1816-bold',
-            marginTop: routine.description.length > 30 ? 10 : 0
+            fontSize: 13,
+            fontFamily: 'brother-1816-bold'
           }}
           onPress={this.seeRoutine(routine)}
           text={routine.description.toUpperCase()}

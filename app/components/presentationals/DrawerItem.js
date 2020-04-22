@@ -36,7 +36,7 @@ export default class DrawerItem extends React.PureComponent {
           styles.drawerItem,
           this.props.active ? styles.activeItem : null
         ]}
-        onPress={this.onPress}>
+        onPress={this.props.onPress}>
         {this.props.otherIcon ? (
           <FontAwesome
             name={this.props.icon}

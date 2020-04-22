@@ -17,7 +17,7 @@ const rootPresistConfig = {
   timeout: 10000,
   storage: storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ['currentOrientation', 'currentRoutine']
+  blacklist: ['currentOrientation', 'currentRoutine', 'statusBarIsHidden']
 }
 
 const rootReducer = combineReducers(
