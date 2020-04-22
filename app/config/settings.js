@@ -25,7 +25,8 @@ SERVER_HOSTNAME_2 + 'setNotifiedMessagesSaved.php',
 SERVER_HOSTNAME_2 + 'setRealTimeMessagesSaved.php',
   UPLOAD_PROFILE_PICTURE: SERVER_HOSTNAME_2 + 'uploadProfilePicture.php',
   PROFILE_PICTURES: SERVER_HOSTNAME_2 + 'profile_pictures/',
-  SYNCH_MEMBER_PROPERTIES: SERVER_HOSTNAME_2 + 'synchMemberProperties.php'
+  SYNCH_MEMBER_PROPERTIES: SERVER_HOSTNAME_2 + 'synchMemberProperties.php',
+  GET_RECORDED_CLASES: SERVER_HOSTNAME_2 + 'getRecordedClasses.php'
 }
 
 exports.Messages = {
@@ -76,7 +77,8 @@ export const Screens = {
   CameraView: 'CameraView',
   NewMember: 'NewMember',
   VideoPlayer: 'VideoPlayer',
-  LiveClass: 'LiveClass'
+  LiveClass: 'LiveClass',
+  RecordedClasses: 'RecordedClasses'
 }
 
 exports.SignUpConstraints = {
@@ -137,20 +139,34 @@ exports.ActionsTypes = {
   SET_HIDDEN_STATUS_BAR: 'SET_HIDDEN_STATUS_BAR'
 }
 
+const liveClassProps = {
+  icon: 'video-camera',
+  screen: Screens.LiveClass,
+  otherIcon: true,
+  drawerStyle: {
+    icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
+    label: { marginTop: 5 },
+    arrow: { marginTop: 15 }
+  },
+  homeStyle: { fontSize: 40, color: 'white' },
+  needsActiveUser: true
+}
+
 export const SectionsData = [
   {
-    icon: 'video-camera',
     label: 'CLASE EN VIVO',
-    screen: Screens.LiveClass,
-    otherIcon: true,
-    drawerStyle: {
-      icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
-      label: { marginTop: 5 },
-      arrow: { marginTop: 15 }
-    },
-    homeStyle: { fontSize: 40, color: 'white' },
-    needsActiveUser: true
+    params: {studio: 'studio1'},
+    ...liveClassProps
   },
+  // {
+  //   label: 'VIVO ESTUDIO 2',
+  //   params: {studio: 'studio2'},
+  //   ...liveClassProps
+  // },
+  // {
+  //   label: 'CLASES GRABADAS',
+  //   ...liveClassProps
+  // },
   // {
   //   icon: 'exclamation',
   //   label: 'SOCIO NUEVO',

@@ -28,9 +28,6 @@ const styles = {
 }
 
 export default class DrawerItem extends React.PureComponent {
-  onPressDrawerItem = () => {
-    this.props.onPress(this.props.screen)
-  }
 
   render () {
     return (
@@ -39,7 +36,7 @@ export default class DrawerItem extends React.PureComponent {
           styles.drawerItem,
           this.props.active ? styles.activeItem : null
         ]}
-        onPress={this.onPressDrawerItem}>
+        onPress={this.onPress}>
         {this.props.otherIcon ? (
           <FontAwesome
             name={this.props.icon}

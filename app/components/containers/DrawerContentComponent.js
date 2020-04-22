@@ -67,8 +67,8 @@ nextProps.newMemberData.freeEntryData.date
     this.setState({ appState: nextAppState })
   }
 
-  navigateTo = screen => {
-    this.props.navigation.navigate(screen)
+  onPress = (screen, params) => () => {
+    this.props.navigation.navigate(screen, params)
   }
   navigateToHome = screen => () => {
     this.props.navigation.navigate(screen)
@@ -97,7 +97,7 @@ nextProps.newMemberData.freeEntryData.date
                 icon={drawerItem.icon}
                 label={drawerItem.label}
                 screen={drawerItem.screen}
-                onPress={this.navigateTo}
+                onPress={this.onPress(drawerItem.screen, drawerItem.params)}
                 style={drawerItem.drawerStyle}
                 otherIcon={drawerItem.otherIcon}
                 labelExtraData={

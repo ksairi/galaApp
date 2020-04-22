@@ -158,6 +158,16 @@ exports.getRealTimeMessages = params => {
     })
 }
 
+exports.getRecordedClasses = params => {
+  return connectToServer(Urls.GET_RECORDED_CLASES, params)
+    .then(response => {
+      return response.messages
+    })
+    .catch(error => {
+      throw error
+    })
+}
+
 exports.setRealTimeMessagesSaved = params => {
   return connectToServer(Urls.SET_REAL_TIME_MESSAGES_SAVED, params)
     .then(response => {

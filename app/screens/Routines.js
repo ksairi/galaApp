@@ -76,13 +76,15 @@ export default class Routines extends React.Component {
           buttonStyle={{
             backgroundColor: '#12194d',
             flex: 2,
-            paddingLeft: 10,
+            marginLeft: 70,
             justifyContent: 'flex-start',
-            height: 60
+            height: routine.description.length > 30 ? 85 : 50
+
           }}
           textStyle={{
-            fontSize: 20,
-            fontFamily: 'brother-1816-bold'
+            fontSize: 14,
+            fontFamily: 'brother-1816-bold',
+            marginTop: routine.description.length > 30 ? 10 : 0
           }}
           onPress={this.seeRoutine(routine)}
           text={routine.description.toUpperCase()}

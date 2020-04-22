@@ -46,6 +46,8 @@ export default class LiveClass extends React.Component {
   }
   render () {
     const name = this.props.userData && this.props.userData.name
+    const {studio} = this.props.navigation.state.params
+
     return (
       <RootWrapper
         style={{
@@ -55,7 +57,7 @@ export default class LiveClass extends React.Component {
           Cargando...
         </Text>
         }
-        <WebView style={{marginTop: 20}} source={{ uri: `https://galagym.com/free-classes/zoom?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange}
+        <WebView style={{marginTop: 20}} source={{ uri: `https://galagym.com/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange}
           injectedJavaScript={this.injectedJs}
           mediaPlaybackRequiresUserAction={false}
         />

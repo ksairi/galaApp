@@ -132,9 +132,10 @@ export default class Home extends React.Component {
     AppState.removeEventListener('change', this._handleAppStateChange)
   }
 
-  onIconPressed = screen => () => {
-    this.props.navigation.navigate(screen)
+  onIconPressed = (screen, params) => () => {
+    this.props.navigation.navigate(screen, params)
   }
+
   goToScreen = (screen) => () => { this.props.navigation.navigate(screen) }
 
   render () {
@@ -204,7 +205,7 @@ export default class Home extends React.Component {
                   return (
                     <TouchableOpacity
                       key={index}
-                      onPress={this.onIconPressed(sectionData.screen)}>
+                      onPress={this.onIconPressed(sectionData.screen, sectionData.params)}>
                       <View style={styles.buttonWrapper}>
                         <View
                           style={{
