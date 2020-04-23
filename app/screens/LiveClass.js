@@ -8,11 +8,17 @@ import API_ACCESS_TOKEN from '/config/apiAccessToken'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import { AnalitycsEventsLabels } from '/config/settings'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
+import styles from 'react-native-carousel-control-fork/styles'
 
 @connect(state => ({
   userData: state.userData
 }))
 export default class LiveClass extends React.Component {
+
+  styles = {
+    title:
+      {alignSelf: 'center', color: 'white', fontFamily: 'lato-regular', marginTop: 10}
+  }
   state = {
     loading: true
   }
@@ -46,17 +52,20 @@ export default class LiveClass extends React.Component {
   }
   render () {
     const name = this.props.userData && this.props.userData.name
-    const {studio} = this.props.navigation.state.params
+    const {studio, title} = this.props.navigation.state.params
 
     return (
       <RootWrapper
         style={{
           justifyContent: 'center'
         }}>
-        {this.state.loading && <Text style={{alignSelf: 'center', color: 'white', fontFamily: 'lato-regular'}}>
+        {this.state.loading && <Text style={styles.title}>
           Cargando...
         </Text>
         }
+        <Text style={{alignSelf: 'center', color: 'white', fontFamily: 'lato-regular'}}>
+          {title}
+        </Text>
         <WebView style={{marginTop: 20}} source={{ uri: `https://galagym.com/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange}
           injectedJavaScript={this.injectedJs}
           mediaPlaybackRequiresUserAction={false}

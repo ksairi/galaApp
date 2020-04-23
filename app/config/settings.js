@@ -154,15 +154,15 @@ const liveClassProps = {
 
 export const SectionsData = [
   {
-    label: 'CLASE EN VIVO',
-    params: {studio: 'studio1'},
+    label: 'VIVO ESTUDIO 1',
+    params: {studio: 'studio1', title: 'ESTUDIO 1'},
     ...liveClassProps
   },
-  // {
-  //   label: 'VIVO ESTUDIO 2',
-  //   params: {studio: 'studio2'},
-  //   ...liveClassProps
-  // },
+  {
+    label: 'VIVO ESTUDIO 2',
+    params: {studio: 'studio2', title: 'ESTUDIO 2'},
+    ...liveClassProps
+  },
   // {
   //   label: 'CLASES GRABADAS',
   //   ...liveClassProps
