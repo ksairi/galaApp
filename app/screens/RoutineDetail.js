@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { View, TouchableOpacity, BackHandler } from 'react-native'
 import GScrollView from '/components/presentationals/GenericScrollView'
 import { connect } from 'react-redux'
@@ -30,8 +30,8 @@ const styles = {
 
   exerciseDetailWrapper: {
     flexDirection: 'row',
-    paddingTop: 10,
-    paddingBottom: 10
+    paddingTop: 5,
+    paddingBottom: 5
   }
 }
 const AnimatedWrapper = Animatable.createAnimatableComponent(RootWrapper)
@@ -104,12 +104,12 @@ export default class RoutineDetail extends React.Component {
           style={{
             color: 'black',
             fontFamily: 'brother-1816-bold',
-            fontSize: 16,
+            fontSize: 14,
             textAlign: 'left'
           }}>
           {rowData.title}
         </GenericText>
-        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link)}>
+        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link.toLowerCase())}>
           <GenericText
             style={{
               color: 'black',
@@ -149,57 +149,58 @@ export default class RoutineDetail extends React.Component {
       </GenericText>
     )
 
-    const exerciseDetails = rowData.minutes ? (
-      <View style={styles.exerciseDetailWrapper}>
-        <Icon
-          name='timer-routines-detail'
-          size={20}
-          style={{ paddingRight: 7 }}
-        />
-        <View style={{ marginTop: 3, flex: -1, flexDirection: 'row' }}>
+    const exerciseTimingDetails =
+        rowData.minutes > 0 &&
+          <View style={styles.exerciseDetailWrapper}>
+            <Icon
+              name='timer-routines-detail'
+              size={20}
+              style={{ paddingRight: 7 }}
+            />
+            <View style={{ marginTop: 3, flex: -1, flexDirection: 'row' }}>
+              <GenericText
+                style={[styles.exerciseDetail, styles.exerciseDetailValue]}>
+                {rowData.minutes}
+              </GenericText>
+              <GenericText
+                style={[styles.exerciseDetail, styles.exerciseDetailLabel]}>
+                {rowData.minutes > 1 ? 'MINUTOS' : 'MINUTO'}
+              </GenericText>
+            </View>
+          </View>
+    const exerciseSeriesDetails =
+      rowData.series > 0 &&
+        <View style={styles.exerciseDetailWrapper}>
           <GenericText
             style={[styles.exerciseDetail, styles.exerciseDetailValue]}>
-            {rowData.minutes}
+            {rowData.series}
           </GenericText>
           <GenericText
             style={[styles.exerciseDetail, styles.exerciseDetailLabel]}>
-            {rowData.minutes > 1 ? 'MINUTOS' : 'MINUTO'}
+            {rowData.series > 1 ? 'SERIES' : 'SERIE'}
+          </GenericText>
+          <FontAwesome
+            name='repeat'
+            style={{
+              fontSize: 20,
+              paddingLeft: 5,
+              paddingRight: 3,
+              color: 'black'
+            }}
+          />
+          <GenericText
+            style={[
+              styles.exerciseDetail,
+              styles.exerciseDetailValue,
+              { paddingLeft: 2 }
+            ]}>
+            {rowData.repetitions}
+          </GenericText>
+          <GenericText
+            style={[styles.exerciseDetail, styles.exerciseDetailLabel]}>
+            {rowData.repetitions !== 1 ? 'REPETICIONES' : 'REPETICIÓN'}
           </GenericText>
         </View>
-      </View>
-    ) : (
-      <View style={styles.exerciseDetailWrapper}>
-        <GenericText
-          style={[styles.exerciseDetail, styles.exerciseDetailValue]}>
-          {rowData.series}
-        </GenericText>
-        <GenericText
-          style={[styles.exerciseDetail, styles.exerciseDetailLabel]}>
-          {rowData.series > 1 ? 'SERIES' : 'SERIE'}
-        </GenericText>
-        <FontAwesome
-          name='repeat'
-          style={{
-            fontSize: 20,
-            paddingLeft: 5,
-            paddingRight: 3,
-            color: 'black'
-          }}
-        />
-        <GenericText
-          style={[
-            styles.exerciseDetail,
-            styles.exerciseDetailValue,
-            { paddingLeft: 2 }
-          ]}>
-          {rowData.repetitions}
-        </GenericText>
-        <GenericText
-          style={[styles.exerciseDetail, styles.exerciseDetailLabel]}>
-          {rowData.repetitions > 1 ? 'REPETICIONES' : 'REPETICIÓN'}
-        </GenericText>
-      </View>
-    )
 
     return (
       <View
@@ -208,9 +209,10 @@ export default class RoutineDetail extends React.Component {
           alignItems: 'flex-start'
         }}>
         {title}
-        {exerciseDetails}
+        {exerciseTimingDetails}
+        {exerciseSeriesDetails}
         {desc}
-        {rowData.recovery && recovery}
+        {rowData.recovery > 0 && recovery}
       </View>
     )
   }

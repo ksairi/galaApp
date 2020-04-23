@@ -92,7 +92,7 @@ export default class Routines extends React.Component {
         />
 
         {
-          routine.link !== '' && routine.link !== null && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link)}>
+          routine.link !== '' && routine.link !== null && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link.toLowerCase())}>
             <Text style={{fontSize: 13, fontFamily: 'lato-regular', alignSelf: 'center', color: 'white'}}>
               Video
             </Text>
@@ -112,6 +112,18 @@ export default class Routines extends React.Component {
 
   render () {
     const validRoutines = this.props.routines.filter(routine => routine.ejercicios.length)
+    validRoutines.sort((a, b) => {
+      var nameA = a.description.toUpperCase() // ignore upper and lowercase
+      var nameB = b.description.toUpperCase() // ignore upper and lowercase
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+      // names must be equal
+      return 0
+    })
     const personalRoutines = validRoutines.filter(routine => !routine.generica)
     const generalRoutines = validRoutines.filter(routine => routine.generica)
     return (
