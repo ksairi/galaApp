@@ -1,5 +1,5 @@
 import React from 'react'
-import { AppState, Platform, Vibration } from 'react-native'
+import { AppState, Platform, Vibration, Alert } from 'react-native'
 import NetInfo from '@react-native-community/netinfo'
 import StatusBar from '/components/presentationals/StatusBar'
 import { Notifications } from 'expo'
@@ -25,6 +25,8 @@ import {
   synchMemberProperties
 } from '/helpers/UserDataHelper'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import {Updates} from 'expo'
+
 
 @connect(
   state => ({
@@ -49,18 +51,44 @@ import AnalyticsHelper from '/helpers/AnalyticsHelper'
 export default class AppContainer extends React.Component {
   static alreadySetMessagesSaved = false
   static unsubscribe
+  static interval
+  state ={cancelTime: null}
+
+  showAlert = () => {
+    Alert.alert(
+      'Nueva versión disponible',
+      'Se cerrará y abrirá la app para instalarla rapidamente. Continuar?',
+      [
+        {
+          text: 'Cancelar', onPress: () => this.setState({cancelTime: Date.now()}),
+          style: 'cancel'
+        },
+        { text: 'OK', onPress: () => Updates.reloadAsync() }
+      ],
+      { cancelable: false }
+    )
+  }
 
   componentDidMount () {
     this.notificationSubscription = Notifications.addListener(
       this.handleNotification
     )
     AppContainer.unsubscribe = NetInfo.addEventListener(this.handleConnectivityChange)
+    AppContainer.interval = setInterval(async() => {
+      if (!__DEV__) {
+        const response = await Updates.checkForUpdateAsync()
+        if (response.isAvailable && (!this.state.cancelTime ||
+          (Date.now() - this.state.cancelTime) / 1000 / 60 >= 30)) {
+          this.showAlert()
+        }
+      }
+    }, 10000)
   }
 
   componentWillUnmount () {
     this.notificationSubscription.remove()
-
     AppContainer.unsubscribe()
+    clearInterval(AppContainer.interval)
   }
 
   handleNotification = async (notification) => {
