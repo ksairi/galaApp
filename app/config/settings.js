@@ -1,4 +1,5 @@
 import { DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2 } from './devHosts'
+import { FontAwesome, Foundation } from '@expo/vector-icons'
 
 const SERVER_HOSTNAME_1 = __DEV__
         ? DEV_SERVER_HOSTNAME_1
@@ -77,7 +78,8 @@ export const Screens = {
   CameraView: 'CameraView',
   NewMember: 'NewMember',
   VideoPlayer: 'VideoPlayer',
-  LiveClass: 'LiveClass',
+  LiveClassStudio1: 'LiveClassStudio1',
+  LiveClassStudio2: 'LiveClassStudio2',
   RecordedClasses: 'RecordedClasses'
 }
 
@@ -141,10 +143,9 @@ exports.ActionsTypes = {
 
 const liveClassProps = {
   icon: 'video-camera',
-  screen: Screens.LiveClass,
-  otherIcon: true,
+  IconComponent: FontAwesome,
   drawerStyle: {
-    icon: { marginTop: 5, paddingLeft: 7, fontSize: 30 },
+    icon: { marginTop: 5, fontSize: 30 },
     label: { marginTop: 5 },
     arrow: { marginTop: 15 }
   },
@@ -156,22 +157,32 @@ export const SectionsData = [
   {
     label: 'VIVO ESTUDIO 1',
     params: {studio: 'studio1', title: 'ESTUDIO 1'},
+    screen: Screens.LiveClassStudio1,
     ...liveClassProps
   },
   {
     label: 'VIVO ESTUDIO 2',
     params: {studio: 'studio2', title: 'ESTUDIO 2'},
+    screen: Screens.LiveClassStudio2,
     ...liveClassProps
   },
-  // {
-  //   label: 'CLASES GRABADAS',
-  //   ...liveClassProps
-  // },
+  {
+    label: 'CLASES GRABADAS',
+    ...liveClassProps,
+    IconComponent: Foundation,
+    icon: 'record',
+    drawerStyle: { ...liveClassProps.drawerStyle,
+      icon: {...liveClassProps.drawerStyle.icon, fontSize: 50, paddingLeft: 0},
+      label: {...liveClassProps.drawerStyle.label, fontSize: 17, marginTop: 15},
+      arrow: { marginTop: 20 }
+    },
+    screen: Screens.RecordedClasses
+  },
   // {
   //   icon: 'exclamation',
   //   label: 'SOCIO NUEVO',
   //   screen: Screens.NewMember,
-  //   otherIcon: true,
+  //   IconComponent: FontAwesome,
   //   drawerStyle: {
   //     icon: { marginTop: 5, paddingLeft: 15, fontSize: 30 },
   //     label: { marginTop: 10, color: 'green', fontFamily: 'lato-regular' },

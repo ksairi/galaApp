@@ -16,12 +16,12 @@ export default class App extends React.Component {
     showSplashImage: false
   }
 
-  constructor(props) {
+  constructor (props) {
     super(props)
     SplashScreen.preventAutoHide()
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this._cacheResourcesAsync()
       .then(() => {
         this.setState({ showSplashImage: true, haveResourcesLoaded: true })
@@ -32,7 +32,7 @@ export default class App extends React.Component {
     ${error.stack}`)
       )
   }
-  _cacheResourcesAsync() {
+  _cacheResourcesAsync () {
     return Font.loadAsync({
       'lato-regular': require('assets/fonts/Lato-Regular.ttf'),
       'lato-bold': require('assets/fonts/Lato-Bold.ttf'),
@@ -52,7 +52,7 @@ export default class App extends React.Component {
     }, 2000)
   }
 
-  render() {
+  render () {
     const { haveResourcesLoaded, showSplashImage } = this.state
     if (!haveResourcesLoaded) {
       return null
@@ -71,5 +71,9 @@ export default class App extends React.Component {
     )
   }
 }
+// YellowBox.ignoreWarnings(['Setting a timer', 'Remote debugger', 'Warning: ListView is deprecated',
+// 'Warning: componentWillMount is deprecated',
+// 'Warning: componentWillUpdate is deprecated',
+// 'Warning: componentWillReceiveProps is deprecated'])
 
-YellowBox.ignoreWarnings(['Setting a timer', 'Remote debugger', 'Warning: ListView is deprecated'])
+console.disableYellowBox = true

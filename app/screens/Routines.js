@@ -35,10 +35,11 @@ export default class Routines extends React.Component {
     this.props.navigation.navigate(Screens.RoutineDetail)
   }
 
-  showIntroVideo = (uri) => () => {
+  showIntroVideo = (url, title) => () => {
     this.props.navigation.navigate(Screens.VideoPlayer, {
-      source: {uri},
-      backScreen: Screens.Routines
+      url,
+      backScreen: Screens.Routines,
+      title
     })
   }
 
@@ -92,7 +93,7 @@ export default class Routines extends React.Component {
         />
 
         {
-          routine.link !== '' && routine.link !== null && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link.toLowerCase())}>
+          routine.link !== '' && routine.link !== null && <TouchableOpacity style={{flex: 0.2, marginLeft: 5}} onPress={this.showIntroVideo(routine.link.toLowerCase(), routine.description)}>
             <Text style={{fontSize: 13, fontFamily: 'lato-regular', alignSelf: 'center', color: 'white'}}>
               Video
             </Text>

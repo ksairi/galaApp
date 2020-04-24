@@ -1,24 +1,25 @@
-import React from 'react'
-import {Text} from 'react-native'
+import React, {Fragment} from 'react'
+import {Text, View, StatusBar, TouchableOpacity} from 'react-native'
 import { WebView } from 'react-native-webview'
 import { connect } from 'react-redux'
 import RootWrapper from '/components/presentationals/RootWrapper'
-import { Screens } from '../config/settings'
 import API_ACCESS_TOKEN from '/config/apiAccessToken'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import { AnalitycsEventsLabels } from '/config/settings'
 import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake'
-import styles from 'react-native-carousel-control-fork/styles'
+import {Ionicons} from '@expo/vector-icons'
+import { genericBackgroundColor } from '/components/styles'
+
+const styles = {
+  title:
+    {alignSelf: 'center', color: 'white', fontFamily: 'lato-regular', marginTop: 10}
+}
 
 @connect(state => ({
   userData: state.userData
 }))
 export default class LiveClass extends React.Component {
 
-  styles = {
-    title:
-      {alignSelf: 'center', color: 'white', fontFamily: 'lato-regular', marginTop: 10}
-  }
   state = {
     loading: true
   }
@@ -47,7 +48,7 @@ export default class LiveClass extends React.Component {
 
   onNavigationStateChange = (data) => {
     if (data.url === 'https://galagym.com/') {
-      this.props.navigation.navigate(Screens.Home)
+      this.props.navigation.goBack()
     }
   }
   render () {
@@ -55,22 +56,38 @@ export default class LiveClass extends React.Component {
     const {studio, title} = this.props.navigation.state.params
 
     return (
-      <RootWrapper
-        style={{
-          justifyContent: 'center'
-        }}>
-        {this.state.loading && <Text style={styles.title}>
-          Cargando...
-        </Text>
-        }
-        <Text style={{alignSelf: 'center', color: 'white', fontFamily: 'lato-regular'}}>
-          {title}
-        </Text>
-        <WebView style={{marginTop: 20}} source={{ uri: `https://galagym.com/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange}
-          injectedJavaScript={this.injectedJs}
-          mediaPlaybackRequiresUserAction={false}
-        />
-      </RootWrapper>
+      <Fragment>
+        <View style={{ paddingTop: StatusBar.currentHeight, flex: 0.07, paddingLeft: 10, backgroundColor: genericBackgroundColor }}>
+          <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+            <Ionicons
+              name='ios-arrow-round-back'
+              size={30}
+              color='white'
+              style={{
+                alignSelf: 'flex-start'
+              }}
+            />
+          </TouchableOpacity>
+        </View>
+        <RootWrapper
+          style={{
+            flex: 2,
+            justifyContent: 'center'
+          }}>
+          {this.state.loading && <Text style={styles.title}>
+            Cargando...
+          </Text>
+          }
+          <Text style={{marginTop: 10, alignSelf: 'center', color: 'white', fontFamily: 'lato-regular'}}>
+            {title}
+          </Text>
+          <WebView style={{marginTop: 10}}
+            source={{ uri: `https://galagym.com/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}` }} onNavigationStateChange={this.onNavigationStateChange}
+            injectedJavaScript={this.injectedJs}
+            mediaPlaybackRequiresUserAction={false}
+          />
+        </RootWrapper>
+      </Fragment>
     )
   }
 }

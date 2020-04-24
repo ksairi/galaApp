@@ -9,7 +9,6 @@ import { Screens, SectionsData } from '/config/settings'
 import Icon from '/helpers/ImageHelper'
 import GenericText from '/components/presentationals/GenericText'
 import Footer from '/components/presentationals/Footer'
-import { FontAwesome } from '@expo/vector-icons'
 import * as UserDataHelper from '/helpers/UserDataHelper'
 import * as Animatable from 'react-native-animatable-promise'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
@@ -193,12 +192,14 @@ export default class Home extends React.Component {
               {SectionsData.map((sectionData, index) => {
                 if (
                     (sectionData.screen !== Screens.NewMember &&
-                      sectionData.screen !== Screens.LiveClass) ||
+                    sectionData.screen !== Screens.LiveClassStudio1 &&
+                    sectionData.screen !== Screens.LiveClassStudio2) ||
                     (sectionData.screen === Screens.NewMember &&
                       this.state.freeEntryDaysLeft &&
                       this.state.freeEntryDaysLeft > 0) ||
                     (
-                      sectionData.screen === Screens.LiveClass &&
+                      (sectionData.screen === Screens.LiveClassStudio1 ||
+                      sectionData.screen === Screens.LiveClassStudio2) &&
                       this.props.routines.length > 0
                     )
                   ) {
@@ -211,8 +212,8 @@ export default class Home extends React.Component {
                           style={{
                             alignItems: 'center'
                           }}>
-                          {sectionData.otherIcon ? (
-                            <FontAwesome
+                          {sectionData.IconComponent ? (
+                            <sectionData.IconComponent
                               name={sectionData.icon}
                               style={sectionData.homeStyle}
                             />

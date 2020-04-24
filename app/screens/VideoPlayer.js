@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react'
-import { Platform, TouchableOpacity, View, StatusBar } from 'react-native'
+import { Platform, TouchableOpacity, View, StatusBar, Text } from 'react-native'
 import { WebView } from 'react-native-webview'
 import { connect } from 'react-redux'
 import RootWrapper from '/components/presentationals/RootWrapper'
@@ -29,11 +29,11 @@ export default class VideoPlayer extends React.Component {
   }
 
   render () {
-    const {source: {uri}, backScreen} = this.props.navigation.state.params
+    const {url:uri, backScreen, title} = this.props.navigation.state.params
     return (
       <Fragment>
         {this.state.showBack && <View style={[{ paddingTop: StatusBar.currentHeight, flex: 0.3, paddingLeft: 10, backgroundColor: Platform.OS === 'ios' ? '#262626' : 'black' }]}>
-          <TouchableOpacity onPress={() => this.props.navigation.navigate(backScreen)}>
+          <TouchableOpacity onPress={() => backScreen ? this.props.navigation.navigate(backScreen) : this.props.navigation.goBack()}>
             <Ionicons
               name='ios-arrow-round-back'
               size={30}
@@ -41,8 +41,11 @@ export default class VideoPlayer extends React.Component {
               style={{
                 alignSelf: 'flex-start'
               }}
-                  />
+            />
           </TouchableOpacity>
+          <Text style={{alignSelf: 'center', color: 'white', fontFamily: 'lato-regular'}}>
+            {title}
+          </Text>
         </View>
         }
         <RootWrapper

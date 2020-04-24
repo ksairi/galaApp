@@ -85,10 +85,11 @@ nextProps.newMemberData.freeEntryData.date
         {SectionsData.map((drawerItem, index) => {
           if (
               (drawerItem.screen !== Screens.NewMember &&
-              drawerItem.screen !== Screens.LiveClass) ||
+              drawerItem.screen !== Screens.LiveClassStudio1 && drawerItem.screen !== Screens.LiveClassStudio2) ||
               (drawerItem.screen === Screens.NewMember &&
                 this.state.freeEntryDaysLeft && this.state.freeEntryDaysLeft > 0) ||
-                (drawerItem.screen === Screens.LiveClass && this.props.routines.length > 0)
+                ((drawerItem.screen === Screens.LiveClassStudio1 || drawerItem.screen === Screens.LiveClassStudio2) &&
+                this.props.routines.length > 0)
             ) {
             return (
               <DrawerItem
@@ -99,7 +100,7 @@ nextProps.newMemberData.freeEntryData.date
                 screen={drawerItem.screen}
                 onPress={this.onPress(drawerItem.screen, drawerItem.params)}
                 style={drawerItem.drawerStyle}
-                otherIcon={drawerItem.otherIcon}
+                IconComponent={drawerItem.IconComponent}
                 labelExtraData={
                   drawerItem.label === 'MENSAJES' &&
                   this.props.newMessagesCount > 0

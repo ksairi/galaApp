@@ -110,7 +110,8 @@ const ReferralsNavigator = createStackNavigator(
 const drawerNavigator = createDrawerNavigator(
   {
     [Screens.Home]: { screen: HomeNavigator },
-    [Screens.LiveClass]: { screen: LiveClass },
+    [Screens.LiveClassStudio1]: { screen: LiveClass },
+    [Screens.LiveClassStudio2]: { screen: LiveClass },
     [Screens.RecordedClasses]: { screen: RecordedClassesNavigator },
     // [Screens.NewMember]: { screen: NewMemberNavigator },
     [Screens.Profile]: { screen: ProfileNavigator },

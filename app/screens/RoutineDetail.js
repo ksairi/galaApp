@@ -90,10 +90,11 @@ export default class RoutineDetail extends React.Component {
     this.props.navigation.navigate(Screens.Routines)
   }
 
-  showVideo = (uri) => () => {
+  showVideo = (url, title) => () => {
     this.props.navigation.navigate(Screens.VideoPlayer, {
-      source: {uri},
-      backScreen: Screens.RoutineDetail
+      url,
+      backScreen: Screens.RoutineDetail,
+      title
     })
   }
 
@@ -109,7 +110,7 @@ export default class RoutineDetail extends React.Component {
           }}>
           {rowData.title}
         </GenericText>
-        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link.toLowerCase())}>
+        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link.toLowerCase(), rowData.title)}>
           <GenericText
             style={{
               color: 'black',

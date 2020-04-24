@@ -158,10 +158,10 @@ exports.getRealTimeMessages = params => {
     })
 }
 
-exports.getRecordedClasses = params => {
-  return connectToServer(Urls.GET_RECORDED_CLASES, params)
+exports.getRecordedClasses = () => {
+  return connectToServer(Urls.GET_RECORDED_CLASES)
     .then(response => {
-      return response.messages
+      return response.recordings
     })
     .catch(error => {
       throw error
@@ -216,7 +216,7 @@ const connectToServer = (
   ])
 }
 
-let timeoutFetch = (url, parameters, contentType) => {
+let timeoutFetch = (url, parameters = {}, contentType) => {
   const params = contentType === CONTENT_TYPE_JSON ? {...parameters, authorization: API_ACCESS_TOKEN} : parameters
   return fetch(url, {
     method: 'POST',

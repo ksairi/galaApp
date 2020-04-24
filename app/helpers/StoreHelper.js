@@ -181,7 +181,6 @@ export const saveMessagesToDevice = (messages, sentMessages, dispatch) => {
 }
 
 const saveMemberPropertiesToDevice = (userData, dispatch) => {
-  console.log(userData)
   dispatch(ActionsCreators.setUserData(userData))
   dispatch(
     ActionsCreators.setReceiveNotifications({

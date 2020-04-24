@@ -1,7 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, Text } from 'react-native'
 import Icon from '/helpers/ImageHelper'
-import { FontAwesome } from '@expo/vector-icons'
 
 const styles = {
   drawerItem: {
@@ -37,8 +36,8 @@ export default class DrawerItem extends React.PureComponent {
           this.props.active ? styles.activeItem : null
         ]}
         onPress={this.props.onPress}>
-        {this.props.otherIcon ? (
-          <FontAwesome
+        {this.props.IconComponent ? (
+          <this.props.IconComponent
             name={this.props.icon}
             style={[
               styles.drawerItemIcon,
