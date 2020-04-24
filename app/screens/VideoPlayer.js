@@ -29,10 +29,10 @@ export default class VideoPlayer extends React.Component {
   }
 
   render () {
-    const {url:uri, backScreen, title} = this.props.navigation.state.params
+    const {url: uri, backScreen, title} = this.props.navigation.state.params
     return (
       <Fragment>
-        {this.state.showBack && <View style={[{ paddingTop: StatusBar.currentHeight, flex: 0.3, paddingLeft: 10, backgroundColor: Platform.OS === 'ios' ? '#262626' : 'black' }]}>
+        {this.state.showBack && <View style={[{ flex: 0.3, paddingLeft: 10, backgroundColor: Platform.OS === 'ios' ? '#262626' : 'black' }]}>
           <TouchableOpacity onPress={() => backScreen ? this.props.navigation.navigate(backScreen) : this.props.navigation.goBack()}>
             <Ionicons
               name='ios-arrow-round-back'

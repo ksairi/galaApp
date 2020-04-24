@@ -82,7 +82,7 @@ export default class AppContainer extends React.Component {
           this.showAlert()
         }
       }
-    }, 10000)
+    }, 1000 * 60 * 60 * 12)
   }
 
   componentWillUnmount () {
