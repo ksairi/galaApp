@@ -2,7 +2,6 @@ import React from 'react'
 import {
   View,
   Keyboard,
-  KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
   BackHandler
@@ -23,6 +22,7 @@ import { genericTextInputStyle, textWithLinkStyle } from '/components/styles'
 import Header from '/components/containers/Header'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import RoundedTextInput from '/components/presentationals/RoundedTextInput'
+import CustomFormWrapper from '/components/presentationals/CustomFormWrapper'
 
 const styles = {
   resetPasswordTitle: {
@@ -131,7 +131,7 @@ export default class ResetPassword extends React.Component {
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
         <View style={{ flex: 1 }}>
           <RootWrapper style={this.state.componentsStyle.rootWrapperStyle}>
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+            <CustomFormWrapper>
               <CentredWrapper>
                 <GenericText
                   style={[
@@ -238,7 +238,7 @@ export default class ResetPassword extends React.Component {
 
                 <LoadingSpinner visible={this.state.spinnerVisible} />
               </CentredWrapper>
-            </KeyboardAvoidingView>
+            </CustomFormWrapper>
           </RootWrapper>
         </View>
       </TouchableWithoutFeedback>

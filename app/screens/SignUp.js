@@ -1,7 +1,6 @@
 import React from 'react'
 import {
   Keyboard,
-  KeyboardAvoidingView,
   View,
   Platform,
   TouchableWithoutFeedback,
@@ -27,6 +26,7 @@ import {
 import Header from '/components/containers/Header'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import RoundedTextInput from '/components/presentationals/RoundedTextInput'
+import CustomFormWrapper from '/components/presentationals/CustomFormWrapper'
 
 const styles = {
   registerAccountTitle: {
@@ -213,7 +213,7 @@ export default class SignUp extends React.Component {
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
         <View style={{ flex: 1 }}>
           <RootWrapper style={{ paddingBottom: 0 }}>
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
+            <CustomFormWrapper>
               <CentredWrapper>
                 <GenericText
                   style={[
@@ -334,7 +334,7 @@ export default class SignUp extends React.Component {
 
                 <LoadingSpinner visible={this.state.spinnerVisible} />
               </CentredWrapper>
-            </KeyboardAvoidingView>
+            </CustomFormWrapper>
           </RootWrapper>
         </View>
       </TouchableWithoutFeedback>

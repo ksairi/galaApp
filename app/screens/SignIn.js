@@ -2,7 +2,6 @@ import React from 'react'
 import {
   Keyboard,
   View,
-  KeyboardAvoidingView,
   Dimensions,
   Platform,
   TouchableWithoutFeedback
@@ -29,6 +28,7 @@ import { getDeviceId } from '/helpers/NotificationsHelper'
 import { ActionsCreators } from '/redux/actions'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
 import RoundedTextInput from '/components/presentationals/RoundedTextInput'
+import CustomFormWrapper from '/components/presentationals/CustomFormWrapper'
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo)
 
@@ -189,139 +189,139 @@ export default class SignIn extends React.Component {
                     : 0
               }
             ]}>
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior='padding'>
-              <CentredWrapper>
-                <AnimatedLogo
-                  style={styles.animatedLogoInitStyle}
-                  ref={this.handleAnimatedLogo}
-                />
+            <CustomFormWrapper>
+                <CentredWrapper>
+                  <AnimatedLogo
+                    style={styles.animatedLogoInitStyle}
+                    ref={this.handleAnimatedLogo}
+                  />
 
-                {this.props.orientation === 'portrait' &&
-                  this.state.componentsStyle ===
-                    styles.hiddenKeyboardComponentsStyle && (
-                  <AutoHeightImage
-                    source={
-                      this.props.loginImages.length > 0 &&
-                      this.props.loginImages[0].imageIndex === 0
-                        ? require('../assets/images/login.jpg')
-                        : {uri: this.props.loginImages[0].uri}
-                    }
-                    style={styles.image}
-                    width={Dimensions.get('window').width}
-                    />
-                  )}
+                  {this.props.orientation === 'portrait' &&
+                    this.state.componentsStyle ===
+                      styles.hiddenKeyboardComponentsStyle && (
+                    <AutoHeightImage
+                      source={
+                        this.props.loginImages.length > 0 &&
+                        this.props.loginImages[0].imageIndex === 0
+                          ? require('../assets/images/login.jpg')
+                          : {uri: this.props.loginImages[0].uri}
+                      }
+                      style={styles.image}
+                      width={Dimensions.get('window').width}
+                      />
+                    )}
 
-                <RoundedTextInput
-                  containerStyle={[{
-                    marginBottom: 0,
-                    marginLeft: containerPadding,
-                    marginRight: containerPadding
-                  }, genericTextInputStyle.container,
-                  this.state.componentsStyle.inputContainerStyle]}
-                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputStyle]}
-                  inputProps={{
-                    placeholder: 'DNI',
-                    keyboardType: 'numeric',
-                    autoFocus: true,
-                    onChangeText: this.onUserIdChangeText,
-                    onSubmitEditing: this.onSubmitUserId,
-                    returnKeyType: 'next',
-                    autoCapitalize: 'none',
-                    autoCorrect: true,
-                    onFocus: this.onInputTextFocus
-                  }}
-                />
-
-                <RoundedTextInput
-                  containerStyle={[
-                    {
+                  <RoundedTextInput
+                    containerStyle={[{
+                      marginBottom: 0,
                       marginLeft: containerPadding,
                       marginRight: containerPadding
                     }, genericTextInputStyle.container,
-                    this.state.componentsStyle.passwordContainerStyle]}
-                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputStyle]}
-                  inputProps={{
-                    placeholder: 'Contraseña',
-                    secureTextEntry: true,
-                    onChangeText: this.onPasswordChangeText,
-                    autoCapitalize: 'none',
-                    autoCorrect: false,
-                    returnKeyType: 'done',
-                    keyboardType: 'default',
-                    ref: 'passwordInput',
-                    onSubmitEditing: this.signIn,
-                    onFocus: this.onInputTextFocus
-                  }}
-                />
-
-                <View
-                  style={[
-                    {
-                      flexDirection: 'row',
-                      marginLeft: containerPadding,
-                      marginRight: containerPadding
-                    },
-                    this.state.componentsStyle.buttonContainerStyle
-                  ]}>
-                  <Button
-                    buttonStyle={this.state.componentsStyle.buttonStyle}
-                    textStyle={this.state.componentsStyle.textStyle}
-                    text='INICIAR SESIÓN'
-                    onPress={this.signIn}
+                    this.state.componentsStyle.inputContainerStyle]}
+                    inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputStyle]}
+                    inputProps={{
+                      placeholder: 'DNI',
+                      keyboardType: 'numeric',
+                      autoFocus: true,
+                      onChangeText: this.onUserIdChangeText,
+                      onSubmitEditing: this.onSubmitUserId,
+                      returnKeyType: 'next',
+                      autoCapitalize: 'none',
+                      autoCorrect: true,
+                      onFocus: this.onInputTextFocus
+                    }}
                   />
-                </View>
 
-                <View style={this.state.componentsStyle.linksContainerStyle}>
+                  <RoundedTextInput
+                    containerStyle={[
+                      {
+                        marginLeft: containerPadding,
+                        marginRight: containerPadding
+                      }, genericTextInputStyle.container,
+                      this.state.componentsStyle.passwordContainerStyle]}
+                    inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.inputStyle]}
+                    inputProps={{
+                      placeholder: 'Contraseña',
+                      secureTextEntry: true,
+                      onChangeText: this.onPasswordChangeText,
+                      autoCapitalize: 'none',
+                      autoCorrect: false,
+                      returnKeyType: 'done',
+                      keyboardType: 'default',
+                      ref: 'passwordInput',
+                      onSubmitEditing: this.signIn,
+                      onFocus: this.onInputTextFocus
+                    }}
+                  />
+
                   <View
                     style={[
-                      textWithLinkStyle.container,
-                      this.state.componentsStyle.firstLinkStyle
+                      {
+                        flexDirection: 'row',
+                        marginLeft: containerPadding,
+                        marginRight: containerPadding
+                      },
+                      this.state.componentsStyle.buttonContainerStyle
                     ]}>
-                    <GenericText style={textWithLinkStyle.text}>
-                      ¿No tenés una cuenta?
-                    </GenericText>
-                    <GenericLink
-                      containerStyle={textWithLinkStyle.link.container}
-                      contentStyle={textWithLinkStyle.link.content}
-                      onPress={this.goToSignUp}>
-                      Creá una nueva
-                    </GenericLink>
+                    <Button
+                      buttonStyle={this.state.componentsStyle.buttonStyle}
+                      textStyle={this.state.componentsStyle.textStyle}
+                      text='INICIAR SESIÓN'
+                      onPress={this.signIn}
+                    />
                   </View>
 
-                  {
+                  <View style={this.state.componentsStyle.linksContainerStyle}>
                     <View
                       style={[
                         textWithLinkStyle.container,
-                        this.state.componentsStyle.secondLinkStyle
+                        this.state.componentsStyle.firstLinkStyle
                       ]}>
                       <GenericText style={textWithLinkStyle.text}>
-                        ¿Olvidaste tu contraseña?
+                        ¿No tenés una cuenta?
                       </GenericText>
                       <GenericLink
                         containerStyle={textWithLinkStyle.link.container}
                         contentStyle={textWithLinkStyle.link.content}
-                        onPress={this.goToResetPassword}>
-                        Recuperala
+                        onPress={this.goToSignUp}>
+                        Creá una nueva
                       </GenericLink>
                     </View>
-                  }
-                </View>
 
-                {this.state.errorMessage !== '' && (
-                  <GenericText
-                    style={{
-                      flex: 0.7,
-                      marginLeft: containerPadding,
-                      marginRight: containerPadding
-                    }}
-                    error={this.state.errorMessage || false}>
-                    {this.state.errorMessage}
-                  </GenericText>
-                )}
+                    {
+                      <View
+                        style={[
+                          textWithLinkStyle.container,
+                          this.state.componentsStyle.secondLinkStyle
+                        ]}>
+                        <GenericText style={textWithLinkStyle.text}>
+                          ¿Olvidaste tu contraseña?
+                        </GenericText>
+                        <GenericLink
+                          containerStyle={textWithLinkStyle.link.container}
+                          contentStyle={textWithLinkStyle.link.content}
+                          onPress={this.goToResetPassword}>
+                          Recuperala
+                        </GenericLink>
+                      </View>
+                    }
+                  </View>
 
-                <LoadingSpinner visible={this.state.spinnerVisible} />
-              </CentredWrapper>
-            </KeyboardAvoidingView>
+                  {this.state.errorMessage !== '' && (
+                    <GenericText
+                      style={{
+                        flex: 0.7,
+                        marginLeft: containerPadding,
+                        marginRight: containerPadding
+                      }}
+                      error={this.state.errorMessage || false}>
+                      {this.state.errorMessage}
+                    </GenericText>
+                  )}
+
+                  <LoadingSpinner visible={this.state.spinnerVisible} />
+                </CentredWrapper>
+            </CustomFormWrapper>
           </RootWrapper>
         </View>
       </TouchableWithoutFeedback>
