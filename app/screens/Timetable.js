@@ -42,7 +42,7 @@ const styles = {
   }
 }
 
-const timetableDaysMetadata = [
+let timetableDaysMetadata = [
   {
     day: 'LUNES'
   },
@@ -60,6 +60,9 @@ const timetableDaysMetadata = [
   },
   {
     day: 'SÁBADO'
+  },
+  {
+    day: 'DOMINGO'
   }
 ]
 
@@ -118,40 +121,48 @@ export default class TimeTbale extends React.Component {
     Carousel.currentIndex = position
   }
 
-  getTimeTable = () =>
-    timetableDaysMetadata.map((dayMetadata, index) => (
-      <View key={index} style={styles.timetableDay}>
-        <View
-          style={{
-            paddingLeft: 15,
-            paddingRight: 15
-          }}>
-          <GenericText style={styles.day}>{dayMetadata.day}</GenericText>
+  getTimeTable = () => {
+    const showSunday = this.props.timetable[6].data.find(row => row)
+    if (!showSunday) {
+      timetableDaysMetadata.length--
+    }
+    return (
+      timetableDaysMetadata.map((dayMetadata, index) =>
+        <View key={index} style={styles.timetableDay}>
+          <View
+            style={{
+              paddingLeft: 15,
+              paddingRight: 15
+            }}>
+            <GenericText style={styles.day}>{dayMetadata.day}</GenericText>
 
-          <View>
-            <GenericText style={styles.dayMessage}>
-              {this.props.timetable[index].message}
-            </GenericText>
-            {this.props.timetable[index].data.map((timetableData, index) => (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  paddingBottom: 10
-                }}>
-                <GenericText style={styles.className}>
-                  {timetableData.class}
-                </GenericText>
-                <GenericText style={styles.classTime}>
-                  {timetableData.time}
-                </GenericText>
-              </View>
-            ))}
+            <View>
+              <GenericText style={styles.dayMessage}>
+                {this.props.timetable[index].message}
+              </GenericText>
+              {this.props.timetable[index].data.map((timetableData, index) => (
+                <View
+                  key={index}
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    paddingBottom: 10
+                  }}>
+                  <GenericText style={styles.className}>
+                    {timetableData.class}
+                  </GenericText>
+                  <GenericText style={styles.classTime}>
+                    {timetableData.time}
+                  </GenericText>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-      </View>
-    ))
+        )
+    )
+  }
+
   render () {
     return (
       <GScrollView>
