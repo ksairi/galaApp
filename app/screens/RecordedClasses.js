@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import {FlatList, Text, TouchableOpacity, Alert} from 'react-native'
+import React, { useEffect, useState, Fragment } from 'react'
+import {FlatList, Text, TouchableOpacity, Alert, View} from 'react-native'
 import ApiHelper from '/helpers/ApiHelper'
 import LoadingSpinner from '/components/presentationals/LoadingSpinner'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import {Screens} from '/config/settings'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
+import GenericText from '/components/presentationals/GenericText'
+
 const styles = {
   item: {
     padding: 10
@@ -55,15 +57,30 @@ export default ({navigation}) => {
 
   return (
     <RootWrapper style={{ padding: 0 }}>
-      <Text style={{ color: 'white', alignSelf: 'center', marginVertical: 10, fontSize: 18, fontFamily: 'lato-regular' }}>CLASES GRABADAS</Text>
-      <CentredWrapper>
-        <FlatList
-          data={classes}
-          renderItem={({ item }) => <Item name={item.name} url={item.url} />}
-          keyExtractor={item => item.url}
-          style={{marginTop: 20}}
-        />
-      </CentredWrapper>
+    {classes.length > 0 ?
+      <Fragment>
+        <Text style={{ color: 'white', alignSelf: 'center', marginVertical: 10, fontSize: 18, fontFamily: 'lato-regular' }}>CLASES GRABADAS</Text>
+        <CentredWrapper>
+          <FlatList
+            data={classes}
+            renderItem={({ item }) => <Item name={item.name} url={item.url} />}
+            keyExtractor={item => item.url}
+            style={{marginTop: 20}}
+          />
+        </CentredWrapper>
+      </Fragment>
+      : (
+      <View style={{flex: 1, alignItems: 'center', marginTop: 50}}>
+        <GenericText
+          style={{ fontFamily: 'brother-1816-bold', fontSize: 22, color: 'white', flex: -1 }}>
+          ¡Ups!
+        </GenericText>
+        <GenericText style={{ fontSize: 18 }}>
+          No hay clases grabadas aun!
+        </GenericText>
+      </View>
+      )
+    }
     </RootWrapper>
   )
 }
