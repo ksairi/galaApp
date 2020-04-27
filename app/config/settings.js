@@ -33,6 +33,7 @@ SERVER_HOSTNAME_2 + 'setRealTimeMessagesSaved.php',
 exports.Messages = {
   INVALID_USER_ID_PASSWORD: 'Ingresá tu DNI y contraseña para continuar',
   INVALID_CONFIRM_PASSWORD: 'Las contraseñas no coinciden',
+  PASSWORD_TOO_EASY: 'Por favor elija otra contraseña',
   SERVER_ERROR:
   'Error de conexión a nuestros servidores. Por favor reintentá en unos minutos',
   CHECK_INTERNET_CONNECTION: 'Verificá tu conexión de internet',

@@ -7,6 +7,9 @@ exports.passwordsWithErrors = (password, confirmPassword) => {
   if (password !== confirmPassword) {
     return Messages.INVALID_CONFIRM_PASSWORD
   }
+  if (password === confirmPassword && password === '12345') {
+    return Messages.PASSWORD_TOO_EASY
+  }
   return null
 }
 

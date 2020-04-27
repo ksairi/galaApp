@@ -26,7 +26,7 @@ export default ({navigation}) => {
         setClasses(classes)
         setLoading(false)
       } catch (e) {
-        Alert.alert('', 'Error de conexion. Por favor intenta mas tarde',
+        Alert.alert('', e,
           [
             {
               text: 'OK',
