@@ -12,7 +12,7 @@ import Referrals from '/screens/Referrals'
 import CameraView from '/screens/CameraView'
 // import NewMember from '/screens/NewMember'
 import LiveClass from '/screens/LiveClass'
-import RecordedClasses from '/screens/RecordedClasses'
+import RecordedClassesByClass from '/screens/RecordedClassesByClass'
 import DrawerContentComponent from '/components/containers/DrawerContentComponent'
 import Header from '/components/containers/Header'
 
@@ -45,8 +45,8 @@ const ProfileNavigator = createStackNavigator({
   }
 )
 
-const RecordedClassesNavigator = createStackNavigator({
-  [Screens.RecordedClasses]: { screen: RecordedClasses }
+const RecordedClassesByClassNavigator = createStackNavigator({
+  [Screens.RecordedClassesByClass]: { screen: RecordedClassesByClass }
 },
   {
     navigationOptions: ({ navigation }) => ({
@@ -112,7 +112,7 @@ const drawerNavigator = createDrawerNavigator(
     [Screens.Home]: { screen: HomeNavigator },
     [Screens.LiveClassStudio1]: { screen: LiveClass },
     [Screens.LiveClassStudio2]: { screen: LiveClass },
-    [Screens.RecordedClasses]: { screen: RecordedClassesNavigator },
+    [Screens.RecordedClassesByClass]: { screen: RecordedClassesByClassNavigator },
     // [Screens.NewMember]: { screen: NewMemberNavigator },
     [Screens.Profile]: { screen: ProfileNavigator },
     [Screens.Routines]: { screen: RoutinesNavigator },

@@ -81,7 +81,8 @@ export const Screens = {
   VideoPlayer: 'VideoPlayer',
   LiveClassStudio1: 'LiveClassStudio1',
   LiveClassStudio2: 'LiveClassStudio2',
-  RecordedClasses: 'RecordedClasses'
+  RecordedClassesByClass: 'RecordedClassesByClass',
+  RecordedClassesByDate: 'RecordedClassesByDate'
 }
 
 exports.SignUpConstraints = {
@@ -177,7 +178,7 @@ export const SectionsData = [
       label: {...liveClassProps.drawerStyle.label, fontSize: 17, marginTop: 15},
       arrow: { marginTop: 20 }
     },
-    screen: Screens.RecordedClasses
+    screen: Screens.RecordedClassesByClass
   },
   // {
   //   icon: 'exclamation',

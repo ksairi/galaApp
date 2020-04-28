@@ -57,7 +57,7 @@ export default class LiveClass extends React.Component {
 
     return (
       <Fragment>
-        <View style={{ flex: 0.05, paddingLeft: 10, backgroundColor: genericBackgroundColor }}>
+        <View style={{ flex: 0.07, paddingLeft: 10, backgroundColor: genericBackgroundColor }}>
           <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
             <Ionicons
               name='ios-arrow-round-back'

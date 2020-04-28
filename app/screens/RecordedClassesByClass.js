@@ -17,15 +17,15 @@ const styles = {
 }
 
 export default ({navigation}) => {
-  const [classes, setClasses] = useState([])
+  const [recordings, setRecordings] = useState([])
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const fetchRecordedClasses = async () => {
       try {
         setLoading(true)
-        const classes = await ApiHelper.getRecordedClasses()
-        setClasses(classes)
+        const recordings = await ApiHelper.getRecordedClasses()
+        setRecordings(recordings)
         setLoading(false)
       } catch (e) {
         Alert.alert('', e,
@@ -49,21 +49,28 @@ export default ({navigation}) => {
     )
   }
 
-  const Item = ({ name, url }) => (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate(Screens.VideoPlayer, {url, title: name})}>
+  const Item = ({ name, classes }) => (
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate(Screens.RecordedClassesByDate, {classes, title: name})}>
       <Text style={styles.name}>{name}</Text>
     </TouchableOpacity>
     )
+    let filteredRecordings = []
+    recordings.forEach(({name, url}) => {
+      const searchedClassName = name.substring(0, name.indexOf('-'))
+      const classesByName = recordings.filter(({name}) =>
+        name.substring(0,name.indexOf('-')) === searchedClassName)
+        filteredRecordings = [...filteredRecordings, {name: searchedClassName, classes: classesByName}]
+    })
 
   return (
     <RootWrapper style={{ padding: 0 }}>
-    {classes.length > 0 ?
+    {filteredRecordings.length > 0 ?
       <Fragment>
         <Text style={{ color: 'white', alignSelf: 'center', marginVertical: 10, fontSize: 18, fontFamily: 'lato-regular' }}>CLASES GRABADAS</Text>
         <CentredWrapper>
           <FlatList
-            data={classes}
-            renderItem={({ item }) => <Item name={item.name} url={item.url} />}
+            data={filteredRecordings}
+            renderItem={({ item }) => <Item name={item.name} classes={item.classes} />}
             keyExtractor={item => item.url}
             style={{marginTop: 20}}
           />
