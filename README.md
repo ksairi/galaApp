@@ -16,8 +16,8 @@
 
 **Export constants DEV_SERVER_HOSTNAME_1 and DEV_SERVER_HOSTNAME_2 to valid local addresses**
 
-### google-services.json
-**Add and empty google-services.json ({}) to start ios version** 
+### google-services-{platform}.json
+**Go [here](https://console.firebase.google.com/project/_/settings/general) to get the specific json file to deploy new version to the store**
 
 ### Instructions to get private key needed to deploy to google play
 

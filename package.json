@@ -5,6 +5,7 @@
     "babel-eslint": "^6.0.1",
     "babel-plugin-module-resolver": "3.1.1",
     "babel-preset-expo": "^8.1.0",
+    "edit-json-file": "^1.4.0",
     "standard": "^7.1.2"
   },
   "main": "./node_modules/expo/AppEntry.js",
@@ -17,9 +18,12 @@
     "lint": "node_modules/standard/bin/cmd.js",
     "lint:fix": "node_modules/standard/bin/cmd.js --fix",
     "nexus5:android": "emulator -avd Nexus_5_API_28 &",
-    "publish:prod": "expo publish",
-    "deploy:ios": "expo build:ios && expo upload:ios",
-    "deploy:android": "expo build:android -t app-bundle && expo upload:android"
+    "publish:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' &&  expo publish && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
+    "deploy:ios:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' &&  expo build:ios && expo upload:ios && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
+    "deploy:android:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:android -t app-bundle && expo upload:android && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
+    "publish:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo publish --release-channel staging",
+    "deploy:ios:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:ios --release-channel staging && expo upload:ios",
+    "deploy:android:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:android -t app-bundle --release-channel staging && expo upload:android"
   },
   "jest": {
     "preset": "jest-expo"
