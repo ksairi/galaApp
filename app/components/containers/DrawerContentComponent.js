@@ -88,7 +88,8 @@ nextProps.newMemberData.freeEntryData.date
               drawerItem.screen !== Screens.LiveClassStudio1 && drawerItem.screen !== Screens.LiveClassStudio2) ||
               (drawerItem.screen === Screens.NewMember &&
                 this.state.freeEntryDaysLeft && this.state.freeEntryDaysLeft > 0) ||
-                ((drawerItem.screen === Screens.LiveClassStudio1 || drawerItem.screen === Screens.LiveClassStudio2) &&
+                ((drawerItem.screen === Screens.LiveClassStudio1 || drawerItem.screen === Screens.LiveClassStudio2 ||
+                  drawerItem.screen === Screens.RecordedClassesByClass) &&
                 this.props.routines.length > 0)
             ) {
             return (

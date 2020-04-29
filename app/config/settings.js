@@ -151,8 +151,7 @@ const liveClassProps = {
     label: { marginTop: 5 },
     arrow: { marginTop: 15 }
   },
-  homeStyle: { fontSize: 40, color: 'white' },
-  needsActiveUser: true
+  homeStyle: { fontSize: 40, color: 'white' }
 }
 
 export const SectionsData = [
