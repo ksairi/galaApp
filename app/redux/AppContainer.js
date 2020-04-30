@@ -102,23 +102,23 @@ export default class AppContainer extends React.Component {
       )
       createNotificationsHanlder({
         messages () {
-          saveMessagesToDevice(
-            notification.data.messages,
-            null,
-            props.dispatch
-          )
+          // saveMessagesToDevice(
+          //   notification.data.messages,
+          //   null,
+          //   props.dispatch
+          // )
           props.dispatch(
             ActionsCreators.setNewMessagesCount(
               notification.data.messages.length
             )
           )
-          setNotifiedMessagesSaved({
-            userId: props.userId,
-            notificationId: notification.data.notificationId,
-            lastMessageServerTime:
-              notification.data.messages[notification.data.messages.length - 1]
-                .serverTime
-          })
+          // setNotifiedMessagesSaved({
+          //   userId: props.userId,
+          //   notificationId: notification.data.notificationId,
+          //   lastMessageServerTime:
+          //     notification.data.messages[notification.data.messages.length - 1]
+          //       .serverTime
+          // })
           AppContainer.alreadySetMessagesSaved = true
           localNotificationBody = 'Tenés nuevos mensajes!'
         }
@@ -135,11 +135,11 @@ export default class AppContainer extends React.Component {
               AnalitycsEventsLabels.messages
               }`
             )
-            saveMessagesToDevice(
-              notification.data.messages,
-              null,
-              props.dispatch
-            )
+            // saveMessagesToDevice(
+            //   notification.data.messages,
+            //   null,
+            //   props.dispatch
+            // )
 
             props.dispatch(
               ActionsCreators.setNewMessagesCount(
@@ -147,16 +147,16 @@ export default class AppContainer extends React.Component {
               )
             )
 
-            setNotifiedMessagesSaved({
-              userId: props.userId,
-              notificationId: notification.data.notificationId,
-              lastMessageServerTime: notification.data.messages[notification.data.messages.length - 1].serverTime
-            })
+            // setNotifiedMessagesSaved({
+            //   userId: props.userId,
+            //   notificationId: notification.data.notificationId,
+            //   lastMessageServerTime: notification.data.messages[notification.data.messages.length - 1].serverTime
+            // })
           }
         }
       })(notification.data)
       if (props.isLoggedIn) {
-        navigator.navigate(notification.data.destScreen)
+        navigator.navigate(Screens.HomeStack)
       } else {
         navigator.navigate(Screens.LoginStack)
       }

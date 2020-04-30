@@ -85,7 +85,7 @@ export default class Messages extends React.Component {
     appState: AppState.currentState
   }
 
-  static intervalId
+  intervalId
 
   static getDerivedStateFromProps (nextProps, prevState) {
     if (nextProps.newMessagesCount) {
@@ -103,7 +103,6 @@ export default class Messages extends React.Component {
   }
 
   componentDidMount () {
-    this._mounted = true
     AnalyticsHelper.setPageHit(Screens.Messages)
     AppState.addEventListener('change', this._handleAppStateChange)
     if (this.props.newMessagesCount > 0) {
@@ -114,10 +113,10 @@ export default class Messages extends React.Component {
 
   startPullingMessages = () => {
     this.doGetRealTimeMessages()
-    if (!Messages.intervalId) {
-      clearInterval(Messages.intervalId)
+    if (!this.intervalId) {
+      clearInterval(this.intervalId)
     }
-    Messages.intervalId = setInterval(() => this.doGetRealTimeMessages(), 5000)
+    this.intervalId = setInterval(() => this.doGetRealTimeMessages(), 5000)
   }
 
   doGetRealTimeMessages = (hasClientLeftChat = false) => {
@@ -138,13 +137,12 @@ export default class Messages extends React.Component {
           })
         }
       })
-      .catch(() => {})
+      .catch((e) => {console.log(e)})
   }
 
   componentWillUnmount () {
-    this._mounted = false
     AppState.removeEventListener('change', this._handleAppStateChange)
-    clearInterval(Messages.intervalId)
+    clearInterval(this.intervalId)
     this.doGetRealTimeMessages(true)
   }
 
