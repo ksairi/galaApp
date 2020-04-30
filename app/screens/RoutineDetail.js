@@ -91,7 +91,7 @@ export default class RoutineDetail extends React.Component {
     this.props.navigation.navigate(Screens.Routines)
   }
 
-  showVideo = (url, title) => () => {
+  showVideo = (url, title) => {
     this.props.navigation.navigate(Screens.VideoPlayer, {
       url,
       backScreen: Screens.RoutineDetail,
