@@ -123,9 +123,9 @@ export default class Messages extends React.Component {
   doGetRealTimeMessages = (hasClientLeftChat = false) => {
     getRealTimeMessages({
       userId: this.props.userData.userId,
-      lastSynchedMessageIndex:
+      lastSynchedMessageServerTime:
         this.props.messages && this.props.messages.length > 0
-          ? this.props.messages[0].index
+          ? this.props.messages[0].serverTime
           : null,
       hasClientLeftChat
     })
@@ -134,7 +134,7 @@ export default class Messages extends React.Component {
           saveMessagesToDevice(messages, null, this.props.dispatch)
           setRealTimeMessagesSaved({
             userId: this.props.userData.userId,
-            lastMessageIndex: messages[messages.length - 1].index
+            lastMessageServerTime: messages[messages.length - 1].serverTime
           })
         }
       })
@@ -186,7 +186,7 @@ export default class Messages extends React.Component {
       )
       setRealTimeMessagesSaved({
         userId: this.props.userData.userId,
-        lastMessageIndex: this.props.messages[0].index
+        lastMessageServerTime: this.props.messages[0].serverTime
       })
     } catch (err) {
       this.setState({ showFirstUnsentMessageDialog: true })

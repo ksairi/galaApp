@@ -233,7 +233,6 @@ let timeoutFetch = (url, parameters = {}, contentType) => {
         try {
           return response.json()
         } catch (e) {
-          console.log(e)
           throw Messages.SERVER_ERROR
         }
       } else {

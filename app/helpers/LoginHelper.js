@@ -110,16 +110,16 @@ const doFetchDynamicData = async (
   }
   const dynamicDataResponse = await fetchDynamicDataApi(params)
   if (hasResponseResults(dynamicDataResponse)) {
-    var lastMessageIndex = null
+    var lastMessageServerTime = null
     if (
       dynamicDataResponse.messages &&
       dynamicDataResponse.messages.length > 0
     ) {
-      lastMessageIndex =
+      lastMessageServerTime =
         dynamicDataResponse.messages[dynamicDataResponse.messages.length - 1]
-          .index
+          .serverTime
     }
-    setContentSavedApi({ userId, lastMessageIndex })
+    setContentSavedApi({ userId, lastMessageServerTime })
   }
   await setContentServerData(dynamicDataResponse, dispatch)
 }

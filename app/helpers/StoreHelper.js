@@ -173,7 +173,7 @@ export const saveMessagesToDevice = (messages, sentMessages, dispatch) => {
 
   setMessageLoginSynchedDataParameters(
     messages && messages.length > 0
-      ? messages[messages.length - 1].index
+      ? messages[messages.length - 1].serverTime
       : null,
     sentMessages,
     dispatch
@@ -191,21 +191,21 @@ const saveMemberPropertiesToDevice = (userData, dispatch) => {
 }
 
 export const setMessageLoginSynchedDataParameters = (
-  lastMessageIndex,
+  lastMessageServerTime,
   sentMessages,
   dispatch
 ) => {
-  var newLastMessageIndex = null
+  var newlastMessageServerTime = null
   if (sentMessages && sentMessages.length > 0) {
-    newLastMessageIndex = sentMessages[sentMessages.length - 1].index
+    newlastMessageServerTime = sentMessages[sentMessages.length - 1].serverTime
   } else {
-    newLastMessageIndex = lastMessageIndex
+    newlastMessageServerTime = lastMessageServerTime
   }
-  if (newLastMessageIndex != null) {
+  if (newlastMessageServerTime != null) {
     dispatch(
       ActionsCreators.setLoginSynchedDataParameters({
         entity: 'messages',
-        data: { lastMessageIndex: newLastMessageIndex }
+        data: { lastMessageServerTime: newlastMessageServerTime }
       })
     )
   }
