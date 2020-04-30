@@ -9,6 +9,7 @@ import { Screens } from '/config/settings'
 import { ActionsCreators } from '/redux/actions'
 import * as Animatable from 'react-native-animatable-promise'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import { AnalitycsEventsLabels } from '/config/settings'
 
 const styles = {
   routinesWrapper: {
@@ -36,6 +37,7 @@ export default class Routines extends React.Component {
   }
 
   showIntroVideo = (url, title) => () => {
+  AnalyticsHelper.setEvent(AnalitycsEventsLabels.routinesVideos)
     this.props.navigation.navigate(Screens.VideoPlayer, {
       url,
       backScreen: Screens.Routines,

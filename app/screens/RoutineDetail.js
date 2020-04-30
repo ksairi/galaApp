@@ -12,6 +12,7 @@ import { genericBackgroundColor } from '/components/styles'
 import { FontAwesome } from '@expo/vector-icons'
 import * as Animatable from 'react-native-animatable-promise'
 import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import { AnalitycsEventsLabels } from '/config/settings'
 
 const styles = {
   exerciseDetail: {
@@ -110,7 +111,12 @@ export default class RoutineDetail extends React.Component {
           }}>
           {rowData.title}
         </GenericText>
-        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={this.showVideo(rowData.link.toLowerCase(), rowData.title)}>
+        {rowData.link !== '' && rowData.link !== null && <TouchableOpacity onPress={
+          ()=> {
+            AnalyticsHelper.setEvent(AnalitycsEventsLabels.routinesVideos)
+            this.showVideo(rowData.link.toLowerCase(), rowData.title)
+          }
+          }>
           <GenericText
             style={{
               color: 'black',

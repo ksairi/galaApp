@@ -82,7 +82,8 @@ export const Screens = {
   LiveClassStudio1: 'LiveClassStudio1',
   LiveClassStudio2: 'LiveClassStudio2',
   RecordedClassesByClass: 'RecordedClassesByClass',
-  RecordedClassesByDate: 'RecordedClassesByDate'
+  RecordedClassesByDate: 'RecordedClassesByDate',
+  RecordedClassesByTime: 'RecordedClassesByTime'
 }
 
 exports.SignUpConstraints = {
@@ -270,8 +271,9 @@ export const AnalitycsEventsLabels = {
   takeProfilePicture: 'sacó foto de perfil',
   notificationReceivedOf: 'recibió notificación de',
   messages: 'mensajes',
-  videoPlayer: 'video-rutinas-ejercicios',
-  liveClass: 'clase en vivo en zoom'
+  routinesVideos: 'video-rutinas-ejercicios',
+  liveClass: 'clase en vivo en zoom',
+  recordedClass: 'clases grabadas'
 }
 
 export const Notifications = {

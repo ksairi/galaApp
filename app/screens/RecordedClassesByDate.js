@@ -15,28 +15,50 @@ const styles = {
 }
 
 export default ({navigation}) => {
-  const [classes, setClasses] = useState([])
-
+  let [filteredRecordings, setFilteredRecordings] = useState([])
   useEffect(() => {
-    setClasses(
-      navigation.state.params.classes.map(({name, url}) => 
-        ({date: name.substring(name.indexOf('-') + 1), url}))
-    )
-  }, [])
-
-  const Item = ({ date, url }) => (
+    const classesByName = navigation.state.params.classes
+    classesByName.forEach(({name, url}) =>{
+      const dateToSearch = name.substring(name.indexOf('-') + 1, name.indexOf('-') + 9).trim()
+      const classesByDate = classesByName.filter(({name}) =>
+        name.substring(name.indexOf('-') + 1, name.indexOf('-') + 9).trim() 
+          === dateToSearch)
+      
+        if(!filteredRecordings.find(({date}) => dateToSearch === date)) {
+        filteredRecordings = [...filteredRecordings, {
+          date: dateToSearch, 
+          url, 
+          classes: classesByDate
+        }]
+    }})
+    filteredRecordings.sort((a, b) => {
+      var nameA = a.date.toUpperCase()
+      var nameB = b.date.toUpperCase()
+      if (nameA < nameB) {
+        return -1
+      }
+      if (nameA > nameB) {
+        return 1
+      }
+      return 0
+    })
+    setFilteredRecordings(filteredRecordings)
+  }
+  , [])
+  const Item = ({ date, url, classes }) => (
     <TouchableOpacity style={styles.item} 
-      onPress={() => navigation.navigate(Screens.VideoPlayer, {url, title: `${navigation.state.params.title} - ${date}` })}>
+      onPress={() => {classes.length > 1 ? navigation.navigate(Screens.RecordedClassesByTime, {classes, name: `${navigation.state.params.name} - ${date}` }) :
+        navigation.navigate(Screens.VideoPlayer, {url, title: `${navigation.state.params.name} - ${date}` })}}>
       <Text style={styles.name}>{date}</Text>
     </TouchableOpacity>
     )
   return (
     <RootWrapper style={{ padding: 0 }}>
-    {classes.length > 0 ?
+    {filteredRecordings.length > 0 ?
         <CentredWrapper>
           <FlatList
-            data={classes}
-            renderItem={({ item }) => <Item date={item.date} url={item.url} />}
+            data={filteredRecordings}
+            renderItem={({ item }) => <Item date={item.date} url={item.url} classes={item.classes} />}
             keyExtractor={item => item.url}
             style={{marginTop: 20}}
           />

@@ -6,6 +6,8 @@ import RootWrapper from '/components/presentationals/RootWrapper'
 import {Screens} from '/config/settings'
 import CentredWrapper from '/components/presentationals/CentredWrapper'
 import GenericText from '/components/presentationals/GenericText'
+import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import {AnalitycsEventsLabels} from '/config/settings'
 
 const styles = {
   item: {
@@ -22,6 +24,7 @@ export default ({navigation}) => {
 
   useEffect(() => {
     const fetchRecordedClasses = async () => {
+      AnalyticsHelper.setEvent(AnalitycsEventsLabels.recordedClasses)
       try {
         setLoading(true)
         const recordings = await ApiHelper.getRecordedClasses()
@@ -50,16 +53,29 @@ export default ({navigation}) => {
   }
 
   const Item = ({ name, classes }) => (
-    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate(Screens.RecordedClassesByDate, {classes, title: name})}>
+    <TouchableOpacity style={styles.item} onPress={() => navigation.navigate(Screens.RecordedClassesByDate, {classes, name})}>
       <Text style={styles.name}>{name}</Text>
     </TouchableOpacity>
     )
     let filteredRecordings = []
-    recordings.forEach(({name, url}) => {
-      const searchedClassName = name.substring(0, name.indexOf('-'))
+    recordings.forEach(({name}) => {
+      const searchedClassName = name.substring(0, name.indexOf('-')).trim()
       const classesByName = recordings.filter(({name}) =>
-        name.substring(0,name.indexOf('-')) === searchedClassName)
-        filteredRecordings = [...filteredRecordings, {name: searchedClassName, classes: classesByName}]
+        name.substring(0,name.indexOf('-')).trim() === searchedClassName.trim())
+        if(!filteredRecordings.find(item => item.name.trim() === searchedClassName.trim())) {
+          filteredRecordings = [...filteredRecordings, {name: searchedClassName.trim(), classes: classesByName}]
+        }
+        filteredRecordings.sort((a, b) => {
+          var nameA = a.name.toUpperCase()
+          var nameB = b.name.toUpperCase()
+          if (nameA < nameB) {
+            return -1
+          }
+          if (nameA > nameB) {
+            return 1
+          }
+          return 0
+        })
     })
 
   return (

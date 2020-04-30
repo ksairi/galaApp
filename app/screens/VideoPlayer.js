@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 import RootWrapper from '/components/presentationals/RootWrapper'
 import {Ionicons} from '@expo/vector-icons'
 import { ActionsCreators } from '/redux/actions'
-import AnalyticsHelper from '/helpers/AnalyticsHelper'
-import { AnalitycsEventsLabels } from '/config/settings'
 
 @connect(state => ({
   userData: state.userData
@@ -17,7 +15,6 @@ export default class VideoPlayer extends React.Component {
   state = { showBack: false }
 
   componentDidMount () {
-    AnalyticsHelper.setEvent(AnalitycsEventsLabels.videoPlayer)
     this.props.dispatch(ActionsCreators.setHiddenStatusBar(true))
     setTimeout(() => {
       this.setState({showBack: true})
