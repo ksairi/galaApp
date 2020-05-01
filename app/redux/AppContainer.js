@@ -112,13 +112,13 @@ export default class AppContainer extends React.Component {
               notification.data.messages.length
             )
           )
-          // setNotifiedMessagesSaved({
-          //   userId: props.userId,
-          //   notificationId: notification.data.notificationId,
-          //   lastMessageServerTime:
-          //     notification.data.messages[notification.data.messages.length - 1]
-          //       .serverTime
-          // })
+          setNotifiedMessagesSaved({
+            userId: props.userId,
+            notificationId: notification.data.notificationId,
+            lastMessageServerTime:
+              notification.data.messages[notification.data.messages.length - 1]
+                .serverTime
+          })
           AppContainer.alreadySetMessagesSaved = true
           localNotificationBody = 'Tenés nuevos mensajes!'
         }
@@ -147,19 +147,21 @@ export default class AppContainer extends React.Component {
               )
             )
 
-            // setNotifiedMessagesSaved({
-            //   userId: props.userId,
-            //   notificationId: notification.data.notificationId,
-            //   lastMessageServerTime: notification.data.messages[notification.data.messages.length - 1].serverTime
-            // })
+            setNotifiedMessagesSaved({
+              userId: props.userId,
+              notificationId: notification.data.notificationId,
+              lastMessageServerTime: notification.data.messages[notification.data.messages.length - 1].serverTime
+            })
           }
         }
       })(notification.data)
-      if (props.isLoggedIn) {
-        navigator.navigate(Screens.HomeStack)
-      } else {
-        navigator.navigate(Screens.LoginStack)
-      }
+      // is making the setInterval not to finish when
+      // leaving Messages screen
+      // if (!props.isLoggedIn) {
+      //   navigator.navigate(Screens.Messages)
+      // } else {
+      //   navigator.navigate(Screens.LoginStack)
+      // }
     }
     if (
       props.isLoggedIn &&

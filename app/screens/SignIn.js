@@ -44,8 +44,8 @@ const styles = {
   rootWrapperStyle: { paddingTop: 10, padding: 0 },
   hiddenKeyboardComponentsStyle: {
     passwordContainerStyle: { marginBottom: 10 },
-    buttonContainerStyle: { flex: 0.68 },
-    buttonStyle: { height: 50 },
+    buttonContainerStyle: { flex: 0.73 },
+    buttonStyle: { height: 55 },
     linksContainerStyle: { flex: 0.7 },
     firstLinkStyle: { flex: 0.5 },
     secondLinkStyle: { flex: 0.5 }

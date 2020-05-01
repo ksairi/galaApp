@@ -273,7 +273,7 @@ export const AnalitycsEventsLabels = {
   messages: 'mensajes',
   routinesVideos: 'video-rutinas-ejercicios',
   liveClass: 'clase en vivo en zoom',
-  recordedClass: 'clases grabadas'
+  recordedClasses: 'clases grabadas'
 }
 
 export const Notifications = {

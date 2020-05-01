@@ -213,7 +213,7 @@ export default class Header extends React.PureComponent {
                 zIndex: 1
               }}>
               {this.props.title ? (
-                <Text style={styles.title}>{this.props.title}</Text>
+                <Text style={[styles.title, {fontSize: this.props.title.length >= 13 ? 17 : 19}]}>{this.props.title}</Text>
               ) : (
                 <Logo style={this.state.headerStyle.logo} />
               )}
