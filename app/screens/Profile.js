@@ -1,152 +1,153 @@
-import React from 'react'
-import { View, TouchableOpacity, Image, Dimensions } from 'react-native'
-import GScrollView from '/components/presentationals/GenericScrollView'
-import * as Permissions from 'expo-permissions'
-import { FontAwesome } from '@expo/vector-icons'
-import { connect } from 'react-redux'
-import Button from '/components/presentationals/GenericButton'
-import RootWrapper from '/components/presentationals/RootWrapper'
-import { Screens } from '/config/settings'
-import GenericText from '/components/presentationals/GenericText'
-import { getRemoteProfilePicture } from '/helpers/UserDataHelper'
-import * as Animatable from 'react-native-animatable-promise'
-import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import React from "react";
+import {View, TouchableOpacity, Image, Dimensions} from "react-native";
+import GScrollView from "components/presentationals/GenericScrollView";
+import * as Permissions from "expo-permissions";
+import {FontAwesome} from "@expo/vector-icons";
+import {connect} from "react-redux";
+import Button from "components/presentationals/GenericButton";
+import RootWrapper from "components/presentationals/RootWrapper";
+import {Screens} from "config/settings";
+import GenericText from "components/presentationals/GenericText";
+import {getRemoteProfilePicture} from "helpers/UserDataHelper";
+import * as Animatable from "react-native-animatable-promise";
+import AnalyticsHelper from "helpers/AnalyticsHelper";
 
 const styles = {
   photoContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
   },
   userDataContainer: {
-    flex: 1
+    flex: 1,
   },
   userDataRow: {
-    flexDirection: 'row',
-    flex: 1
+    flexDirection: "row",
+    flex: 1,
   },
   label: {
     fontSize: 18,
-    textAlign: 'left',
-    flex: -1
+    textAlign: "left",
+    flex: -1,
   },
   userData: {
-    fontFamily: 'brother-1816-bold',
+    fontFamily: "brother-1816-bold",
     fontSize: 18,
     flex: 1,
-    textAlign: 'right'
-  }
-}
+    textAlign: "right",
+  },
+};
 
-const NO_PROFILE_PICTURE_PATH = '../assets/images/no_profile_picture.jpg'
+const NO_PROFILE_PICTURE_PATH = "assets/images/no_profile_picture.jpg";
 
-@connect(state => ({
+@connect((state) => ({
   userData: state.userData,
   profilePicture: state.profilePicture,
-  orientation: state.currentOrientation
+  orientation: state.currentOrientation,
 }))
 export default class Profile extends React.Component {
   state = {
-    hasProfilePic: false,
-    deviceWidth: Dimensions.get('window').width,
-    imageSource: require(NO_PROFILE_PICTURE_PATH)
-  }
+    deviceWidth: Dimensions.get("window").width,
+    imageSource: require(NO_PROFILE_PICTURE_PATH),
+  };
 
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps) {
     if (nextProps.orientation) {
       return {
-        deviceWidth: Dimensions.get('window').width
-      }
+        deviceWidth: Dimensions.get("window").width,
+      };
     }
+    return null;
   }
 
   componentDidMount = () => {
-    AnalyticsHelper.setPageHit(Screens.Profile)
-    this.getImageSource()
-  }
+    AnalyticsHelper.setPageHit(Screens.Profile);
+    this.getImageSource();
+  };
 
   goToSettings = () => {
-    this.props.navigation.navigate(Screens.Settings)
-  }
+    this.props.navigation.navigate(Screens.Settings);
+  };
 
   useCamera = async () => {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA)
-    if (status === 'granted') {
-      this.props.navigation.navigate(Screens.CameraView)
+    const {status} = await Permissions.askAsync(Permissions.CAMERA);
+    if (status === "granted") {
+      this.props.navigation.navigate(Screens.CameraView);
     }
-  }
+  };
 
   onErrorLoadProfilePicture = () =>
     this.setState({
-      imageSource: require(NO_PROFILE_PICTURE_PATH)
-    })
+      imageSource: require(NO_PROFILE_PICTURE_PATH),
+    });
 
   getImageSource = () => {
     if (this.props.profilePicture) {
       this.setState({
         imageSource: {
-          uri: `${this.props.profilePicture.path}`
-        }
-      })
+          uri: `${this.props.profilePicture.path}`,
+        },
+      });
     } else {
       getRemoteProfilePicture(this.props.userData.userId)
-        .then(uri => {
+        .then((uri) => {
           if (uri) {
             this.setState({
-              imageSource: { uri }
-            })
+              imageSource: {uri},
+            });
           }
         })
         .catch(() => {
           this.setState({
-            imageSource: require(NO_PROFILE_PICTURE_PATH)
-          })
-        })
+            imageSource: require(NO_PROFILE_PICTURE_PATH),
+          });
+        });
     }
-  }
+  };
 
-  render () {
+  render() {
     return (
       <GScrollView
         contentContainerStyle={{
-          flexGrow: 1
-        }}>
+          flexGrow: 1,
+        }}
+      >
         <RootWrapper>
-          <Animatable.View
-            useNativeDriver
-            style={styles.photoContainer}>
+          <Animatable.View useNativeDriver style={styles.photoContainer}>
             <Image
               source={this.state.imageSource}
               style={{
                 width: 100,
                 height: 100,
-                borderRadius: 100 / 2
+                borderRadius: 100 / 2,
               }}
               // onError={this.onErrorLoadProfilePicture}
             />
             <TouchableOpacity
               onPress={this.useCamera}
               style={{
-                backgroundColor: 'white',
+                backgroundColor: "white",
                 width: 40,
                 height: 40,
-                alignItems: 'center',
-                justifyContent: 'center',
+                alignItems: "center",
+                justifyContent: "center",
                 borderRadius: 40 / 2,
-                position: 'absolute',
+                position: "absolute",
                 left: this.state.deviceWidth / 2 + 15,
-                top: 5
-              }}>
-              <FontAwesome name='camera-retro' size={32} />
+                top: 5,
+              }}
+            >
+              <FontAwesome name="camera-retro" size={32} />
             </TouchableOpacity>
           </Animatable.View>
-          <Animatable.View useNativeDriver animation={'slideInRight'}>
+          <Animatable.View useNativeDriver animation="slideInRight">
             <GenericText
               style={{
-                fontFamily: 'brother-1816-bold',
+                fontFamily: "brother-1816-bold",
                 fontSize: 22,
-                flex: 0.6
-              }}>
+                flex: 0.6,
+              }}
+            >
               MI INFORMACIÓN
             </GenericText>
             <View style={styles.userDataContainer}>
@@ -159,10 +160,10 @@ export default class Profile extends React.Component {
               {
                 <View style={styles.userDataRow}>
                   <GenericText style={styles.label}>Email</GenericText>
-                  <GenericText style={[styles.userData, { fontSize: 16 }]}>
+                  <GenericText style={[styles.userData, {fontSize: 16}]}>
                     {this.props.userData.mail
                       ? this.props.userData.mail
-                      : 'N/D'}
+                      : "N/D"}
                   </GenericText>
                 </View>
               }
@@ -172,7 +173,7 @@ export default class Profile extends React.Component {
                   <GenericText style={styles.userData}>
                     {this.props.userData.phoneNumber
                       ? this.props.userData.phoneNumber
-                      : 'N/D'}
+                      : "N/D"}
                   </GenericText>
                 </View>
               }
@@ -180,23 +181,24 @@ export default class Profile extends React.Component {
           </Animatable.View>
           <Animatable.View
             useNativeDriver
-            animation={'slideInLeft'}
-            style={{ flexDirection: 'row', flex: 1, marginTop: 20 }}>
+            animation="slideInLeft"
+            style={{flexDirection: "row", flex: 1, marginTop: 20}}
+          >
             <Button
               buttonStyle={{
-                backgroundColor: '#12194d',
-                flex: 0.2
+                backgroundColor: "#12194d",
+                flex: 0.2,
               }}
               textStyle={{
                 fontSize: 22,
-                fontFamily: 'brother-1816-bold'
+                fontFamily: "brother-1816-bold",
               }}
               onPress={this.goToSettings}
-              text='CONFIGURACIÓN'
+              text="CONFIGURACIÓN"
             />
           </Animatable.View>
         </RootWrapper>
       </GScrollView>
-    )
+    );
   }
 }

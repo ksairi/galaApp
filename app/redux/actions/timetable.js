@@ -1,7 +1,7 @@
-import { ActionsTypes } from '/config/settings'
+import {ActionsTypes} from "config/settings";
 
-export function setTimetable (timetable) {
-  return (dispatch, getState) => {
-    dispatch({type: ActionsTypes.SET_TIMETABLE, timetable})
-  }
+export default function setTimetable(timetable) {
+  return (dispatch) => {
+    dispatch({type: ActionsTypes.SET_TIMETABLE, timetable});
+  };
 }

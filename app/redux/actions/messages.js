@@ -1,45 +1,45 @@
-import { ActionsTypes } from '/config/settings'
+import {ActionsTypes} from "config/settings";
 
-export function setMessages (messages) {
-  return (dispatch, getState) => {
+export function setMessages(messages) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_MESSAGES,
-      messages
-    })
-  }
+      messages,
+    });
+  };
 }
 
-export function setSentMessages (messages) {
-  return (dispatch, getState) => {
+export function setSentMessages(messages) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_SENT_MESSAGES,
-      messages
-    })
-  }
+      messages,
+    });
+  };
 }
 
-export function setHasShownUnsentMessagesDialog () {
-  return (dispatch, getState) => {
+export function setHasShownUnsentMessagesDialog() {
+  return (dispatch) => {
     dispatch({
-      type: ActionsTypes.SET_HAS_SHOWN_UNSENT_MESSAGES_DIALOG
-    })
-  }
+      type: ActionsTypes.SET_HAS_SHOWN_UNSENT_MESSAGES_DIALOG,
+    });
+  };
 }
 
-export function deleteMessage (message) {
-  return (dispatch, getState) => {
+export function deleteMessage(message) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.DELETE_MESSAGE,
-      message
-    })
-  }
+      message,
+    });
+  };
 }
 
-export function setNewMessagesCount (value) {
-  return (dispatch, getState) => {
+export function setNewMessagesCount(value) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_NEW_MESSAGES_COUNT,
-      value
-    })
-  }
+      value,
+    });
+  };
 }

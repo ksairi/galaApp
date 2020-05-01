@@ -1,29 +1,30 @@
-import React from 'react'
-import { Text } from 'react-native'
+import React from "react";
+import {Text} from "react-native";
 
 const styles = {
   errorMessage: {
-    color: 'red'
+    color: "red",
   },
   genericText: {
-    color: 'white',
-    textAlign: 'center',
+    color: "white",
+    textAlign: "center",
     flex: 1,
-    fontFamily: 'lato-regular'
-  }
-}
+    fontFamily: "lato-regular",
+  },
+};
 
 export default class GenericText extends React.PureComponent {
-  render () {
+  render() {
     return (
       <Text
         style={[
           styles.genericText,
           this.props.style,
-          this.props.error ? styles.errorMessage : null
-        ]}>
+          this.props.error ? styles.errorMessage : null,
+        ]}
+      >
         {this.props.children}
       </Text>
-    )
+    );
   }
 }

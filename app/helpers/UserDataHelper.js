@@ -1,61 +1,61 @@
 import {
   uploadProfilePicture as uploadProfilePictureApi,
-  synchMemberProperties as synchMemberPropertiesApi
-} from '/helpers/ApiHelper'
-import { ActionsCreators } from '/redux/actions'
-import { Urls } from '/config/settings'
-import { getProfilePicturePath } from '/helpers/ImageHelper'
-import * as FileSystem from 'expo-file-system'
+  synchMemberProperties as synchMemberPropertiesApi,
+} from "helpers/ApiHelper";
+import ActionsCreators from "redux/actions";
+import {Urls} from "config/settings";
+import {getProfilePicturePath} from "helpers/ImageHelper";
+import * as FileSystem from "expo-file-system";
 
-export const getFreeEntryDaysLeft = date =>
-  30 - Math.floor((Date.now() - date) / (1000 * 3600 * 24))
+export const getFreeEntryDaysLeft = (date) =>
+  30 - Math.floor((Date.now() - date) / (1000 * 3600 * 24));
 
 export const uploadProfilePicture = (dispatch, profilePicture) => {
-  const data = new FormData()
-  data.append('name', profilePicture.userId)
-  data.append('picture', {
+  const data = new FormData();
+  data.append("name", profilePicture.userId);
+  data.append("picture", {
     uri: profilePicture.path,
-    type: 'image/jpeg', // or photo.type
-    name: profilePicture.userId
-  })
+    type: "image/jpeg", // or photo.type
+    name: profilePicture.userId,
+  });
 
   uploadProfilePictureApi(data)
     .then(() => {
-      dispatch(ActionsCreators.setProfilePictureSynched())
+      dispatch(ActionsCreators.setProfilePictureSynched());
     })
-    .catch(() => {})
-}
+    .catch(() => {});
+};
 
-export const getRemoteProfilePicture = userId => {
-  const fileUri = getProfilePicturePath()
+export const getRemoteProfilePicture = (userId) => {
+  const fileUri = getProfilePicturePath();
   return FileSystem.downloadAsync(Urls.PROFILE_PICTURES + userId, fileUri)
-    .then(({ uri, status }) => {
-      return status === 200 ? uri : null
+    .then(({uri, status}) => {
+      return status === 200 ? uri : null;
     })
     .catch(() => {
-      return null
-    })
-}
+      return null;
+    });
+};
 
-export const synchMemberProperties = (dispatch, { userId, data }) => {
-  var paramsData = {}
-  Object.entries(data).forEach(dataItem => {
+export const synchMemberProperties = (dispatch, {userId, data}) => {
+  let paramsData = {};
+  Object.entries(data).forEach((dataItem) => {
     if (!dataItem[1].synched) {
       paramsData = {
         ...paramsData,
-        [dataItem[0]]: { value: dataItem[1].value }
-      }
+        [dataItem[0]]: {value: dataItem[1].value},
+      };
     }
-  })
+  });
 
   if (Object.entries(paramsData).length > 0) {
-    const params = { userId, data: paramsData }
+    const params = {userId, data: paramsData};
     synchMemberPropertiesApi(params)
       .then(() => {
         if (paramsData.receiveNotifications) {
-          dispatch(ActionsCreators.setReceiveNotificationsSynched())
+          dispatch(ActionsCreators.setReceiveNotificationsSynched());
         }
       })
-      .catch(() => {})
+      .catch(() => {});
   }
-}
+};

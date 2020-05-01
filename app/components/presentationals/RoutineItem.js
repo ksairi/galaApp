@@ -1,47 +1,47 @@
-import React from 'react'
-import {View, Text} from 'react-native'
-export default ({index, data}) => (
-  <View key={index} style={styles.wrapper}>
-    <Text style={styles.name}>{data.name}</Text>
-    <Text style={styles.length}>
-      {data.minutes ? `${data.minutes} min` : `${data.repetitions} repeticiones`}
-    </Text>
-      {data.series !== null && <Text style={styles.length}>
-        {`${data.series} series`}
-      </Text>
-    }
-  </View>
-)
+import React from "react";
+import {View, Text} from "react-native";
 
 const styles = {
   wrapper: {
     width: 140,
     height: 90,
     borderRadius: 4,
-    backgroundColor: '#002db9',
+    backgroundColor: "#002db9",
     marginHorizontal: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexWrap: 'wrap'
+    alignItems: "center",
+    justifyContent: "center",
+    flexWrap: "wrap",
   },
   name: {
-    fontFamily: 'lato-bold',
+    fontFamily: "lato-bold",
     fontSize: 18,
-    fontWeight: 'bold',
-    fontStyle: 'normal',
+    fontWeight: "bold",
+    fontStyle: "normal",
     letterSpacing: 0,
-    color: 'white',
-    textAlign: 'center',
-    width: '100%',
-    marginBottom: 3
-
+    color: "white",
+    textAlign: "center",
+    width: "100%",
+    marginBottom: 3,
   },
   length: {
-    fontFamily: 'Roboto',
+    fontFamily: "Roboto",
     fontSize: 14,
-    color: 'white',
-    textAlign: 'center',
-    width: '100%'
-  }
-}
+    color: "white",
+    textAlign: "center",
+    width: "100%",
+  },
+};
 
+export default ({index, data}) => (
+  <View key={index} style={styles.wrapper}>
+    <Text style={styles.name}>{data.name}</Text>
+    <Text style={styles.length}>
+      {data.minutes
+        ? `${data.minutes} min`
+        : `${data.repetitions} repeticiones`}
+    </Text>
+    {data.series !== null && (
+      <Text style={styles.length}>{`${data.series} series`}</Text>
+    )}
+  </View>
+);

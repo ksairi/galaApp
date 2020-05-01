@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   TouchableOpacity,
   View,
@@ -6,176 +6,183 @@ import {
   Dimensions,
   Platform,
   TouchableWithoutFeedback,
-  Keyboard
-} from 'react-native'
-import NetInfo from '@react-native-community/netinfo'
-import { connect } from 'react-redux'
-import * as Animatable from 'react-native-animatable-promise'
-import Icon from '/helpers/ImageHelper'
-import { containerPadding, genericBackgroundColor } from '/components/styles'
-import Logo from '/components/presentationals/Logo'
-import GenericText from '/components/presentationals/GenericText'
-import {isConnected} from '/helpers/NetworkHelper'
-import { ActionsCreators } from '/redux/actions/'
+  Keyboard,
+} from "react-native";
+import NetInfo from "@react-native-community/netinfo";
+import {connect} from "react-redux";
+import * as Animatable from "react-native-animatable-promise";
+import Icon from "helpers/ImageHelper";
+import {containerPadding, genericBackgroundColor} from "components/styles";
+import Logo from "components/presentationals/Logo";
+import GenericText from "components/presentationals/GenericText";
+import * as NetworkHelper from "helpers/NetworkHelper";
+import ActionsCreators from "redux/actions/";
 
 const styles = {
   wrapper: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     backgroundColor: genericBackgroundColor,
     paddingTop: 10,
-    paddingLeft: containerPadding
+    paddingLeft: containerPadding,
   },
   backButton: {
     marginTop: 3,
-    flex: 1
+    flex: 1,
   },
-  portrait: { logo: { fontSize: 40 }, wrapper: { flex: 0.15 } },
+  portrait: {logo: {fontSize: 40}, wrapper: {flex: 0.15}},
   landscape: {
-    logo: { fontSize: 30 },
-    wrapper: { flex: 0.17 }
+    logo: {fontSize: 30},
+    wrapper: {flex: 0.17},
   },
-  title: { fontSize: 19, color: 'white', fontFamily: 'brother-1816-bold' }
-}
-styles.firstButton = styles.backButton
+  title: {fontSize: 19, color: "white", fontFamily: "brother-1816-bold"},
+};
+styles.firstButton = styles.backButton;
 
-const AnimatedBanner = Animatable.createAnimatableComponent(View)
+const AnimatedBanner = Animatable.createAnimatableComponent(View);
 
-@connect(state => ({
+@connect((state) => ({
   orientation: state.currentOrientation,
-  newNotificationsText: state.notificationsText
+  newNotificationsText: state.notificationsText,
 }))
 export default class Header extends React.PureComponent {
-  static timeoutId
-  static unsubscribe
+  static timeoutId;
+
+  static unsubscribe;
+
   state = {
     isDeviceConnected: true,
     wasDeviceDisconnected: false,
-    hideConnectedMessage: true
-  }
+    hideConnectedMessage: true,
+  };
 
-  static getDerivedStateFromProps (nextProps, prevState) {
-    var newState = {}
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const newState = {};
     if (nextProps.isHomeHeader !== prevState.isHomeHeader) {
-      newState.isHomeHeader = nextProps.isHomeHeader
+      newState.isHomeHeader = nextProps.isHomeHeader;
     }
     if (nextProps.orientation) {
       newState.headerStyle =
-        nextProps.orientation === 'landscape'
+        nextProps.orientation === "landscape"
           ? styles.landscape
-          : styles.portrait
+          : styles.portrait;
     }
-    return newState
+    return newState;
   }
 
-  handleBannerRef = ref => (this.animatedBanner = ref)
+  handleBannerRef = (ref) => (this.animatedBanner = ref);
 
   hideNotificationsText = () => {
     setTimeout(() => {
-      this.props.dispatch(ActionsCreators.setNotificationsText(null))
-      this.animatedBanner.transitionTo({ opacity: 0 }, 2000)
-    }, 4000)
-  }
+      this.props.dispatch(ActionsCreators.setNotificationsText(null));
+      this.animatedBanner.transitionTo({opacity: 0}, 2000);
+    }, 4000);
+  };
 
-  componentDidUpdate (prevProps, prevState) {
-    if (this.props.newNotificationsText !== '') {
-      this.animatedBanner.transitionTo({ opacity: 1 }, 1000)
-      this.hideNotificationsText()
+  componentDidUpdate(prevProps) {
+    if (this.props.newNotificationsText !== "") {
+      this.animatedBanner.transitionTo({opacity: 1}, 1000);
+      this.hideNotificationsText();
     }
     if (prevProps.isDeviceConnected !== this.props.isDeviceConnected) {
+      // eslint-disable-next-line react/no-did-update-set-state
       this.setState({
         isDeviceConnected: this.props.isDeviceConnected,
         wasDeviceDisconnected: !this.props.isDeviceConnected,
-        hideConnectedMessage: this.props.isDeviceConnected
-      })
+        hideConnectedMessage: this.props.isDeviceConnected,
+      });
     }
   }
 
   handleConnectivityChange = async (connectionInfo) => {
-    const isDeviceConnected = await isConnected(connectionInfo)
+    const isDeviceConnected = await NetworkHelper.isConnected(connectionInfo);
     this.setState({
       isDeviceConnected,
       wasDeviceDisconnected: isDeviceConnected,
-      hideConnectedMessage: !isDeviceConnected
-    })
-  }
+      hideConnectedMessage: !isDeviceConnected,
+    });
+  };
 
-  async componentDidMount () {
-    Header.unsubscribe = NetInfo.addEventListener(this.handleConnectivityChange)
-    const isDeviceConnected = await isConnected()
+  async componentDidMount() {
+    Header.unsubscribe = NetInfo.addEventListener(
+      this.handleConnectivityChange
+    );
+    const isDeviceConnected = await NetworkHelper.isConnected();
     this.setState({
       isDeviceConnected,
       wasDeviceDisconnected: !isDeviceConnected,
-      hideConnectedMessage: isDeviceConnected
-    })
+      hideConnectedMessage: isDeviceConnected,
+    });
   }
 
-  componentWillUnmount () {
-    Header.unsubscribe()
-    clearTimeout(Header.timeoutId)
+  componentWillUnmount() {
+    Header.unsubscribe();
+    clearTimeout(Header.timeoutId);
   }
 
   showBackToConnection = () => {
     if (this.state.wasDeviceDisconnected && !this.state.hideConnectedMessage) {
       Header.timeoutId = setTimeout(() => {
-        this.setState({ hideConnectedMessage: true })
-      }, 3000)
+        this.setState({hideConnectedMessage: true});
+      }, 3000);
       return (
         <GenericText
           style={{
-            backgroundColor: 'green'
-          }}>
+            backgroundColor: "green",
+          }}
+        >
           Conectado!
         </GenericText>
-      )
-    } else {
-      return null
+      );
     }
-  }
+    return null;
+  };
 
   onMenuPressed = () => {
-    this.props.navigation.toggleDrawer()
-  }
+    this.props.navigation.toggleDrawer();
+  };
 
   onBackPressed = () => {
     if (this.props.backScreen) {
-      this.props.navigation.navigate(this.props.backScreen)
+      this.props.navigation.navigate(this.props.backScreen);
     } else {
-      this.props.navigation.goBack()
+      this.props.navigation.goBack();
     }
-  }
+  };
 
   hideKeyboard = () => {
-    Keyboard.dismiss()
-  }
+    Keyboard.dismiss();
+  };
 
-  render () {
+  render() {
     return (
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
         <View style={this.state.headerStyle.wrapper}>
           <View style={styles.wrapper}>
-            {Platform.OS === 'ios' && this.props.newNotificationsText !== '' && (
+            {Platform.OS === "ios" && this.props.newNotificationsText !== "" && (
               <AnimatedBanner
                 useNativeDriver
                 ref={this.handleBannerRef}
                 style={{
-                  position: 'absolute',
+                  position: "absolute",
                   top: 0,
                   left: 0,
-                  flexDirection: 'row',
-                  width: Dimensions.get('window').width,
-                  backgroundColor: 'yellow',
+                  flexDirection: "row",
+                  width: Dimensions.get("window").width,
+                  backgroundColor: "yellow",
                   zIndex: 2,
                   height: 30,
                   opacity: 0,
-                  alignItems: 'center'
-                }}>
+                  alignItems: "center",
+                }}
+              >
                 <GenericText
                   style={{
                     color: genericBackgroundColor,
-                    fontFamily: 'lato-bold'
-                  }}>
+                    fontFamily: "lato-bold",
+                  }}
+                >
                   {this.props.newNotificationsText}
                 </GenericText>
               </AnimatedBanner>
@@ -184,22 +191,25 @@ export default class Header extends React.PureComponent {
             <View
               style={{
                 flex: 0.9,
-                zIndex: 1
-              }}>
+                zIndex: 1,
+              }}
+            >
               {this.props.isHomeHeader ? (
                 <TouchableOpacity
                   onPress={this.onMenuPressed}
-                  style={styles.firstButton}>
-                  <Icon name='menu' size={20} color='white' />
+                  style={styles.firstButton}
+                >
+                  <Icon name="menu" size={20} color="white" />
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   onPress={this.onBackPressed}
-                  style={styles.backButton}>
+                  style={styles.backButton}
+                >
                   <Icon
-                    name='arrow-navigation-white-left'
+                    name="arrow-navigation-white-left"
                     size={20}
-                    color='white'
+                    color="white"
                   />
                 </TouchableOpacity>
               )}
@@ -208,23 +218,32 @@ export default class Header extends React.PureComponent {
             <View
               style={{
                 flex: 2.5,
-                flexDirection: 'row',
-                justifyContent: 'center',
-                zIndex: 1
-              }}>
+                flexDirection: "row",
+                justifyContent: "center",
+                zIndex: 1,
+              }}
+            >
               {this.props.title ? (
-                <Text style={[styles.title, {fontSize: this.props.title.length >= 13 ? 17 : 19}]}>{this.props.title}</Text>
+                <Text
+                  style={[
+                    styles.title,
+                    {fontSize: this.props.title.length >= 13 ? 17 : 19},
+                  ]}
+                >
+                  {this.props.title}
+                </Text>
               ) : (
                 <Logo style={this.state.headerStyle.logo} />
               )}
             </View>
 
-            <View style={{ flex: 1, flexDirection: 'row', zIndex: 1 }}>
+            <View style={{flex: 1, flexDirection: "row", zIndex: 1}}>
               {!this.state.isDeviceConnected ? (
                 <GenericText
                   style={{
-                    backgroundColor: 'red'
-                  }}>
+                    backgroundColor: "red",
+                  }}
+                >
                   Sin conexión
                 </GenericText>
               ) : (
@@ -234,6 +253,6 @@ export default class Header extends React.PureComponent {
           </View>
         </View>
       </TouchableWithoutFeedback>
-    )
+    );
   }
 }

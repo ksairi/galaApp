@@ -1,19 +1,19 @@
-import { ActionsTypes } from '/config/settings'
+import {ActionsTypes} from "config/settings";
 
-export function setIsDownloadingRemoteImages (isDownloadingRemoteImages) {
-  return (dispatch, getState) => {
+export function setIsDownloadingRemoteImages(isDownloadingRemoteImages) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_IS_DOWNLOADING_REMOTE_IMAGES,
-      isDownloadingRemoteImages
-    })
-  }
+      isDownloadingRemoteImages,
+    });
+  };
 }
 
-export function setNotificationsText (notificationsText) {
-  return (dispatch, getState) => {
+export function setNotificationsText(notificationsText) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_NOTIFICATIONS_TEXT,
-      notificationsText
-    })
-  }
+      notificationsText,
+    });
+  };
 }

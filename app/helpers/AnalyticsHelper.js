@@ -1,23 +1,23 @@
-import { Analytics, Event, PageHit } from 'expo-analytics'
+import {Analytics, Event, PageHit} from "expo-analytics";
 
 export default class AnalyticsHelper {
-  static analytics = new Analytics('UA-16373281-15', { debug: __DEV__ })
+  static analytics = new Analytics("UA-16373281-15", {debug: __DEV__});
 
-  static setPageHit = screenName => {
+  static setPageHit = (screenName) => {
     if (!__DEV__) {
       AnalyticsHelper.analytics
         .hit(new PageHit(screenName))
         .then(() => {})
-        .catch(() => {})
+        .catch(() => {});
     }
-  }
+  };
 
-  static setEvent = actionLabel => {
+  static setEvent = (actionLabel) => {
     if (!__DEV__) {
       AnalyticsHelper.analytics
-        .event(new Event('General', 'Acciones', actionLabel))
+        .event(new Event("General", "Acciones", actionLabel))
         .then(() => {})
-        .catch(() => {})
+        .catch(() => {});
     }
-  }
+  };
 }

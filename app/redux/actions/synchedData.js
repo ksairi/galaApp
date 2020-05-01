@@ -1,59 +1,59 @@
-import { ActionsTypes } from '/config/settings'
+import {ActionsTypes} from "config/settings";
 
-export function setLoginImages (loginImages) {
-  return (dispatch, getState) => {
-    dispatch({ type: ActionsTypes.SET_LOGIN_IMAGES, loginImages })
-  }
+export function setLoginImages(loginImages) {
+  return (dispatch) => {
+    dispatch({type: ActionsTypes.SET_LOGIN_IMAGES, loginImages});
+  };
 }
 
-export function setMainMenuImages (mainMenuImages) {
-  return (dispatch, getState) => {
+export function setMainMenuImages(mainMenuImages) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_MAIN_MENU_IMAGES,
-      mainMenuImages
-    })
-  }
+      mainMenuImages,
+    });
+  };
 }
 
-export function removeMainMenuImages (mainMenuImageIndexesToRemove) {
-  return (dispatch, getState) => {
+export function removeMainMenuImages(mainMenuImageIndexesToRemove) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.REMOVE_MAIN_MENU_IMAGES,
-      mainMenuImageIndexesToRemove
-    })
-  }
+      mainMenuImageIndexesToRemove,
+    });
+  };
 }
 
-export function setClassesImages (classesImages) {
-  return (dispatch, getState) => {
+export function setClassesImages(classesImages) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_CLASSES_IMAGES,
-      classesImages
-    })
-  }
+      classesImages,
+    });
+  };
 }
 
-export function setTimetableImages (timetableImages) {
-  return (dispatch, getState) => {
+export function setTimetableImages(timetableImages) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_TIMETABLE_IMAGES,
-      timetableImages
-    })
-  }
+      timetableImages,
+    });
+  };
 }
-export function setSynchedDataParameters (synchedDataParameters) {
-  return (dispatch, getState) => {
+export function setSynchedDataParameters(synchedDataParameters) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_SYNCHED_DATA_PARAMETERS,
-      synchedDataParameters
-    })
-  }
+      synchedDataParameters,
+    });
+  };
 }
-export function setLoginSynchedDataParameters (loginSynchedDataParameters) {
-  return (dispatch, getState) => {
+export function setLoginSynchedDataParameters(loginSynchedDataParameters) {
+  return (dispatch) => {
     dispatch({
       type: ActionsTypes.SET_LOGIN_SYNCHED_DATA_PARAMETERS,
-      loginSynchedDataParameters
-    })
-  }
+      loginSynchedDataParameters,
+    });
+  };
 }

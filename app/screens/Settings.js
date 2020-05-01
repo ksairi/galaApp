@@ -1,82 +1,78 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, Switch, Alert } from 'react-native'
-import { connect } from 'react-redux'
-import RootWrapper from '/components/presentationals/RootWrapper'
-import GScrollView from '/components/presentationals/GenericScrollView'
-import { ActionsCreators } from '/redux/actions'
-import { Screens, AnalitycsEventsLabels } from '/config/settings'
-import { synchMemberProperties } from '/helpers/UserDataHelper'
-import AnalyticsHelper from '/helpers/AnalyticsHelper'
+import React from "react";
+import {View, Text, TouchableOpacity, Switch, Alert} from "react-native";
+import {connect} from "react-redux";
+import RootWrapper from "components/presentationals/RootWrapper";
+import GScrollView from "components/presentationals/GenericScrollView";
+import ActionsCreators from "redux/actions";
+import {Screens, AnalitycsEventsLabels} from "config/settings";
+import {synchMemberProperties} from "helpers/UserDataHelper";
+import AnalyticsHelper from "helpers/AnalyticsHelper";
 
 const styles = {
-  settingsWrapper: { flex: 0.4 },
+  settingsWrapper: {flex: 0.4},
   settingItem: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 5,
-    marginBottom: 5
+    marginBottom: 5,
   },
   settingText: {
-    fontFamily: 'lato-regular',
+    fontFamily: "lato-regular",
     fontSize: 18,
-    alignSelf: 'flex-start',
-    color: 'white',
-    flex: 1
-  }
-}
+    alignSelf: "flex-start",
+    color: "white",
+    flex: 1,
+  },
+};
 
-@connect(state => ({
+@connect((state) => ({
   receiveNotifications: state.receiveNotifications,
-  userId: state.userData.userId
+  userId: state.userData.userId,
 }))
 export default class Settings extends React.Component {
-  state = {
-    receiveNotifications: this.props.receiveNotifications.value
-  }
   logout = () => {
     Alert.alert(
-      '',
-      '¿Cerrar sesión?',
+      "",
+      "¿Cerrar sesión?",
       [
-        { text: 'No', style: 'cancel' },
+        {text: "No", style: "cancel"},
         {
-          text: 'Sí',
+          text: "Sí",
           onPress: () => {
-            AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut)
+            AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
 
-            this.props.navigation.navigate(Screens.LoginStack)
-            this.props.dispatch(ActionsCreators.logout())
-          }
-        }
+            this.props.navigation.navigate(Screens.LoginStack);
+            this.props.dispatch(ActionsCreators.logout());
+          },
+        },
       ],
-      { cancelable: true }
-    )
+      {cancelable: true}
+    );
+  };
+
+  componentDidMount() {
+    AnalyticsHelper.setPageHit(Screens.Settings);
   }
 
-  componentDidMount () {
-    AnalyticsHelper.setPageHit(Screens.Settings)
-  }
-
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.receiveNotifications != null) {
-      return { receiveNotifications: nextProps.receiveNotifications.value }
+      return {receiveNotifications: nextProps.receiveNotifications.value};
     }
-    return prevState
+    return prevState;
   }
 
-  onValueChange = value => {
+  onValueChange = (value) => {
     const values = {
       value,
-      synched: false
-    }
-    this.props.dispatch(ActionsCreators.setReceiveNotifications(values))
-    this.setState({ receiveNotifications: value })
+      synched: false,
+    };
+    this.props.dispatch(ActionsCreators.setReceiveNotifications(values));
     synchMemberProperties(this.props.dispatch, {
       userId: this.props.userId,
-      data: { receiveNotifications: values }
-    })
-  }
+      data: {receiveNotifications: values},
+    });
+  };
 
-  render () {
+  render() {
     return (
       <GScrollView>
         <RootWrapper>
@@ -84,16 +80,16 @@ export default class Settings extends React.Component {
             <View style={styles.settingItem}>
               <Text style={styles.settingText}>Recibir Notificaciones</Text>
               <Switch
-                style={{ alignSelf: 'flex-end' }}
+                style={{alignSelf: "flex-end"}}
                 value={
                   this.props.receiveNotifications == null
                     ? true
                     : this.props.receiveNotifications.value
                 }
-                ios_backgroundColor='grey'
-                trackColor='green'
-                onValueChange={value => {
-                  this.onValueChange(value)
+                ios_backgroundColor="grey"
+                trackColor="green"
+                onValueChange={(value) => {
+                  this.onValueChange(value);
                 }}
               />
             </View>
@@ -103,6 +99,6 @@ export default class Settings extends React.Component {
           </View>
         </RootWrapper>
       </GScrollView>
-    )
+    );
   }
 }

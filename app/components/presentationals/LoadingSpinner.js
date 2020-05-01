@@ -1,10 +1,14 @@
-import React from 'react'
-import Spinner from 'react-native-loading-spinner-overlay'
+import React from "react";
+import Spinner from "react-native-loading-spinner-overlay";
 
 export default class LoadingSpinner extends React.PureComponent {
-  render () {
+  render() {
     return (
-      <Spinner visible={this.props.visible} textContent={this.props.message ? this.props.message : 'Cargando'} textStyle={{color: '#FFF'}} />
-    )
+      <Spinner
+        visible={this.props.visible}
+        textContent={this.props.message ? this.props.message : "Cargando"}
+        textStyle={{color: "#FFF"}}
+      />
+    );
   }
 }
