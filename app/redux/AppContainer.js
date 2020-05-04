@@ -1,35 +1,27 @@
-import React from 'react'
-import { AppState, Platform, Vibration, Alert } from 'react-native'
-import NetInfo from '@react-native-community/netinfo'
-import StatusBar from '/components/presentationals/StatusBar'
-import { Notifications } from 'expo'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import React from "react";
+import {AppState, Platform, Vibration, Alert} from "react-native";
+import NetInfo from "@react-native-community/netinfo";
+import StatusBar from "components/presentationals/StatusBar";
+import {Notifications, Updates} from "expo";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {
-  Screens,
   AnalitycsEventsLabels,
-  Notifications as NotificationsData
-} from '/config/settings'
-import { ActionsCreators } from './actions'
-import AppRoutes from '/navigation/'
-import {isConnected} from '/helpers/NetworkHelper'
-import { saveMessagesToDevice } from '/helpers/StoreHelper'
-import createNotificationsHanlder from './lib/createHandler'
-import RootView from '/components/containers/RootView'
-import {
-  setNotifiedMessagesSaved
-} from '/helpers/ApiHelper'
-import { sendUnsentMessages } from '/helpers/MessagesHelper'
-import {
-  uploadProfilePicture,
-  synchMemberProperties
-} from '/helpers/UserDataHelper'
-import AnalyticsHelper from '/helpers/AnalyticsHelper'
-import {Updates} from 'expo'
+  Notifications as NotificationsData,
+} from "config/settings";
 
+import AppRoutes from "navigation";
+import * as NetworkHelper from "helpers/NetworkHelper";
+import RootView from "components/containers/RootView";
+import {setNotifiedMessagesSaved} from "helpers/ApiHelper";
+import {sendUnsentMessages} from "helpers/MessagesHelper";
+import * as UserDataHelper from "helpers/UserDataHelper";
+import AnalyticsHelper from "helpers/AnalyticsHelper";
+import createNotificationsHanlder from "./lib/createHandler";
+import ActionsCreators from "./actions";
 
 @connect(
-  state => ({
+  (state) => ({
     userId: state.userData.userId,
     newMemberData: state.newMemberData,
     messages: state.messages,
@@ -39,69 +31,80 @@ import {Updates} from 'expo'
     profilePicture: state.profilePicture,
     receiveNotifications: state.receiveNotifications,
     orientation: state.currentOrientation,
-    statusBarIsHidden: state.statusBarIsHidden
+    statusBarIsHidden: state.statusBarIsHidden,
   }),
-  dispatch =>
-    Object.assign(
-      {},
-      { dispatch },
-      bindActionCreators(ActionsCreators, dispatch)
-    )
+  (dispatch) => ({
+    dispatch,
+    ...bindActionCreators(ActionsCreators, dispatch),
+  })
 )
 export default class AppContainer extends React.Component {
-  static alreadySetMessagesSaved = false
-  static unsubscribe
-  static interval
-  state ={cancelTime: null}
+  static alreadySetMessagesSaved = false;
+
+  static unsubscribe;
+
+  static interval;
+
+  state = {cancelTime: null};
 
   showAlert = () => {
     Alert.alert(
-      'Nueva versión disponible',
-      'Se cerrará y abrirá la app para instalarla rapidamente. Continuar?',
+      "Nueva versión disponible",
+      "Se cerrará y abrirá la app para instalarla rapidamente. Continuar?",
       [
         {
-          text: 'Cancelar', onPress: () => this.setState({cancelTime: Date.now()}),
-          style: 'cancel'
+          text: "Cancelar",
+          onPress: () => this.setState({cancelTime: Date.now()}),
+          style: "cancel",
         },
-        { text: 'OK', onPress: () => Updates.reloadAsync() }
+        {text: "OK", onPress: () => Updates.reloadAsync()},
       ],
-      { cancelable: false }
-    )
-  }
+      {cancelable: false}
+    );
+  };
 
-  componentDidMount () {
+  componentDidMount() {
     this.notificationSubscription = Notifications.addListener(
       this.handleNotification
-    )
-    AppContainer.unsubscribe = NetInfo.addEventListener(this.handleConnectivityChange)
-    AppContainer.interval = setInterval(async() => {
+    );
+    AppContainer.unsubscribe = NetInfo.addEventListener(
+      this.handleConnectivityChange
+    );
+    AppContainer.interval = setInterval(async () => {
       if (!__DEV__) {
-        const response = await Updates.checkForUpdateAsync()
-        if (response.isAvailable && (!this.state.cancelTime ||
-          (Date.now() - this.state.cancelTime) / 1000 / 60 >= 30)) {
-          this.showAlert()
+        const response = await Updates.checkForUpdateAsync();
+        if (
+          response.isAvailable &&
+          (!this.state.cancelTime ||
+            (Date.now() - this.state.cancelTime) / 1000 / 60 >= 30)
+        ) {
+          this.showAlert();
         }
       }
-    }, 1000 * 60 * 60 * 12)
+    }, 1000 * 60 * 60 * 12);
   }
 
-  componentWillUnmount () {
-    this.notificationSubscription.remove()
-    AppContainer.unsubscribe()
-    clearInterval(AppContainer.interval)
+  componentWillUnmount() {
+    this.notificationSubscription.remove();
+    AppContainer.unsubscribe();
+    clearInterval(AppContainer.interval);
   }
 
   handleNotification = async (notification) => {
-    var localNotificationBody = ''
-    const props = this.props
-    if (notification.origin === 'received') {
+    let localNotificationBody = "";
+    const {props} = this;
+    if (notification.origin === "received") {
       AnalyticsHelper.setEvent(
         `${AnalitycsEventsLabels.notificationReceivedOf} ${
-        AnalitycsEventsLabels[Object.keys(notification.data).filter(key => key !== NotificationsData.idFieldName)]
+          AnalitycsEventsLabels[
+            Object.keys(notification.data).filter(
+              (key) => key !== NotificationsData.idFieldName
+            )
+          ]
         }`
-      )
+      );
       createNotificationsHanlder({
-        messages () {
+        messages() {
           // saveMessagesToDevice(
           //   notification.data.messages,
           //   null,
@@ -111,30 +114,28 @@ export default class AppContainer extends React.Component {
             ActionsCreators.setNewMessagesCount(
               notification.data.messages.length
             )
-          )
+          );
           setNotifiedMessagesSaved({
             userId: props.userId,
             notificationId: notification.data.notificationId,
             lastMessageServerTime:
               notification.data.messages[notification.data.messages.length - 1]
-                .serverTime
-          })
-          AppContainer.alreadySetMessagesSaved = true
-          localNotificationBody = 'Tenés nuevos mensajes!'
-        }
-      })(notification.data)
+                .serverTime,
+          });
+          AppContainer.alreadySetMessagesSaved = true;
+          localNotificationBody = "Tenés nuevos mensajes!";
+        },
+      })(notification.data);
     }
 
-    if (notification.origin === 'selected') {
-      const navigator = this.navigator
+    if (notification.origin === "selected") {
+      // const {navigator} = this;
       createNotificationsHanlder({
-        messages () {
+        messages() {
           if (!AppContainer.alreadySetMessagesSaved) {
             AnalyticsHelper.setEvent(
-              `${AnalitycsEventsLabels.notificationReceivedOf} ${
-              AnalitycsEventsLabels.messages
-              }`
-            )
+              `${AnalitycsEventsLabels.notificationReceivedOf} ${AnalitycsEventsLabels.messages}`
+            );
             // saveMessagesToDevice(
             //   notification.data.messages,
             //   null,
@@ -145,16 +146,19 @@ export default class AppContainer extends React.Component {
               ActionsCreators.setNewMessagesCount(
                 notification.data.messages.length
               )
-            )
+            );
 
             setNotifiedMessagesSaved({
               userId: props.userId,
               notificationId: notification.data.notificationId,
-              lastMessageServerTime: notification.data.messages[notification.data.messages.length - 1].serverTime
-            })
+              lastMessageServerTime:
+                notification.data.messages[
+                  notification.data.messages.length - 1
+                ].serverTime,
+            });
           }
-        }
-      })(notification.data)
+        },
+      })(notification.data);
       // is making the setInterval not to finish when
       // leaving Messages screen
       // if (!props.isLoggedIn) {
@@ -165,59 +169,64 @@ export default class AppContainer extends React.Component {
     }
     if (
       props.isLoggedIn &&
-      Platform.OS === 'ios' &&
-      AppState.currentState === 'active' &&
-      notification.origin === 'received'
+      Platform.OS === "ios" &&
+      AppState.currentState === "active" &&
+      notification.origin === "received"
     ) {
       // remote notifications are not shown when app is active in iOS
       this.props.dispatch(
         ActionsCreators.setNotificationsText(localNotificationBody)
-      )
-      Vibration.vibrate()
+      );
+      Vibration.vibrate();
     }
-    if (Platform.OS === 'ios') {
-      const badgeNumber = await Notifications.getBadgeNumberAsync()
-      await Notifications.setBadgeNumberAsync(badgeNumber + notification.data.messages.length)
+    if (Platform.OS === "ios") {
+      const badgeNumber = await Notifications.getBadgeNumberAsync();
+      await Notifications.setBadgeNumberAsync(
+        badgeNumber + notification.data.messages.length
+      );
     }
-  }
+  };
 
-  handleConnectivityChange = async(connectionInfo) => {
-    if (await isConnected(connectionInfo)) {
+  handleConnectivityChange = async (connectionInfo) => {
+    if (await NetworkHelper.isConnected(connectionInfo)) {
       if (this.props.isLoggedIn) {
-        this.props.dispatch(ActionsCreators.fetchUserStore())
+        this.props.dispatch(ActionsCreators.fetchUserStore());
         sendUnsentMessages(
           this.props.userId,
           this.props.messages,
           this.props.dispatch
-        )
+        );
         if (this.props.profilePicture && !this.props.profilePicture.synched) {
-          uploadProfilePicture(this.props.dispatch, {
+          UserDataHelper.uploadProfilePicture(this.props.dispatch, {
             userId: this.props.userId,
-            path: this.props.profilePicture.path
-          })
+            path: this.props.profilePicture.path,
+          });
         }
-        synchMemberProperties(this.props.dispatch, {
+        UserDataHelper.synchMemberProperties(this.props.dispatch, {
           userId: this.props.userId,
-          data: { receiveNotifications: this.props.receiveNotifications }
-        })
+          data: {receiveNotifications: this.props.receiveNotifications},
+        });
       }
     }
-  }
+  };
 
-  render () {
+  render() {
     return (
       <RootView>
         <StatusBar
-          backgroundColor='#5E8D48'
-          barStyle='light-content'
-          hidden={(this.props.statusBarIsHidden && Platform.OS !== 'ios') || (Platform.OS === 'ios' && this.props.orientation === 'landscape')}
+          backgroundColor="#5E8D48"
+          barStyle="light-content"
+          hidden={
+            (this.props.statusBarIsHidden && Platform.OS !== "ios") ||
+            (Platform.OS === "ios" && this.props.orientation === "landscape")
+          }
         />
         <AppRoutes
-          ref={nav => {
-            this.navigator = nav ? nav._navigation : nav
+          ref={(nav) => {
+            this.navigator = nav ? nav._navigation : nav;
           }}
         />
       </RootView>
-    )
+    );
   }
 }

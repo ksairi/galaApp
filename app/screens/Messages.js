@@ -1,11 +1,6 @@
-import React from 'react'
-import {
-  View,
-  AppState,
-  Platform,
-  TouchableWithoutFeedback
-} from 'react-native'
-import { connect } from 'react-redux'
+import React from "react";
+import {View, AppState, Platform, TouchableWithoutFeedback} from "react-native";
+import {connect} from "react-redux";
 import {
   GiftedChat,
   Composer,
@@ -13,111 +8,109 @@ import {
   Day,
   Bubble,
   InputToolbar,
-  Send
-} from 'react-native-gifted-chat'
-import Dialog from 'react-native-dialog'
-import RootWrapper from '/components/presentationals/RootWrapper'
-import { ActionsCreators } from '/redux/actions'
-import { MaterialIcons } from '@expo/vector-icons'
-import { sendMessages } from '/helpers/MessagesHelper'
-import LoadingSpinner from '/components/presentationals/LoadingSpinner'
-import {
-  getRealTimeMessages,
-  setRealTimeMessagesSaved
-} from '/helpers/ApiHelper'
-import { saveMessagesToDevice } from '/helpers/StoreHelper'
-import AnalyticsHelper from '/helpers/AnalyticsHelper'
-import { Screens } from 'config/settings'
-import { Notifications } from 'expo'
+  Send,
+} from "react-native-gifted-chat";
+import Dialog from "react-native-dialog";
+import RootWrapper from "components/presentationals/RootWrapper";
+import ActionsCreators from "redux/actions";
+import {MaterialIcons} from "@expo/vector-icons";
+import {sendMessages} from "helpers/MessagesHelper";
+import LoadingSpinner from "components/presentationals/LoadingSpinner";
+import {getRealTimeMessages, setRealTimeMessagesSaved} from "helpers/ApiHelper";
+import {saveMessagesToDevice} from "helpers/StoreHelper";
+import AnalyticsHelper from "helpers/AnalyticsHelper";
+import {Screens} from "config/settings";
+import {Notifications} from "expo";
 
 const styles = {
   textInputStyle: {
     fontSize: 21,
-    color: 'white',
-    fontFamily: 'lato-regular',
-    lineHeight: 26
+    color: "white",
+    fontFamily: "lato-regular",
+    lineHeight: 26,
   },
   bubbleTextStyle: {
     left: {
-      color: 'black',
-      fontFamily: 'lato-regular',
+      color: "black",
+      fontFamily: "lato-regular",
       fontSize: 21,
-      lineHeight: 27
+      lineHeight: 27,
     },
     right: {
-      color: 'white',
-      fontFamily: 'lato-regular',
+      color: "white",
+      fontFamily: "lato-regular",
       fontSize: 21,
-      lineHeight: 27
-    }
+      lineHeight: 27,
+    },
   },
   bubbleWrapperStyleMessageNotSent: {
     right: {
-      backgroundColor: '#2f396c',
+      backgroundColor: "#2f396c",
       paddingTop: 8,
-      opacity: 0.2
-    }
+      opacity: 0.2,
+    },
   },
   bubbleWrapperStyleMessageSynched: {
     left: {
-      backgroundColor: '#cacaca',
-      paddingTop: 8
+      backgroundColor: "#cacaca",
+      paddingTop: 8,
     },
     right: {
-      backgroundColor: '#2f396c',
+      backgroundColor: "#2f396c",
       paddingTop: 8,
-      opacity: 1
-    }
-  }
-}
+      opacity: 1,
+    },
+  },
+};
 
-@connect(state => ({
+@connect((state) => ({
   messages: state.messages,
   userData: state.userData,
   hasShownUnsentMessagesDialog: state.hasShownUnsentMessagesDialog,
   newMessagesCount: state.newMessagesCount,
-  loginSynchedDataParameters: state.loginSynchedDataParameters
+  loginSynchedDataParameters: state.loginSynchedDataParameters,
 }))
 export default class Messages extends React.Component {
   state = {
     showFirstUnsentMessageDialog: false,
     resendMessage: null,
-    appState: AppState.currentState
-  }
+    appState: AppState.currentState,
+  };
 
-  intervalId
+  intervalId;
 
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.newMessagesCount) {
-      return { hasNewMessages: true }
+      return {hasNewMessages: true};
     }
-    return prevState
+    return prevState;
   }
-  async componentDidUpdate (prevProps, prevState) {
+
+  async componentDidUpdate() {
     if (this.props.newMessagesCount > 0) {
-      this.props.dispatch(ActionsCreators.setNewMessagesCount(null))
+      this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
     }
-    if (Platform.OS === 'ios') {
-      await Notifications.setBadgeNumberAsync(0)
+    if (Platform.OS === "ios") {
+      await Notifications.setBadgeNumberAsync(0);
     }
   }
 
-  componentDidMount () {
-    AnalyticsHelper.setPageHit(Screens.Messages)
-    AppState.addEventListener('change', this._handleAppStateChange)
+  componentDidMount() {
+    AnalyticsHelper.setPageHit(Screens.Messages);
+    AppState.addEventListener("change", this._handleAppStateChange);
     if (this.props.newMessagesCount > 0) {
-      this.props.dispatch(ActionsCreators.setNewMessagesCount(null))
+      this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
     }
-    this.startPullingMessages()
+    this.startPullingMessages();
   }
 
   startPullingMessages = () => {
-    this.doGetRealTimeMessages()
+    this.doGetRealTimeMessages();
     if (!this.intervalId) {
-      clearInterval(this.intervalId)
+      clearInterval(this.intervalId);
     }
-    this.intervalId = setInterval(() => this.doGetRealTimeMessages(), 5000)
-  }
+    this.intervalId = setInterval(() => this.doGetRealTimeMessages(), 5000);
+  };
 
   doGetRealTimeMessages = (hasClientLeftChat = false) => {
     getRealTimeMessages({
@@ -126,83 +119,83 @@ export default class Messages extends React.Component {
         this.props.messages && this.props.messages.length > 0
           ? this.props.messages[0].serverTime
           : null,
-      hasClientLeftChat
+      hasClientLeftChat,
     })
-      .then(messages => {
+      .then((messages) => {
         if (messages && messages.length > 0) {
-          saveMessagesToDevice(messages, null, this.props.dispatch)
+          saveMessagesToDevice(messages, null, this.props.dispatch);
           setRealTimeMessagesSaved({
             userId: this.props.userData.userId,
-            lastMessageServerTime: messages[messages.length - 1].serverTime
-          })
+            lastMessageServerTime: messages[messages.length - 1].serverTime,
+          });
         }
       })
-      .catch((e) => {console.log(e)})
+      .catch(() => {});
+  };
+
+  componentWillUnmount() {
+    AppState.removeEventListener("change", this._handleAppStateChange);
+    clearInterval(this.intervalId);
+    this.doGetRealTimeMessages(true);
   }
 
-  componentWillUnmount () {
-    AppState.removeEventListener('change', this._handleAppStateChange)
-    clearInterval(this.intervalId)
-    this.doGetRealTimeMessages(true)
-  }
-
-  _handleAppStateChange = nextAppState => {
+  _handleAppStateChange = (nextAppState) => {
     if (
       this.state.appState.match(/inactive|background/) &&
-      nextAppState === 'active'
+      nextAppState === "active"
     ) {
-      this.startPullingMessages()
+      this.startPullingMessages();
       if (this.props.newMessagesCount > 0) {
-        this.props.dispatch(ActionsCreators.setNewMessagesCount(null))
+        this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
       }
     }
     if (
-      this.state.appState === 'active' &&
-      (nextAppState === 'inactive' || nextAppState === 'background')
+      this.state.appState === "active" &&
+      (nextAppState === "inactive" || nextAppState === "background")
     ) {
-      clearInterval(Messages.intervalId)
-      this.doGetRealTimeMessages(true)
+      clearInterval(Messages.intervalId);
+      this.doGetRealTimeMessages(true);
     }
-    this.setState({ appState: nextAppState })
-  }
+    this.setState({appState: nextAppState});
+  };
 
   onSend = async (messages = []) => {
-    const unSentMsgs = messages.map(message => ({
+    const unSentMsgs = messages.map((message) => ({
       ...message,
-      createdAt: null
-    }))
-    this.props.dispatch(ActionsCreators.setMessages(unSentMsgs))
-    this.doSendMessages(unSentMsgs)
-  }
+      createdAt: null,
+    }));
+    this.props.dispatch(ActionsCreators.setMessages(unSentMsgs));
+    this.doSendMessages(unSentMsgs);
+  };
 
-  doSendMessages = async messages => {
+  doSendMessages = async (messages) => {
     try {
       await sendMessages(
         this.props.userData.userId,
         messages,
         this.props.dispatch
-      )
+      );
       setRealTimeMessagesSaved({
         userId: this.props.userData.userId,
-        lastMessageServerTime: this.props.messages[0].serverTime
-      })
+        lastMessageServerTime: this.props.messages[0].serverTime,
+      });
     } catch (err) {
-      this.setState({ showFirstUnsentMessageDialog: true })
+      this.setState({showFirstUnsentMessageDialog: true});
     }
-  }
+  };
 
-  renderComposer = props => (
+  renderComposer = (props) => (
     <Composer {...props} textInputStyle={styles.textInputStyle} />
-  )
+  );
 
-  renderTimeFormat = props => <Time {...props} timeFormat='H:mm' />
+  renderTimeFormat = (props) => <Time {...props} timeFormat="H:mm" />;
 
-  renderDay = props => <Day {...props} dateFormat='D/M/YY' />
+  renderDay = (props) => <Day {...props} dateFormat="D/M/YY" />;
 
-  renderBubble = props => {
-    var currentMessageBubbleStyle = styles.bubbleWrapperStyleMessageNotSent
+  renderBubble = (props) => {
+    let currentMessageBubbleStyle = styles.bubbleWrapperStyleMessageNotSent;
     if (props.currentMessage.serverTime) {
-      currentMessageBubbleStyle = styles.bubbleWrapperStyleMessageSynched
+      currentMessageBubbleStyle = styles.bubbleWrapperStyleMessageSynched;
     }
     return (
       <Bubble
@@ -210,29 +203,30 @@ export default class Messages extends React.Component {
         textStyle={styles.bubbleTextStyle}
         wrapperStyle={currentMessageBubbleStyle}
       />
-    )
-  }
+    );
+  };
 
-  renderInputToolbar = props => (
+  renderInputToolbar = (props) => (
     <InputToolbar
       {...props}
       containerStyle={{
-        backgroundColor: '#12194d',
-        borderTopWidth: 0
+        backgroundColor: "#12194d",
+        borderTopWidth: 0,
       }}
     />
-  )
-  renderSend = props => (
+  );
+
+  renderSend = (props) => (
     <Send {...props}>
-      <View style={{ marginBottom: 10, marginRight: 5 }}>
-        <MaterialIcons name='send' color='white' size={25} />
+      <View style={{marginBottom: 10, marginRight: 5}}>
+        <MaterialIcons name="send" color="white" size={25} />
       </View>
     </Send>
-  )
+  );
 
   renderLoading = () => (
-    <LoadingSpinner visible message={'Cargando los mensajes!'} />
-  )
+    <LoadingSpinner visible message="Cargando los mensajes!" />
+  );
 
   showUnsentMessageDialog = () => {
     if (!this.props.hasShownUnsentMessagesDialog) {
@@ -243,64 +237,70 @@ export default class Messages extends React.Component {
             Seleccioná el mensaje para reintentar
           </Dialog.Description>
           <Dialog.Button
-            label='OK'
+            label="OK"
             onPress={() => {
               this.props.dispatch(
                 ActionsCreators.setHasShownUnsentMessagesDialog()
-              )
-              this.setState({ showFirstUnsentMessageDialog: false })
+              );
+              this.setState({showFirstUnsentMessageDialog: false});
             }}
           />
         </Dialog.Container>
-      )
+      );
     }
-  }
+  };
 
   onPressBubble = (context, message) => {
     if (!message.serverTime) {
-      const messageCopy = { ...message }
-      delete messageCopy.previousMessage
-      delete messageCopy.nextMessage
-      delete messageCopy.hash
-      this.setState({ resendMessage: messageCopy })
+      const messageCopy = {...message};
+      delete messageCopy.previousMessage;
+      delete messageCopy.nextMessage;
+      delete messageCopy.hash;
+      this.setState({resendMessage: messageCopy});
     }
-  }
+  };
+
   showResendDialog = () => (
     <Dialog.Container visible={this.state.resendMessage != null}>
       <Dialog.Title>Mensaje no enviado</Dialog.Title>
       <Dialog.Button
-        label='Enviar'
+        label="Enviar"
         onPress={() => {
-          this.doSendMessages([this.state.resendMessage])
-          this.setState({ resendMessage: null })
+          this.doSendMessages([this.state.resendMessage]);
+          this.setState({resendMessage: null});
         }}
       />
       <Dialog.Button
-        label='Borrar'
+        label="Borrar"
         onPress={() => {
           this.props.dispatch(
             ActionsCreators.deleteMessage(this.state.resendMessage)
-          )
-          this.setState({ resendMessage: null })
+          );
+          this.setState({resendMessage: null});
         }}
       />
       <Dialog.Button
-        label='Cancelar'
-        onPress={() => this.setState({ resendMessage: null })}
+        label="Cancelar"
+        onPress={() => this.setState({resendMessage: null})}
       />
     </Dialog.Container>
-  )
+  );
 
-  render () {
+  render() {
     return (
       <TouchableWithoutFeedback>
-        <RootWrapper style={[{ padding: 0 }, { marginBottom: Platform.OS === 'android' ? -10 : 0 }]}>
+        <RootWrapper
+          style={[
+            {padding: 0},
+            {marginBottom: Platform.OS === "android" ? -10 : 0},
+          ]}
+        >
           <GiftedChat
-            textInputProps={{ autoFocus: true }}
+            textInputProps={{autoFocus: true}}
             messages={this.props.messages}
-            onSend={messages => this.onSend(messages)}
+            onSend={(messages) => this.onSend(messages)}
             user={{
-              _id: this.props.userData.userId
+              _id: this.props.userData.userId,
             }}
             isAnimated
             renderComposer={this.renderComposer}
@@ -309,8 +309,8 @@ export default class Messages extends React.Component {
             renderBubble={this.renderBubble}
             renderInputToolbar={this.renderInputToolbar}
             renderSend={this.renderSend}
-            placeholder='Escribí tu mensaje'
-            placeholderTextColor='white'
+            placeholder="Escribí tu mensaje"
+            placeholderTextColor="white"
             renderLoading={this.renderLoading}
             onLongPress={this.onPressBubble}
           />
@@ -318,6 +318,6 @@ export default class Messages extends React.Component {
           {this.showResendDialog()}
         </RootWrapper>
       </TouchableWithoutFeedback>
-    )
+    );
   }
 }

@@ -1,59 +1,59 @@
-import createReducer from './lib/createReducer'
-import { ActionsTypes } from '/config/settings'
+import {ActionsTypes} from "config/settings";
+import createReducer from "./lib/createReducer";
+
+function getMessageIndex(stateMessages, message) {
+  return stateMessages.findIndex(
+    (stateMessage) => stateMessage._id === message._id
+  );
+}
 
 export const messages = createReducer([], {
-  [ActionsTypes.SET_MESSAGES] (state, action) {
+  [ActionsTypes.SET_MESSAGES](state, action) {
     if (action.messages) {
-      let stateCopy = [...state]
-      action.messages.forEach(message => {
-        const index = getMessageIndex(state, message)
+      let stateCopy = [...state];
+      action.messages.forEach((message) => {
+        const index = getMessageIndex(state, message);
         if (index === -1) {
-          stateCopy = [message, ...stateCopy]
+          stateCopy = [message, ...stateCopy];
         }
-      })
-      return stateCopy
+      });
+      return stateCopy;
     }
-    return []
+    return [];
   },
-  [ActionsTypes.SET_SENT_MESSAGES] (state, action) {
-    const stateCopy = [...state]
-    action.messages.forEach(messageWithServerStamp => {
+  [ActionsTypes.SET_SENT_MESSAGES](state, action) {
+    const stateCopy = [...state];
+    action.messages.forEach((messageWithServerStamp) => {
       const index = stateCopy.findIndex(
-        stateMessage => stateMessage._id === messageWithServerStamp._id
-      )
+        (stateMessage) => stateMessage._id === messageWithServerStamp._id
+      );
       if (index !== -1) {
-        stateCopy[index].serverTime = messageWithServerStamp.serverTime
-        stateCopy[index].createdAt = new Date()
+        stateCopy[index].serverTime = messageWithServerStamp.serverTime;
+        stateCopy[index].createdAt = new Date();
       }
-    })
-    return stateCopy
+    });
+    return stateCopy;
   },
-  [ActionsTypes.DELETE_MESSAGE] (state, action) {
+  [ActionsTypes.DELETE_MESSAGE](state, action) {
     if (action.message) {
-      const index = getMessageIndex(state, action.message)
-      return [...state.slice(0, index), ...state.slice(index + 1)]
+      const index = getMessageIndex(state, action.message);
+      return [...state.slice(0, index), ...state.slice(index + 1)];
     }
-    return state
-  }
-})
+    return state;
+  },
+});
 
 export const hasShownUnsentMessagesDialog = createReducer(false, {
-  [ActionsTypes.SET_HAS_SHOWN_UNSENT_MESSAGES_DIALOG] (state, action) {
-    return true
-  }
-})
+  [ActionsTypes.SET_HAS_SHOWN_UNSENT_MESSAGES_DIALOG]() {
+    return true;
+  },
+});
 
 export const newMessagesCount = createReducer(0, {
-  [ActionsTypes.SET_NEW_MESSAGES_COUNT] (state, action) {
+  [ActionsTypes.SET_NEW_MESSAGES_COUNT](state, action) {
     if (!action.value) {
-      return 0
+      return 0;
     }
-    return state + action.value
-  }
-})
-
-function getMessageIndex (stateMessages, message) {
-  return stateMessages.findIndex(
-    stateMessage => stateMessage._id === message._id
-  )
-}
+    return state + action.value;
+  },
+});

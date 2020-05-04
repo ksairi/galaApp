@@ -1,19 +1,19 @@
-import React from 'react'
-import { View } from 'react-native'
+import React from "react";
+import {View} from "react-native";
 
 const styles = {
   centredWrapper: {
     flex: 1,
-    alignItems: 'center'
-  }
-}
+    alignItems: "center",
+  },
+};
 
 export default class CentredWrapper extends React.PureComponent {
-  render () {
+  render() {
     return (
       <View style={[styles.centredWrapper, this.props.style]}>
         {this.props.children}
       </View>
-    )
+    );
   }
 }

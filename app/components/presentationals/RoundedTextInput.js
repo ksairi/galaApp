@@ -1,32 +1,27 @@
-import React, {Component} from 'react'
-import {View, StyleSheet, TextInput} from 'react-native'
-
-export default class RoundedTextInput extends Component {
-
-  render () {
-    return (
-      <View style={[styles.container, this.props.containerStyle]}>
-        <TextInput
-          style={[styles.inputText, this.props.inputStyle]}
-          value={this.props.text}
-          placeholderTextColor='white'
-          {...this.props.inputProps}
-        />
-      </View>
-       )
-  }
-}
+import React from "react";
+import {View, StyleSheet, TextInput} from "react-native";
 
 const styles = StyleSheet.create({
   container: {
     flex: 0.5,
-    justifyContent: 'center'
+    justifyContent: "center",
   },
   inputText: {
     height: 60,
-    backgroundColor: '#12194d',
+    backgroundColor: "#12194d",
     width: 300,
     borderRadius: 40,
-    paddingLeft: 10
-  }
-})
+    paddingLeft: 10,
+  },
+});
+
+export default (props) => (
+  <View style={[styles.container, props.containerStyle]}>
+    <TextInput
+      style={[styles.inputText, props.inputStyle]}
+      value={props.text}
+      placeholderTextColor="white"
+      {...props.inputProps}
+    />
+  </View>
+);

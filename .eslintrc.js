@@ -1,0 +1,87 @@
+const moduleResolverConfig = require("./moduleResolver.config");
+
+module.exports = {
+  root: true,
+  parser: "babel-eslint",
+  extends: ["airbnb", "prettier", "prettier/react"],
+  env: {
+    browser: true,
+    es6: true,
+    jasmine: true,
+    jest: true,
+  },
+  globals: {
+    __DEV__: true,
+    FormData: true,
+    fetch: true,
+  },
+  plugins: ["prettier"],
+  rules: {
+    camelcase: "warn",
+    "consistent-return": "warn",
+    "global-require": "off",
+    "new-cap": "off",
+    "no-param-reassign": ["error", {props: false}],
+    "no-restricted-syntax": [
+      "error",
+      "ForInStatement",
+      "LabeledStatement",
+      "WithStatement",
+    ],
+    "no-shadow": "off",
+    "prefer-template": "warn",
+    "no-underscore-dangle": "off",
+    "no-unused-vars": "warn",
+    "no-unused-expressions": ["error", {allowShortCircuit: true}],
+    "no-use-before-define": "warn",
+    "spaced-comment": ["error", "always", {exceptions: ["eslint"]}],
+    "import/extensions": ["error", "never", {json: "always"}],
+    "import/no-extraneous-dependencies": "warn",
+    "import/no-mutable-exports": "off",
+    "import/prefer-default-export": "warn",
+    "prettier/prettier": ["error"],
+    "react/destructuring-assignment": "off",
+    "react/forbid-prop-types": "off",
+    "react/jsx-filename-extension": "off",
+    "react/no-array-index-key": "warn",
+    "react/no-unused-prop-types": "off",
+    "react/prop-types": "off",
+    "react/require-default-props": "warn",
+    "react/sort-comp": [
+      "error",
+      {
+        order: [
+          "static-methods",
+          "instance-variables",
+          "lifecycle",
+          "getters",
+          "setters",
+          "everything-else",
+          "render",
+        ],
+      },
+    ],
+    "react/state-in-constructor": "off",
+    "no-return-assign": "off",
+    "react/no-array-index-key": "off",
+    "no-plusplus": "off",
+    "react/sort-comp": "off",
+    "react/jsx-props-no-spreading": "off",
+    "array-callback-return": "off",
+    "consistent-return": "off",
+    "import/no-dynamic-require": "off",
+    "no-prototype-builtins": "off",
+  },
+  settings: {
+    "import/resolver": {
+      // we need to do this because babel.config.js is not recognized
+      "babel-module": moduleResolverConfig,
+    },
+  },
+  parserOptions: {
+    parser: "babel-eslint",
+    ecmaFeatures: {
+      legacyDecorators: true,
+    },
+  },
+};

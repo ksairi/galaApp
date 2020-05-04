@@ -1,73 +1,47 @@
-import { PixelRatio } from 'react-native'
-import {
-  login as loginApi,
-  register as registerApi,
-  fetchDynamicData as fetchDynamicDataApi,
-  setContentSaved as setContentSavedApi
-} from '/helpers/ApiHelper'
-import {
-  setInitialData,
-  clearStore,
-  setContentServerData
-} from '/helpers/StoreHelper'
-import * as ScreenDimensions from '/utils/ScreenDimensions'
-import { getUnsentMessages } from '/helpers/MessagesHelper'
-import { ActionsCreators } from '/redux/actions'
-exports.login = async (
-  userId,
-  password,
-  deviceId,
-  loginSynchedDataParameters,
-  messages,
-  dispatch
-) => {
-  const loginResponse = await loginApi(userId, password, deviceId)
-  dispatch(
-    ActionsCreators.setHasResetFirstPassword(
-      loginResponse.data.hasResetFirstPassword
-    )
-  )
-  const unsentMessages = getUnsentMessages(messages)
-  await fetchDynamicData(
-    loginResponse,
-    loginResponse.data.userData.name,
-    userId,
-    password,
-    deviceId,
-    loginSynchedDataParameters,
-    unsentMessages,
-    dispatch
-  )
-}
+import {PixelRatio} from "react-native";
+import * as ApiHelper from "helpers/ApiHelper";
+import * as StoreHelper from "helpers/StoreHelper";
+import * as ScreenDimensions from "utils/ScreenDimensions";
+import * as MessagesHelper from "helpers/MessagesHelper";
+import ActionsCreators from "redux/actions";
 
-exports.register = async (
+const hasResponseResults = (response) =>
+  (response.messages && response.messages.length > 0) ||
+  (response.sentMessages && response.sentMessages.length > 0);
+
+export const doFetchDynamicData = async (
+  synchedDataParameters,
   fullName,
   userId,
-  password,
   deviceId,
-  loginSynchedDataParameters,
+  unsentMessages,
   dispatch
 ) => {
-  const registerResponse = await registerApi(
-    fullName,
-    userId,
-    password,
-    deviceId
-  )
-
-  clearStore(dispatch)
-  dispatch(ActionsCreators.setHasResetFirstPassword(true))
-  await fetchDynamicData(
-    registerResponse,
-    fullName,
-    userId,
-    password,
-    deviceId,
-    loginSynchedDataParameters,
-    null,
-    dispatch
-  )
-}
+  const params = {...synchedDataParameters};
+  if (params.isLoginRequest) {
+    params.userId = userId;
+    params.deviceId = deviceId;
+    params.fullName = fullName;
+    params.deviceWidth = PixelRatio.getPixelSizeForLayoutSize(
+      ScreenDimensions.getPortraitWidth()
+    );
+    params.unsentMessages = unsentMessages;
+  }
+  const dynamicDataResponse = await ApiHelper.fetchDynamicData(params);
+  if (hasResponseResults(dynamicDataResponse)) {
+    let lastMessageServerTime = null;
+    if (
+      dynamicDataResponse.messages &&
+      dynamicDataResponse.messages.length > 0
+    ) {
+      lastMessageServerTime =
+        dynamicDataResponse.messages[dynamicDataResponse.messages.length - 1]
+          .serverTime;
+    }
+    ApiHelper.setContentSaved({userId, lastMessageServerTime});
+  }
+  await StoreHelper.setContentServerData(dynamicDataResponse, dispatch);
+};
 
 const fetchDynamicData = async (
   response,
@@ -86,46 +60,68 @@ const fetchDynamicData = async (
     deviceId,
     unsentMessages,
     dispatch
-  )
-  setInitialData(response.data, userId, password, dispatch)
-}
+  );
+  StoreHelper.setInitialData(response.data, userId, password, dispatch);
+};
 
-const doFetchDynamicData = async (
-  synchedDataParameters,
+export const login = async (
+  userId,
+  password,
+  deviceId,
+  loginSynchedDataParameters,
+  messages,
+  dispatch,
+  cache
+) => {
+  const loginResponse = await ApiHelper.login(
+    userId,
+    password,
+    deviceId,
+    cache
+  );
+  dispatch(
+    ActionsCreators.setHasResetFirstPassword(
+      loginResponse.data.hasResetFirstPassword
+    )
+  );
+  const unsentMessages = MessagesHelper.getUnsentMessages(messages);
+  await fetchDynamicData(
+    loginResponse,
+    loginResponse.data.userData.name,
+    userId,
+    password,
+    deviceId,
+    loginSynchedDataParameters,
+    unsentMessages,
+    dispatch
+  );
+};
+
+export const register = async (
   fullName,
   userId,
+  password,
   deviceId,
-  unsentMessages,
+  loginSynchedDataParameters,
   dispatch
 ) => {
-  const params = { ...synchedDataParameters }
-  if (params.isLoginRequest) {
-    params.userId = userId
-    params.deviceId = deviceId
-    params.fullName = fullName
-    params.deviceWidth = PixelRatio.getPixelSizeForLayoutSize(
-      ScreenDimensions.getPortraitWidth()
-    )
-    params.unsentMessages = unsentMessages
-  }
-  const dynamicDataResponse = await fetchDynamicDataApi(params)
-  if (hasResponseResults(dynamicDataResponse)) {
-    var lastMessageServerTime = null
-    if (
-      dynamicDataResponse.messages &&
-      dynamicDataResponse.messages.length > 0
-    ) {
-      lastMessageServerTime =
-        dynamicDataResponse.messages[dynamicDataResponse.messages.length - 1]
-          .serverTime
-    }
-    setContentSavedApi({ userId, lastMessageServerTime })
-  }
-  await setContentServerData(dynamicDataResponse, dispatch)
-}
+  const registerResponse = await ApiHelper.register(
+    fullName,
+    userId,
+    password,
+    deviceId
+  );
 
-const hasResponseResults = response =>
-  (response.messages && response.messages.length > 0) ||
-  (response.sentMessages && response.sentMessages.length > 0)
-
-exports.doFetchDynamicData = doFetchDynamicData
+  StoreHelper.clearStore(dispatch);
+  dispatch(ActionsCreators.setHasResetFirstPassword(true));
+  await fetchDynamicData(
+    registerResponse,
+    fullName,
+    userId,
+    password,
+    deviceId,
+    loginSynchedDataParameters,
+    null,
+    dispatch
+  );
+};

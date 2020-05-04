@@ -1,20 +1,20 @@
-import createReducer from './lib/createReducer'
-import { ActionsTypes } from '/config/settings'
+import {ActionsTypes} from "config/settings";
+import createReducer from "./lib/createReducer";
 
 export const routines = createReducer([], {
-  [ActionsTypes.SET_ROUTINES] (prevRoutines, action) {
+  [ActionsTypes.SET_ROUTINES](prevRoutines, action) {
     if (action.routines == null) {
-      return []
+      return [];
     }
-    return action.routines
-  }
-})
+    return action.routines;
+  },
+});
 
 export const currentRoutine = createReducer(null, {
-  [ActionsTypes.SET_CURRENT_ROUTINE] (prevState, action) {
+  [ActionsTypes.SET_CURRENT_ROUTINE](prevState, action) {
     if (action.routine) {
-      return action.routine
+      return action.routine;
     }
-    return prevState
-  }
-})
+    return prevState;
+  },
+});

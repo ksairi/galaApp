@@ -1,0 +1,4 @@
+{
+  "root": ["./app"],
+  "extensions": [".js"]
+}

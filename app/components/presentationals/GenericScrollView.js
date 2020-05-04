@@ -1,19 +1,20 @@
-import React from 'react'
-import { ScrollView } from 'react-native'
+import React from "react";
+import {ScrollView} from "react-native";
 
 export default class GenericScrollView extends React.PureComponent {
-  render () {
+  render() {
     return (
       <ScrollView
         contentContainerStyle={[
           {
-            flexGrow: 1
+            flexGrow: 1,
           },
-          this.props.contentContainerStyle
+          this.props.contentContainerStyle,
         ]}
-        style={[ {backgroundColor: '#12194d'}, this.props.containerStyle ]}>
+        style={[{backgroundColor: "#12194d"}, this.props.containerStyle]}
+      >
         {this.props.children}
       </ScrollView>
-    )
+    );
   }
 }

@@ -1,305 +1,327 @@
-import React from 'react'
+import React from "react";
 import {
   Keyboard,
   View,
   Platform,
   TouchableWithoutFeedback,
-  BackHandler
-} from 'react-native'
-import * as ScreenOrientation from 'expo-screen-orientation'
-import { connect } from 'react-redux'
-import { Messages, Screens } from '/config/settings'
-import { register } from '/helpers/LoginHelper'
-import ValidationHelper from '/helpers/ValidationHelper'
-import { getDeviceId } from '/helpers/NotificationsHelper'
-import RootWrapper from '/components/presentationals/RootWrapper'
-import CentredWrapper from '/components/presentationals/CentredWrapper'
-import Button from '/components/presentationals/GenericButton'
-import GenericText from '/components/presentationals/GenericText'
-import GenericLink from '/components/presentationals/GenericLink'
-import LoadingSpinner from '/components/presentationals/LoadingSpinner'
+  BackHandler,
+} from "react-native";
+import * as ScreenOrientation from "expo-screen-orientation";
+import {connect} from "react-redux";
+import {Messages, Screens} from "config/settings";
+import * as LoginHelper from "helpers/LoginHelper";
+import * as ValidationHelper from "helpers/ValidationHelper";
+import * as NotificationsHelper from "helpers/NotificationsHelper";
+import RootWrapper from "components/presentationals/RootWrapper";
+import CentredWrapper from "components/presentationals/CentredWrapper";
+import Button from "components/presentationals/GenericButton";
+import GenericText from "components/presentationals/GenericText";
+import GenericLink from "components/presentationals/GenericLink";
+import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import {
   genericTextInputStyle,
   textWithLinkStyle,
-  containerPadding
-} from '/components/styles'
-import Header from '/components/containers/Header'
-import AnalyticsHelper from '/helpers/AnalyticsHelper'
-import RoundedTextInput from '/components/presentationals/RoundedTextInput'
-import CustomFormWrapper from '/components/presentationals/CustomFormWrapper'
+  containerPadding,
+} from "components/styles";
+import Header from "components/containers/Header";
+import AnalyticsHelper from "helpers/AnalyticsHelper";
+import RoundedTextInput from "components/presentationals/RoundedTextInput";
+import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
 
 const styles = {
   registerAccountTitle: {
     fontSize: 16,
-    fontFamily: 'brother-1816-bold'
+    fontFamily: "brother-1816-bold",
   },
   hiddenKeyboardComponentsStyle: {
-    textInputContainerStyle: { marginTop: 10, marginBottom: 10 },
-    buttonContainerStyle: { flex: 1 },
-    buttonStyle: { height: 50 },
-    memeberAlreadyStyle: { flex: 0.4 }
+    textInputContainerStyle: {marginTop: 10, marginBottom: 10},
+    buttonContainerStyle: {flex: 1},
+    buttonStyle: {height: 50},
+    memeberAlreadyStyle: {flex: 0.4},
   },
   showingKeyboardComponentsStyle: {
-    textInputStyle: { flex: 0.6 },
-    textInputContainerStyle: { flex: 0.3 },
-    titleStyle: { flex: 0.15 },
-    buttonContainerStyle: { flex: 0.30 },
-    buttonStyle: { height: 50 },
-    buttonContentStyle: { fontSize: 15 },
-    memeberAlreadyStyle: { flex: 0.6 },
-    confirmPassInputStyle: { marginBottom: 0 }
-  }
-}
+    textInputStyle: {flex: 0.6},
+    textInputContainerStyle: {flex: 0.3},
+    titleStyle: {flex: 0.15},
+    buttonContainerStyle: {flex: 0.3},
+    buttonStyle: {height: 50},
+    buttonContentStyle: {fontSize: 15},
+    memeberAlreadyStyle: {flex: 0.6},
+    confirmPassInputStyle: {marginBottom: 0},
+  },
+};
 
-@connect(state => ({
+@connect((state) => ({
   deviceId: state.deviceId,
-  loginSynchedDataParameters: state.loginSynchedDataParameters
+  loginSynchedDataParameters: state.loginSynchedDataParameters,
 }))
 export default class SignUp extends React.Component {
-  static navigationOptions = ({ navigation }) => ({
-    header: <Header navigation={navigation} backScreen={Screens.SignIn} />
-  })
+  static navigationOptions = ({navigation}) => ({
+    header: <Header navigation={navigation} backScreen={Screens.SignIn} />,
+  });
 
-  static userfullName = null
-  static userId = null
-  static password = null
-  static confirmPassword = null
+  static userfullName = null;
 
-  state = {
-    errorMessage: '',
-    focusPassword: false,
-    spinnerVisible: false,
-    componentsStyle: styles.hiddenKeyboardComponentsStyle
+  static userId = null;
+
+  static password = null;
+
+  static confirmPassword = null;
+
+  constructor(props) {
+    super(props);
+    this.passwordInput = React.createRef();
+    this.confirmPasswordInput = React.createRef();
+    this.state = {
+      errorMessage: "",
+      spinnerVisible: false,
+      componentsStyle: styles.hiddenKeyboardComponentsStyle,
+    };
   }
 
-  componentDidMount () {
-    AnalyticsHelper.setPageHit(Screens.SignUp)
-    if (Platform.OS === 'ios') {
-      ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP)
+  componentDidMount() {
+    AnalyticsHelper.setPageHit(Screens.SignUp);
+    if (Platform.OS === "ios") {
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
     }
     this.keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
+      "keyboardDidShow",
       this._keyboardDidShow
-    )
+    );
     this.keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
+      "keyboardDidHide",
       this._keyboardDidHide
-    )
-    BackHandler.addEventListener('hardwareBackPress', this.goBack)
+    );
+    BackHandler.addEventListener("hardwareBackPress", this.goBack);
   }
 
   goBack = () => {
-    this.props.navigation.navigate(Screens.SignIn)
-    return true
-  }
+    this.props.navigation.navigate(Screens.SignIn);
+    return true;
+  };
 
-  componentWillUnmount () {
-    this.keyboardDidShowListener.remove()
-    this.keyboardDidHideListener.remove()
-    BackHandler.removeEventListener('hardwareBackPress', this.goBack)
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
   }
 
   _keyboardDidShow = () => {
     this.setState({
-      componentsStyle: styles.showingKeyboardComponentsStyle
-    })
-  }
+      componentsStyle: styles.showingKeyboardComponentsStyle,
+    });
+  };
 
   _keyboardDidHide = () => {
     if (this) {
-      this.setState({ componentsStyle: styles.hiddenKeyboardComponentsStyle })
+      this.setState({componentsStyle: styles.hiddenKeyboardComponentsStyle});
     }
-  }
+  };
 
   signUp = async () => {
-    Keyboard.dismiss()
-    var errorMessage
+    Keyboard.dismiss();
+    let errorMessage;
 
     if (!SignUp.userfullName || !SignUp.userId || !SignUp.password) {
-      this.setState({ errorMessage: Messages.INCOMPLETE_INPUT_DATA })
-      return
+      this.setState({errorMessage: Messages.INCOMPLETE_INPUT_DATA});
+      return;
     }
 
-    errorMessage = ValidationHelper.userIdWithErrors(SignUp.userId)
+    errorMessage = ValidationHelper.userIdWithErrors(SignUp.userId);
     if (errorMessage) {
-      this.setState({ errorMessage })
-      return
+      this.setState({errorMessage});
+      return;
     }
 
     errorMessage = ValidationHelper.passwordsWithErrors(
       SignUp.password,
       SignUp.confirmPassword
-    )
+    );
     if (errorMessage) {
-      this.setState({ errorMessage })
-      return
+      this.setState({errorMessage});
+      return;
     }
 
-    this.setState({ errorMessage: '', spinnerVisible: true })
+    this.setState({errorMessage: "", spinnerVisible: true});
     try {
       const deviceId = this.props.deviceId
         ? this.props.deviceId
-        : await getDeviceId(this.props.dispatch)
-      await register(
+        : await NotificationsHelper.getDeviceId(this.props.dispatch);
+      await LoginHelper.register(
         SignUp.userfullName,
         SignUp.userId,
         SignUp.password,
         deviceId,
         this.props.loginSynchedDataParameters,
         this.props.dispatch
-      )
-      this.setState({ spinnerVisible: false })
-      this.props.navigation.navigate(Screens.HomeStack)
+      );
+      this.setState({spinnerVisible: false});
+      this.props.navigation.navigate(Screens.HomeStack);
     } catch (errorMessage) {
-      this.setState({ spinnerVisible: false, errorMessage })
+      this.setState({spinnerVisible: false, errorMessage});
     }
-  }
-
-  onSubmitUserFullName = () => {
-    if (!SignUp.userId) {
-      this.refs.userIdInput._focusInput()
-    } else {
-      this.signUp()
-    }
-  }
+  };
 
   onSubmitUserId = () => {
     if (!SignUp.password) {
-      this.refs.passwordInput._focusInput()
+      // this.refs.passwordInput._focusInput();
+      this.passwordInput.current.focus();
     } else {
-      this.signUp()
+      this.signUp();
     }
-  }
+  };
 
   onSubmitPassword = () => {
     if (!SignUp.confirmPassword) {
-      this.refs.confirmPasswordInput._focusInput()
+      // this.refs.confirmPasswordInput._focusInput();
+      this.confirmPasswordInput.current.focus();
     } else {
-      this.signUp()
+      this.signUp();
     }
-  }
+  };
+
   goToSignIn = () => {
-    this.props.navigation.navigate(Screens.SignIn)
-  }
+    this.props.navigation.navigate(Screens.SignIn);
+  };
 
-  onFullNameChangeText = fullName => {
-    SignUp.userfullName = fullName
-  }
+  onFullNameChangeText = (fullName) => {
+    SignUp.userfullName = fullName;
+  };
 
-  onUserIdChangeText = userId => {
-    SignUp.userId = userId
-  }
+  onUserIdChangeText = (userId) => {
+    SignUp.userId = userId;
+  };
 
-  onPasswordChangeText = password => {
-    SignUp.password = password
-  }
+  onPasswordChangeText = (password) => {
+    SignUp.password = password;
+  };
 
-  onConfirmPasswordChangeText = password => {
-    SignUp.confirmPassword = password
-  }
+  onConfirmPasswordChangeText = (password) => {
+    SignUp.confirmPassword = password;
+  };
 
   onInputTextOnFocus = () => {
     this.setState({
-      errorMessage: ''
-    })
-  }
+      errorMessage: "",
+    });
+  };
 
   hideKeyboard = () => {
-    Keyboard.dismiss()
-  }
+    Keyboard.dismiss();
+  };
 
-  render () {
+  render() {
     return (
       <TouchableWithoutFeedback onPress={this.hideKeyboard}>
-        <View style={{ flex: 1 }}>
-          <RootWrapper style={{ paddingBottom: 0 }}>
+        <View style={{flex: 1}}>
+          <RootWrapper style={{paddingBottom: 0}}>
             <CustomFormWrapper>
               <CentredWrapper>
                 <GenericText
                   style={[
                     styles.registerAccountTitle,
-                    this.state.componentsStyle.titleStyle
-                  ]}>
+                    this.state.componentsStyle.titleStyle,
+                  ]}
+                >
                   REGISTRAR CUENTA
                 </GenericText>
 
                 <RoundedTextInput
-                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
-                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.textInputStyle]}
-                  inputProps={{
-                    placeholder: 'DNI',
-                    keyboardType: 'numeric',
-                    autoFocus: true,
-                    onChangeText: this.onUserIdChangeText,
-                    onSubmitEditing: this.onSubmitUserId,
-                    returnKeyType: 'next',
-                    autoCapitalize: 'none',
-                    autoCorrect: false,
-                    onFocus: this.onInputTextOnFocus
-                  }}
-                />
-                <RoundedTextInput
-                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
-                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.textInputStyle]}
-                  inputProps={{
-                    placeholder: 'Nombre',
-                    onChangeText: this.onFullNameChangeText,
-                    onSubmitEditing: this.onSubmitUserFullName,
-                    returnKeyType: 'next',
-                    keyboardType: 'default',
-                    autoCapitalize: 'words',
-                    autoCorrect: false,
-                    onFocus: this.onInputTextOnFocus
-                  }}
-                />
-
-                <RoundedTextInput
-                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
-                  inputStyle={[genericTextInputStyle.input, this.state.componentsStyle.textInputStyle]}
-                  inputProps={{
-                    placeholder: 'Contraseña',
-                    secureTextEntry: true,
-                    onChangeText: this.onPasswordChangeText,
-                    autoCapitalize: 'none',
-                    autoCorrect: false,
-                    returnKeyType: 'next',
-                    keyboardType: 'default',
-                    ref: 'passwordInput',
-                    onSubmitEditing: this.onSubmitPassword,
-                    onFocus: this.onInputTextOnFocus
-                  }}
-                />
-
-                <RoundedTextInput
-                  containerStyle={this.state.componentsStyle.textInputContainerStyle}
+                  containerStyle={
+                    this.state.componentsStyle.textInputContainerStyle
+                  }
                   inputStyle={[
                     genericTextInputStyle.input,
                     this.state.componentsStyle.textInputStyle,
-                    this.state.componentsStyle.confirmPassInputStyle
                   ]}
                   inputProps={{
-                    placeholder: 'Confirmar Contraseña',
+                    placeholder: "DNI",
+                    keyboardType: "numeric",
+                    autoFocus: true,
+                    onChangeText: this.onUserIdChangeText,
+                    onSubmitEditing: this.onSubmitUserId,
+                    returnKeyType: "next",
+                    autoCapitalize: "none",
+                    autoCorrect: false,
+                    onFocus: this.onInputTextOnFocus,
+                  }}
+                />
+                <RoundedTextInput
+                  containerStyle={
+                    this.state.componentsStyle.textInputContainerStyle
+                  }
+                  inputStyle={[
+                    genericTextInputStyle.input,
+                    this.state.componentsStyle.textInputStyle,
+                  ]}
+                  inputProps={{
+                    placeholder: "Nombre",
+                    onChangeText: this.onFullNameChangeText,
+                    returnKeyType: "next",
+                    keyboardType: "default",
+                    autoCapitalize: "words",
+                    autoCorrect: false,
+                    onFocus: this.onInputTextOnFocus,
+                  }}
+                />
+
+                <RoundedTextInput
+                  containerStyle={
+                    this.state.componentsStyle.textInputContainerStyle
+                  }
+                  inputStyle={[
+                    genericTextInputStyle.input,
+                    this.state.componentsStyle.textInputStyle,
+                  ]}
+                  inputProps={{
+                    placeholder: "Contraseña",
+                    secureTextEntry: true,
+                    onChangeText: this.onPasswordChangeText,
+                    autoCapitalize: "none",
+                    autoCorrect: false,
+                    returnKeyType: "next",
+                    keyboardType: "default",
+                    ref: this.passwordInput,
+                    onSubmitEditing: this.onSubmitPassword,
+                    onFocus: this.onInputTextOnFocus,
+                  }}
+                />
+
+                <RoundedTextInput
+                  containerStyle={
+                    this.state.componentsStyle.textInputContainerStyle
+                  }
+                  inputStyle={[
+                    genericTextInputStyle.input,
+                    this.state.componentsStyle.textInputStyle,
+                    this.state.componentsStyle.confirmPassInputStyle,
+                  ]}
+                  inputProps={{
+                    placeholder: "Confirmar Contraseña",
                     secureTextEntry: true,
                     onChangeText: this.onConfirmPasswordChangeText,
-                    autoCapitalize: 'none',
+                    autoCapitalize: "none",
                     autoCorrect: false,
-                    returnKeyType: 'done',
-                    keyboardType: 'default',
-                    ref: 'confirmPasswordInput',
+                    returnKeyType: "done",
+                    keyboardType: "default",
+                    ref: this.confirmPasswordInput,
                     onSubmitEditing: this.signUp,
-                    onFocus: this.onInputTextOnFocus
+                    onFocus: this.onInputTextOnFocus,
                   }}
                 />
 
                 <View
                   style={[
-                    { flexDirection: 'row' },
-                    this.state.componentsStyle.buttonContainerStyle
-                  ]}>
+                    {flexDirection: "row"},
+                    this.state.componentsStyle.buttonContainerStyle,
+                  ]}
+                >
                   <Button
                     buttonStyle={this.state.componentsStyle.buttonStyle}
                     textStyle={this.state.componentsStyle.buttonContentStyle}
-                    text='REGISTRARME'
+                    text="REGISTRARME"
                     onPress={this.signUp}
                   />
                 </View>
@@ -307,27 +329,30 @@ export default class SignUp extends React.Component {
                 <View
                   style={[
                     textWithLinkStyle.container,
-                    this.state.componentsStyle.memeberAlreadyStyle
-                  ]}>
+                    this.state.componentsStyle.memeberAlreadyStyle,
+                  ]}
+                >
                   <GenericText style={textWithLinkStyle.text}>
                     ¿Ya tenés una cuenta?
                   </GenericText>
                   <GenericLink
                     containerStyle={textWithLinkStyle.link.container}
                     contentStyle={textWithLinkStyle.link.content}
-                    onPress={this.goToSignIn}>
+                    onPress={this.goToSignIn}
+                  >
                     Iniciá Sesión
                   </GenericLink>
                 </View>
 
-                {this.state.errorMessage !== '' && (
+                {this.state.errorMessage !== "" && (
                   <GenericText
                     style={{
                       fontSize: 13,
                       paddingLeft: containerPadding,
-                      paddingRight: containerPadding
+                      paddingRight: containerPadding,
                     }}
-                    error={this.state.errorMessage || false}>
+                    error={this.state.errorMessage || false}
+                  >
                     {this.state.errorMessage}
                   </GenericText>
                 )}
@@ -338,6 +363,6 @@ export default class SignUp extends React.Component {
           </RootWrapper>
         </View>
       </TouchableWithoutFeedback>
-    )
+    );
   }
 }

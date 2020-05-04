@@ -1,24 +1,24 @@
-import { combineReducers } from 'redux'
-import storage from 'redux-persist/lib/storage'
-import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
-import { persistReducer } from 'redux-persist'
-import * as notificationsReducer from './notifications'
-import * as routinesReducer from './routines'
-import * as timetableReducer from './timetable'
-import * as userDataReducer from './userData'
-import * as sessionReducer from './session'
-import * as navigationReducer from './navigation'
-import * as deviceReducer from './device'
-import * as synchedDataReducer from './synchedData'
-import * as messagesReducer from './messages'
+import {combineReducers} from "redux";
+import storage from "redux-persist/lib/storage";
+import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
+import {persistReducer} from "redux-persist";
+import * as notificationsReducer from "./notifications";
+import * as routinesReducer from "./routines";
+import * as timetableReducer from "./timetable";
+import * as userDataReducer from "./userData";
+import * as sessionReducer from "./session";
+import * as navigationReducer from "./navigation";
+import * as deviceReducer from "./device";
+import * as synchedDataReducer from "./synchedData";
+import * as messagesReducer from "./messages";
 
 const rootPresistConfig = {
-  key: 'root',
+  key: "root",
   timeout: 10000,
-  storage: storage,
+  storage,
   stateReconciler: autoMergeLevel2,
-  blacklist: ['currentOrientation', 'currentRoutine', 'statusBarIsHidden']
-}
+  blacklist: ["currentOrientation", "currentRoutine", "statusBarIsHidden"],
+};
 
 const rootReducer = combineReducers(
   Object.assign(
@@ -32,6 +32,6 @@ const rootReducer = combineReducers(
     synchedDataReducer,
     messagesReducer
   )
-)
+);
 
-export default persistReducer(rootPresistConfig, rootReducer)
+export default persistReducer(rootPresistConfig, rootReducer);
