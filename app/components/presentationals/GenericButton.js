@@ -20,16 +20,22 @@ const styles = StyleSheet.create({
   },
 });
 
-export default (props) => (
-  <TouchableOpacity
-    style={[styles.container, props.containerStyle]}
-    onPress={props.onPress}
-  >
-    <View style={[styles.myButton, props.buttonStyle]}>
-      {props.text && (
-        <Text style={[styles.text, props.textStyle]}>{props.text}</Text>
-      )}
-      {props.children}
-    </View>
-  </TouchableOpacity>
-);
+export default class GenericButon extends React.PureComponent {
+  render() {
+    return (
+      <TouchableOpacity
+        style={[styles.container, this.props.containerStyle]}
+        onPress={this.props.onPress}
+      >
+        <View style={[styles.myButton, this.props.buttonStyle]}>
+          {this.props.text && (
+            <Text style={[styles.text, this.props.textStyle]}>
+              {this.props.text}
+            </Text>
+          )}
+          {this.props.children}
+        </View>
+      </TouchableOpacity>
+    );
+  }
+}

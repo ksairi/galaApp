@@ -70,9 +70,15 @@ export const login = async (
   deviceId,
   loginSynchedDataParameters,
   messages,
-  dispatch
+  dispatch,
+  cache
 ) => {
-  const loginResponse = await ApiHelper.login(userId, password, deviceId);
+  const loginResponse = await ApiHelper.login(
+    userId,
+    password,
+    deviceId,
+    cache
+  );
   dispatch(
     ActionsCreators.setHasResetFirstPassword(
       loginResponse.data.hasResetFirstPassword

@@ -65,7 +65,7 @@ const connectToServer = (
   ]);
 };
 
-export const login = (userId, password, deviceId) => {
+export const login = (userId, password, deviceId, cache) => {
   const loginParamters = {};
 
   loginParamters.userId = userId;
@@ -76,6 +76,10 @@ export const login = (userId, password, deviceId) => {
       return response;
     })
     .catch((error) => {
+      // in case that login server fails (which could) catch that and use cache
+      if (cache.data.userData.name) {
+        return cache;
+      }
       throw error;
     });
 };

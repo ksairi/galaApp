@@ -1,6 +1,7 @@
 import {ActionsTypes} from "config/settings";
 
-export default function setTimetable(timetable) {
+// eslint-disable-next-line import/prefer-default-export
+export function setTimetable(timetable) {
   return (dispatch) => {
     dispatch({type: ActionsTypes.SET_TIMETABLE, timetable});
   };

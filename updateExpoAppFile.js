@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved
-import editJsonFile from "edit-json-file";
+const editJsonFile = require("edit-json-file");
 
 const STAGING_APP_VERSION = "1.0";
 const STAGING_APP_ANDROID_VERSION_CODE = 1;

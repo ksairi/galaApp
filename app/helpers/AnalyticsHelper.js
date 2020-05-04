@@ -1,10 +1,18 @@
 import {Analytics, Event, PageHit} from "expo-analytics";
+import Constants from "expo-constants";
 
 export default class AnalyticsHelper {
-  static analytics = new Analytics("UA-16373281-15", {debug: __DEV__});
+  static isProd = () => {
+    const {slug} = Constants.manifest;
+    return __DEV__ && slug === "galaApp";
+  };
+
+  static analytics = new Analytics("UA-16373281-15", {
+    debug: AnalyticsHelper.isProd(),
+  });
 
   static setPageHit = (screenName) => {
-    if (!__DEV__) {
+    if (AnalyticsHelper.isProd()) {
       AnalyticsHelper.analytics
         .hit(new PageHit(screenName))
         .then(() => {})
@@ -13,7 +21,7 @@ export default class AnalyticsHelper {
   };
 
   static setEvent = (actionLabel) => {
-    if (!__DEV__) {
+    if (AnalyticsHelper.isProd()) {
       AnalyticsHelper.analytics
         .event(new Event("General", "Acciones", actionLabel))
         .then(() => {})

@@ -11,6 +11,7 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 const styles = {
   item: {
     padding: 10,
+    alignSelf: "center",
   },
   name: {
     color: "white",
@@ -112,7 +113,7 @@ export default ({navigation}) => {
               renderItem={({item}) => (
                 <Item name={item.name} classes={item.classes} />
               )}
-              keyExtractor={(item) => item.url}
+              keyExtractor={() => Math.random().toString()}
               style={{marginTop: 20}}
             />
           </CentredWrapper>

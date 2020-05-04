@@ -43,7 +43,7 @@ export default ({navigation}) => {
           <FlatList
             data={classes}
             renderItem={({item}) => <Item name={item.name} url={item.url} />}
-            keyExtractor={(item) => item.url}
+            keyExtractor={() => Math.random().toString()}
             style={{marginTop: 20}}
           />
         </CentredWrapper>

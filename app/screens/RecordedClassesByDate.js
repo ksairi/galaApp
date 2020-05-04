@@ -4,6 +4,7 @@ import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
+import moment from "moment";
 
 const styles = {
   item: {
@@ -43,12 +44,12 @@ export default ({navigation}) => {
     });
 
     recordingsToShow.sort((a, b) => {
-      const nameA = a.date.toUpperCase();
-      const nameB = b.date.toUpperCase();
-      if (nameA < nameB) {
+      const dateA = moment(a.date, "DD-MM-YY");
+      const dateB = moment(b.date, "DD-MM-YY");
+      if (dateA.isSameOrAfter(dateB)) {
         return -1;
       }
-      if (nameA > nameB) {
+      if (dateA.isSameOrBefore(dateB)) {
         return 1;
       }
       return 0;
@@ -85,7 +86,7 @@ export default ({navigation}) => {
             renderItem={({item}) => (
               <Item date={item.date} url={item.url} classes={item.classes} />
             )}
-            keyExtractor={(item) => item.url}
+            keyExtractor={() => Math.random().toString()}
             style={{marginTop: 20}}
           />
         </CentredWrapper>

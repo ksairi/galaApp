@@ -9,7 +9,7 @@ import {
 import * as ScreenOrientation from "expo-screen-orientation";
 import {connect} from "react-redux";
 import {Messages, Screens} from "config/settings";
-import {register} from "helpers/LoginHelper";
+import * as LoginHelper from "helpers/LoginHelper";
 import * as ValidationHelper from "helpers/ValidationHelper";
 import * as NotificationsHelper from "helpers/NotificationsHelper";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -149,7 +149,7 @@ export default class SignUp extends React.Component {
       const deviceId = this.props.deviceId
         ? this.props.deviceId
         : await NotificationsHelper.getDeviceId(this.props.dispatch);
-      await register(
+      await LoginHelper.register(
         SignUp.userfullName,
         SignUp.userId,
         SignUp.password,

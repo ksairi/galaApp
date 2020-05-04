@@ -11,7 +11,7 @@ import AutoHeightImage from "react-native-auto-height-image";
 import {connect} from "react-redux";
 import * as Animatable from "react-native-animatable-promise";
 import {Messages, Screens} from "config/settings";
-import {login} from "helpers/LoginHelper";
+import * as LoginHelper from "helpers/LoginHelper";
 import RootWrapper from "components/presentationals/RootWrapper";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import Button from "components/presentationals/GenericButton";
@@ -81,6 +81,8 @@ const styles = {
   deviceId: state.deviceId,
   messages: state.messages,
   hasResetFirstPassword: state.hasResetFirstPassword,
+  newMemberData: state.newMemberData,
+  routines: state.routines,
 }))
 export default class SignIn extends React.Component {
   static navigationOptions = {header: null};
@@ -355,13 +357,21 @@ export default class SignIn extends React.Component {
       const deviceId = this.props.deviceId
         ? this.props.deviceId
         : await NotificationsHelper.getDeviceId(this.props.dispatch);
-      await login(
+      await LoginHelper.login(
         SignIn.userId,
         SignIn.password,
         deviceId,
         this.props.loginSynchedDataParameters,
         this.props.messages,
-        this.props.dispatch
+        this.props.dispatch,
+        {
+          data: {
+            userData: this.props.userData,
+            hasResetFirstPassword: this.props.hasResetFirstPassword,
+            newMemberData: this.props.newMemberData,
+            routines: this.props.routines,
+          },
+        }
       );
       this.setState({spinnerVisible: false});
       if (this.props.hasResetFirstPassword) {

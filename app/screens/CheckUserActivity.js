@@ -2,7 +2,7 @@ import React from "react";
 import {View} from "react-native";
 import {connect} from "react-redux";
 import {Screens, Messages} from "config/settings";
-import {login} from "helpers/LoginHelper";
+import * as LoginHelper from "helpers/LoginHelper";
 import ActionsCreators from "redux/actions";
 import * as NotificationsHelper from "helpers/NotificationsHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
@@ -30,6 +30,8 @@ const styles = {
   messages: state.messages,
   hasResetFirstPassword: state.hasResetFirstPassword,
   userData: state.userData,
+  newMemberData: state.newMemberData,
+  routines: state.routines,
 }))
 export default class CheckUserActivity extends React.Component {
   static isInLoggingProcess = false;
@@ -52,13 +54,21 @@ export default class CheckUserActivity extends React.Component {
         const deviceId = this.props.deviceId
           ? this.props.deviceId
           : await NotificationsHelper.getDeviceId(this.props.dispatch);
-        await login(
+        await LoginHelper.login(
           this.props.userId,
           this.props.password,
           deviceId,
           this.props.loginSynchedDataParameters,
           this.props.messages,
-          this.props.dispatch
+          this.props.dispatch,
+          {
+            data: {
+              userData: this.props.userData,
+              hasResetFirstPassword: this.props.hasResetFirstPassword,
+              newMemberData: this.props.newMemberData,
+              routines: this.props.routines,
+            },
+          }
         );
         if (this.props.hasResetFirstPassword) {
           this.props.navigation.navigate(Screens.HomeStack);

@@ -10,15 +10,12 @@ import {
   Notifications as NotificationsData,
 } from "config/settings";
 
-import AppRoutes from "navigation/";
+import AppRoutes from "navigation";
 import * as NetworkHelper from "helpers/NetworkHelper";
 import RootView from "components/containers/RootView";
 import {setNotifiedMessagesSaved} from "helpers/ApiHelper";
 import {sendUnsentMessages} from "helpers/MessagesHelper";
-import {
-  uploadProfilePicture,
-  synchMemberProperties,
-} from "helpers/UserDataHelper";
+import * as UserDataHelper from "helpers/UserDataHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import createNotificationsHanlder from "./lib/createHandler";
 import ActionsCreators from "./actions";
@@ -200,12 +197,12 @@ export default class AppContainer extends React.Component {
           this.props.dispatch
         );
         if (this.props.profilePicture && !this.props.profilePicture.synched) {
-          uploadProfilePicture(this.props.dispatch, {
+          UserDataHelper.uploadProfilePicture(this.props.dispatch, {
             userId: this.props.userId,
             path: this.props.profilePicture.path,
           });
         }
-        synchMemberProperties(this.props.dispatch, {
+        UserDataHelper.synchMemberProperties(this.props.dispatch, {
           userId: this.props.userId,
           data: {receiveNotifications: this.props.receiveNotifications},
         });
