@@ -142,14 +142,6 @@ export default class Home extends React.Component {
     const todayClassesData = this.props.timetable[
       new Date().getDay() === 0 ? new Date().getDay() : new Date().getDay() - 1
     ].data;
-    const uniqueTodayClasses = [];
-    const map = new Map();
-    for (const item of todayClassesData) {
-      if (!map.has(item.class)) {
-        map.set(item.class, true); // set any value to Map
-        uniqueTodayClasses.push(item);
-      }
-    }
     const activeRoutine = this.props.routines.filter(
       (routine) => routine.isActive
     )[0];
@@ -167,7 +159,7 @@ export default class Home extends React.Component {
               <AnimatedTimetableSlider
                 useNativeDriver
                 animation="zoomIn"
-                items={uniqueTodayClasses}
+                items={todayClassesData}
                 style={{backgroundColor: genericBackgroundColor}}
                 Component={TimetableItem}
                 customButtons={() => null}
