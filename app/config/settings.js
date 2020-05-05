@@ -1,12 +1,20 @@
 import {FontAwesome, Foundation} from "@expo/vector-icons";
+import Constants from "expo-constants";
 import {DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2} from "./devHosts";
 
 const SERVER_HOSTNAME_1 = __DEV__
   ? DEV_SERVER_HOSTNAME_1
   : "http://galagym.sytes.net:1082/";
 
+const getEnvironment = () => {
+  const {slug} = Constants.manifest;
+  return slug === "galaAppStaging"
+    ? "https://test.galagym.com"
+    : "https://galagym.com";
+};
+
 const SERVER_HOSTNAME_2 = `${
-  __DEV__ ? DEV_SERVER_HOSTNAME_2 : "https://galagym.com"
+  __DEV__ ? DEV_SERVER_HOSTNAME_2 : getEnvironment()
 }/api/`;
 
 export const Urls = {
