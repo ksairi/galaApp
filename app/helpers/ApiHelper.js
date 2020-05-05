@@ -77,9 +77,10 @@ export const login = (userId, password, deviceId, cache) => {
     })
     .catch((error) => {
       // in case that login server fails (which could) catch that and use cache
-      if (cache.data.userData.name) {
-        return cache;
-      }
+      if (error === Messages.SERVER_ERROR)
+        if (cache.data.userData.name) {
+          return cache;
+        }
       throw error;
     });
 };
