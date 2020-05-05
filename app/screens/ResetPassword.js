@@ -60,7 +60,7 @@ export default class ResetPassword extends React.Component {
     super(props);
     this.passwordInput = React.createRef();
     this.confirmPasswordInput = React.createRef();
-    this.statestate = {
+    this.state = {
       hasErrors: false,
       message: "",
       spinnerVisible: false,
