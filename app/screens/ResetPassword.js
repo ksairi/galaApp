@@ -341,7 +341,7 @@ export default class ResetPassword extends React.Component {
 
   onSubmitPassword = () => {
     if (!this.state.confirmPassword) {
-      this.ref.confirmPasswordInput.current.focus();
+      this.confirmPasswordInput.current.focus();
     } else {
       this.doResetPassword();
     }
