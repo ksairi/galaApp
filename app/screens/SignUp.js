@@ -70,6 +70,7 @@ export default class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
+    this.fullNameInput = React.createRef();
     this.passwordInput = React.createRef();
     this.confirmPasswordInput = React.createRef();
     this.state = {
@@ -164,6 +165,14 @@ export default class SignUp extends React.Component {
     }
   };
 
+  onSubmitUserId = () => {
+    if (!SignUp.userfullName) {
+      this.fullNameInput.current.focus();
+    } else {
+      this.signIn();
+    }
+  };
+
   onSubmitName = () => {
     if (!SignUp.password) {
       this.passwordInput.current.focus();
@@ -239,6 +248,7 @@ export default class SignUp extends React.Component {
                     keyboardType: "numeric",
                     autoFocus: true,
                     onChangeText: this.onUserIdChangeText,
+                    onSubmitEditing: this.onSubmitUserId,
                     returnKeyType: "next",
                     autoCapitalize: "none",
                     autoCorrect: false,
@@ -259,6 +269,7 @@ export default class SignUp extends React.Component {
                     onSubmitEditing: this.onSubmitName,
                     returnKeyType: "next",
                     keyboardType: "default",
+                    ref: this.fullNameInput,
                     autoCapitalize: "words",
                     autoCorrect: false,
                     onFocus: this.onInputTextOnFocus,

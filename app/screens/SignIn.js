@@ -397,7 +397,7 @@ export default class SignIn extends React.Component {
 
   onSubmitUserId = () => {
     if (!SignIn.password) {
-      this.passwordInput.currento.focus();
+      this.passwordInput.current.focus();
     } else {
       this.signIn();
     }
