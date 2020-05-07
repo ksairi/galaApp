@@ -98,7 +98,10 @@ export default class AppContainer extends React.Component {
         `${AnalitycsEventsLabels.notificationReceivedOf} ${
           AnalitycsEventsLabels[
             Object.keys(notification.data).filter(
-              (key) => key !== NotificationsData.idFieldName
+              (key) =>
+                key !== NotificationsData.idFieldName &&
+                key !== NotificationsData.handlerFieldName &&
+                key !== NotificationsData.destScreenFieldName
             )
           ]
         }`

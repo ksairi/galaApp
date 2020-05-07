@@ -286,4 +286,6 @@ export const AnalitycsEventsLabels = {
 
 export const Notifications = {
   handlerFieldName: "handler",
+  idFieldName: "notificationId",
+  destScreenFieldName: "destScreen",
 };
