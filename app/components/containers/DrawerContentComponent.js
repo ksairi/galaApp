@@ -91,7 +91,8 @@ export default class DrawerContentComponent extends React.PureComponent {
           if (
             (drawerItem.screen !== Screens.NewMember &&
               drawerItem.screen !== Screens.LiveClassStudio1 &&
-              drawerItem.screen !== Screens.LiveClassStudio2) ||
+              drawerItem.screen !== Screens.LiveClassStudio2 &&
+              drawerItem.screen !== Screens.RecordedClassesByClass) ||
             (drawerItem.screen === Screens.NewMember &&
               this.state.freeEntryDaysLeft &&
               this.state.freeEntryDaysLeft > 0) ||
