@@ -2,7 +2,7 @@ import React from "react";
 import {View, TouchableOpacity, BackHandler} from "react-native";
 import GScrollView from "components/presentationals/GenericScrollView";
 import {connect} from "react-redux";
-import Timeline from "react-native-timeline-listview";
+import Timeline from "react-native-timeline-flatlist";
 import RootWrapper from "components/presentationals/RootWrapper";
 import Icon from "helpers/ImageHelper";
 import GenericText from "components/presentationals/GenericText";
@@ -297,6 +297,7 @@ export default class RoutineDetail extends React.Component {
             data={this.state.routineData}
             renderDetail={this.renderTimeLineDetail}
             detailContainerStyle={{marginLeft: -5}}
+            keyExtractor={() => Math.random().toString()}
           />
         </GScrollView>
       </AnimatedWrapper>

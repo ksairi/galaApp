@@ -116,7 +116,12 @@ export default class SignIn extends React.Component {
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.SignIn);
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    if (Platform.OS !== "web") {
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    }
+
     this.keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       this._keyboardDidShow
@@ -173,7 +178,9 @@ export default class SignIn extends React.Component {
   };
 
   hideKeyboard = () => {
-    Keyboard.dismiss();
+    if (SignIn.isKeyboardShowing) {
+      Keyboard.dismiss();
+    }
   };
 
   render() {

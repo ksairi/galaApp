@@ -105,9 +105,11 @@ export default class Header extends React.PureComponent {
   };
 
   async componentDidMount() {
-    Header.unsubscribe = NetInfo.addEventListener(
-      this.handleConnectivityChange
-    );
+    if (Platform.OS !== "web") {
+      Header.unsubscribe = NetInfo.addEventListener(
+        this.handleConnectivityChange
+      );
+    }
     const isDeviceConnected = await NetworkHelper.isConnected();
     this.setState({
       isDeviceConnected,
@@ -117,7 +119,9 @@ export default class Header extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    Header.unsubscribe();
+    if (Platform.OS !== "web") {
+      Header.unsubscribe();
+    }
     clearTimeout(Header.timeoutId);
   }
 
