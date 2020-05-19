@@ -4,7 +4,7 @@ import Constants from "expo-constants";
 export default class AnalyticsHelper {
   static isProd = () => {
     const {slug} = Constants.manifest;
-    return __DEV__ && slug === "galaApp";
+    return !__DEV__ && slug === "galaApp";
   };
 
   static analytics = new Analytics("UA-16373281-15", {
