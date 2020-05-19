@@ -7,6 +7,7 @@ export const genericTextInputStyle = {
     color: "white",
     fontSize: 20,
     fontFamily: "lato-regular",
+    outlineWidth: 0,
   },
 };
 export const textWithLinkStyle = {

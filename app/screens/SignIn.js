@@ -5,9 +5,10 @@ import {
   Dimensions,
   Platform,
   TouchableWithoutFeedback,
+  Image,
+  ActivityIndicator,
 } from "react-native";
 import * as ScreenOrientation from "expo-screen-orientation";
-import AutoHeightImage from "react-native-auto-height-image";
 import {connect} from "react-redux";
 import * as Animatable from "react-native-animatable-promise";
 import {Messages, Screens} from "config/settings";
@@ -36,9 +37,10 @@ const styles = {
   animatedLogoInitStyle: {flex: 1, fontSize: 55},
   animatedLogoEndStyle: {flex: 0.6, fontSize: 45},
   image: {
-    flex: -1,
     marginBottom: 5,
     marginTop: 5,
+    width: Dimensions.get("window").width,
+    height: 300,
   },
 
   rootWrapperStyle: {paddingTop: 10, padding: 0},
@@ -209,7 +211,7 @@ export default class SignIn extends React.Component {
                 {this.props.orientation === "portrait" &&
                   this.state.componentsStyle ===
                     styles.hiddenKeyboardComponentsStyle && (
-                    <AutoHeightImage
+                    <Image
                       source={
                         this.props.loginImages.length > 0 &&
                         this.props.loginImages[0].imageIndex === 0
@@ -217,7 +219,7 @@ export default class SignIn extends React.Component {
                           : {uri: this.props.loginImages[0].uri}
                       }
                       style={styles.image}
-                      width={Dimensions.get("window").width}
+                      resizeMode="contain"
                     />
                   )}
 
