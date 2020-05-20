@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Dimensions} from "react-native";
+import {View, Dimensions, Platform} from "react-native";
 import GScrollView from "components/presentationals/GenericScrollView";
 import {connect} from "react-redux";
 import Carousel from "react-native-carousel-control-fork";
@@ -187,6 +187,7 @@ export default class TimeTbale extends React.Component {
             currentPage={this.getCurrentIndex()}
             swipeThreshold={0.1}
             onPageChange={this.onPageChange}
+            horizontal={Platform.OS !== "web"}
           >
             {this.getTimeTable()}
           </AnimatedCarousel>

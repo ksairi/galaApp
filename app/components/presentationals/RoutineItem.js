@@ -3,7 +3,7 @@ import {View, Text} from "react-native";
 
 const styles = {
   wrapper: {
-    width: 140,
+    width: 150,
     height: 90,
     borderRadius: 4,
     backgroundColor: "#002db9",

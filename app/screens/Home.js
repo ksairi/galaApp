@@ -13,7 +13,6 @@ import * as UserDataHelper from "helpers/UserDataHelper";
 import * as Animatable from "react-native-animatable-promise";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Slider from "components/presentationals/Slider";
-import {genericBackgroundColor} from "components/styles";
 import TimetableItem from "components/presentationals/TimetableItem";
 import RoutineItem from "components/presentationals/RoutineItem";
 
@@ -40,9 +39,10 @@ const styles = {
     fontFamily: "brother-1816-bold",
     marginTop: 5,
   },
-  carouselContainer: {
-    marginTop: 20,
+  carouselDataContainer: {
     flex: 1,
+    height: 130,
+    width: 250,
   },
   promotionsContainer: {
     marginTop: 30,
@@ -52,20 +52,18 @@ const styles = {
     flex: 1,
   },
   sliderTitleWrapper: {
-    justifyContent: "space-between",
     flexDirection: "row",
     alignItems: "center",
-    paddingBottom: 10,
-    paddingHorizontal: 10,
   },
   title: {
     fontFamily: "lato-bold",
     fontSize: 20,
     color: "#ffffff",
+    paddingRight: 35,
   },
   link: {
     fontFamily: "lato-regular",
-    fontSize: 14,
+    fontSize: 17,
     fontWeight: "500",
     fontStyle: "normal",
     letterSpacing: 0,
@@ -74,8 +72,7 @@ const styles = {
   },
 };
 
-const AnimatedTimetableSlider = Animatable.createAnimatableComponent(Slider);
-const AnimatedRoutinesSlider = Animatable.createAnimatableComponent(Slider);
+const AnimatedSlider = Animatable.createAnimatableComponent(Slider);
 
 @connect((state) => ({
   userData: state.userData,
@@ -147,41 +144,39 @@ export default class Home extends React.Component {
     )[0];
     return (
       <GScrollView>
-        <RootWrapper style={{padding: 0}}>
+        <RootWrapper style={{paddingTop: 10}}>
           <CentredWrapper>
-            <View style={styles.carouselContainer}>
-              <View style={styles.sliderTitleWrapper}>
-                <Text style={styles.title}>Próximas clases</Text>
-                <TouchableOpacity onPress={this.goToScreen(Screens.Timetable)}>
-                  <Text style={styles.link}>Ver cronograma &gt;</Text>
-                </TouchableOpacity>
-              </View>
-              <AnimatedTimetableSlider
+            <View style={styles.sliderTitleWrapper}>
+              <Text style={styles.title}>Clases</Text>
+              <TouchableOpacity onPress={this.goToScreen(Screens.Timetable)}>
+                <Text style={styles.link}>Ver &gt;</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.carouselDataContainer}>
+              <AnimatedSlider
                 useNativeDriver
                 animation="zoomIn"
                 items={todayClassesData}
-                style={{backgroundColor: genericBackgroundColor}}
                 Component={TimetableItem}
-                customButtons={() => null}
               />
             </View>
             {!!activeRoutine && activeRoutine.ejercicios !== null && (
-              <View style={styles.carouselContainer}>
+              <>
                 <View style={styles.sliderTitleWrapper}>
                   <Text style={styles.title}>Mis rutinas</Text>
                   <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
                     <Text style={styles.link}>Empezar &gt;</Text>
                   </TouchableOpacity>
                 </View>
-                <AnimatedRoutinesSlider
-                  useNativeDriver
-                  animation="zoomIn"
-                  items={activeRoutine.ejercicios}
-                  style={{backgroundColor: genericBackgroundColor}}
-                  Component={RoutineItem}
-                  customButtons={() => null}
-                />
-              </View>
+                <View style={styles.carouselDataContainer}>
+                  <AnimatedSlider
+                    useNativeDriver
+                    animation="zoomIn"
+                    items={activeRoutine.ejercicios}
+                    Component={RoutineItem}
+                  />
+                </View>
+              </>
             )}
             <Animatable.View
               useNativeDriver

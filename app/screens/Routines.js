@@ -74,8 +74,7 @@ export default class Routines extends React.Component {
         style={{
           marginLeft: 20,
           marginRight: 20,
-          marginTop: 15,
-          flexDirection: "row",
+          marginTop: 45,
           justifyContent: "center",
           alignItems: "center",
         }}
@@ -83,13 +82,10 @@ export default class Routines extends React.Component {
         <Button
           buttonStyle={{
             backgroundColor: "#12194d",
-            flex: 2,
-            marginLeft: 70,
-            justifyContent: "flex-start",
             height: 50,
           }}
           textStyle={{
-            fontSize: 13,
+            fontSize: 16,
             fontFamily: "brother-1816-bold",
           }}
           onPress={this.seeRoutine(routine)}
@@ -98,7 +94,7 @@ export default class Routines extends React.Component {
 
         {routine.link !== "" && routine.link !== null && (
           <TouchableOpacity
-            style={{flex: 0.2, marginLeft: 5}}
+            style={{marginTop: 20}}
             onPress={this.showIntroVideo(
               routine.link.toLowerCase(),
               routine.description
@@ -106,7 +102,7 @@ export default class Routines extends React.Component {
           >
             <Text
               style={{
-                fontSize: 13,
+                fontSize: 17,
                 fontFamily: "lato-regular",
                 alignSelf: "center",
                 color: "white",
@@ -155,7 +151,7 @@ export default class Routines extends React.Component {
         <RootWrapper style={{padding: 0}}>
           {this.props.routines.length > 0 ? (
             <>
-              <View style={{alignItems: "flex-start"}}>{this.showTitle()}</View>
+              <View>{this.showTitle()}</View>
               <View style={styles.routinesWrapper}>
                 <View>{this.showRoutines(personalRoutines, "PERSONALES")}</View>
                 <View style={{marginTop: 60}}>

@@ -1,5 +1,5 @@
 import React from "react";
-import {View, TouchableOpacity, BackHandler} from "react-native";
+import {View, TouchableOpacity, BackHandler, Platform} from "react-native";
 import GScrollView from "components/presentationals/GenericScrollView";
 import {connect} from "react-redux";
 import Timeline from "react-native-timeline-flatlist";
@@ -108,6 +108,7 @@ export default class RoutineDetail extends React.Component {
             fontFamily: "brother-1816-bold",
             fontSize: 14,
             textAlign: "left",
+            marginRight: 15,
           }}
         >
           {rowData.title}
@@ -124,6 +125,7 @@ export default class RoutineDetail extends React.Component {
                 color: "black",
                 fontFamily: "lato-regular",
                 fontSize: 13,
+                marginTop: 3,
                 marginRight: 15,
               }}
             >
@@ -273,7 +275,10 @@ export default class RoutineDetail extends React.Component {
             paddingLeft: 10,
             paddingRight: 3,
           }}
-          containerStyle={{marginLeft: 10, marginTop: 5}}
+          containerStyle={{
+            marginLeft: 10,
+            marginTop: 5,
+          }}
         >
           <Timeline
             style={{marginTop: 20}}
@@ -298,6 +303,7 @@ export default class RoutineDetail extends React.Component {
             renderDetail={this.renderTimeLineDetail}
             detailContainerStyle={{marginLeft: -5}}
             keyExtractor={() => Math.random().toString()}
+            renderCircle={Platform.OS === "web" ? () => {} : ""}
           />
         </GScrollView>
       </AnimatedWrapper>

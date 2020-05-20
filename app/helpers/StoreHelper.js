@@ -2,7 +2,7 @@ import ActionsCreators from "redux/actions";
 import {Messages} from "config/settings";
 import * as FileSystem from "expo-file-system";
 
-exports.setInitialData = (loginServerData, userId, password, dispatch) => {
+export const setInitialData = (loginServerData, userId, password, dispatch) => {
   const {userData, newMemberData, routines} = loginServerData;
   userData.userId = userId;
   userData.password = password;
@@ -70,7 +70,7 @@ const saveMemberPropertiesToDevice = (userData, dispatch) => {
   );
 };
 
-exports.setContentServerData = async (contentServerData, dispatch) => {
+export const setContentServerData = async (contentServerData, dispatch) => {
   if (contentServerData) {
     const {
       // loginImages,
@@ -119,7 +119,7 @@ exports.setContentServerData = async (contentServerData, dispatch) => {
   }
 };
 
-exports.clearStore = (dispatch) => {
+export const clearStore = (dispatch) => {
   dispatch(ActionsCreators.setUserData({}));
   dispatch(ActionsCreators.setNewMemberData({}));
   dispatch(ActionsCreators.setTimetable(null));

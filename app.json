@@ -2,6 +2,7 @@
   "expo": {
     "name": "Gala Staging",
     "description": "Mobile App for Gala Fitness Center",
+    "owner":"ksairi",
     "slug": "galaAppStaging",
     "privacy": "public",
     "version": "1.0",

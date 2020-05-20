@@ -71,7 +71,6 @@ export const login = (userId, password, deviceId, cache) => {
   loginParamters.userId = userId;
   loginParamters.password = password;
   loginParamters.notificationsToken = deviceId;
-  console.log(Urls.LOGIN);
   return connectToServer(Urls.LOGIN, loginParamters)
     .then((response) => {
       return response;

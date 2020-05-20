@@ -38,8 +38,6 @@ const styles = {
   },
 };
 
-const NO_PROFILE_PICTURE_PATH = "../assets/images/no_profile_picture.jpg";
-
 @connect((state) => ({
   userData: state.userData,
   profilePicture: state.profilePicture,
@@ -48,7 +46,7 @@ const NO_PROFILE_PICTURE_PATH = "../assets/images/no_profile_picture.jpg";
 export default class Profile extends React.Component {
   state = {
     deviceWidth: Dimensions.get("window").width,
-    imageSource: require(NO_PROFILE_PICTURE_PATH),
+    imageSource: require("assets/images/no_profile_picture.jpg"),
   };
 
   static getDerivedStateFromProps(nextProps) {
@@ -78,7 +76,7 @@ export default class Profile extends React.Component {
 
   onErrorLoadProfilePicture = () =>
     this.setState({
-      imageSource: require(NO_PROFILE_PICTURE_PATH),
+      imageSource: require("assets/images/no_profile_picture.jpg"),
     });
 
   getImageSource = () => {
@@ -99,7 +97,7 @@ export default class Profile extends React.Component {
         })
         .catch(() => {
           this.setState({
-            imageSource: require(NO_PROFILE_PICTURE_PATH),
+            imageSource: require("assets/images/no_profile_picture.jpg"),
           });
         });
     }
