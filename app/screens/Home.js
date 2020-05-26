@@ -18,14 +18,14 @@ import RoutineItem from "components/presentationals/RoutineItem";
 
 const styles = {
   buttonsContainer: {
-    flex: 1,
+    flex: -1,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "center",
     marginTop: 20,
   },
   buttonWrapper: {
-    flex: 1.5,
+    height: 100,
     backgroundColor: "#12194d",
     justifyContent: "center",
     padding: 5,

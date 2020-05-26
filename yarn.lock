@@ -8637,7 +8637,7 @@ q@^1.1.2:
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
 
-qs@^6.5.0:
+qs@^6.5.0, qs@^6.5.1:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
   integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
@@ -8788,10 +8788,6 @@ react-native-animatable@^1.2.4:
   dependencies:
     prop-types "^15.7.2"
 
-"react-native-carousel-control-fork@https://github.com/ksairi/react-native-carousel-control#master":
-  version "2.0.1"
-  resolved "https://github.com/ksairi/react-native-carousel-control#802ed56215829a73618d56a5aca9f7809ab06cda"
-
 react-native-communications@2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/react-native-communications/-/react-native-communications-2.2.1.tgz#7883b56b20a002eeb790c113f8616ea8692ca795"
@@ -8907,6 +8903,13 @@ react-native-web-swiper@^2.1.1:
   integrity sha512-uwBl9YDfAQGAwLb24JeZ42P65FJVpcQWm2GkHrmnGdEW0X1HkrkQ7v8Os/YecqizrnFV0LYZBCvMI7qPIKFosA==
   dependencies:
     prop-types "^15.6.2"
+
+react-native-web-webview@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-native-web-webview/-/react-native-web-webview-1.0.1.tgz#af7f479194b7ce9c6ad3ad872a994d927418c4f7"
+  integrity sha512-5uswyqzSB51O4Nw95tpL6xpdJwFMgTTTahph9hKUFvjEV/b0hn9KgeEqmv++yca97LJQvOOayMwxh2RfgIO0DQ==
+  dependencies:
+    qs "^6.5.1"
 
 react-native-web@^0.11.7:
   version "0.11.7"

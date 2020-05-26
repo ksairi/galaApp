@@ -161,8 +161,6 @@ const liveClassProps = {
   homeStyle: {fontSize: 40, color: "white"},
 };
 
-const commoLabelStyles = {width: 168};
-
 export const SectionsData = [
   {
     label: "VIVO ESTUDIO 1",
@@ -207,7 +205,7 @@ export const SectionsData = [
     screen: Screens.Profile,
     drawerStyle: {
       icon: {marginTop: 5, paddingLeft: 7, fontSize: 30},
-      label: {...commoLabelStyles, marginTop: 5},
+      label: {marginTop: 5},
       arrow: {marginTop: 15},
     },
     homeStyle: {fontSize: 40, color: "white"},
@@ -219,7 +217,6 @@ export const SectionsData = [
     drawerStyle: {
       icon: {marginTop: 3, fontSize: 25},
       arrow: {marginTop: 10},
-      label: {...commoLabelStyles},
     },
     homeStyle: {
       fontSize: 30,
@@ -243,7 +240,7 @@ export const SectionsData = [
     screen: Screens.Timetable,
     drawerStyle: {
       icon: {fontSize: 37, paddingLeft: 5},
-      label: {...commoLabelStyles, marginTop: 7},
+      label: {marginTop: 7},
       arrow: {marginTop: 15},
     },
     homeStyle: {fontSize: 40, color: "white"},
@@ -261,7 +258,6 @@ export const SectionsData = [
       arrow: {
         marginTop: 10,
       },
-      label: {...commoLabelStyles},
     },
     homeStyle: {
       fontSize: 30,
@@ -273,7 +269,7 @@ export const SectionsData = [
     label: "REFERIDOS",
     screen: Screens.Referrals,
     drawerStyle: {
-      label: {...commoLabelStyles, marginTop: 5},
+      label: {marginTop: 5},
       arrow: {marginTop: 13},
     },
     homeStyle: {fontSize: 40, color: "white"},
