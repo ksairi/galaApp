@@ -90,6 +90,7 @@ export const Screens = {
   RecordedClassesByClass: "RecordedClassesByClass",
   RecordedClassesByDate: "RecordedClassesByDate",
   RecordedClassesByTime: "RecordedClassesByTime",
+  SuggestAppDownload: "SuggestAppDownload",
 };
 
 export const SignUpConstraints = {
@@ -134,6 +135,7 @@ export const ActionsTypes = {
   SET_HAS_RESET_FIRST_PASSWORD: "SET_HAS_RESET_FIRST_PASSWORD",
   SET_IN_RESET_FIRT_PASSWORD_MODE: "SET_IN_RESET_FIRT_PASSWORD_MODE",
   SET_IS_SAVING_NOTIFICATIONS_DATA: "SET_IS_SAVING_NOTIFICATIONS_DATA",
+  SET_LAST_TIME_SUGGESTED_DOWNLOAD: "SET_LAST_TIME_SUGGESTED_DOWNLOAD",
 
   // Navigation
   SET_CURRENT_HOME_DRAWER_OPTION: "SET_CURRENT_HOME_DRAWER_OPTION",
