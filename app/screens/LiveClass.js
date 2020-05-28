@@ -9,6 +9,7 @@ import {AnalitycsEventsLabels} from "config/settings";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
 import {Ionicons} from "@expo/vector-icons";
 import {genericBackgroundColor} from "components/styles";
+import Constants from "expo-constants";
 
 const styles = {
   title: {
@@ -55,6 +56,11 @@ export default class LiveClass extends React.Component {
     }
   };
 
+  getHost = () => {
+    const {slug} = Constants.manifest;
+    return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
+  };
+
   render() {
     const name = this.props.userData && this.props.userData.name;
     const {studio, title} = this.props.navigation.state.params;
@@ -99,7 +105,7 @@ export default class LiveClass extends React.Component {
           <WebView
             style={{marginTop: 10}}
             source={{
-              uri: `https://galagym.com/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}`,
+              uri: `https://${this.getHost()}/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}`,
             }}
             onNavigationStateChange={this.onNavigationStateChange}
             injectedJavaScript={this.injectedJs}
