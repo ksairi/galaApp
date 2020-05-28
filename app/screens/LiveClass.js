@@ -1,16 +1,18 @@
 import React from "react";
-import {Text, View, TouchableOpacity, Platform} from "react-native";
+import {Text, View, TouchableOpacity, Platform, Linking} from "react-native";
 import {WebView} from "react-native-webview";
 import {WebView as WebViewWeb} from "react-native-web-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
+import {Screens, AnalitycsEventsLabels} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
-import {AnalitycsEventsLabels} from "config/settings";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
 import {Ionicons} from "@expo/vector-icons";
 import {genericBackgroundColor} from "components/styles";
 import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
+import {detect} from "detect-browser";
 
 const styles = {
   title: {
@@ -48,6 +50,7 @@ export default class LiveClass extends React.Component {
 
   async componentDidMount() {
     AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
+    await Permissions.askAsync(Permissions.CAMERA, Permissions.AUDIO_RECORDING);
     setTimeout(() => {
       this.setState({loading: false});
     }, 15000);
@@ -79,10 +82,27 @@ export default class LiveClass extends React.Component {
     return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
   };
 
+  openAppIfNeeded = (studioNumber, name) => {
+    const meetingId =
+      studioNumber === 1
+        ? this.props.userData.studio1ID
+        : this.props.userData.studio2ID;
+    const link = `zoomus://zoom.us/join?confno=${meetingId}&pwd=Gala2020&zc=0&browser=safari&uname=${name}`;
+    if (Platform.OS === "ios") {
+      Linking.openURL(link);
+      this.props.navigation.navigate(Screens.Home);
+    } else if (Platform.OS === "web" && detect.os === "OS") {
+      this.props.navigation.navigate(Screens.Home);
+      window.open(link, "_blank");
+    }
+  };
+
   render() {
     const name = this.props.userData && this.props.userData.name;
-    const {studio, title} = this.props.navigation.state.params;
+    const {studioNumber, title} = this.props.navigation.state.params;
+    this.openAppIfNeeded(studioNumber, name);
     const uri = `https://${this.getHost()}/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
+
     return (
       <>
         <View

@@ -167,13 +167,13 @@ const liveClassProps = {
 export const SectionsData = [
   {
     label: "VIVO ESTUDIO 1",
-    params: {studio: "studio1", title: "ESTUDIO 1"},
+    params: {studioNumber: 1, title: "ESTUDIO 1"},
     screen: Screens.LiveClassStudio1,
     ...liveClassProps,
   },
   {
     label: "VIVO ESTUDIO 2",
-    params: {studio: "studio2", title: "ESTUDIO 2"},
+    params: {studioNumber: 2, title: "ESTUDIO 2"},
     screen: Screens.LiveClassStudio2,
     ...liveClassProps,
   },
