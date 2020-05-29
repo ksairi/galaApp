@@ -164,6 +164,8 @@ const liveClassProps = {
   homeStyle: {fontSize: 40, color: "white"},
 };
 
+const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
+
 export const SectionsData = [
   {
     label: "VIVO ESTUDIO 1",
@@ -180,7 +182,10 @@ export const SectionsData = [
   {
     label: "VIVO ESTUDIO 3",
     screen: Screens.LiveClassStudio3,
-    onPress: () => Linking.openURL("https://www.instagram.com/gala.gym/?hl=en"),
+    onPress: () =>
+      Platform.OS === "web"
+        ? window.open(studio3Url, "_blank")
+        : Linking.openURL(studio3Url),
     ...liveClassProps,
   },
   {

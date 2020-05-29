@@ -56,7 +56,7 @@ export default class LiveClass extends React.Component {
 
   async componentDidMount() {
     AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
-    if (Platform.OS !== "ios") {
+    if (Platform.OS === "android") {
       await Permissions.askAsync(
         Permissions.CAMERA,
         Permissions.AUDIO_RECORDING
@@ -99,7 +99,7 @@ export default class LiveClass extends React.Component {
         ? this.props.userData.studio1ID
         : this.props.userData.studio2ID;
     if (Platform.OS === "ios") {
-      const link = `zoomus://zoom.us/join?confno=${meetingId}&pwd=Gala2020&zc=0&browser=safari&uname=${name}`;
+      const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
       try {
         this.props.navigation.navigate(Screens.Home);
         await Linking.openURL(link);
@@ -108,10 +108,7 @@ export default class LiveClass extends React.Component {
       }
     } else if (Platform.OS === "web") {
       this.props.navigation.navigate(Screens.Home);
-      window.open(
-        `zoom.us/j/${meetingId}?pwd=WWlJNnAwUFdYTmhVbGhOSXArc2NaZz09`,
-        "_blank"
-      );
+      window.open(`https://zoom.us/j/${meetingId}`, "_blank");
     }
   };
 
