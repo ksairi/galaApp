@@ -1,4 +1,4 @@
-import {Platform} from "react-native";
+import {Platform, Linking} from "react-native";
 import {FontAwesome, Foundation} from "@expo/vector-icons";
 import Constants from "expo-constants";
 import {DEV_SERVER_HOSTNAME_2} from "./devHosts";
@@ -87,6 +87,7 @@ export const Screens = {
   VideoPlayer: "VideoPlayer",
   LiveClassStudio1: "LiveClassStudio1",
   LiveClassStudio2: "LiveClassStudio2",
+  LiveClassStudio3: "LiveClassStudio3",
   RecordedClassesByClass: "RecordedClassesByClass",
   RecordedClassesByDate: "RecordedClassesByDate",
   RecordedClassesByTime: "RecordedClassesByTime",
@@ -174,6 +175,12 @@ export const SectionsData = [
     label: "VIVO ESTUDIO 2",
     params: {studio: "studio2", title: "ESTUDIO 2"},
     screen: Screens.LiveClassStudio2,
+    ...liveClassProps,
+  },
+  {
+    label: "VIVO ESTUDIO 3",
+    screen: Screens.LiveClassStudio3,
+    onPress: () => Linking.openURL("https://www.instagram.com/gala.gym/?hl=en"),
     ...liveClassProps,
   },
   {

@@ -31,21 +31,21 @@ export default class SuggestAppDownload extends React.Component {
   constructor(props) {
     super(props);
     this.os = detect().os;
-    this.isIOS = this.os === "iOS";
+    this.isIOS = detect().os === "iOS";
     this.checklastTimeSuggestedDownload();
   }
 
-  isNotApp = () =>
-    this.os !== "iOS" && !this.os.toLowerCase().includes("android");
+  isMobile = () =>
+    this.os === "iOS" || this.os.toLowerCase().includes("android");
 
   checklastTimeSuggestedDownload = async () => {
-    if (Platform.OS === "web" && this.isNotApp()) {
+    if (Platform.OS !== "web" || (Platform.OS === "web" && !this.isMobile())) {
       this.props.navigation.navigate(Screens.CheckUserActivity);
       return;
     }
     if (
       this.props.lastTimeSuggestedDownload &&
-      moment().diff(moment(this.props.lastTimeSuggestedDownload), "days") === 1
+      moment().diff(moment(this.props.lastTimeSuggestedDownload), "days") < 5
     ) {
       this.props.navigation.navigate(Screens.CheckUserActivity);
     } else {

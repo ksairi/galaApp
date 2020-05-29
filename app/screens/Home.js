@@ -188,22 +188,28 @@ export default class Home extends React.Component {
                   (sectionData.screen !== Screens.NewMember &&
                     sectionData.screen !== Screens.LiveClassStudio1 &&
                     sectionData.screen !== Screens.LiveClassStudio2 &&
+                    sectionData.screen !== Screens.LiveClassStudio3 &&
                     sectionData.screen !== Screens.RecordedClassesByClass) ||
                   (sectionData.screen === Screens.NewMember &&
                     this.state.freeEntryDaysLeft &&
                     this.state.freeEntryDaysLeft > 0) ||
                   ((sectionData.screen === Screens.LiveClassStudio1 ||
                     sectionData.screen === Screens.LiveClassStudio2 ||
+                    sectionData.screen === Screens.LiveClassStudio3 ||
                     sectionData.screen === Screens.RecordedClassesByClass) &&
                     this.props.routines.length > 0)
                 ) {
                   return (
                     <TouchableOpacity
                       key={index}
-                      onPress={this.onIconPressed(
-                        sectionData.screen,
-                        sectionData.params
-                      )}
+                      onPress={
+                        sectionData.onPress
+                          ? () => sectionData.onPress()
+                          : this.onIconPressed(
+                              sectionData.screen,
+                              sectionData.params
+                            )
+                      }
                     >
                       <View style={styles.buttonWrapper}>
                         <View

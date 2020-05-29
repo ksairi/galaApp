@@ -121,7 +121,7 @@ export default class TimeTable extends React.Component {
                   }}
                 >
                   <GenericText style={styles.className}>
-                    {timetableData.class}
+                    {timetableData.saloon} {" - "} {timetableData.class}
                   </GenericText>
                   <GenericText style={styles.classTime}>
                     {timetableData.time}
