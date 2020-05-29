@@ -5,9 +5,9 @@ import {
   Dimensions,
   Platform,
   TouchableWithoutFeedback,
+  Image,
 } from "react-native";
 import * as ScreenOrientation from "expo-screen-orientation";
-import AutoHeightImage from "react-native-auto-height-image";
 import {connect} from "react-redux";
 import * as Animatable from "react-native-animatable-promise";
 import {Messages, Screens} from "config/settings";
@@ -36,9 +36,10 @@ const styles = {
   animatedLogoInitStyle: {flex: 1, fontSize: 55},
   animatedLogoEndStyle: {flex: 0.6, fontSize: 45},
   image: {
-    flex: -1,
     marginBottom: 5,
     marginTop: 5,
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height * 0.35,
   },
 
   rootWrapperStyle: {paddingTop: 10, padding: 0},
@@ -116,7 +117,12 @@ export default class SignIn extends React.Component {
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.SignIn);
-    ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
+    if (Platform.OS !== "web") {
+      ScreenOrientation.lockAsync(
+        ScreenOrientation.OrientationLock.PORTRAIT_UP
+      );
+    }
+
     this.keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       this._keyboardDidShow
@@ -133,7 +139,9 @@ export default class SignIn extends React.Component {
   }
 
   _keyboardDidShow = () => {
-    SignIn.isKeyboardShowing = true;
+    if (Platform.OS !== "web") {
+      SignIn.isKeyboardShowing = true;
+    }
     if (this.props.orientation !== "landscape") {
       this.setState({
         componentsStyle: styles.showingKeyboardComponentsStyle,
@@ -151,7 +159,10 @@ export default class SignIn extends React.Component {
   };
 
   _keyboardDidHide = () => {
-    SignIn.isKeyboardShowing = false;
+    if (Platform.OS !== "web") {
+      SignIn.isKeyboardShowing = false;
+    }
+
     this.setState({componentsStyle: styles.hiddenKeyboardComponentsStyle});
     this.animatedLogo.transitionTo(styles.animatedLogoInitStyle, 500);
   };
@@ -167,13 +178,24 @@ export default class SignIn extends React.Component {
   };
 
   onInputTextFocus = () => {
+    if (Platform.OS === "web") {
+      this._keyboardDidShow();
+    }
     this.setState({
       errorMessage: "",
     });
   };
 
+  onBlur = () => {
+    if (Platform.OS === "web") {
+      this._keyboardDidHide();
+    }
+  };
+
   hideKeyboard = () => {
-    Keyboard.dismiss();
+    if (Platform.OS !== "web" && SignIn.isKeyboardShowing) {
+      Keyboard.dismiss();
+    }
   };
 
   render() {
@@ -202,7 +224,7 @@ export default class SignIn extends React.Component {
                 {this.props.orientation === "portrait" &&
                   this.state.componentsStyle ===
                     styles.hiddenKeyboardComponentsStyle && (
-                    <AutoHeightImage
+                    <Image
                       source={
                         this.props.loginImages.length > 0 &&
                         this.props.loginImages[0].imageIndex === 0
@@ -210,7 +232,7 @@ export default class SignIn extends React.Component {
                           : {uri: this.props.loginImages[0].uri}
                       }
                       style={styles.image}
-                      width={Dimensions.get("window").width}
+                      resizeMode="contain"
                     />
                   )}
 
@@ -238,6 +260,7 @@ export default class SignIn extends React.Component {
                     autoCapitalize: "none",
                     autoCorrect: true,
                     onFocus: this.onInputTextFocus,
+                    onBlur: this.onBlur,
                   }}
                 />
 
@@ -265,6 +288,7 @@ export default class SignIn extends React.Component {
                     ref: this.passwordInput,
                     onSubmitEditing: this.signIn,
                     onFocus: this.onInputTextFocus,
+                    onBlur: this.onBlur,
                   }}
                 />
 
@@ -347,7 +371,9 @@ export default class SignIn extends React.Component {
   }
 
   signIn = async () => {
-    Keyboard.dismiss();
+    if (Platform.OS === "web") {
+      Keyboard.dismiss();
+    }
     if (!SignIn.userId || !SignIn.password) {
       this.setState({errorMessage: Messages.INVALID_USER_ID_PASSWORD});
       return;

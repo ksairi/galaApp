@@ -1,6 +1,7 @@
 import React from "react";
 import {Platform, TouchableOpacity, View, Text} from "react-native";
 import {WebView} from "react-native-webview";
+import {WebView as WebViewWeb} from "react-native-web-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Ionicons} from "@expo/vector-icons";
@@ -73,7 +74,11 @@ export default class VideoPlayer extends React.Component {
             paddingBottom: 0,
           }}
         >
-          <WebView allowsFullscreenVideo source={{uri}} />
+          {Platform.OS === "web" ? (
+            <WebViewWeb source={{uri}} />
+          ) : (
+            <WebView allowsFullscreenVideo source={{uri}} />
+          )}
         </RootWrapper>
       </>
     );

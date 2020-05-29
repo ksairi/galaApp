@@ -68,6 +68,8 @@ export default class SignUp extends React.Component {
 
   static confirmPassword = null;
 
+  static isKeyboardShowing = false;
+
   constructor(props) {
     super(props);
     this.fullNameInput = React.createRef();
@@ -110,12 +112,14 @@ export default class SignUp extends React.Component {
   }
 
   _keyboardDidShow = () => {
+    SignUp.isKeyboardShowing = true;
     this.setState({
       componentsStyle: styles.showingKeyboardComponentsStyle,
     });
   };
 
   _keyboardDidHide = () => {
+    SignUp.isKeyboardShowing = false;
     if (this) {
       this.setState({componentsStyle: styles.hiddenKeyboardComponentsStyle});
     }
@@ -216,7 +220,9 @@ export default class SignUp extends React.Component {
   };
 
   hideKeyboard = () => {
-    Keyboard.dismiss();
+    if (SignUp.isKeyboardShowing) {
+      Keyboard.dismiss();
+    }
   };
 
   render() {

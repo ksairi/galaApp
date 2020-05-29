@@ -1,5 +1,5 @@
 import React from "react";
-import {TouchableOpacity, Text} from "react-native";
+import {TouchableOpacity, Text, Platform} from "react-native";
 import Icon from "helpers/ImageHelper";
 
 const styles = {
@@ -58,11 +58,13 @@ export default class DrawerItem extends React.PureComponent {
         <Text style={[styles.drawerItemLabel, this.props.style.label]}>
           {this.props.label} {this.props.labelExtraData}
         </Text>
-        <Icon
-          name="arrow-navigation-white-right"
-          size={17}
-          style={[styles.drawerItemIcon, {flex: 0.4}, this.props.style.arrow]}
-        />
+        {Platform.OS !== "web" && (
+          <Icon
+            name="arrow-navigation-white-right"
+            size={17}
+            style={[styles.drawerItemIcon, {flex: 0.4}, this.props.style.arrow]}
+          />
+        )}
       </TouchableOpacity>
     );
   }

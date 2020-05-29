@@ -1,25 +1,35 @@
 import React from "react";
-import RNImageSlider from "react-native-image-slider-fork";
+import {View} from "react-native";
+import Swiper from "react-native-web-swiper";
 
 export default class Slider extends React.PureComponent {
   render() {
-    const {Component, ...rest} = this.props;
+    const {Component} = this.props;
     return (
-      <RNImageSlider
-        {...rest}
-        autoPlayWithInterval={7000}
-        images={this.props.items}
-        imagesWidth={this.props.itemWidth}
-        style={[
-          {
-            width: this.props.itemWidth,
-          },
-          this.props.style,
-        ]} // default to portrait
-        customSlide={({index, item, style}) => {
-          return <Component {...{style}} key={index} data={item} />;
-        }}
-      />
+      <View style={{flex: 1}}>
+        <Swiper
+          loop
+          timeout={5}
+          controlsProps={{
+            prevPos: "top-left",
+            nextPos: "top-right",
+            prevTitle: "<",
+            nextTitle: ">",
+            nextTitleStyle: {color: "white", fontSize: 24, fontWeight: "500"},
+            prevTitleStyle: {color: "white", fontSize: 24, fontWeight: "500"},
+            DotComponent: () => null,
+          }}
+        >
+          {this.props.items.map((item, index) => (
+            <View
+              key={index}
+              style={{flex: 1, alignItems: "center", justifyContent: "center"}}
+            >
+              <Component data={item} />
+            </View>
+          ))}
+        </Swiper>
+      </View>
     );
   }
 }

@@ -67,9 +67,11 @@ export default class AppContainer extends React.Component {
     this.notificationSubscription = Notifications.addListener(
       this.handleNotification
     );
-    AppContainer.unsubscribe = NetInfo.addEventListener(
-      this.handleConnectivityChange
-    );
+    if (Platform.OS !== "web") {
+      AppContainer.unsubscribe = NetInfo.addEventListener(
+        this.handleConnectivityChange
+      );
+    }
     AppContainer.interval = setInterval(async () => {
       if (!__DEV__) {
         const response = await Updates.checkForUpdateAsync();
@@ -86,7 +88,9 @@ export default class AppContainer extends React.Component {
 
   componentWillUnmount() {
     this.notificationSubscription.remove();
-    AppContainer.unsubscribe();
+    if (Platform.OS !== "web") {
+      AppContainer.unsubscribe();
+    }
     clearInterval(AppContainer.interval);
   }
 

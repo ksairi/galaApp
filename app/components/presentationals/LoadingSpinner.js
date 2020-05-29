@@ -1,14 +1,24 @@
 import React from "react";
-import Spinner from "react-native-loading-spinner-overlay";
+import {ActivityIndicator, View} from "react-native";
 
 export default class LoadingSpinner extends React.PureComponent {
   render() {
     return (
-      <Spinner
-        visible={this.props.visible}
-        textContent={this.props.message ? this.props.message : "Cargando"}
-        textStyle={{color: "#FFF"}}
-      />
+      this.props.visible && (
+        <View
+          style={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <ActivityIndicator size="small" color="white" />
+        </View>
+      )
     );
   }
 }

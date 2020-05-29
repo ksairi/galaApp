@@ -92,12 +92,14 @@ export default class DrawerContentComponent extends React.PureComponent {
             (drawerItem.screen !== Screens.NewMember &&
               drawerItem.screen !== Screens.LiveClassStudio1 &&
               drawerItem.screen !== Screens.LiveClassStudio2 &&
+              drawerItem.screen !== Screens.LiveClassStudio3 &&
               drawerItem.screen !== Screens.RecordedClassesByClass) ||
             (drawerItem.screen === Screens.NewMember &&
               this.state.freeEntryDaysLeft &&
               this.state.freeEntryDaysLeft > 0) ||
             ((drawerItem.screen === Screens.LiveClassStudio1 ||
               drawerItem.screen === Screens.LiveClassStudio2 ||
+              drawerItem.screen === Screens.LiveClassStudio3 ||
               drawerItem.screen === Screens.RecordedClassesByClass) &&
               this.props.routines.length > 0)
           ) {
@@ -108,7 +110,11 @@ export default class DrawerContentComponent extends React.PureComponent {
                 icon={drawerItem.icon}
                 label={drawerItem.label}
                 screen={drawerItem.screen}
-                onPress={this.onPress(drawerItem.screen, drawerItem.params)}
+                onPress={
+                  drawerItem.onPress
+                    ? () => drawerItem.onPress()
+                    : this.onPress(drawerItem.screen, drawerItem.params)
+                }
                 style={drawerItem.drawerStyle}
                 IconComponent={drawerItem.IconComponent}
                 labelExtraData={

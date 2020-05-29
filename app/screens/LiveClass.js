@@ -1,6 +1,7 @@
 import React from "react";
-import {Text, View, TouchableOpacity} from "react-native";
+import {Text, View, TouchableOpacity, Platform} from "react-native";
 import {WebView} from "react-native-webview";
+import {WebView as WebViewWeb} from "react-native-web-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
@@ -35,6 +36,13 @@ export default class LiveClass extends React.Component {
       startFSButton.click();
       startAudioButton.click();
     }, 15000);
+    setTimeout(function() {
+      var postMessage = window.parent.postMessage;
+      if(window.ReactNativeWebView) {
+        postMessage = window.ReactNativeWebView.postMessage;
+      }
+      postMessage(JSON.stringify(error));
+    }, 1000)
       true;
   `;
 
@@ -50,6 +58,16 @@ export default class LiveClass extends React.Component {
     deactivateKeepAwake();
   }
 
+  onMessage = ({nativeEvent}) => {
+    try {
+      const result = JSON.parse(nativeEvent.data);
+      if (result.errorMessage) {
+        this.props.navigation.goBack();
+      }
+      // eslint-disable-next-line no-empty
+    } catch (e) {}
+  };
+
   onNavigationStateChange = (data) => {
     if (data.url === "https://galagym.com/") {
       this.props.navigation.goBack();
@@ -64,7 +82,7 @@ export default class LiveClass extends React.Component {
   render() {
     const name = this.props.userData && this.props.userData.name;
     const {studio, title} = this.props.navigation.state.params;
-
+    const uri = `https://${this.getHost()}/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
     return (
       <>
         <View
@@ -102,15 +120,28 @@ export default class LiveClass extends React.Component {
           >
             {title}
           </Text>
-          <WebView
-            style={{marginTop: 10}}
-            source={{
-              uri: `https://${this.getHost()}/live-classes/zoom/${studio}.php?name=${name}&hash=${API_ACCESS_TOKEN}`,
-            }}
-            onNavigationStateChange={this.onNavigationStateChange}
-            injectedJavaScript={this.injectedJs}
-            mediaPlaybackRequiresUserAction={false}
-          />
+          {Platform.OS !== "web" ? (
+            <WebView
+              style={{marginTop: 10}}
+              source={{
+                uri,
+              }}
+              onMessage={this.onMessage}
+              onNavigationStateChange={this.onNavigationStateChange}
+              injectedJavaScript={this.injectedJs}
+              mediaPlaybackRequiresUserAction={false}
+            />
+          ) : (
+            <WebViewWeb
+              style={{marginTop: 10}}
+              source={{
+                uri,
+              }}
+              onMessage={this.onMessage}
+              injectedJavaScript={this.injectedJs}
+              mediaPlaybackRequiresUserAction={false}
+            />
+          )}
         </RootWrapper>
       </>
     );

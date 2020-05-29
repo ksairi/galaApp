@@ -7,14 +7,15 @@ export const genericTextInputStyle = {
     color: "white",
     fontSize: 20,
     fontFamily: "lato-regular",
+    outlineWidth: 0,
   },
 };
 export const textWithLinkStyle = {
   container: {flexDirection: "row", flex: 1},
-  text: {flex: 0, marginRight: 5, fontSize: 16},
+  text: {flex: -1, marginRight: 5, fontSize: 16},
   link: {
     container: {
-      flex: 0,
+      flex: -1,
     },
     content: {
       fontSize: 16,

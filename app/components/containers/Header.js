@@ -31,7 +31,7 @@ const styles = {
     marginTop: 3,
     flex: 1,
   },
-  portrait: {logo: {fontSize: 40}, wrapper: {flex: 0.15}},
+  portrait: {logo: {fontSize: 40}, wrapper: {flex: 0.13}},
   landscape: {
     logo: {fontSize: 30},
     wrapper: {flex: 0.17},
@@ -105,9 +105,11 @@ export default class Header extends React.PureComponent {
   };
 
   async componentDidMount() {
-    Header.unsubscribe = NetInfo.addEventListener(
-      this.handleConnectivityChange
-    );
+    if (Platform.OS !== "web") {
+      Header.unsubscribe = NetInfo.addEventListener(
+        this.handleConnectivityChange
+      );
+    }
     const isDeviceConnected = await NetworkHelper.isConnected();
     this.setState({
       isDeviceConnected,
@@ -117,7 +119,9 @@ export default class Header extends React.PureComponent {
   }
 
   componentWillUnmount() {
-    Header.unsubscribe();
+    if (Platform.OS !== "web") {
+      Header.unsubscribe();
+    }
     clearTimeout(Header.timeoutId);
   }
 

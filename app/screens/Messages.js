@@ -229,7 +229,10 @@ export default class Messages extends React.Component {
   );
 
   showUnsentMessageDialog = () => {
-    if (!this.props.hasShownUnsentMessagesDialog) {
+    if (
+      !this.props.hasShownUnsentMessagesDialog &&
+      this.state.showFirstUnsentMessageDialog
+    ) {
       return (
         <Dialog.Container visible={this.state.showFirstUnsentMessageDialog}>
           <Dialog.Title>Mensaje no enviado</Dialog.Title>
@@ -260,31 +263,32 @@ export default class Messages extends React.Component {
     }
   };
 
-  showResendDialog = () => (
-    <Dialog.Container visible={this.state.resendMessage != null}>
-      <Dialog.Title>Mensaje no enviado</Dialog.Title>
-      <Dialog.Button
-        label="Enviar"
-        onPress={() => {
-          this.doSendMessages([this.state.resendMessage]);
-          this.setState({resendMessage: null});
-        }}
-      />
-      <Dialog.Button
-        label="Borrar"
-        onPress={() => {
-          this.props.dispatch(
-            ActionsCreators.deleteMessage(this.state.resendMessage)
-          );
-          this.setState({resendMessage: null});
-        }}
-      />
-      <Dialog.Button
-        label="Cancelar"
-        onPress={() => this.setState({resendMessage: null})}
-      />
-    </Dialog.Container>
-  );
+  showResendDialog = () =>
+    this.state.resendMessage && (
+      <Dialog.Container visible={this.state.resendMessage !== null}>
+        <Dialog.Title>Mensaje no enviado</Dialog.Title>
+        <Dialog.Button
+          label="Enviar"
+          onPress={() => {
+            this.doSendMessages([this.state.resendMessage]);
+            this.setState({resendMessage: null});
+          }}
+        />
+        <Dialog.Button
+          label="Borrar"
+          onPress={() => {
+            this.props.dispatch(
+              ActionsCreators.deleteMessage(this.state.resendMessage)
+            );
+            this.setState({resendMessage: null});
+          }}
+        />
+        <Dialog.Button
+          label="Cancelar"
+          onPress={() => this.setState({resendMessage: null})}
+        />
+      </Dialog.Container>
+    );
 
   render() {
     return (
@@ -314,8 +318,8 @@ export default class Messages extends React.Component {
             renderLoading={this.renderLoading}
             onLongPress={this.onPressBubble}
           />
-          {this.showUnsentMessageDialog()}
-          {this.showResendDialog()}
+          {Platform.OS !== "web" && this.showUnsentMessageDialog()}
+          {Platform.OS !== "web" && this.showResendDialog()}
         </RootWrapper>
       </TouchableWithoutFeedback>
     );
