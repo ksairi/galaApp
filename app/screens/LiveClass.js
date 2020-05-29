@@ -1,5 +1,12 @@
 import React from "react";
-import {Text, View, TouchableOpacity, Platform, Linking} from "react-native";
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+  Linking,
+  Alert,
+} from "react-native";
 import {WebView} from "react-native-webview";
 import {WebView as WebViewWeb} from "react-native-web-webview";
 import {connect} from "react-redux";
@@ -12,7 +19,6 @@ import {Ionicons} from "@expo/vector-icons";
 import {genericBackgroundColor} from "components/styles";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
-import {detect} from "detect-browser";
 
 const styles = {
   title: {
@@ -50,11 +56,16 @@ export default class LiveClass extends React.Component {
 
   async componentDidMount() {
     AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
-    await Permissions.askAsync(Permissions.CAMERA, Permissions.AUDIO_RECORDING);
-    setTimeout(() => {
-      this.setState({loading: false});
-    }, 15000);
-    activateKeepAwake();
+    if (Platform.OS !== "ios") {
+      await Permissions.askAsync(
+        Permissions.CAMERA,
+        Permissions.AUDIO_RECORDING
+      );
+      setTimeout(() => {
+        this.setState({loading: false});
+      }, 15000);
+      activateKeepAwake();
+    }
   }
 
   componentWillUnmount() {
@@ -82,18 +93,25 @@ export default class LiveClass extends React.Component {
     return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
   };
 
-  openAppIfNeeded = (studioNumber, name) => {
+  openAppIfNeeded = async (studioNumber, name) => {
     const meetingId =
       studioNumber === 1
         ? this.props.userData.studio1ID
         : this.props.userData.studio2ID;
-    const link = `zoomus://zoom.us/join?confno=${meetingId}&pwd=Gala2020&zc=0&browser=safari&uname=${name}`;
     if (Platform.OS === "ios") {
-      Linking.openURL(link);
+      const link = `zoomus://zoom.us/join?confno=${meetingId}&pwd=Gala2020&zc=0&browser=safari&uname=${name}`;
+      try {
+        this.props.navigation.navigate(Screens.Home);
+        await Linking.openURL(link);
+      } catch (e) {
+        Alert.alert("Por favor descargue la app Zoom");
+      }
+    } else if (Platform.OS === "web") {
       this.props.navigation.navigate(Screens.Home);
-    } else if (Platform.OS === "web" && detect.os === "OS") {
-      this.props.navigation.navigate(Screens.Home);
-      window.open(link, "_blank");
+      window.open(
+        `zoom.us/j/${meetingId}?pwd=WWlJNnAwUFdYTmhVbGhOSXArc2NaZz09`,
+        "_blank"
+      );
     }
   };
 
