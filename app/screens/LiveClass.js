@@ -41,17 +41,12 @@ export default class LiveClass extends React.Component {
     setTimeout(function () {
       var startAudioButton = document.getElementById('pc-join');
       var startFSButton = document.getElementsByClassName('full-screen-widget ax-outline')[0];
-      startFSButton.click();
+      if(startFSButton.attributes["aria-label"].value.includes('Enter')){
+        startFSButton.click();
+      }
       startAudioButton.click();
     }, 15000);
-    setTimeout(function() {
-      var postMessage = window.parent.postMessage;
-      if(window.ReactNativeWebView) {
-        postMessage = window.ReactNativeWebView.postMessage;
-      }
-      postMessage(JSON.stringify(error));
-    }, 1000)
-      true;
+    true;
   `;
 
   async componentDidMount() {
