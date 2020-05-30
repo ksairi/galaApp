@@ -34,6 +34,7 @@ export const Urls = {
   PROFILE_PICTURES: `${SERVER_HOSTNAME_2}profile_pictures/`,
   SYNCH_MEMBER_PROPERTIES: `${SERVER_HOSTNAME_2}synchMemberProperties.php`,
   GET_RECORDED_CLASES: `${SERVER_HOSTNAME_2}getRecordedClasses.php`,
+  GET_MEETING_ID: `${SERVER_HOSTNAME_2}getMeetingId.php`,
 };
 
 export const Messages = {

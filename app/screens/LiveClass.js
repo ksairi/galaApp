@@ -13,6 +13,7 @@ import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
 import {Screens, AnalitycsEventsLabels} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
+import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
 import {Ionicons} from "@expo/vector-icons";
 import {genericBackgroundColor} from "components/styles";
@@ -92,12 +93,11 @@ export default class LiveClass extends React.Component {
     return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
   };
 
+  getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
+
   openAppIfNeeded = async (studioNumber, name) => {
-    const meetingId =
-      studioNumber === 1
-        ? this.props.userData.studio1ID
-        : this.props.userData.studio2ID;
     if (Platform.OS === "ios") {
+      const {meetingId} = await this.getMeetingId(studioNumber);
       const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
       try {
         this.props.navigation.navigate(Screens.Home);
@@ -105,7 +105,9 @@ export default class LiveClass extends React.Component {
       } catch (e) {
         Alert.alert("Por favor descargue la app Zoom");
       }
-    } else if (Platform.OS === "web") {
+    }
+    if (Platform.OS === "web") {
+      const {meetingId} = await this.getMeetingId(studioNumber);
       this.props.navigation.navigate(Screens.Home);
       window.open(`https://zoom.us/j/${meetingId}`, "_blank");
     }
@@ -164,7 +166,6 @@ export default class LiveClass extends React.Component {
             injectedJavaScript={this.injectedJs}
             mediaPlaybackRequiresUserAction={false}
           />
-          )
         </RootWrapper>
       </>
     );

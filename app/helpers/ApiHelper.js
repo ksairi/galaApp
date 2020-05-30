@@ -266,3 +266,13 @@ export const synchMemberProperties = (params) => {
       throw error;
     });
 };
+
+export const getMeetingId = (params) => {
+  return connectToServer(Urls.GET_MEETING_ID, params)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+};
