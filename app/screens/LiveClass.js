@@ -8,7 +8,6 @@ import {
   Alert,
 } from "react-native";
 import {WebView} from "react-native-webview";
-import {WebView as WebViewWeb} from "react-native-web-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
@@ -155,28 +154,17 @@ export default class LiveClass extends React.Component {
           >
             {title}
           </Text>
-          {Platform.OS !== "web" ? (
-            <WebView
-              style={{marginTop: 10}}
-              source={{
-                uri,
-              }}
-              onMessage={this.onMessage}
-              onNavigationStateChange={this.onNavigationStateChange}
-              injectedJavaScript={this.injectedJs}
-              mediaPlaybackRequiresUserAction={false}
-            />
-          ) : (
-            <WebViewWeb
-              style={{marginTop: 10}}
-              source={{
-                uri,
-              }}
-              onMessage={this.onMessage}
-              injectedJavaScript={this.injectedJs}
-              mediaPlaybackRequiresUserAction={false}
-            />
-          )}
+          <WebView
+            style={{marginTop: 10}}
+            source={{
+              uri,
+            }}
+            onMessage={this.onMessage}
+            onNavigationStateChange={this.onNavigationStateChange}
+            injectedJavaScript={this.injectedJs}
+            mediaPlaybackRequiresUserAction={false}
+          />
+          )
         </RootWrapper>
       </>
     );
