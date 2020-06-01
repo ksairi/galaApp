@@ -1,12 +1,12 @@
 // eslint-disable-next-line import/no-unresolved
 const editJsonFile = require("edit-json-file");
 
-const STAGING_APP_VERSION = "1.0";
-const STAGING_APP_ANDROID_VERSION_CODE = 1;
-const STAGING_APP_IOS_BUILD_NUMBER = "1";
-const PROD_APP_VERSION = "1.0";
-const PROD_APP_ANDROID_VERSION_CODE = 10;
-const PROD_APP_IOS_BUILD_NUMBER = "6";
+const STAGING_APP_VERSION = "1.1";
+const STAGING_APP_ANDROID_VERSION_CODE = 2;
+const STAGING_APP_IOS_BUILD_NUMBER = "2";
+const PROD_APP_VERSION = "1.1";
+const PROD_APP_ANDROID_VERSION_CODE = 11;
+const PROD_APP_IOS_BUILD_NUMBER = "7";
 
 const stagingDeployData = {
   name: "Gala Staging",

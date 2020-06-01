@@ -52,6 +52,8 @@ const styles = {
   userId: state.userData.userId,
 }))
 export default class ResetPassword extends React.Component {
+  static isKeyboardShowing = false;
+
   static navigationOptions = ({navigation}) => ({
     header: <Header navigation={navigation} backScreen={Screens.SignIn} />,
   });
@@ -102,12 +104,14 @@ export default class ResetPassword extends React.Component {
   }
 
   _keyboardDidShow = () => {
+    ResetPassword.isKeyboardShowing = true;
     this.setState({
       componentsStyle: styles.showingKeyboardComponentsStyle,
     });
   };
 
   _keyboardDidHide = () => {
+    ResetPassword.isKeyboardShowing = false;
     this.setState({componentsStyle: styles.hiddenKeyboardComponentsStyle});
   };
 
@@ -131,7 +135,9 @@ export default class ResetPassword extends React.Component {
   };
 
   hideKeyboard = () => {
-    Keyboard.dismiss();
+    if (ResetPassword.isKeyboardShowing) {
+      Keyboard.dismiss();
+    }
   };
 
   render() {

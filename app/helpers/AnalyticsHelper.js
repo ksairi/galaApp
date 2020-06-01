@@ -1,10 +1,11 @@
 import {Analytics, Event, PageHit} from "expo-analytics";
 import Constants from "expo-constants";
+import {Platform} from "react-native";
 
 export default class AnalyticsHelper {
   static isProd = () => {
     const {slug} = Constants.manifest;
-    return !__DEV__ && slug === "galaApp";
+    return !__DEV__ && (slug === "galaApp" || Platform.OS === "web");
   };
 
   static analytics = new Analytics("UA-16373281-15", {

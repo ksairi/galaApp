@@ -2,9 +2,10 @@
   "expo": {
     "name": "Gala Staging",
     "description": "Mobile App for Gala Fitness Center",
+    "owner": "ksairi",
     "slug": "galaAppStaging",
     "privacy": "public",
-    "version": "1.0",
+    "version": "1.1",
     "githubUrl": "https://github.com/ksairi/galaApp",
     "primaryColor": "#0b1143",
     "scheme": "galaapp",
@@ -22,13 +23,14 @@
     ],
     "android": {
       "package": "com.gala.galaapp.staging",
-      "versionCode": 1,
+      "versionCode": 2,
       "googleServicesFile": "google-services-staging.json",
       "playStoreUrl": "https://play.google.com/",
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
+        "WRITE_EXTERNAL_STORAGE",
+        "RECORD_AUDIO"
       ],
       "config": {
         "fabric": {
@@ -39,11 +41,15 @@
     },
     "ios": {
       "bundleIdentifier": "com.gala.galaapp.staging",
-      "buildNumber": "1",
+      "buildNumber": "2",
       "supportsTablet": true,
       "isTabletOnly": false,
       "infoPlist": {
-        "NSCameraUsageDescription": "Permite el accesso para poder sacar una foto de perfil"
+        "NSCameraUsageDescription": "Permite el accesso para poder sacar una foto de perfil",
+        "NSMicrophoneUsageDescription": "Permite el acceso para poder usar el micrfono en la app de Zoom",
+        "LSApplicationQueriesSchemes": [
+          "zoomus"
+        ]
       },
       "associatedDomains": [
         "applinks:y0by.app.link"

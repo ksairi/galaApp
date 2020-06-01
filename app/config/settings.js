@@ -1,11 +1,9 @@
+import {Platform, Linking} from "react-native";
 import {FontAwesome, Foundation} from "@expo/vector-icons";
 import Constants from "expo-constants";
-import {DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2} from "./devHosts";
+import {DEV_SERVER_HOSTNAME_2} from "./devHosts";
 
-const SERVER_HOSTNAME_1 = __DEV__
-  ? DEV_SERVER_HOSTNAME_1
-  : "http://galagym.sytes.net:1082/";
-
+const API_ROOT = "/api/";
 const getEnvironment = () => {
   const {slug} = Constants.manifest;
   return slug === "galaAppStaging"
@@ -13,18 +11,19 @@ const getEnvironment = () => {
     : "https://galagym.com";
 };
 
-const SERVER_HOSTNAME_2 = `${
-  __DEV__ ? DEV_SERVER_HOSTNAME_2 : getEnvironment()
-}/api/`;
+const SERVER_HOSTNAME_2 =
+  Platform.OS === "web"
+    ? API_ROOT
+    : `${
+        __DEV__ ? DEV_SERVER_HOSTNAME_2 + API_ROOT : getEnvironment() + API_ROOT
+      }`;
 
 export const Urls = {
-  LOGIN: `${SERVER_HOSTNAME_1}login`,
-  REGISTER: `${SERVER_HOSTNAME_1}register`,
-  RESET_PASSWORD: `${SERVER_HOSTNAME_1}resetPassword`,
+  LOGIN: `${SERVER_HOSTNAME_2}login.php`,
+  REGISTER: `${SERVER_HOSTNAME_2}register.php`,
+  RESET_PASSWORD: `${SERVER_HOSTNAME_2}resetPassword.php`,
   SEND_REFERRAL: `${SERVER_HOSTNAME_2}sendReferral.php`,
-  SEND_CLIENT_TOKEN: `${SERVER_HOSTNAME_1}sendClientToken`,
-  SYN_LOCAL_STORAGE: `${SERVER_HOSTNAME_1}syncLocalStorage`,
-  FETCH_USER_DATA: `${SERVER_HOSTNAME_1}fetchUserData`,
+  FETCH_USER_DATA: `${SERVER_HOSTNAME_2}fetchUserData`,
   FETCH_DYNAMIC_DATA: `${SERVER_HOSTNAME_2}fetchDynamicData.php`,
   SET_CONTENT_SAVED: `${SERVER_HOSTNAME_2}setContentSaved.php`,
   SEND_MESSAGES: `${SERVER_HOSTNAME_2}sendMessages.php`,
@@ -35,6 +34,7 @@ export const Urls = {
   PROFILE_PICTURES: `${SERVER_HOSTNAME_2}profile_pictures/`,
   SYNCH_MEMBER_PROPERTIES: `${SERVER_HOSTNAME_2}synchMemberProperties.php`,
   GET_RECORDED_CLASES: `${SERVER_HOSTNAME_2}getRecordedClasses.php`,
+  GET_MEETING_ID: `${SERVER_HOSTNAME_2}getMeetingId.php`,
 };
 
 export const Messages = {
@@ -88,9 +88,11 @@ export const Screens = {
   VideoPlayer: "VideoPlayer",
   LiveClassStudio1: "LiveClassStudio1",
   LiveClassStudio2: "LiveClassStudio2",
+  LiveClassStudio3: "LiveClassStudio3",
   RecordedClassesByClass: "RecordedClassesByClass",
   RecordedClassesByDate: "RecordedClassesByDate",
   RecordedClassesByTime: "RecordedClassesByTime",
+  SuggestAppDownload: "SuggestAppDownload",
 };
 
 export const SignUpConstraints = {
@@ -135,6 +137,7 @@ export const ActionsTypes = {
   SET_HAS_RESET_FIRST_PASSWORD: "SET_HAS_RESET_FIRST_PASSWORD",
   SET_IN_RESET_FIRT_PASSWORD_MODE: "SET_IN_RESET_FIRT_PASSWORD_MODE",
   SET_IS_SAVING_NOTIFICATIONS_DATA: "SET_IS_SAVING_NOTIFICATIONS_DATA",
+  SET_LAST_TIME_SUGGESTED_DOWNLOAD: "SET_LAST_TIME_SUGGESTED_DOWNLOAD",
 
   // Navigation
   SET_CURRENT_HOME_DRAWER_OPTION: "SET_CURRENT_HOME_DRAWER_OPTION",
@@ -162,17 +165,28 @@ const liveClassProps = {
   homeStyle: {fontSize: 40, color: "white"},
 };
 
+const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
+
 export const SectionsData = [
   {
     label: "VIVO ESTUDIO 1",
-    params: {studio: "studio1", title: "ESTUDIO 1"},
+    params: {studioNumber: 1, title: "ESTUDIO 1"},
     screen: Screens.LiveClassStudio1,
     ...liveClassProps,
   },
   {
     label: "VIVO ESTUDIO 2",
-    params: {studio: "studio2", title: "ESTUDIO 2"},
+    params: {studioNumber: 2, title: "ESTUDIO 2"},
     screen: Screens.LiveClassStudio2,
+    ...liveClassProps,
+  },
+  {
+    label: "VIVO ESTUDIO 3",
+    screen: Screens.LiveClassStudio3,
+    onPress: () =>
+      Platform.OS === "web"
+        ? window.open(studio3Url, "_blank")
+        : Linking.openURL(studio3Url),
     ...liveClassProps,
   },
   {
@@ -269,7 +283,10 @@ export const SectionsData = [
     icon: "referrals",
     label: "REFERIDOS",
     screen: Screens.Referrals,
-    drawerStyle: {label: {marginTop: 5}, arrow: {marginTop: 13}},
+    drawerStyle: {
+      label: {marginTop: 5},
+      arrow: {marginTop: 13},
+    },
     homeStyle: {fontSize: 40, color: "white"},
   },
 ];

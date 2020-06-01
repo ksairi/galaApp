@@ -32,3 +32,7 @@
 - **Create Key and save it as .json extension**
 
 - **Save it and provide the path when asked during deployment**
+
+### web app
+
+- **To start web app for dev, define where dev server is running with env variable DEV_HOST. e.g** `DEV_HOST="http://galaweb:3001" yarn web`

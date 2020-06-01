@@ -1,5 +1,13 @@
+/* eslint-disable no-alert */
 import React from "react";
-import {View, Text, TouchableOpacity, Switch, Alert} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Switch,
+  Alert,
+  Platform,
+} from "react-native";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import GScrollView from "components/presentationals/GenericScrollView";
@@ -30,23 +38,30 @@ const styles = {
 }))
 export default class Settings extends React.Component {
   logout = () => {
-    Alert.alert(
-      "",
-      "¿Cerrar sesión?",
-      [
-        {text: "No", style: "cancel"},
-        {
-          text: "Sí",
-          onPress: () => {
-            AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
+    if (Platform.OS !== "web") {
+      Alert.alert(
+        "",
+        "¿Cerrar sesión?",
+        [
+          {text: "No", style: "cancel"},
+          {
+            text: "Sí",
+            onPress: () => {
+              AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
 
-            this.props.navigation.navigate(Screens.LoginStack);
-            this.props.dispatch(ActionsCreators.logout());
+              this.props.navigation.navigate(Screens.LoginStack);
+              this.props.dispatch(ActionsCreators.logout());
+            },
           },
-        },
-      ],
-      {cancelable: true}
-    );
+        ],
+        {cancelable: true}
+      );
+      // eslint-disable-next-line no-restricted-globals
+    } else if (confirm("¿Cerrar sesión?")) {
+      AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
+      this.props.navigation.navigate(Screens.LoginStack);
+      this.props.dispatch(ActionsCreators.logout());
+    }
   };
 
   componentDidMount() {

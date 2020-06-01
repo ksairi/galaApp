@@ -1,8 +1,8 @@
 import React from "react";
-import {View, Dimensions} from "react-native";
+import {View} from "react-native";
 import GScrollView from "components/presentationals/GenericScrollView";
 import {connect} from "react-redux";
-import Carousel from "react-native-carousel-control-fork";
+import Swiper from "react-native-web-swiper";
 import RootWrapper from "components/presentationals/RootWrapper";
 import GenericText from "components/presentationals/GenericText";
 import * as Animatable from "react-native-animatable-promise";
@@ -11,8 +11,8 @@ import {Screens} from "config/settings";
 
 const styles = {
   timetableDay: {
-    flex: 1,
     backgroundColor: "#12194d",
+    flex: -1,
   },
   day: {
     fontFamily: "brother-1816-bold",
@@ -66,48 +66,22 @@ const timetableDaysMetadata = [
   },
 ];
 
-const carouselOffset = 10;
-
-const AnimatedCarousel = Animatable.createAnimatableComponent(Carousel);
+const AnimatedCarousel = Animatable.createAnimatableComponent(Swiper);
 
 @connect((state) => ({
   timetable: state.timetable,
   orientation: state.currentOrientation,
 }))
-export default class TimeTbale extends React.Component {
-  state = {
-    portraitWidth: Dimensions.get("window").width,
-  };
-
+export default class TimeTable extends React.Component {
   static currentIndex = null;
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.orientation) {
-      if (nextProps.orientation === "landscape") {
-        return {
-          portraitWidth: Dimensions.get("window").height,
-          sneak: 50,
-        };
-      }
-      return {
-        portraitWidth: Dimensions.get("window").width,
-        sneak: 6,
-      };
-    }
-    return prevState;
-  }
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.Timetable);
   }
 
-  componentWillUnmount() {
-    Carousel.currentIndex = null;
-  }
-
   getCurrentIndex = () => {
-    if (Carousel.currentIndex != null) {
-      return Carousel.currentIndex;
+    if (TimeTable.currentIndex != null) {
+      return TimeTable.currentIndex;
     }
     // inital index
     const today = new Date().getDay();
@@ -117,81 +91,74 @@ export default class TimeTbale extends React.Component {
     return today - 1;
   };
 
-  onPageChange = (position) => {
-    Carousel.currentIndex = position;
-  };
-
   getTimeTable = () => {
     const showSunday = this.props.timetable[6].data.find((row) => row);
     if (!showSunday) {
       timetableDaysMetadata.length--;
     }
     return timetableDaysMetadata.map((dayMetadata, index) => (
-      <View key={index} style={styles.timetableDay}>
-        <View
-          style={{
-            paddingLeft: 15,
-            paddingRight: 15,
-          }}
-        >
-          <GenericText style={styles.day}>{dayMetadata.day}</GenericText>
+      <GScrollView>
+        <View key={index} style={styles.timetableDay}>
+          <View
+            style={{
+              paddingLeft: 15,
+              paddingRight: 15,
+            }}
+          >
+            <GenericText style={styles.day}>{dayMetadata.day}</GenericText>
 
-          <View>
-            <GenericText style={styles.dayMessage}>
-              {this.props.timetable[index].message}
-            </GenericText>
-            {this.props.timetable[index].data.map((timetableData, index) => (
-              <View
-                key={index}
-                style={{
-                  flex: 1,
-                  flexDirection: "row",
-                  paddingBottom: 10,
-                }}
-              >
-                <GenericText style={styles.className}>
-                  {timetableData.class}
-                </GenericText>
-                <GenericText style={styles.classTime}>
-                  {timetableData.time}
-                </GenericText>
-              </View>
-            ))}
+            <View>
+              <GenericText style={styles.dayMessage}>
+                {this.props.timetable[index].message}
+              </GenericText>
+              {this.props.timetable[index].data.map((timetableData, index) => (
+                <View
+                  key={index}
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    paddingBottom: 10,
+                  }}
+                >
+                  <GenericText style={styles.className}>
+                    {timetableData.saloon} {" - "} {timetableData.class}
+                  </GenericText>
+                  <GenericText style={styles.classTime}>
+                    {timetableData.time}
+                  </GenericText>
+                </View>
+              ))}
+            </View>
           </View>
         </View>
-      </View>
+      </GScrollView>
     ));
   };
 
   render() {
     return (
-      <GScrollView>
-        <RootWrapper
-          style={{
-            padding: 0,
+      <RootWrapper
+        style={{
+          padding: 0,
+        }}
+      >
+        <AnimatedCarousel
+          useNativeDriver
+          animation="zoomIn"
+          from={this.getCurrentIndex()}
+          controlsProps={{
+            prevPos: "top-left",
+            nextPos: "top-right",
+            prevTitle: "<",
+            nextTitle: ">",
+            nextTitleStyle: {color: "white", fontSize: 24, fontWeight: "500"},
+            prevTitleStyle: {color: "white", fontSize: 24, fontWeight: "500"},
+            DotComponent: () => null,
           }}
         >
-          <AnimatedCarousel
-            useNativeDriver
-            animation="zoomIn"
-            style={{backgroundColor: "black", paddingLeft: 5}}
-            pageStyle={{
-              paddingLeft: 0,
-              paddingRight: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 20,
-            }}
-            pageWidth={this.state.portraitWidth - carouselOffset}
-            sneak={this.state.sneak}
-            currentPage={this.getCurrentIndex()}
-            swipeThreshold={0.1}
-            onPageChange={this.onPageChange}
-          >
-            {this.getTimeTable()}
-          </AnimatedCarousel>
-        </RootWrapper>
-      </GScrollView>
+          {this.getTimeTable()}
+        </AnimatedCarousel>
+      </RootWrapper>
     );
   }
 }
