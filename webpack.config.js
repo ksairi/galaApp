@@ -13,22 +13,5 @@ module.exports = async (env, argv) => {
   } else {
     config.output.publicPath = "/app/";
   }
-  // config.resolve.alias = {
-  //   ...config.resolve.alias,
-  //   "react-native-webview": "react-native-web-webview",
-  // };
-
-  config.module.rules = [
-    ...config.module.rules,
-    {
-      test: /postMock.html$/,
-      use: {
-        loader: "file-loader",
-        options: {
-          name: "[name].[ext]",
-        },
-      },
-    },
-  ];
   return config;
 };
