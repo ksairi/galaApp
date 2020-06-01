@@ -11,7 +11,7 @@ import {WebView} from "react-native-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
-import {Screens, AnalitycsEventsLabels} from "config/settings";
+import {Screens, AnalitycsEventsLabels, Messages} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
@@ -91,20 +91,30 @@ export default class LiveClass extends React.Component {
   getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
 
   openAppIfNeeded = async (studioNumber, name) => {
-    if (Platform.OS === "ios") {
-      const {meetingId} = await this.getMeetingId(studioNumber);
-      const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
-      try {
-        this.props.navigation.navigate(Screens.Home);
-        await Linking.openURL(link);
-      } catch (e) {
-        Alert.alert("Por favor descargue la app Zoom");
+    try {
+      if (Platform.OS === "ios") {
+        const {meetingId} = await this.getMeetingId(studioNumber);
+        const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
+        try {
+          this.props.navigation.navigate(Screens.Home);
+          await Linking.openURL(link);
+        } catch (e) {
+          Alert.alert("Por favor descargue la app Zoom");
+        }
       }
-    }
-    if (Platform.OS === "web") {
-      const {meetingId} = await this.getMeetingId(studioNumber);
+      if (Platform.OS === "web") {
+        const {meetingId} = await this.getMeetingId(studioNumber);
+        this.props.navigation.navigate(Screens.Home);
+        window.open(`https://zoom.us/j/${meetingId}`, "_blank");
+      }
+    } catch (e) {
+      if (Platform.OS === "web") {
+        // eslint-disable-next-line no-alert
+        alert(Messages.SERVER_ERROR);
+      } else {
+        Alert.alert(Messages.SERVER_ERROR);
+      }
       this.props.navigation.navigate(Screens.Home);
-      window.open(`https://zoom.us/j/${meetingId}`, "_blank");
     }
   };
 
