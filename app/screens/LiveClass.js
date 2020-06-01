@@ -19,6 +19,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {genericBackgroundColor} from "components/styles";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
+import {detect} from "detect-browser";
 
 const styles = {
   title: {
@@ -36,6 +37,18 @@ export default class LiveClass extends React.Component {
   state = {
     loading: true,
   };
+
+  getHost = () => {
+    const {slug} = Constants.manifest;
+    return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
+  };
+
+  constructor(props) {
+    super(props);
+    const {studioNumber} = props.navigation.state.params;
+    const name = props.userData && props.userData.name;
+    this.uri = `https://${this.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
+  }
 
   injectedJs = `
     setTimeout(function () {
@@ -83,15 +96,12 @@ export default class LiveClass extends React.Component {
     }
   };
 
-  getHost = () => {
-    const {slug} = Constants.manifest;
-    return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
-  };
-
   getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
 
-  openAppIfNeeded = async (studioNumber, name) => {
+  openAppIfNeeded = async () => {
     try {
+      const name = this.props.userData && this.props.userData.name;
+      const {studioNumber} = this.props.navigation.state.params;
       if (Platform.OS === "ios") {
         const {meetingId} = await this.getMeetingId(studioNumber);
         const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
@@ -103,9 +113,14 @@ export default class LiveClass extends React.Component {
         }
       }
       if (Platform.OS === "web") {
-        const {meetingId} = await this.getMeetingId(studioNumber);
+        const browser = detect().name;
         this.props.navigation.navigate(Screens.Home);
-        window.open(`https://zoom.us/j/${meetingId}`, "_blank");
+        if (browser === "chrome" || browser === "edge") {
+          window.open(this.uri, "_blank");
+        } else {
+          const {meetingId} = await this.getMeetingId(studioNumber);
+          window.open(`https://zoom.us/j/${meetingId}`, "_blank");
+        }
       }
     } catch (e) {
       if (Platform.OS === "web") {
@@ -119,10 +134,8 @@ export default class LiveClass extends React.Component {
   };
 
   render() {
-    const name = this.props.userData && this.props.userData.name;
-    const {studioNumber, title} = this.props.navigation.state.params;
-    this.openAppIfNeeded(studioNumber, name);
-    const uri = `https://${this.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
+    const {title} = this.props.navigation.state.params;
+    this.openAppIfNeeded();
 
     return (
       <>
@@ -164,7 +177,7 @@ export default class LiveClass extends React.Component {
           <WebView
             style={{marginTop: 10}}
             source={{
-              uri,
+              uri: this.uri,
             }}
             onMessage={this.onMessage}
             onNavigationStateChange={this.onNavigationStateChange}
