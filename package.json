@@ -38,7 +38,8 @@
     "publish:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo publish --release-channel staging",
     "deploy:ios:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:ios --release-channel staging && expo upload:ios",
     "deploy:android:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:android -t app-bundle --release-channel staging && expo upload:android",
-    "build:web": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'"
+    "build:web:staging": "node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
+    "build:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'"
   },
   "jest": {
     "preset": "jest-expo"
