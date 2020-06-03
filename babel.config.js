@@ -10,7 +10,6 @@ module.exports = (api) => {
           extensions: [".js", ".ios.js", ".android.js"],
         },
       ],
-      ["@babel/plugin-syntax-class-properties"],
     ],
   };
 };
