@@ -4,6 +4,5 @@ import * as FileSystem from "expo-file-system";
 
 export default createIconSetFromIcoMoon(icomoonConfig);
 
-export const getProfilePicturePath = () => {
-  return `${FileSystem.documentDirectory}${Date.now()}-profilePic.jpg`;
-};
+export const getProfilePicturePath = () =>
+  `${FileSystem.documentDirectory}${Date.now()}-profilePic.jpg`;

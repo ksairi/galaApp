@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, Alert, View} from "react-native";
-import * as ApiHelper from "helpers/ApiHelper";
-import LoadingSpinner from "components/presentationals/LoadingSpinner";
-import RootWrapper from "components/presentationals/RootWrapper";
-import {Screens, AnalitycsEventsLabels} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
+import LoadingSpinner from "components/presentationals/LoadingSpinner";
+import RootWrapper from "components/presentationals/RootWrapper";
+import {AnalitycsEventsLabels, Screens} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
+import * as ApiHelper from "helpers/ApiHelper";
+import React, {useEffect, useState} from "react";
+import {Alert, FlatList, Text, TouchableOpacity, View} from "react-native";
 
 const styles = {
   item: {
     padding: 10,
-    alignSelf: "center",
   },
   name: {
     color: "white",
@@ -27,8 +26,8 @@ export default ({navigation}) => {
       AnalyticsHelper.setEvent(AnalitycsEventsLabels.recordedClasses);
       try {
         setLoading(true);
-        const recordings = await ApiHelper.getRecordedClasses();
-        setRecordings(recordings);
+        const remoteRecordings = await ApiHelper.getRecordedClasses();
+        setRecordings(remoteRecordings);
         setLoading(false);
       } catch (e) {
         Alert.alert("", e, [
@@ -66,6 +65,7 @@ export default ({navigation}) => {
   recordings.forEach(({name}) => {
     const searchedClassName = name.substring(0, name.indexOf("-")).trim();
     const classesByName = recordings.filter(
+      // tslint:disable-next-line: no-shadowed-variable
       ({name}) =>
         name.substring(0, name.indexOf("-")).trim() === searchedClassName.trim()
     );

@@ -143,20 +143,16 @@ export const saveDataToDevice = (
       if (dataItem.imageUrl) {
         dispatch(ActionsCreators.setIsDownloadingRemoteImages(true));
         return FileSystem.downloadAsync(encodeURI(dataItem.imageUrl), fileUri)
-          .then(({uri}) => {
-            return {
-              ...dataItem,
-              uri,
-            };
-          })
+          .then(({uri}) => ({
+            ...dataItem,
+            uri,
+          }))
           .catch(() => {
             throw Messages.NO_SPACE_IN_DISK;
           });
       }
       return FileSystem.deleteAsync(fileUri, {idempotent: false})
-        .then(() => {
-          return dataItem;
-        })
+        .then(() => dataItem)
         .catch(() => {});
     });
     return Promise.all(newDataPromises)

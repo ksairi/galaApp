@@ -97,8 +97,8 @@ export default class TimeTable extends React.Component {
       timetableDaysMetadata.length--;
     }
     return timetableDaysMetadata.map((dayMetadata, index) => (
-      <GScrollView>
-        <View key={index} style={styles.timetableDay}>
+      <GScrollView key={index}>
+        <View style={styles.timetableDay}>
           <View
             style={{
               paddingLeft: 15,

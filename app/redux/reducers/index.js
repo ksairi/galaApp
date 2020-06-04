@@ -21,6 +21,7 @@ const rootPresistConfig = {
 };
 
 const rootReducer = combineReducers(
+  // eslint-disable-next-line no-import-assign
   Object.assign(
     notificationsReducer,
     routinesReducer,

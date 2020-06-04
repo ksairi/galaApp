@@ -29,12 +29,8 @@ export const uploadProfilePicture = (dispatch, profilePicture) => {
 export const getRemoteProfilePicture = (userId) => {
   const fileUri = getProfilePicturePath();
   return FileSystem.downloadAsync(Urls.PROFILE_PICTURES + userId, fileUri)
-    .then(({uri, status}) => {
-      return status === 200 ? uri : null;
-    })
-    .catch(() => {
-      return null;
-    });
+    .then(({uri, status}) => (status === 200 ? uri : null))
+    .catch(() => null);
 };
 
 export const synchMemberProperties = (dispatch, {userId, data}) => {

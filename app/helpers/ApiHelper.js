@@ -56,14 +56,13 @@ const connectToServer = (
   parameters,
   contentType = CONTENT_TYPE_JSON,
   timeout = 10000
-) => {
-  return Promise.race([
+) =>
+  Promise.race([
     timeoutFetch(url, parameters, contentType),
     new Promise((resolve, reject) =>
       setTimeout(() => reject(Messages.SERVER_ERROR), timeout)
     ),
   ]);
-};
 
 export const login = (userId, password, deviceId, cache) => {
   const loginParamters = {};
@@ -72,16 +71,17 @@ export const login = (userId, password, deviceId, cache) => {
   loginParamters.password = password;
   loginParamters.notificationsToken = deviceId;
   return connectToServer(Urls.LOGIN, loginParamters)
-    .then((response) => {
-      return response;
-    })
+    .then((response) => response)
     .catch((error) => {
       // in case that login server fails (which could) catch that and use cache
-      if (error === Messages.SERVER_ERROR)
-        if (cache.data.userData.name) {
-          return cache;
+      if (error === Messages.SERVER_ERROR) {
+        {
+          if (cache.data.userData.name) {
+            return cache;
+          }
         }
-      throw error;
+        throw error;
+      }
     });
 };
 
@@ -93,9 +93,7 @@ export const register = (fullName, userId, password, deviceId) => {
   registerParamters.password = password;
   registerParamters.notificationsToken = deviceId;
   return connectToServer(Urls.REGISTER, registerParamters)
-    .then((response) => {
-      return response;
-    })
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
@@ -106,9 +104,7 @@ export const resetPassword = (userId, password) => {
   resetPasswordParameters.userId = userId;
   resetPasswordParameters.password = password;
   return connectToServer(Urls.RESET_PASSWORD, resetPasswordParameters)
-    .then((response) => {
-      return response;
-    })
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
@@ -119,9 +115,7 @@ export const sendReferral = (userId, mail) => {
   sendReferralParameters.userId = userId;
   sendReferralParameters.mail = mail;
   return connectToServer(Urls.SEND_REFERRAL, sendReferralParameters)
-    .then((response) => {
-      return response;
-    })
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
@@ -137,9 +131,7 @@ export const syncLocalStorage = (
   syncLocalStorageParameters.receivedNotificationsKeys = receivedNotificationsKeys;
   syncLocalStorageParameters.readNotificationsKeys = readNotificationsKeys;
   return connectToServer(Urls.SYN_LOCAL_STORAGE, syncLocalStorageParameters)
-    .then((response) => {
-      return response;
-    })
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
@@ -150,129 +142,85 @@ export const fetchUserData = (userId) => {
 
   fetchUserDataParameters.userId = userId;
   return connectToServer(Urls.FETCH_USER_DATA, fetchUserDataParameters)
-    .then((response) => {
-      return response;
-    })
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
 };
 
-export const fetchDynamicData = (params) => {
-  return connectToServer(
-    Urls.FETCH_DYNAMIC_DATA,
-    params,
-    CONTENT_TYPE_JSON,
-    15000
-  )
-    .then((response) => {
-      return response;
-    })
+export const fetchDynamicData = (params) =>
+  connectToServer(Urls.FETCH_DYNAMIC_DATA, params, CONTENT_TYPE_JSON, 15000)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};
 
-export const setContentSaved = (params) => {
-  return connectToServer(Urls.SET_CONTENT_SAVED, params)
-    .then((response) => {
-      return response;
-    })
+export const setContentSaved = (params) =>
+  connectToServer(Urls.SET_CONTENT_SAVED, params)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};
 
-export const setNotifiedPromotionsSaved = (params) => {
-  return connectToServer(Urls.SET_NOTIFIED_PROMOTIONS_SAVED, params)
-    .then((response) => {
-      return response;
-    })
+export const setNotifiedPromotionsSaved = (params) =>
+  connectToServer(Urls.SET_NOTIFIED_PROMOTIONS_SAVED, params)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};
 
-export const setNotifiedMessagesSaved = (params) => {
-  return connectToServer(Urls.SET_NOTIFIED_MESSAGES_SAVED, params)
-    .then((response) => {
-      return response;
-    })
+export const setNotifiedMessagesSaved = (params) =>
+  connectToServer(Urls.SET_NOTIFIED_MESSAGES_SAVED, params)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};
 
-export const sendMessages = (params) => {
-  return connectToServer(Urls.SEND_MESSAGES, params)
-    .then((response) => {
-      return response.messages;
-    })
+export const sendMessages = (params) =>
+  connectToServer(Urls.SEND_MESSAGES, params)
+    .then((response) => response.messages)
     .catch((error) => {
       throw error;
     });
-};
 
-export const getRealTimeMessages = (params) => {
-  return connectToServer(Urls.GET_REAL_TIME_MESSAGES, params)
-    .then((response) => {
-      return response.messages;
-    })
+export const getRealTimeMessages = (params) =>
+  connectToServer(Urls.GET_REAL_TIME_MESSAGES, params)
+    .then((response) => response.messages)
     .catch((error) => {
       throw error;
     });
-};
 
-export const getRecordedClasses = () => {
-  return connectToServer(Urls.GET_RECORDED_CLASES)
-    .then((response) => {
-      return response.recordings;
-    })
+export const getRecordedClasses = () =>
+  connectToServer(Urls.GET_RECORDED_CLASES)
+    .then((response) => response.recordings)
     .catch((error) => {
       throw error;
     });
-};
 
-export const setRealTimeMessagesSaved = (params) => {
-  return connectToServer(Urls.SET_REAL_TIME_MESSAGES_SAVED, params)
-    .then((response) => {
-      return response.messages;
-    })
+export const setRealTimeMessagesSaved = (params) =>
+  connectToServer(Urls.SET_REAL_TIME_MESSAGES_SAVED, params)
+    .then((response) => response.messages)
     .catch((error) => {
       throw error;
     });
-};
 
-export const uploadProfilePicture = (params) => {
-  return connectToServer(
-    Urls.UPLOAD_PROFILE_PICTURE,
-    params,
-    CONTENT_TYPE_MULTI_PART
-  )
-    .then((response) => {
-      return response;
-    })
+export const uploadProfilePicture = (params) =>
+  connectToServer(Urls.UPLOAD_PROFILE_PICTURE, params, CONTENT_TYPE_MULTI_PART)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};
 
-export const synchMemberProperties = (params) => {
-  return connectToServer(Urls.SYNCH_MEMBER_PROPERTIES, params)
-    .then((response) => {
-      return response;
-    })
+export const synchMemberProperties = (params) =>
+  connectToServer(Urls.SYNCH_MEMBER_PROPERTIES, params)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};
 
-export const getMeetingId = (params) => {
-  return connectToServer(Urls.GET_MEETING_ID, params)
-    .then((response) => {
-      return response;
-    })
+export const getMeetingId = (params) =>
+  connectToServer(Urls.GET_MEETING_ID, params)
+    .then((response) => response)
     .catch((error) => {
       throw error;
     });
-};

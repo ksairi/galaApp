@@ -1,4 +1,4 @@
 {
   "root": ["./app"],
-  "extensions": [".js"]
+  "extensions": [".js", ".ts", ".tsx"]
 }

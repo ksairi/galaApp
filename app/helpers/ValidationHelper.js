@@ -19,9 +19,8 @@ export const userIdWithErrors = (userId) => {
   }
   return null;
 };
-export const isObjectEmpty = (obj) => {
-  return obj == null || Object.getOwnPropertyNames(obj).length === 0;
-};
+export const isObjectEmpty = (obj) =>
+  obj == null || Object.getOwnPropertyNames(obj).length === 0;
 
 export const isMailValid = (email) => {
   const regex = /^(([^<>()[\]\\.,:\s@']+(\.[^<>()[\]\\.,:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

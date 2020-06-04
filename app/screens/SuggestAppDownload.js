@@ -63,8 +63,8 @@ export default class SuggestAppDownload extends React.Component {
     }
   };
 
-  getIcon = () => {
-    return this.isIOS ? (
+  getIcon = () =>
+    this.isIOS ? (
       <IOSAnimatedIcon
         useNativeDriver
         animation="slideInLeft"
@@ -83,7 +83,6 @@ export default class SuggestAppDownload extends React.Component {
         style={{marginTop: 10}}
       />
     );
-  };
 
   render() {
     return (
