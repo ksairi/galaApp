@@ -27,8 +27,7 @@
     "web": "expo start --web",
     "test": "jest",
     "react-devtools": "react-devtools",
-    "lint": "eslint ./ --fix",
-    "lint-staged": "lint-staged",
+    "lint": "eslint './**/*.js' --fix",
     "nexus5:android": "emulator -avd Nexus_5_API_28 &",
     "publish:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' &&  expo publish && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
     "deploy:ios:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' &&  expo build:ios && expo upload:ios && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
@@ -44,7 +43,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix",
+      "yarn lint --",
       "node_modules/prettier/bin-prettier.js --write"
     ]
   },
