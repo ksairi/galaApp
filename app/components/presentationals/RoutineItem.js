@@ -40,7 +40,7 @@ export default ({index, data}) => (
         ? `${data.minutes} min`
         : `${data.repetitions} repeticiones`}
     </Text>
-    {data.series !== null && (
+    {data.series > 0 && (
       <Text style={styles.length}>{`${data.series} series`}</Text>
     )}
   </View>

@@ -100,7 +100,7 @@ export default class LiveClass extends React.Component {
 
   openAppIfNeeded = async () => {
     try {
-      const name = this.props.userData && this.props.userData.name;
+      const name = this.props.userData?.name;
       const {studioNumber} = this.props.navigation.state.params;
       if (Platform.OS === "ios") {
         const {meetingId} = await this.getMeetingId(studioNumber);
