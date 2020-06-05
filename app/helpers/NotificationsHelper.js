@@ -2,7 +2,6 @@ import {Notifications} from "expo";
 import * as Permissions from "expo-permissions";
 import ActionsCreators from "redux/actions";
 
-// eslint-disable-next-line import/prefer-default-export
 export const getDeviceId = async (dispatch) => {
   try {
     const {status: existingStatus} = await Permissions.getAsync(

@@ -1,6 +1,5 @@
 import {ActionsTypes} from "config/settings";
 
-// eslint-disable-next-line import/prefer-default-export
 export function setCurrentHomeDrawerOption(currentHomeDrawerOption) {
   return (dispatch) => {
     dispatch({

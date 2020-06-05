@@ -57,7 +57,7 @@ export default class Settings extends React.Component {
         {cancelable: true}
       );
       // eslint-disable-next-line no-restricted-globals
-    } else if (confirm("¿Cerrar sesión?")) {
+    } else if (window.confirm("¿Cerrar sesión?")) {
       AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
       this.props.navigation.navigate(Screens.LoginStack);
       this.props.dispatch(ActionsCreators.logout());

@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
-// eslint-disable-next-line import/no-extraneous-dependencies
 const editJsonFile = require("edit-json-file");
 
 const STAGING_APP_VERSION = "1.1";
@@ -28,6 +26,7 @@ const prodDeployData = {
   bundleIdentifier: "com.gala.galaapp",
   googleServicesFile: "google-services-prod.json",
 };
+
 exports.init = (environment) => {
   let dataToSet;
   if (environment === "default") {

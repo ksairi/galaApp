@@ -1,8 +1,12 @@
-import React from "react";
+import React, {ReactNode} from "react";
 import {ActivityIndicator, View} from "react-native";
 
-export default class LoadingSpinner extends React.PureComponent {
-  render() {
+interface Props {
+  visible: string;
+}
+
+export default class LoadingSpinner extends React.PureComponent<Props> {
+  render(): ReactNode {
     return (
       this.props.visible && (
         <View

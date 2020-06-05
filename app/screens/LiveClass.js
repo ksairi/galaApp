@@ -125,7 +125,7 @@ export default class LiveClass extends React.Component {
     } catch (e) {
       if (Platform.OS === "web") {
         // eslint-disable-next-line no-alert
-        alert(Messages.SERVER_ERROR);
+        window.alert(Messages.SERVER_ERROR);
       } else {
         Alert.alert(Messages.SERVER_ERROR);
       }
