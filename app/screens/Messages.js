@@ -15,7 +15,7 @@ import RootWrapper from "components/presentationals/RootWrapper";
 import ActionsCreators from "redux/actions";
 import {MaterialIcons} from "@expo/vector-icons";
 import {sendMessages} from "helpers/MessagesHelper";
-import LoadingSpinner from "components/presentationals/LoadingSpinner";
+import LoadingSpinner from "../components/presentationals/LoadingSpinner";
 import {getRealTimeMessages, setRealTimeMessagesSaved} from "helpers/ApiHelper";
 import {saveMessagesToDevice} from "helpers/StoreHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";

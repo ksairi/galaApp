@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 module.exports = (api) => {
   api.cache(true);
   return {
@@ -7,7 +8,7 @@ module.exports = (api) => {
         "module-resolver",
         {
           root: ["./app"],
-          extensions: [".js", ".ios.js", ".android.js"],
+          extensions: [".js", ".tsx", ".ts"],
         },
       ],
     ],

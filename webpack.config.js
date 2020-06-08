@@ -1,5 +1,6 @@
 const createExpoWebpackConfigAsync = require("@expo/webpack-config");
 
+// eslint-disable-next-line no-undef
 module.exports = async (env, argv) => {
   const config = await createExpoWebpackConfigAsync(env, argv);
   if (env.mode === "development") {

@@ -27,6 +27,7 @@ const prodDeployData = {
   googleServicesFile: "google-services-prod.json",
 };
 
+// eslint-disable-next-line no-undef
 exports.init = (environment) => {
   let dataToSet;
   if (environment === "default") {

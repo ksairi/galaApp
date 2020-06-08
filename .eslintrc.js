@@ -1,6 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const moduleResolverConfig = require("./moduleResolver.config");
-
 const rules = {
   camelcase: "warn",
   "global-require": "off",
@@ -50,10 +47,6 @@ const parserOptions = {
 };
 
 const settings = {
-  "import/resolver": {
-    // we need to do this because babel.config.js is not recognized
-    "babel-module": moduleResolverConfig,
-  },
   react: {
     version: "detect", // Tells eslint-plugin-react to automatically detect the version of React to use
   },
@@ -77,18 +70,8 @@ const globals = {
   __DEV__: true,
   FormData: true,
   fetch: true,
-  require: true,
-  clearInterval: true,
-  setInterval: true,
-  setTimeout: true,
-  clearTimeout: false,
-  window: true,
-  console: true,
-  module: true,
-  Promise: true,
-  exports: true,
   __dirname: true,
-  process: true,
+  process: true
 };
 
 module.exports = {
@@ -97,6 +80,9 @@ module.exports = {
   extends: jsPlugins,
   root: true,
   env: {
+    browser: true,
+    es6: true,
+    jasmine: true,
     jest: true,
   },
   parserOptions: parserOptions,
