@@ -46,7 +46,7 @@ export default class LiveClass extends React.Component {
   constructor(props) {
     super(props);
     const {studioNumber} = props.navigation.state.params;
-    const name = props.userData && props.userData.name;
+    const name = props.userData?.name;
     this.uri = `https://${this.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
   }
 
@@ -59,6 +59,12 @@ export default class LiveClass extends React.Component {
       }
       startAudioButton.click();
     }, 15000);
+
+    setTimeout(function () {
+      if(gError) {
+        window.ReactNativeWebView.postMessage(JSON.stringify({status: "error"}));
+      }
+    }, 1000);
     true;
   `;
 
@@ -83,17 +89,18 @@ export default class LiveClass extends React.Component {
   onMessage = ({nativeEvent}) => {
     try {
       const result = JSON.parse(nativeEvent.data);
-      if (result.errorMessage) {
-        this.props.navigation.goBack();
+      if (result.status === "error") {
+        Alert.alert("La clase no ha empezado aun.", "", [
+          {
+            text: "OK",
+            onPress: () => {
+              this.props.navigation.goBack();
+            },
+          },
+        ]);
       }
       // eslint-disable-next-line no-empty
     } catch (e) {}
-  };
-
-  onNavigationStateChange = (data) => {
-    if (data.url === "https://galagym.com/") {
-      this.props.navigation.goBack();
-    }
   };
 
   getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
@@ -180,7 +187,6 @@ export default class LiveClass extends React.Component {
               uri: this.uri,
             }}
             onMessage={this.onMessage}
-            onNavigationStateChange={this.onNavigationStateChange}
             injectedJavaScript={this.injectedJs}
             mediaPlaybackRequiresUserAction={false}
           />
