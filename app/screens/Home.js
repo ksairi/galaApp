@@ -186,17 +186,10 @@ export default class Home extends React.Component {
               {SectionsData.map((sectionData, index) => {
                 if (
                   (sectionData.screen !== Screens.NewMember &&
-                    sectionData.screen !== Screens.LiveClassStudio1 &&
-                    sectionData.screen !== Screens.LiveClassStudio2 &&
-                    sectionData.screen !== Screens.LiveClassStudio3 &&
-                    sectionData.screen !== Screens.RecordedClassesByClass) ||
+                    !sectionData.requiresActiveMember) ||
                   (sectionData.screen === Screens.NewMember &&
-                    this.state.freeEntryDaysLeft &&
                     this.state.freeEntryDaysLeft > 0) ||
-                  ((sectionData.screen === Screens.LiveClassStudio1 ||
-                    sectionData.screen === Screens.LiveClassStudio2 ||
-                    sectionData.screen === Screens.LiveClassStudio3 ||
-                    sectionData.screen === Screens.RecordedClassesByClass) &&
+                  (sectionData.requiresActiveMember &&
                     this.props.routines.length > 0)
                 ) {
                   return (

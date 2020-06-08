@@ -163,6 +163,7 @@ const liveClassProps = {
     arrow: {marginTop: 15},
   },
   homeStyle: {fontSize: 40, color: "white"},
+  requiresActiveMember: true,
 };
 
 const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";

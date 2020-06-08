@@ -90,18 +90,10 @@ export default class DrawerContentComponent extends React.PureComponent {
         {SectionsData.map((drawerItem, index) => {
           if (
             (drawerItem.screen !== Screens.NewMember &&
-              drawerItem.screen !== Screens.LiveClassStudio1 &&
-              drawerItem.screen !== Screens.LiveClassStudio2 &&
-              drawerItem.screen !== Screens.LiveClassStudio3 &&
-              drawerItem.screen !== Screens.RecordedClassesByClass) ||
+              !drawerItem.requiresActiveMember) ||
             (drawerItem.screen === Screens.NewMember &&
-              this.state.freeEntryDaysLeft &&
               this.state.freeEntryDaysLeft > 0) ||
-            ((drawerItem.screen === Screens.LiveClassStudio1 ||
-              drawerItem.screen === Screens.LiveClassStudio2 ||
-              drawerItem.screen === Screens.LiveClassStudio3 ||
-              drawerItem.screen === Screens.RecordedClassesByClass) &&
-              this.props.routines.length > 0)
+            (drawerItem.requiresActiveMember && this.props.routines.length > 0)
           ) {
             return (
               <DrawerItem
