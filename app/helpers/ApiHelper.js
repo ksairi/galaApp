@@ -276,3 +276,12 @@ export const getMeetingId = (params) => {
       throw error;
     });
 };
+
+export const deleteBooking = (params) =>
+  connectToServer(Urls.DELETE_BOOKING, params)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });

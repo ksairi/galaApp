@@ -81,6 +81,7 @@ export const setContentServerData = async (contentServerData, dispatch) => {
       sentMessages,
       messages,
       userData,
+      bookedClasses,
     } = contentServerData;
     /* await saveDataToDevice(
       loginImages,
@@ -116,6 +117,7 @@ export const setContentServerData = async (contentServerData, dispatch) => {
     saveTimetableToDevice(timetable, dispatch);
     saveMessagesToDevice(messages, sentMessages, dispatch);
     saveMemberPropertiesToDevice(userData, dispatch);
+    dispatch(ActionsCreators.setBookedClasses(bookedClasses));
   }
 };
 
@@ -125,6 +127,7 @@ export const clearStore = (dispatch) => {
   dispatch(ActionsCreators.setTimetable(null));
   dispatch(ActionsCreators.setRoutines(null));
   dispatch(ActionsCreators.setMessages(null));
+  dispatch(ActionsCreators.setBookedClasses([]));
 };
 export const saveDataToDevice = (
   data,

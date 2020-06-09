@@ -13,11 +13,21 @@ import CameraView from "screens/CameraView";
 // import NewMember from 'screens/NewMember'
 import LiveClass from "screens/LiveClass";
 import RecordedClassesByClass from "screens/RecordedClassesByClass";
+import BookedClasses from "screens/BookedClasses";
 import DrawerContentComponent from "components/containers/DrawerContentComponent";
 import Header from "components/containers/Header";
 
 const HomeNavigator = createStackNavigator(
   {[Screens.Home]: {screen: Home}},
+  {
+    navigationOptions: ({navigation}) => ({
+      header: <Header navigation={navigation} isHomeHeader />,
+    }),
+  }
+);
+
+const BookedClassesNavigator = createStackNavigator(
+  {[Screens.BookedClasses]: {screen: BookedClasses}},
   {
     navigationOptions: ({navigation}) => ({
       header: <Header navigation={navigation} isHomeHeader />,
@@ -117,6 +127,7 @@ const drawerNavigator = createDrawerNavigator(
     [Screens.Home]: {screen: HomeNavigator},
     [Screens.LiveClassStudio1]: {screen: LiveClass},
     [Screens.LiveClassStudio2]: {screen: LiveClass},
+    [Screens.BookedClasses]: {screen: BookedClassesNavigator},
     [Screens.RecordedClassesByClass]: {screen: RecordedClassesByClassNavigator},
     // [Screens.NewMember]: { screen: NewMemberNavigator },
     [Screens.Profile]: {screen: ProfileNavigator},

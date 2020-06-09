@@ -35,6 +35,7 @@ export const Urls = {
   SYNCH_MEMBER_PROPERTIES: `${SERVER_HOSTNAME_2}synchMemberProperties.php`,
   GET_RECORDED_CLASES: `${SERVER_HOSTNAME_2}getRecordedClasses.php`,
   GET_MEETING_ID: `${SERVER_HOSTNAME_2}getMeetingId.php`,
+  DELETE_BOOKING: `${SERVER_HOSTNAME_2}deleteClassBookings.php`,
 };
 
 export const Messages = {
@@ -93,6 +94,8 @@ export const Screens = {
   RecordedClassesByDate: "RecordedClassesByDate",
   RecordedClassesByTime: "RecordedClassesByTime",
   SuggestAppDownload: "SuggestAppDownload",
+  BookedClasses: "BookedClasses",
+  ClassesToBook: "ClassesToBook",
 };
 
 export const SignUpConstraints = {
@@ -152,7 +155,13 @@ export const ActionsTypes = {
   SET_TIMETABLE_IMAGES: "SET_TIMETABLE_IMAGES",
   SET_LOGIN_SYNCHED_DATA_PARAMETERS: "SET_LOGIN_SYNCHED_DATA_PARAMETERS",
   SET_HIDDEN_STATUS_BAR: "SET_HIDDEN_STATUS_BAR",
+
+  // Booked classes
+  SET_BOOKED_CLASSES: "SET_BOOKED_CLASSES",
+  REMOVE_BOOKED_CLASS: "REMOVE_BOOKED_CLASSES",
 };
+
+const requiresMembership = {requiresActiveMember: true};
 
 const liveClassProps = {
   icon: "video-camera",
@@ -164,6 +173,7 @@ const liveClassProps = {
   },
   homeStyle: {fontSize: 40, color: "white"},
   requiresActiveMember: true,
+  ...requiresMembership,
 };
 
 const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
@@ -192,7 +202,6 @@ export const SectionsData = [
   },
   {
     label: "CLASES GRABADAS",
-    ...liveClassProps,
     IconComponent: Foundation,
     icon: "record",
     drawerStyle: {
@@ -201,7 +210,22 @@ export const SectionsData = [
       label: {...liveClassProps.drawerStyle.label, fontSize: 17, marginTop: 15},
       arrow: {marginTop: 20},
     },
+    homeStyle: {fontSize: 40, color: "white"},
+
     screen: Screens.RecordedClassesByClass,
+  },
+  {
+    label: "TUS RESERVAS",
+    ...requiresMembership,
+    IconComponent: Foundation,
+    icon: "bookmark",
+    drawerStyle: {
+      icon: {fontSize: 50, paddingLeft: 7},
+      label: {marginTop: 5},
+      arrow: {marginTop: 15},
+    },
+    homeStyle: {fontSize: 40, color: "white"},
+    screen: Screens.BookedClasses,
   },
   // {
   //   icon: 'exclamation',
