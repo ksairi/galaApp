@@ -6,7 +6,8 @@ import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import {connect} from "react-redux";
-import ActionsCreators from "redux/actions/";
+import ActionsCreators from "redux/actions";
+import moment from "moment";
 
 const styles = {
   item: {
@@ -38,7 +39,7 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
   useEffect(() => {
     let tempSortedClasses = [];
     const alreadyFiltered = [];
-    bookedClasses.forEach(({date: filteredDate, day}) => {
+    bookedClasses.forEach(({date: filteredDate, dow}) => {
       const classesByDate = bookedClasses.filter(
         ({date}) =>
           date === filteredDate && !alreadyFiltered.includes(filteredDate)
@@ -58,9 +59,10 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
         tempSortedClasses = [
           ...tempSortedClasses,
           {
-            title: `${
-              day.charAt(0).toUpperCase() + day.slice(1)
-            } ${filteredDate}`,
+            title: `${dow.charAt(0).toUpperCase() + dow.slice(1)} ${moment(
+              filteredDate,
+              "YYYY-MM-DD"
+            ).format("DD/MM")}`,
             data: classesByDate,
           },
         ];
@@ -69,24 +71,28 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
     });
     setSortedClasses(tempSortedClasses);
   }, [bookedClasses]);
-  const deleteBooking = useCallback(({id, className, day, date, time}) => {
+  const deleteBooking = useCallback(({id, className, dow, date, time}) => {
     Alert.alert(
-      `Deseas borrar la reserva de ${className} el ${day} ${date} a ${time} ?`,
+      `Deseas borrar la reserva de ${className} el ${dow} ${moment(
+        date,
+        "YYYY-MM-DD"
+      ).format("DD/MM")} a ${time} ?`,
       "",
       [
         {
           text: "OK",
           onPress: async () => {
             try {
-              await ApiHelper.deleteBooking({
+              const {message, errorMessage} = await ApiHelper.deleteBooking({
                 userId,
                 bookingId: id,
                 className,
-                day,
+                dow,
                 date,
                 time,
               });
               dispatch(ActionsCreators.deleteBookedClass(id));
+              Alert.alert(message || errorMessage);
             } catch (e) {
               Alert.alert(e);
             }
@@ -96,12 +102,12 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
       ]
     );
   }, []);
-  const Item = ({className, time, id, date, day}) => (
+  const Item = ({className, time, id, date, dow}) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{time}</Text>
       <Text style={styles.itemText}>{className}</Text>
       <TouchableOpacity
-        onPress={() => deleteBooking({id, time, className, date, day})}
+        onPress={() => deleteBooking({id, time, className, date, dow})}
       >
         <Text style={[styles.itemText, styles.removeBooking]}>Borrar</Text>
       </TouchableOpacity>

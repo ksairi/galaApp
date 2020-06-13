@@ -9,6 +9,10 @@ export const bookedClasses = createReducer([], {
     return [..._state, action.bookedClasses];
   },
 
+  [ActionsTypes.ADD_NEW_BOOKED_CLASSES](_state, action) {
+    return [..._state, ...action.newBookedClasses];
+  },
+
   [ActionsTypes.REMOVE_BOOKED_CLASS](_state, action) {
     return _state.filter((booking) => booking.id !== action.id);
   },

@@ -14,6 +14,7 @@ import CameraView from "screens/CameraView";
 import LiveClass from "screens/LiveClass";
 import RecordedClassesByClass from "screens/RecordedClassesByClass";
 import BookedClasses from "screens/BookedClasses";
+import ClassesToBook from "screens/ClassesToBook";
 import DrawerContentComponent from "components/containers/DrawerContentComponent";
 import Header from "components/containers/Header";
 
@@ -28,6 +29,15 @@ const HomeNavigator = createStackNavigator(
 
 const BookedClassesNavigator = createStackNavigator(
   {[Screens.BookedClasses]: {screen: BookedClasses}},
+  {
+    navigationOptions: ({navigation}) => ({
+      header: <Header navigation={navigation} isHomeHeader />,
+    }),
+  }
+);
+
+const ClassesToBookNavigator = createStackNavigator(
+  {[Screens.ClassesToBook]: {screen: ClassesToBook}},
   {
     navigationOptions: ({navigation}) => ({
       header: <Header navigation={navigation} isHomeHeader />,
@@ -128,6 +138,7 @@ const drawerNavigator = createDrawerNavigator(
     [Screens.LiveClassStudio1]: {screen: LiveClass},
     [Screens.LiveClassStudio2]: {screen: LiveClass},
     [Screens.BookedClasses]: {screen: BookedClassesNavigator},
+    [Screens.ClassesToBook]: {screen: ClassesToBookNavigator},
     [Screens.RecordedClassesByClass]: {screen: RecordedClassesByClassNavigator},
     // [Screens.NewMember]: { screen: NewMemberNavigator },
     [Screens.Profile]: {screen: ProfileNavigator},

@@ -36,6 +36,8 @@ export const Urls = {
   GET_RECORDED_CLASES: `${SERVER_HOSTNAME_2}getRecordedClasses.php`,
   GET_MEETING_ID: `${SERVER_HOSTNAME_2}getMeetingId.php`,
   DELETE_BOOKING: `${SERVER_HOSTNAME_2}deleteClassBookings.php`,
+  GET_CLASSES_TO_BOOK: `${SERVER_HOSTNAME_2}getClassesToBook.php`,
+  NEW_CLASSES_BOOKINGS: `${SERVER_HOSTNAME_2}newClassesBookings.php`,
 };
 
 export const Messages = {
@@ -159,6 +161,7 @@ export const ActionsTypes = {
   // Booked classes
   SET_BOOKED_CLASSES: "SET_BOOKED_CLASSES",
   REMOVE_BOOKED_CLASS: "REMOVE_BOOKED_CLASSES",
+  ADD_NEW_BOOKED_CLASSES: "ADD_NEW_BOOKED_CLASSES",
 };
 
 const requiresMembership = {requiresActiveMember: true};
@@ -226,6 +229,19 @@ export const SectionsData = [
     },
     homeStyle: {fontSize: 40, color: "white"},
     screen: Screens.BookedClasses,
+  },
+  {
+    label: "RESERVA TUS CLASES",
+    ...requiresMembership,
+    IconComponent: Foundation,
+    icon: "bookmark",
+    drawerStyle: {
+      icon: {fontSize: 50, paddingLeft: 7},
+      label: {marginTop: 5},
+      arrow: {marginTop: 15},
+    },
+    homeStyle: {fontSize: 40, color: "white"},
+    screen: Screens.ClassesToBook,
   },
   // {
   //   icon: 'exclamation',

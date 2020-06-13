@@ -1,116 +1,239 @@
-import React, {useCallback, useState, useEffect} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import {SectionList, Text, TouchableOpacity, Alert, View} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
+import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
+import Button from "components/presentationals/GenericButton";
 import {connect} from "react-redux";
-import ActionsCreators from "redux/actions/";
+import moment from "moment";
+import ActionsCreators from "redux/actions";
 
 const styles = {
   item: {
     padding: 10,
     alignSelf: "center",
-    flexDirection: "row",
-    flex: 1,
   },
-  itemText: {
+  header: {
     color: "white",
-    paddingLeft: 5,
+    fontSize: 18,
+    fontFamily: "lato-bold",
+    marginTop: 20,
+  },
+  classData: {
+    flexDirection: "row",
+  },
+  classDataText: {
+    color: "white",
     fontSize: 16,
     fontFamily: "lato-regular",
   },
-  removeBooking: {
-    fontFamily: "lato-bold",
-    paddingLeft: 25,
-  },
-
-  header: {
-    fontFamily: "lato-bold",
-    color: "white",
-    fontSize: 20,
-  },
+  time: {width: 60},
+  className: {width: 100},
+  saloon: {width: 80},
+  availability: {width: 100},
+  border: {color: "red"},
+  selected: {color: "green"},
 };
 
-function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
-  const [sortedClasses, setSortedClasses] = useState([]);
-  useEffect(() => {
-    let tempSortedClasses = [];
-    const alreadyFiltered = [];
-    bookedClasses.forEach(({date: filteredDate, day}) => {
-      const classesByDate = bookedClasses.filter(
-        ({date}) =>
-          date === filteredDate && !alreadyFiltered.includes(filteredDate)
-      );
-      classesByDate.sort((a, b) => {
-        const timeA = a.time;
-        const timeB = b.time;
-        if (timeA < timeB) {
-          return -1;
-        }
-        if (timeA > timeB) {
-          return 1;
-        }
-        return 0;
-      });
-      if (classesByDate.length > 0) {
-        tempSortedClasses = [
-          ...tempSortedClasses,
+function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
+  const [classesToBook, setClassesToBook] = useState([]);
+  const [checkoutClasses, setCheckoutClasses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [addingBookings, setAddingBookings] = useState(false);
+
+  const fetchClassesToBook = useCallback(async () => {
+    setClassesToBook([]);
+    try {
+      setLoading(true);
+      const {
+        classesToBook: remoteClassesToBook,
+      } = await ApiHelper.getClassesToBook();
+      Object.values(remoteClassesToBook).forEach((dayRecord) => {
+        setClassesToBook((classesToBook) => [
+          ...classesToBook,
           {
-            title: `${
-              day.charAt(0).toUpperCase() + day.slice(1)
-            } ${filteredDate}`,
-            data: classesByDate,
+            title: dayRecord.dateData,
+            data: dayRecord.classes,
           },
-        ];
-      }
-      alreadyFiltered.push(filteredDate);
-    });
-    setSortedClasses(tempSortedClasses);
-  }, [bookedClasses]);
-  const deleteBooking = useCallback(({id, className, day, date, time}) => {
-    Alert.alert(
-      `Deseas borrar la reserva de ${className} el ${day} ${date} a ${time} ?`,
-      "",
-      [
+        ]);
+      });
+    } catch (e) {
+      Alert.alert("", e, [
         {
           text: "OK",
-          onPress: async () => {
-            try {
-              await ApiHelper.deleteBooking({
-                userId,
-                bookingId: id,
-                className,
-                day,
-                date,
-                time,
-              });
-              dispatch(ActionsCreators.deleteBookedClass(id));
-            } catch (e) {
-              Alert.alert(e);
+          onPress: () => {
+            navigation.navigate(Screens.Home);
+          },
+        },
+      ]);
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  useEffect(() => {
+    fetchClassesToBook();
+  }, []);
+
+  const checkoutBookings = useCallback(async () => {
+    try {
+      setAddingBookings(true);
+      const result = await ApiHelper.newBookings({
+        userId,
+        bookings: checkoutClasses,
+      });
+      let alertMessage = "";
+      if (result.errorMessages.length) {
+        alertMessage = `Reserva(s) con errores:\n ${result.errorMessages.join(
+          ".\n"
+        )}`;
+      }
+      if (result.messages.length) {
+        alertMessage = alertMessage.concat(
+          `Reserva(s) con éxito:\n ${result.messages.join(".\n")}`
+        );
+      }
+      const successfullBookings = result.successfullBookings.map(
+        ({id, date, dow, className, time, saloon}) => ({
+          id,
+          date,
+          dow,
+          className,
+          time,
+          saloon,
+        })
+      );
+      dispatch(ActionsCreators.addNewBookedClasses(successfullBookings));
+      if (successfullBookings.length) {
+        await fetchClassesToBook(successfullBookings);
+      }
+      setCheckoutClasses([]);
+      Alert.alert(alertMessage, "", [
+        {
+          text: "OK",
+          onPress: () => {
+            if (!result.errorMessages.length) {
+              navigation.navigate(Screens.BookedClasses);
             }
           },
         },
-        {text: "Cancelar", style: "cancel"},
-      ]
-    );
-  }, []);
-  const Item = ({className, time, id, date, day}) => (
-    <View style={styles.item}>
-      <Text style={styles.itemText}>{time}</Text>
-      <Text style={styles.itemText}>{className}</Text>
-      <TouchableOpacity
-        onPress={() => deleteBooking({id, time, className, date, day})}
-      >
-        <Text style={[styles.itemText, styles.removeBooking]}>Borrar</Text>
-      </TouchableOpacity>
-    </View>
+      ]);
+    } catch (e) {
+      Alert.alert(e);
+    } finally {
+      setAddingBookings(false);
+    }
+  });
+
+  const editClassToCheckout = useCallback(
+    (pItem) => {
+      if (
+        checkoutClasses.find(
+          (item) =>
+            item.date === pItem.date && item.className !== pItem.className
+        )
+      ) {
+        Alert.alert("Se puede reservar una clase por día.");
+        return;
+      }
+      if (bookedClasses.find((item) => item.date === pItem.date)) {
+        Alert.alert(
+          `Ya tenes una reserva para el día ${moment(
+            pItem.date,
+            "YYYY-MM-DD"
+          ).format("DD/MM")}`
+        );
+        return;
+      }
+      const index = checkoutClasses.findIndex(
+        (item) =>
+          item.date === pItem.date &&
+          item.className === pItem.className &&
+          item.saloon === pItem.saloon
+      );
+      if (index >= 0) {
+        setCheckoutClasses(
+          checkoutClasses
+            .slice(0, index)
+            .concat(checkoutClasses.slice(index + 1))
+        );
+        return;
+      }
+      setCheckoutClasses((checkoutClases) => [...checkoutClases, pItem]);
+    },
+    [checkoutClasses]
   );
+
+  const isSelected = useCallback(
+    ({saloon, time, date}) => {
+      return checkoutClasses.find(
+        (item) =>
+          item.saloon === saloon && item.time === time && item.date === date
+      );
+    },
+    [checkoutClasses]
+  );
+
+  if (loading) {
+    return (
+      <RootWrapper>
+        <LoadingSpinner visible={loading} />
+      </RootWrapper>
+    );
+  }
+
+  const Item = ({item, date, dow}) => {
+    const ifNeededSelectedStyle = isSelected({...item, date, dow})
+      ? styles.selected
+      : null;
+    return (
+      <TouchableOpacity
+        style={styles.item}
+        onPress={() => editClassToCheckout({...item, date, dow})}
+      >
+        <View style={styles.classData}>
+          <Text
+            style={[styles.classDataText, styles.time, ifNeededSelectedStyle]}
+          >
+            {item.time}
+          </Text>
+          <Text
+            style={[
+              styles.classDataText,
+              styles.className,
+              ifNeededSelectedStyle,
+            ]}
+          >
+            {item.className}
+          </Text>
+          <Text
+            style={[styles.classDataText, styles.saloon, ifNeededSelectedStyle]}
+          >
+            {item.saloon}
+          </Text>
+          <Text
+            style={[
+              styles.classDataText,
+              styles.availability,
+              item.classAvailability - item.classBookings <= 3
+                ? styles.border
+                : null,
+              ifNeededSelectedStyle,
+            ]}
+          >
+            Cupos {item.classBookings}/{item.classAvailability}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <RootWrapper style={{padding: 0}}>
-      {sortedClasses.length > 0 ? (
+      {classesToBook.length > 0 ? (
         <>
           <Text
             style={{
@@ -121,41 +244,57 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
               fontFamily: "lato-regular",
             }}
           >
-            TUS CLASES RESERVADAS
+            RESERVA DE CLASES
           </Text>
           <CentredWrapper>
             <SectionList
-              sections={sortedClasses}
-              renderItem={({item}) => <Item {...item} />}
-              keyExtractor={(item, index) => item + index}
-              renderSectionHeader={({section: {title}}) => (
-                <Text style={styles.header}>{title}</Text>
+              keyExtractor={() => Math.random().toString()}
+              sections={classesToBook}
+              renderItem={({item, section}) => (
+                <Item
+                  {...{item}}
+                  date={section.title.date}
+                  dow={section.title.dow}
+                />
               )}
-              style={{marginTop: 20}}
+              renderSectionHeader={({section}) => {
+                return (
+                  <Text style={styles.header}>
+                    {section.title.dow}{" "}
+                    {moment(section.title.date, "YYYY-MM-DD").format("DD/MM")}
+                  </Text>
+                );
+              }}
             />
+            {checkoutClasses.length > 0 && (
+              <Button
+                text={
+                  addingBookings
+                    ? "Reservando..."
+                    : `Reserva ${checkoutClasses.length} ${
+                        checkoutClasses.length === 1 ? "clase" : "clases"
+                      }`
+                }
+                onPress={checkoutBookings}
+              />
+            )}
           </CentredWrapper>
         </>
       ) : (
         <View style={{flex: 1, alignItems: "center", marginTop: 50}}>
-          <View>
-            <GenericText
-              style={{
-                fontFamily: "lato-regular",
-                fontSize: 22,
-                color: "white",
-                flex: -1,
-              }}
-            >
-              No reservaste tus clases!
-            </GenericText>
-          </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate(Screens.ClassesToBook)}
+          <GenericText
+            style={{
+              fontFamily: "brother-1816-bold",
+              fontSize: 22,
+              color: "white",
+              flex: -1,
+            }}
           >
-            <GenericText style={{fontSize: 18, marginTop: 20}}>
-              Hacelo acá!
-            </GenericText>
-          </TouchableOpacity>
+            ¡Ups!
+          </GenericText>
+          <GenericText style={{fontSize: 18}}>
+            No hay clases para reservar aun!
+          </GenericText>
         </View>
       )}
     </RootWrapper>
@@ -165,4 +304,4 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
 export default connect((state) => ({
   bookedClasses: state.bookedClasses,
   userId: state.userData.userId,
-}))(BookedClasses);
+}))(ClassesToBook);

@@ -11,3 +11,9 @@ export function deleteBookedClass(id) {
     dispatch({type: ActionsTypes.REMOVE_BOOKED_CLASS, id});
   };
 }
+
+export function addNewBookedClasses(newBookedClasses) {
+  return (dispatch) => {
+    dispatch({type: ActionsTypes.ADD_NEW_BOOKED_CLASSES, newBookedClasses});
+  };
+}
