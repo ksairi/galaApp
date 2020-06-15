@@ -1,5 +1,12 @@
 import React, {useCallback, useState, useEffect} from "react";
-import {SectionList, Text, TouchableOpacity, Alert, View} from "react-native";
+import {
+  SectionList,
+  Text,
+  TouchableOpacity,
+  Alert,
+  View,
+  Platform,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
@@ -39,11 +46,23 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
   useEffect(() => {
     let tempSortedClasses = [];
     const alreadyFiltered = [];
+    bookedClasses.sort((a, b) => {
+      const dateA = a.date;
+      const dateB = b.date;
+      if (dateA < dateB) {
+        return -1;
+      }
+      if (dateA > dateB) {
+        return 1;
+      }
+      return 0;
+    });
     bookedClasses.forEach(({date: filteredDate, dow}) => {
       const classesByDate = bookedClasses.filter(
         ({date}) =>
           date === filteredDate && !alreadyFiltered.includes(filteredDate)
       );
+
       classesByDate.sort((a, b) => {
         const timeA = a.time;
         const timeB = b.time;
@@ -71,37 +90,67 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
     });
     setSortedClasses(tempSortedClasses);
   }, [bookedClasses]);
-  const deleteBooking = useCallback(({id, className, dow, date, time}) => {
-    Alert.alert(
-      `Deseas borrar la reserva de ${className} el ${dow} ${moment(
+
+  const doDelete = async ({id, userId, className, dow, date, time}) => {
+    const {message, errorMessage} = await ApiHelper.deleteBooking({
+      userId,
+      bookingId: id,
+      className,
+      dow,
+      date,
+      time,
+    });
+    dispatch(ActionsCreators.deleteBookedClass(id));
+    return {message, errorMessage};
+  };
+  const deleteBooking = useCallback(
+    async ({id, className, dow, date, time}) => {
+      const delQuestion = `Deseas borrar la reserva de ${className} el ${dow} ${moment(
         date,
         "YYYY-MM-DD"
-      ).format("DD/MM")} a ${time} ?`,
-      "",
-      [
-        {
-          text: "OK",
-          onPress: async () => {
-            try {
-              const {message, errorMessage} = await ApiHelper.deleteBooking({
-                userId,
-                bookingId: id,
-                className,
-                dow,
-                date,
-                time,
-              });
-              dispatch(ActionsCreators.deleteBookedClass(id));
-              Alert.alert(message || errorMessage);
-            } catch (e) {
-              Alert.alert(e);
-            }
+      ).format("DD/MM")} a ${time} ?`;
+      if (Platform.OS !== "web") {
+        Alert.alert(delQuestion, "", [
+          {
+            text: "OK",
+            onPress: async () => {
+              try {
+                const {message, errorMessage} = await doDelete({
+                  userId,
+                  id,
+                  className,
+                  dow,
+                  date,
+                  time,
+                });
+                Alert.alert(message || errorMessage);
+              } catch (e) {
+                Alert.alert(e);
+              }
+            },
           },
-        },
-        {text: "Cancelar", style: "cancel"},
-      ]
-    );
-  }, []);
+          {text: "Cancelar", style: "cancel"},
+        ]);
+      } else {
+        if (window.confirm(delQuestion)) {
+          try {
+            const {message, errorMessage} = await doDelete({
+              userId,
+              id,
+              className,
+              dow,
+              date,
+              time,
+            });
+            window.alert(message || errorMessage);
+          } catch (e) {
+            window.alert(e);
+          }
+        }
+      }
+    },
+    []
+  );
   const Item = ({className, time, id, date, dow}) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{time}</Text>

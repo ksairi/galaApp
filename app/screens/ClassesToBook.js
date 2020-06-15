@@ -1,5 +1,12 @@
 import React, {useEffect, useState, useCallback} from "react";
-import {SectionList, Text, TouchableOpacity, Alert, View} from "react-native";
+import {
+  SectionList,
+  Text,
+  TouchableOpacity,
+  Alert,
+  View,
+  Platform,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -61,14 +68,19 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
         ]);
       });
     } catch (e) {
-      Alert.alert("", e, [
-        {
-          text: "OK",
-          onPress: () => {
-            navigation.navigate(Screens.Home);
+      if (Platform.OS !== "web") {
+        Alert.alert("", e, [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.navigate(Screens.Home);
+            },
           },
-        },
-      ]);
+        ]);
+      } else {
+        window.alert(e);
+        navigation.navigate(Screens.Home);
+      }
     } finally {
       setLoading(false);
     }
@@ -111,18 +123,29 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
         await fetchClassesToBook(successfullBookings);
       }
       setCheckoutClasses([]);
-      Alert.alert(alertMessage, "", [
-        {
-          text: "OK",
-          onPress: () => {
-            if (!result.errorMessages.length) {
-              navigation.navigate(Screens.BookedClasses);
-            }
+      if (Platform.OS !== "web") {
+        Alert.alert(alertMessage, "", [
+          {
+            text: "OK",
+            onPress: () => {
+              if (!result.errorMessages.length) {
+                navigation.navigate(Screens.BookedClasses);
+              }
+            },
           },
-        },
-      ]);
+        ]);
+      } else {
+        window.alert(alertMessage);
+        if (!result.errorMessages.length) {
+          navigation.navigate(Screens.BookedClasses);
+        }
+      }
     } catch (e) {
-      Alert.alert(e);
+      if (Platform.OS !== "web") {
+        Alert.alert(e);
+      } else {
+        window.alert(e);
+      }
     } finally {
       setAddingBookings(false);
     }
@@ -136,16 +159,25 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
             item.date === pItem.date && item.className !== pItem.className
         )
       ) {
-        Alert.alert("Se puede reservar una clase por día.");
+        const errMsg = "Se puede reservar una clase por día.";
+        if (Platform.OS !== "web") {
+          Alert.alert(errMsg);
+        } else {
+          window.alert(errMsg);
+        }
         return;
       }
+
       if (bookedClasses.find((item) => item.date === pItem.date)) {
-        Alert.alert(
-          `Ya tenes una reserva para el día ${moment(
-            pItem.date,
-            "YYYY-MM-DD"
-          ).format("DD/MM")}`
-        );
+        const errMes = `Ya tenes una reserva para el día ${moment(
+          pItem.date,
+          "YYYY-MM-DD"
+        ).format("DD/MM")}`;
+        if (Platform.OS !== "web") {
+          Alert.alert(errMes);
+        } else {
+          window.alert(errMes);
+        }
         return;
       }
       const index = checkoutClasses.findIndex(
