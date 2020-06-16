@@ -28,6 +28,7 @@ const styles = {
     fontSize: 18,
     fontFamily: "lato-bold",
     marginTop: 20,
+    alignSelf: "center",
   },
   classData: {
     flexDirection: "row",
