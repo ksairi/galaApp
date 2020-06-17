@@ -1,12 +1,5 @@
 import React, {useEffect, useState, useCallback} from "react";
-import {
-  SectionList,
-  Text,
-  TouchableOpacity,
-  Alert,
-  View,
-  Platform,
-} from "react-native";
+import {SectionList, Text, TouchableOpacity, View} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -17,6 +10,7 @@ import Button from "components/presentationals/GenericButton";
 import {connect} from "react-redux";
 import moment from "moment";
 import ActionsCreators from "redux/actions";
+import Alert from "components/presentationals/Alert";
 
 const styles = {
   item: {
@@ -50,7 +44,9 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
   const [classesToBook, setClassesToBook] = useState([]);
   const [checkoutClasses, setCheckoutClasses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [alertMessage, setAlertMessage] = useState(null);
   const [addingBookings, setAddingBookings] = useState(false);
+  const [onOkAlert, setOnOkAlert] = useState(null);
 
   const fetchClassesToBook = useCallback(async () => {
     setClassesToBook([]);
@@ -69,19 +65,8 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
         ]);
       });
     } catch (e) {
-      if (Platform.OS !== "web") {
-        Alert.alert("", e, [
-          {
-            text: "OK",
-            onPress: () => {
-              navigation.navigate(Screens.Home);
-            },
-          },
-        ]);
-      } else {
-        window.alert(e);
-        navigation.navigate(Screens.Home);
-      }
+      setAlertMessage(e);
+      setOnOkAlert(() => () => navigation.navigate(Screens.Home));
     } finally {
       setLoading(false);
     }
@@ -123,30 +108,13 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
       if (successfullBookings.length) {
         await fetchClassesToBook(successfullBookings);
       }
+      setAlertMessage(alertMessage);
       setCheckoutClasses([]);
-      if (Platform.OS !== "web") {
-        Alert.alert(alertMessage, "", [
-          {
-            text: "OK",
-            onPress: () => {
-              if (!result.errorMessages.length) {
-                navigation.navigate(Screens.BookedClasses);
-              }
-            },
-          },
-        ]);
-      } else {
-        window.alert(alertMessage);
-        if (!result.errorMessages.length) {
-          navigation.navigate(Screens.BookedClasses);
-        }
+      if (!result.errorMessages.length) {
+        setOnOkAlert(() => () => navigation.navigate(Screens.BookedClasses));
       }
     } catch (e) {
-      if (Platform.OS !== "web") {
-        Alert.alert(e);
-      } else {
-        window.alert(e);
-      }
+      setAlertMessage(e);
     } finally {
       setAddingBookings(false);
     }
@@ -160,25 +128,17 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
             item.date === pItem.date && item.className !== pItem.className
         )
       ) {
-        const errMsg = "Se puede reservar una clase por día.";
-        if (Platform.OS !== "web") {
-          Alert.alert(errMsg);
-        } else {
-          window.alert(errMsg);
-        }
+        setAlertMessage("Se puede reservar una clase por día.");
         return;
       }
 
       if (bookedClasses.find((item) => item.date === pItem.date)) {
-        const errMes = `Ya tenes una reserva para el día ${moment(
-          pItem.date,
-          "YYYY-MM-DD"
-        ).format("DD/MM")}`;
-        if (Platform.OS !== "web") {
-          Alert.alert(errMes);
-        } else {
-          window.alert(errMes);
-        }
+        setAlertMessage(
+          `Ya tenes una reserva para el día ${moment(
+            pItem.date,
+            "YYYY-MM-DD"
+          ).format("DD/MM")}`
+        );
         return;
       }
       const index = checkoutClasses.findIndex(
@@ -311,6 +271,15 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
                 onPress={checkoutBookings}
               />
             )}
+            <Alert
+              show={!!alertMessage}
+              message={alertMessage}
+              showCancelButton={false}
+              onConfirmPressed={() => {
+                setAlertMessage(null);
+                if (onOkAlert) onOkAlert();
+              }}
+            />
           </CentredWrapper>
         </>
       ) : (

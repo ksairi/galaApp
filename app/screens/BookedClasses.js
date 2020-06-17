@@ -1,12 +1,5 @@
-import React, {useCallback, useState, useEffect} from "react";
-import {
-  SectionList,
-  Text,
-  TouchableOpacity,
-  Alert,
-  View,
-  Platform,
-} from "react-native";
+import React, {useState, useEffect} from "react";
+import {SectionList, Text, TouchableOpacity, View} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
@@ -15,6 +8,7 @@ import GenericText from "components/presentationals/GenericText";
 import {connect} from "react-redux";
 import ActionsCreators from "redux/actions";
 import moment from "moment";
+import Alert from "components/presentationals/Alert";
 
 const styles = {
   item: {
@@ -43,6 +37,10 @@ const styles = {
 
 function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
   const [sortedClasses, setSortedClasses] = useState([]);
+  const [alertMessage, setAlertMessage] = useState(null);
+  const [onOKPress, setOnOKPress] = useState(null);
+  const [showCancelButton, setShowCancelButton] = useState(false);
+  const [showProgress, setShowProgress] = useState(false);
   useEffect(() => {
     let tempSortedClasses = [];
     const alreadyFiltered = [];
@@ -103,66 +101,45 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
     dispatch(ActionsCreators.deleteBookedClass(id));
     return {message, errorMessage};
   };
-  const deleteBooking = useCallback(
-    async ({id, className, dow, date, time}) => {
-      const delQuestion = `Deseas borrar la reserva de ${className} el ${dow} ${moment(
-        date,
-        "YYYY-MM-DD"
-      ).format("DD/MM")} a ${time} ?`;
-      if (Platform.OS !== "web") {
-        Alert.alert(delQuestion, "", [
-          {
-            text: "OK",
-            onPress: async () => {
-              try {
-                const {message, errorMessage} = await doDelete({
-                  userId,
-                  id,
-                  className,
-                  dow,
-                  date,
-                  time,
-                });
-                Alert.alert(message || errorMessage);
-              } catch (e) {
-                Alert.alert(e);
-              }
-            },
-          },
-          {text: "Cancelar", style: "cancel"},
-        ]);
-      } else {
-        if (window.confirm(delQuestion)) {
-          try {
-            const {message, errorMessage} = await doDelete({
-              userId,
-              id,
-              className,
-              dow,
-              date,
-              time,
-            });
-            window.alert(message || errorMessage);
-          } catch (e) {
-            window.alert(e);
-          }
-        }
-      }
-    },
-    []
-  );
   const Item = ({className, time, id, date, dow}) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{time}</Text>
       <Text style={styles.itemText}>{className}</Text>
       <TouchableOpacity
-        onPress={() => deleteBooking({id, time, className, date, dow})}
+        onPress={() => {
+          setAlertMessage(
+            `Deseas borrar la reserva de ${className} el ${dow} ${moment(
+              date,
+              "YYYY-MM-DD"
+            ).format("DD/MM")} a ${time} ?`
+          );
+          setOnOKPress(() => async () => {
+            setShowProgress(true);
+            try {
+              const {message, errorMessage} = await doDelete({
+                userId,
+                id,
+                time,
+                className,
+                date,
+                dow,
+              });
+              setAlertMessage(message || errorMessage);
+            } catch (e) {
+              setAlertMessage(e);
+            } finally {
+              setShowCancelButton(false);
+              setOnOKPress(() => () => setAlertMessage(null));
+              setShowProgress(false);
+            }
+          });
+          setShowCancelButton(true);
+        }}
       >
         <Text style={[styles.itemText, styles.removeBooking]}>Borrar</Text>
       </TouchableOpacity>
     </View>
   );
-
   return (
     <RootWrapper style={{padding: 0}}>
       {sortedClasses.length > 0 ? (
@@ -213,6 +190,20 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
           </TouchableOpacity>
         </View>
       )}
+      <Alert
+        {...{showCancelButton, showProgress}}
+        show={!!alertMessage}
+        message={alertMessage}
+        onConfirmPressed={() => {
+          if (onOKPress) {
+            onOKPress();
+            setOnOKPress(null);
+          }
+        }}
+        onCancelPressed={() => {
+          setAlertMessage(null);
+        }}
+      />
     </RootWrapper>
   );
 }

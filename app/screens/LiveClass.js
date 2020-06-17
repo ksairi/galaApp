@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  Platform,
-  Linking,
-  Alert,
-} from "react-native";
+import {Text, View, TouchableOpacity, Platform, Linking} from "react-native";
 import {WebView} from "react-native-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -20,6 +13,7 @@ import {genericBackgroundColor} from "components/styles";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import {detect} from "detect-browser";
+import Alert from "components/presentationals/Alert";
 
 const styles = {
   title: {
@@ -36,6 +30,7 @@ const styles = {
 export default class LiveClass extends React.Component {
   state = {
     loading: true,
+    message: null,
   };
 
   getHost = () => {
@@ -90,14 +85,7 @@ export default class LiveClass extends React.Component {
     try {
       const result = JSON.parse(nativeEvent.data);
       if (result.status === "error") {
-        Alert.alert("La clase no ha empezado aun.", "", [
-          {
-            text: "OK",
-            onPress: () => {
-              this.props.navigation.goBack();
-            },
-          },
-        ]);
+        this.setState({message: "La clase no ha empezado aun"});
       }
       // eslint-disable-next-line no-empty
     } catch (e) {}
@@ -116,7 +104,7 @@ export default class LiveClass extends React.Component {
           this.props.navigation.navigate(Screens.Home);
           await Linking.openURL(link);
         } catch (e) {
-          Alert.alert("Por favor descargue la app Zoom");
+          this.setState({message: "Por favor descargue la app Zoom"});
         }
       }
       if (Platform.OS === "web") {
@@ -130,13 +118,7 @@ export default class LiveClass extends React.Component {
         }
       }
     } catch (e) {
-      if (Platform.OS === "web") {
-        // eslint-disable-next-line no-alert
-        window.alert(Messages.SERVER_ERROR);
-      } else {
-        Alert.alert(Messages.SERVER_ERROR);
-      }
-      this.props.navigation.navigate(Screens.Home);
+      this.setState({message: Messages.SERVER_ERROR});
     }
   };
 
@@ -189,6 +171,14 @@ export default class LiveClass extends React.Component {
             onMessage={this.onMessage}
             injectedJavaScript={this.injectedJs}
             mediaPlaybackRequiresUserAction={false}
+          />
+          <Alert
+            show={!!this.state.message}
+            message={this.state.message}
+            showCancelButton={false}
+            onConfirmPressed={() => {
+              this.props.navigation.navigate(Screens.Home);
+            }}
           />
         </RootWrapper>
       </>

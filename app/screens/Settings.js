@@ -1,13 +1,5 @@
-/* eslint-disable no-alert */
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Switch,
-  Alert,
-  Platform,
-} from "react-native";
+import {View, Text, TouchableOpacity, Switch} from "react-native";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import GScrollView from "components/presentationals/GenericScrollView";
@@ -15,6 +7,7 @@ import ActionsCreators from "redux/actions";
 import {Screens, AnalitycsEventsLabels} from "config/settings";
 import {synchMemberProperties} from "helpers/UserDataHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
+import Alert from "components/presentationals/Alert";
 
 const styles = {
   settingsWrapper: {flex: 0.4},
@@ -37,31 +30,10 @@ const styles = {
   userId: state.userData.userId,
 }))
 export default class Settings extends React.Component {
-  logout = () => {
-    if (Platform.OS !== "web") {
-      Alert.alert(
-        "",
-        "¿Cerrar sesión?",
-        [
-          {text: "No", style: "cancel"},
-          {
-            text: "Sí",
-            onPress: () => {
-              AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
+  state = {showAlert: false};
 
-              this.props.navigation.navigate(Screens.LoginStack);
-              this.props.dispatch(ActionsCreators.logout());
-            },
-          },
-        ],
-        {cancelable: true}
-      );
-      // eslint-disable-next-line no-restricted-globals
-    } else if (window.confirm("¿Cerrar sesión?")) {
-      AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
-      this.props.navigation.navigate(Screens.LoginStack);
-      this.props.dispatch(ActionsCreators.logout());
-    }
+  logout = () => {
+    this.setState({showAlert: true});
   };
 
   componentDidMount() {
@@ -112,6 +84,20 @@ export default class Settings extends React.Component {
               <Text style={styles.settingText}>Cerrar Sesión</Text>
             </TouchableOpacity>
           </View>
+          <Alert
+            show={!!this.state.showAlert}
+            message="¿Cerrar sesión?"
+            showCancelButton={true}
+            onConfirmPressed={() => {
+              this.setState({showAlert: false});
+              AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
+              this.props.navigation.navigate(Screens.LoginStack);
+              this.props.dispatch(ActionsCreators.logout());
+            }}
+            onCancelPressed={() => {
+              this.setState({showAlert: false});
+            }}
+          />
         </RootWrapper>
       </GScrollView>
     );

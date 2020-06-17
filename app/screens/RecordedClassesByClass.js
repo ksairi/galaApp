@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, Alert, View} from "react-native";
+import {FlatList, Text, TouchableOpacity, View} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -7,6 +7,7 @@ import {Screens, AnalitycsEventsLabels} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
+import Alert from "components/presentationals/Alert";
 
 const styles = {
   item: {
@@ -21,6 +22,7 @@ const styles = {
 export default ({navigation}) => {
   const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   useEffect(() => {
     const fetchRecordedClasses = async () => {
@@ -31,14 +33,7 @@ export default ({navigation}) => {
         setRecordings(recordings);
         setLoading(false);
       } catch (e) {
-        Alert.alert("", e, [
-          {
-            text: "OK",
-            onPress: () => {
-              navigation.navigate(Screens.Home);
-            },
-          },
-        ]);
+        setErrorMessage(errorMessage);
       }
     };
     fetchRecordedClasses();
@@ -135,6 +130,14 @@ export default ({navigation}) => {
           </GenericText>
         </View>
       )}
+      <Alert
+        show={!!errorMessage}
+        message={errorMessage}
+        onConfirmPressed={() => {
+          navigation.navigate(Screens.Home);
+          setErrorMessage(null);
+        }}
+      />
     </RootWrapper>
   );
 };
