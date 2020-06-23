@@ -303,3 +303,12 @@ export const getClassesToBook = () =>
     .catch((error) => {
       throw error;
     });
+
+export const getAffidavitQuestions = () =>
+  connectToServer(Urls.GET_AFFIDAVIT_QUESTIONS)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });

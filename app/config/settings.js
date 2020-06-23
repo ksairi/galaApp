@@ -38,6 +38,7 @@ export const Urls = {
   DELETE_BOOKING: `${SERVER_HOSTNAME_2}deleteClassBookings.php`,
   GET_CLASSES_TO_BOOK: `${SERVER_HOSTNAME_2}getClassesToBook.php`,
   NEW_CLASSES_BOOKINGS: `${SERVER_HOSTNAME_2}newClassesBookings.php`,
+  GET_AFFIDAVIT_QUESTIONS: `${SERVER_HOSTNAME_2}getAffidavitQuestions.php`,
 };
 
 export const Messages = {
@@ -98,6 +99,7 @@ export const Screens = {
   SuggestAppDownload: "SuggestAppDownload",
   BookedClasses: "BookedClasses",
   ClassesToBook: "ClassesToBook",
+  Affidavit: "Affidavit",
 };
 
 export const SignUpConstraints = {
@@ -241,7 +243,7 @@ export const SectionsData = [
       arrow: {marginTop: 15},
     },
     homeStyle: {fontSize: 40, color: "white"},
-    screen: Screens.ClassesToBook,
+    screen: Screens.Affidavit,
   },
   // {
   //   icon: 'exclamation',

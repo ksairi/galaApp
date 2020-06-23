@@ -1,9 +1,9 @@
 import React, {ReactNode} from "react";
 import {ActivityIndicator, View} from "react-native";
 
-interface Props {
-  visible: string;
-}
+type Props = {
+  visible: boolean;
+};
 
 export default class LoadingSpinner extends React.PureComponent<Props> {
   render(): ReactNode {

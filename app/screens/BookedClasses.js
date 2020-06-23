@@ -182,7 +182,7 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
             </GenericText>
           </View>
           <TouchableOpacity
-            onPress={() => navigation.navigate(Screens.ClassesToBook)}
+            onPress={() => navigation.navigate(Screens.Affidavit)}
           >
             <GenericText style={{fontSize: 18, marginTop: 20}}>
               Hacelo acá!

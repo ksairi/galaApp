@@ -31,6 +31,7 @@
     "test": "jest",
     "react-devtools": "react-devtools",
     "lint": "eslint './**/*.{js,tsx,ts}' --fix",
+    "typecheck":"tsc",
     "nexus5:android": "emulator -avd Nexus_5_API_28 &",
     "publish:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' &&  expo publish && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
     "deploy:ios:prod": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"default\")' &&  expo build:ios && expo upload:ios && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
@@ -54,7 +55,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && yarn typecheck"
     }
   },
   "dependencies": {

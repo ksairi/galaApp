@@ -231,7 +231,7 @@ export default class Header extends React.PureComponent {
                 <Text
                   style={[
                     styles.title,
-                    {fontSize: this.props.title.length >= 13 ? 17 : 19},
+                    {fontSize: this.props.title.length >= 13 ? 15 : 19},
                   ]}
                 >
                   {this.props.title}

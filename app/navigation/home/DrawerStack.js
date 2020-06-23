@@ -14,7 +14,7 @@ import CameraView from "screens/CameraView";
 import LiveClass from "screens/LiveClass";
 import RecordedClassesByClass from "screens/RecordedClassesByClass";
 import BookedClasses from "screens/BookedClasses";
-import ClassesToBook from "screens/ClassesToBook";
+import AffidavitScreen from "screens/ClassesToBook";
 import DrawerContentComponent from "components/containers/DrawerContentComponent";
 import Header from "components/containers/Header";
 
@@ -37,7 +37,7 @@ const BookedClassesNavigator = createStackNavigator(
 );
 
 const ClassesToBookNavigator = createStackNavigator(
-  {[Screens.ClassesToBook]: {screen: ClassesToBook}},
+  {[Screens.ClassesToBook]: {screen: AffidavitScreen}},
   {
     navigationOptions: ({navigation}) => ({
       header: <Header navigation={navigation} isHomeHeader />,

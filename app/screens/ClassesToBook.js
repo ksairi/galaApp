@@ -40,7 +40,13 @@ const styles = {
   selected: {color: "green"},
 };
 
-function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
+function ClassesToBook({
+  navigation,
+  userId,
+  fullName,
+  bookedClasses,
+  dispatch,
+}) {
   const [classesToBook, setClassesToBook] = useState([]);
   const [checkoutClasses, setCheckoutClasses] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -81,6 +87,7 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
       setAddingBookings(true);
       const result = await ApiHelper.newBookings({
         userId,
+        fullName,
         bookings: checkoutClasses,
       });
       let alertMessage = "";
@@ -306,4 +313,5 @@ function ClassesToBook({navigation, userId, bookedClasses, dispatch}) {
 export default connect((state) => ({
   bookedClasses: state.bookedClasses,
   userId: state.userData.userId,
+  fullName: state.userData.name,
 }))(ClassesToBook);
