@@ -9,15 +9,24 @@ import * as ApiHelper from "helpers/ApiHelper";
 import Alert from "components/presentationals/Alert";
 
 const styles = {
-  wrapper: {flex: 1, justifyContent: "center", alignItems: "center"},
+  wrapper: {flex: 0.5, justifyContent: "center", alignItems: "center"},
   questionItem: {
     flexDirection: "row",
     marginTop: 5,
     marginBottom: 5,
+    width: 350,
+    paddingRight: 10,
   },
   questionText: {
     fontFamily: "lato-regular",
     fontSize: 18,
+    alignSelf: "flex-start",
+    color: "white",
+    flex: 1,
+  },
+  switchLabels: {
+    fontFamily: "lato-regular",
+    fontSize: 12,
     alignSelf: "flex-start",
     color: "white",
     flex: 1,
@@ -64,21 +73,29 @@ export default function AffidavitScreen({navigation}) {
             questions.map((question, index) => (
               <View key={index} style={styles.questionItem}>
                 <Text style={styles.questionText}>{question}</Text>
-                <Switch
-                  style={{alignSelf: "flex-end"}}
-                  value={!!responses.find((item) => item.index === index)}
-                  ios_backgroundColor="grey"
-                  trackColor="green"
-                  onValueChange={(value) => {
-                    onValueChange(value, index);
-                  }}
-                />
+                <View>
+                  <View style={{flexDirection: "row"}}>
+                    <Text style={styles.switchLabels}>Si</Text>
+                    <Text> </Text>
+                    <Text style={styles.switchLabels}>No</Text>
+                  </View>
+                  <Switch
+                    style={{alignSelf: "flex-end"}}
+                    trackColor={{false: "green"}}
+                    value={!!responses.find((item) => item.index === index)}
+                    ios_backgroundColor="grey"
+                    onValueChange={(value) => {
+                      onValueChange(value, index);
+                    }}
+                  />
+                </View>
               </View>
             ))
           )}
         </View>
         {questions.length === responses.length && (
           <Button
+            containerStyle={{flex: 0.5}}
             text={"Firmar"}
             onPress={() => navigation.navigate(Screens.ClassesToBook)}
           />

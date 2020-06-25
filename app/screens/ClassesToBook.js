@@ -29,7 +29,7 @@ const styles = {
   },
   classDataText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 13,
     fontFamily: "lato-regular",
   },
   time: {width: 60},
@@ -265,19 +265,23 @@ function ClassesToBook({
                   </Text>
                 );
               }}
+              ListFooterComponent={
+                checkoutClasses.length > 0 && (
+                  <Button
+                    containerStyle={{marginTop: 10}}
+                    text={
+                      addingBookings
+                        ? "Reservando..."
+                        : `Reserva ${checkoutClasses.length} ${
+                            checkoutClasses.length === 1 ? "clase" : "clases"
+                          }`
+                    }
+                    onPress={checkoutBookings}
+                  />
+                )
+              }
             />
-            {checkoutClasses.length > 0 && (
-              <Button
-                text={
-                  addingBookings
-                    ? "Reservando..."
-                    : `Reserva ${checkoutClasses.length} ${
-                        checkoutClasses.length === 1 ? "clase" : "clases"
-                      }`
-                }
-                onPress={checkoutBookings}
-              />
-            )}
+
             <Alert
               show={!!alertMessage}
               message={alertMessage}

@@ -70,7 +70,7 @@ export default class App extends React.Component {
     );
   }
 }
-// YellowBox.ignoreWarnings(['Setting a timer', 'Remote debugger', 'Warning: ListView is deprecated',
+// YellowBox.ignoreWarnings(['Setting a timer', 'Remote debugger',
 // 'Warning: componentWillMount is deprecated',
 // 'Warning: componentWillUpdate is deprecated',
 // 'Warning: componentWillReceiveProps is deprecated'])
