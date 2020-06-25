@@ -219,32 +219,32 @@ export const SectionsData = [
 
     screen: Screens.RecordedClassesByClass,
   },
-  {
-    label: "TUS RESERVAS",
-    ...requiresMembership,
-    IconComponent: Foundation,
-    icon: "bookmark",
-    drawerStyle: {
-      icon: {fontSize: 50, paddingLeft: 7},
-      label: {marginTop: 5},
-      arrow: {marginTop: 15},
-    },
-    homeStyle: {fontSize: 40, color: "white"},
-    screen: Screens.BookedClasses,
-  },
-  {
-    label: "RESERVA TUS CLASES",
-    ...requiresMembership,
-    IconComponent: Foundation,
-    icon: "bookmark",
-    drawerStyle: {
-      icon: {fontSize: 50, paddingLeft: 7},
-      label: {marginTop: 5},
-      arrow: {marginTop: 15},
-    },
-    homeStyle: {fontSize: 40, color: "white"},
-    screen: Screens.Affidavit,
-  },
+  // {
+  //   label: "TUS RESERVAS",
+  //   ...requiresMembership,
+  //   IconComponent: Foundation,
+  //   icon: "bookmark",
+  //   drawerStyle: {
+  //     icon: {fontSize: 50, paddingLeft: 7},
+  //     label: {marginTop: 5},
+  //     arrow: {marginTop: 15},
+  //   },
+  //   homeStyle: {fontSize: 40, color: "white"},
+  //   screen: Screens.BookedClasses,
+  // },
+  // {
+  //   label: "RESERVA TUS CLASES",
+  //   ...requiresMembership,
+  //   IconComponent: Foundation,
+  //   icon: "bookmark",
+  //   drawerStyle: {
+  //     icon: {fontSize: 50, paddingLeft: 7},
+  //     label: {marginTop: 5},
+  //     arrow: {marginTop: 15},
+  //   },
+  //   homeStyle: {fontSize: 40, color: "white"},
+  //   screen: Screens.Affidavit,
+  // },
   // {
   //   icon: 'exclamation',
   //   label: 'SOCIO NUEVO',
