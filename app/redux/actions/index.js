@@ -7,6 +7,7 @@ import * as NavigationActions from "./navigation";
 import * as DeviceActions from "./device";
 import * as SynchedDataActions from "./synchedData";
 import * as MessagesActions from "./messages";
+import * as BookedClassesActions from "./bookedClasses";
 
 export default {
   ...NotificationsActions,
@@ -18,4 +19,5 @@ export default {
   ...DeviceActions,
   ...SynchedDataActions,
   ...MessagesActions,
+  ...BookedClassesActions,
 };

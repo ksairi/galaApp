@@ -220,15 +220,11 @@ export default class CameraView extends React.Component {
 
   toggleFacing = () =>
     this.setState({
-      // eslint-disable-next-line react/no-access-state-in-setstate
       cameraType: this.state.cameraType === "back" ? "front" : "back",
     });
 
-  toggleFlash = () =>
-    // eslint-disable-next-line react/no-access-state-in-setstate
-    this.setState({flash: flashModeOrder[this.state.flash]});
+  toggleFlash = () => this.setState({flash: flashModeOrder[this.state.flash]});
 
-  // eslint-disable-next-line class-methods-use-this
   showAlert(message) {
     Alert.alert("", message, [{text: "Aceptar", style: "cancel"}]);
   }

@@ -276,3 +276,39 @@ export const getMeetingId = (params) => {
       throw error;
     });
 };
+
+export const newBookings = (params) =>
+  connectToServer(Urls.NEW_CLASSES_BOOKINGS, params)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+export const deleteBooking = (params) =>
+  connectToServer(Urls.DELETE_BOOKING, params)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+export const getClassesToBook = () =>
+  connectToServer(Urls.GET_CLASSES_TO_BOOK)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
+
+export const getAffidavitQuestions = () =>
+  connectToServer(Urls.GET_AFFIDAVIT_QUESTIONS)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      throw error;
+    });
