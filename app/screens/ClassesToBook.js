@@ -1,5 +1,11 @@
-import React, {useEffect, useState, useCallback} from "react";
-import {SectionList, Text, TouchableOpacity, View} from "react-native";
+import React, {useEffect, useState, useCallback, useRef} from "react";
+import {
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
+  PixelRatio,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -11,6 +17,7 @@ import {connect} from "react-redux";
 import moment from "moment";
 import ActionsCreators from "redux/actions";
 import Alert from "components/presentationals/Alert";
+import SectionListGetItemLayout from "react-native-section-list-get-item-layout";
 
 const styles = {
   item: {
@@ -53,6 +60,7 @@ function ClassesToBook({
   const [alertMessage, setAlertMessage] = useState(null);
   const [addingBookings, setAddingBookings] = useState(false);
   const [onOkAlert, setOnOkAlert] = useState(null);
+  const listRef = useRef(null);
 
   const fetchClassesToBook = useCallback(async () => {
     setClassesToBook([]);
@@ -160,9 +168,17 @@ function ClassesToBook({
             .slice(0, index)
             .concat(checkoutClasses.slice(index + 1))
         );
+        listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
+
         return;
       }
       setCheckoutClasses((checkoutClases) => [...checkoutClases, pItem]);
+      if (classesToBook.length) {
+        listRef.current.scrollToLocation({
+          sectionIndex: 1,
+          itemIndex: classesToBook[classesToBook.length - 1].data.length,
+        });
+      }
     },
     [checkoutClasses]
   );
@@ -248,8 +264,13 @@ function ClassesToBook({
           </Text>
           <CentredWrapper>
             <SectionList
+              ref={listRef}
               keyExtractor={() => Math.random().toString()}
               sections={classesToBook}
+              getItemLayout={SectionListGetItemLayout({
+                getItemHeight: () => 40,
+                getSectionFooterHeight: () => 70,
+              })}
               renderItem={({item, section}) => (
                 <Item
                   {...{item}}

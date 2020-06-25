@@ -81,7 +81,7 @@ export default function AffidavitScreen({navigation}) {
                   </View>
                   <Switch
                     style={{alignSelf: "flex-end"}}
-                    trackColor={{false: "green"}}
+                    trackColor={{false: "grey", true: "green"}}
                     value={!!responses.find((item) => item.index === index)}
                     ios_backgroundColor="grey"
                     onValueChange={(value) => {
