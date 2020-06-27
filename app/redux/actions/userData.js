@@ -56,3 +56,9 @@ export function setReceiveNotificationsSynched() {
     dispatch({type: ActionsTypes.SET_RECEIVE_NOTIFICATIONS_SYNCHED});
   };
 }
+
+export function setLastDateShowingFreePassEnding(date) {
+  return (dispatch) => {
+    dispatch({type: ActionsTypes.SET_LAST_DATE_SHOWING_FREE_PASS_ENDING, date});
+  };
+}

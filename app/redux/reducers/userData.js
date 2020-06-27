@@ -46,3 +46,9 @@ export const receiveNotifications = createReducer(null, {
     return {...state, synched: true};
   },
 });
+
+export const lastDateShowingFreePassEnding = createReducer(null, {
+  [ActionsTypes.SET_LAST_DATE_SHOWING_FREE_PASS_ENDING](_state, action) {
+    return action.date;
+  },
+});

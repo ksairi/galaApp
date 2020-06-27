@@ -7,6 +7,7 @@ import VideoPlayer from "screens/VideoPlayer";
 import RecordedClassesByDate from "screens/RecordedClassesByDate";
 import RecordedClassesByTime from "screens/RecordedClassesByTime";
 import AffidavitScreen from "screens/AffidavitScreen";
+import PayMonthlyFee from "screens/PayMonthlyFee";
 import DrawerStack from "./DrawerStack";
 
 const SettingsNavigator = createStackNavigator(
@@ -69,9 +70,22 @@ const AffidavitScreenNavigator = createStackNavigator(
       header: (
         <Header
           navigation={navigation}
-          title={`DECLARACIÓN JURADA`}
+          title={"DECLARACIÓN JURADA"}
           backScreen={Screens.Home}
         />
+      ),
+    }),
+  }
+);
+
+const PayMonthlyFeeScreenNavigator = createStackNavigator(
+  {
+    [Screens.PayMonthlyFee]: {screen: PayMonthlyFee},
+  },
+  {
+    navigationOptions: ({navigation}) => ({
+      header: (
+        <Header navigation={navigation} title={""} backScreen={Screens.Home} />
       ),
     }),
   }
@@ -85,6 +99,7 @@ export default createStackNavigator(
     [Screens.RecordedClassesByDate]: {screen: RecordedClassesByDateNavigator},
     [Screens.RecordedClassesByTime]: {screen: RecordedClassesByTimeNavigator},
     [Screens.Affidavit]: {screen: AffidavitScreenNavigator},
+    [Screens.PayMonthlyFee]: {screen: PayMonthlyFeeScreenNavigator},
   },
   {
     headerMode: "none",

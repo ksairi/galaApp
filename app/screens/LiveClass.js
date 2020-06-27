@@ -10,11 +10,10 @@ import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
 import {Ionicons} from "@expo/vector-icons";
 import {genericBackgroundColor} from "components/styles";
-import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import {detect} from "detect-browser";
 import Alert from "components/presentationals/Alert";
-
+import * as withEnv from "utils/env";
 const styles = {
   title: {
     alignSelf: "center",
@@ -33,16 +32,11 @@ export default class LiveClass extends React.Component {
     message: null,
   };
 
-  getHost = () => {
-    const {slug} = Constants.manifest;
-    return slug === "galaApp" ? "galagym.com" : "test.galagym.com";
-  };
-
   constructor(props) {
     super(props);
     const {studioNumber} = props.navigation.state.params;
     const name = props.userData?.name;
-    this.uri = `https://${this.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
+    this.uri = `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
   }
 
   injectedJs = `

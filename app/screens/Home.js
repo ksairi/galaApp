@@ -15,6 +15,8 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Slider from "components/presentationals/Slider";
 import TimetableItem from "components/presentationals/TimetableItem";
 import RoutineItem from "components/presentationals/RoutineItem";
+import Alert from "components/presentationals/Alert";
+import moment from "moment";
 
 const styles = {
   buttonsContainer: {
@@ -80,10 +82,12 @@ const AnimatedSlider = Animatable.createAnimatableComponent(Slider);
   newMemberData: state.newMemberData,
   routines: state.routines,
   timetable: state.timetable,
+  lastDateShowingFreePassEnding: state.lastDateShowingFreePassEnding,
 }))
 export default class Home extends React.Component {
   state = {
     appState: AppState.currentState,
+    alertMessage: null,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -120,6 +124,24 @@ export default class Home extends React.Component {
     if (this.props.currentHomeDrawerOption !== "") {
       this.props.navigation.navigate(this.props.currentHomeDrawerOption);
       this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
+    }
+    const {freePassEndDate} = this.props.userData;
+    const freePassDaysLeft =
+      freePassEndDate &&
+      moment(freePassEndDate, "DD/MM/YYYY").diff(moment(), "days");
+
+    if (
+      freePassDaysLeft &&
+      freePassDaysLeft <= 7 &&
+      (!this.props.lastDateShowingFreePassEnding ||
+        moment().diff(this.props.lastDateShowingFreePassEnding, "days") !== 0)
+    ) {
+      this.props.dispatch(
+        ActionsCreators.setLastDateShowingFreePassEnding(moment())
+      );
+      this.setState({
+        alertMessage: `Te quedan ${freePassDaysLeft} días de tu Free Pass. ¿Querés renovarlo?`,
+      });
     }
   }
 
@@ -232,6 +254,18 @@ export default class Home extends React.Component {
               })}
             </Animatable.View>
             <Footer />
+            <Alert
+              show={!!this.state.alertMessage}
+              message={this.state.alertMessage}
+              onConfirmPressed={() => {
+                this.setState({alertMessage: null});
+                this.props.navigation.navigate(Screens.PayMonthlyFee);
+              }}
+              showCancelButton={true}
+              onCancelPressed={() => {
+                this.setState({alertMessage: null});
+              }}
+            />
           </CentredWrapper>
         </RootWrapper>
       </GScrollView>

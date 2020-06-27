@@ -132,6 +132,7 @@ export const Screens = {
   BookedClasses: "BookedClasses",
   ClassesToBook: "ClassesToBook",
   Affidavit: "Affidavit",
+  PayMonthlyFee: "PayMonthlyFee",
 };
 
 export const SignUpConstraints = {
@@ -169,6 +170,8 @@ export const ActionsTypes = {
   UPLOAD_PROFILE_PICTURE: "UPLOAD_PROFILE_PICTURE",
   SET_PROFILE_PICTURE_SYNCHED: "SET_PROFILE_PICTURE_SYNCHED",
   SET_RECEIVE_NOTIFICATIONS_SYNCHED: "SET_RECEIVE_NOTIFICATIONS_SYNCHED",
+  SET_LAST_DATE_SHOWING_FREE_PASS_ENDING:
+    "SET_LAST_DATE_SHOWING_FREE_PASS_ENDING",
   // Session
   LOG_IN: "LOG_IN",
   LOG_OUT: "LOG_OUT",
