@@ -1,5 +1,5 @@
 import {Platform, Linking} from "react-native";
-import {FontAwesome, Foundation} from "@expo/vector-icons";
+import {FontAwesome, Foundation, MaterialIcons} from "@expo/vector-icons";
 import Constants from "expo-constants";
 import {DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2} from "./devHosts";
 
@@ -218,6 +218,15 @@ const liveClassProps = {
 const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
 
 export const SectionsData = [
+  {
+    label: "COMPRÁ TU SUBSCRIPCIÓN",
+    screen: Screens.PayMonthlyFee,
+    ...liveClassProps,
+    icon: "payment",
+    IconComponent: MaterialIcons,
+    requiresActiveMember: false,
+    requiresFreePlan: true,
+  },
   {
     label: "VIVO ESTUDIO 1",
     params: {studioNumber: 1, title: "ESTUDIO 1"},

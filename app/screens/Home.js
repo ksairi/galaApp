@@ -132,7 +132,7 @@ export default class Home extends React.Component {
 
     if (
       freePassDaysLeft &&
-      freePassDaysLeft <= 7 &&
+      freePassDaysLeft <= 3 &&
       (!this.props.lastDateShowingFreePassEnding ||
         moment().diff(this.props.lastDateShowingFreePassEnding, "days") !== 0)
     ) {
@@ -208,11 +208,14 @@ export default class Home extends React.Component {
               {SectionsData.map((sectionData, index) => {
                 if (
                   (sectionData.screen !== Screens.NewMember &&
+                    sectionData.screen !== Screens.PayMonthlyFee &&
                     !sectionData.requiresActiveMember) ||
                   (sectionData.screen === Screens.NewMember &&
                     this.state.freeEntryDaysLeft > 0) ||
                   (sectionData.requiresActiveMember &&
-                    this.props.routines.length > 0)
+                    this.props.routines.length > 0) ||
+                  (sectionData.requiresFreePlan &&
+                    this.props.userData.freePassEndDate)
                 ) {
                   return (
                     <TouchableOpacity
