@@ -219,15 +219,6 @@ const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
 
 export const SectionsData = [
   {
-    label: "COMPRÁ TU SUBSCRIPCIÓN",
-    screen: Screens.PayMonthlyFee,
-    ...liveClassProps,
-    icon: "payment",
-    IconComponent: MaterialIcons,
-    requiresActiveMember: false,
-    requiresFreePlan: true,
-  },
-  {
     label: "VIVO ESTUDIO 1",
     params: {studioNumber: 1, title: "ESTUDIO 1"},
     screen: Screens.LiveClassStudio1,
@@ -374,6 +365,15 @@ export const SectionsData = [
       arrow: {marginTop: 13},
     },
     homeStyle: {fontSize: 40, color: "white"},
+  },
+  {
+    label: "COMPRÁ TU SUBSCRIPCIÓN",
+    screen: Screens.PayMonthlyFee,
+    ...liveClassProps,
+    icon: "payment",
+    IconComponent: MaterialIcons,
+    requiresActiveMember: false,
+    requiresFreePlan: true,
   },
 ];
 

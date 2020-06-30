@@ -268,6 +268,9 @@ export default class Home extends React.Component {
               onCancelPressed={() => {
                 this.setState({alertMessage: null});
               }}
+              messageStyle={{fontSize: 20}}
+              confirmButtonTextStyle={{fontSize: 20}}
+              cancelButtonTextStyle={{fontSize: 20}}
             />
           </CentredWrapper>
         </RootWrapper>

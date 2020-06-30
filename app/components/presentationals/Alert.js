@@ -1,25 +1,9 @@
 import React from "react";
 import AwesomeAlert from "react-native-awesome-alerts";
 
-export default ({
-  show,
-  message,
-  title,
-  showCancelButton,
-  onConfirmPressed,
-  onCancelPressed,
-  showProgress,
-}) => (
+export default (props) => (
   <AwesomeAlert
-    {...{
-      show,
-      title,
-      message,
-      showCancelButton,
-      onConfirmPressed,
-      onCancelPressed,
-      showProgress,
-    }}
+    {...props}
     closeOnTouchOutside={true}
     closeOnHardwareBackPress={true}
     showConfirmButton={true}
