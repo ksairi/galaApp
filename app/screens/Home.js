@@ -17,6 +17,7 @@ import TimetableItem from "components/presentationals/TimetableItem";
 import RoutineItem from "components/presentationals/RoutineItem";
 import Alert from "components/presentationals/Alert";
 import moment from "moment";
+import {isMemberActive} from "utils/userData";
 
 const styles = {
   buttonsContainer: {
@@ -131,7 +132,7 @@ export default class Home extends React.Component {
       moment(freePassEndDate, "DD/MM/YYYY").diff(moment(), "days");
 
     if (
-      freePassDaysLeft &&
+      freePassDaysLeft > 0 &&
       freePassDaysLeft <= 3 &&
       (!this.props.lastDateShowingFreePassEnding ||
         moment().diff(this.props.lastDateShowingFreePassEnding, "days") !== 0)
@@ -182,24 +183,28 @@ export default class Home extends React.Component {
                 Component={TimetableItem}
               />
             </View>
-            {!!activeRoutine && activeRoutine.ejercicios !== null && (
-              <>
-                <View style={styles.sliderTitleWrapper}>
-                  <Text style={styles.title}>Mis rutinas</Text>
-                  <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
-                    <Text style={styles.link}>Empezar &gt;</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.carouselDataContainer}>
-                  <AnimatedSlider
-                    useNativeDriver
-                    animation="zoomIn"
-                    items={activeRoutine.ejercicios}
-                    Component={RoutineItem}
-                  />
-                </View>
-              </>
-            )}
+            {isMemberActive(this.props) &&
+              !!activeRoutine &&
+              activeRoutine.ejercicios !== null && (
+                <>
+                  <View style={styles.sliderTitleWrapper}>
+                    <Text style={styles.title}>Mis rutinas</Text>
+                    <TouchableOpacity
+                      onPress={this.goToScreen(Screens.Routines)}
+                    >
+                      <Text style={styles.link}>Empezar &gt;</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.carouselDataContainer}>
+                    <AnimatedSlider
+                      useNativeDriver
+                      animation="zoomIn"
+                      items={activeRoutine.ejercicios}
+                      Component={RoutineItem}
+                    />
+                  </View>
+                </>
+              )}
             <Animatable.View
               useNativeDriver
               animation="slideInRight"
@@ -213,7 +218,7 @@ export default class Home extends React.Component {
                   (sectionData.screen === Screens.NewMember &&
                     this.state.freeEntryDaysLeft > 0) ||
                   (sectionData.requiresActiveMember &&
-                    this.props.routines.length > 0) ||
+                    isMemberActive(this.props)) ||
                   (sectionData.requiresFreePlan &&
                     this.props.userData.freePassEndDate)
                 ) {
