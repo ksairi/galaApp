@@ -177,7 +177,6 @@ const liveClassProps = {
     arrow: {marginTop: 15},
   },
   homeStyle: {fontSize: 40, color: "white"},
-  requiresActiveMember: true,
   ...requiresMembership,
 };
 
@@ -216,7 +215,7 @@ export const SectionsData = [
       arrow: {marginTop: 20},
     },
     homeStyle: {fontSize: 40, color: "white"},
-
+    ...requiresMembership,
     screen: Screens.RecordedClassesByClass,
   },
   // {
