@@ -75,8 +75,7 @@ export default class Header extends React.PureComponent {
 
   hideNotificationsText = () => {
     setTimeout(() => {
-      this.props.dispatch(ActionsCreators.setNotificationsText(null));
-      this.animatedBanner.transitionTo({opacity: 0}, 2000);
+      this.props.dispatch(ActionsCreators.setNotificationsText(""));
     }, 4000);
   };
 
