@@ -11,8 +11,6 @@ module.exports = async (env, argv) => {
         secure: "false",
       },
     };
-  } else {
-    config.output.publicPath = "/app/";
   }
   return config;
 };

@@ -1,5 +1,6 @@
 {
   "expo": {
+    "homepage":"http://ksairi.github.io/galaApp",
     "name": "Gala Staging",
     "description": "Mobile App for Gala Fitness Center",
     "owner": "ksairi",
