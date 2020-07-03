@@ -43,7 +43,7 @@
     "build:web:staging": "node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
     "build:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
     "deploy": "gh-pages -d web-build",
-    "predeploy": "expo build:web"
+    "predeploy": "expo build:web && echo app.galagym.com > web-build/CNAME"
   },
   "jest": {
     "preset": "jest-expo",
