@@ -16,6 +16,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-prettier": "^3.1.3",
     "eslint-plugin-react": "^7.19.0",
+    "gh-pages": "^3.1.0",
     "husky": "^4.2.5",
     "jest-expo": "^37.0.0",
     "lint-staged": "^10.2.2",
@@ -40,7 +41,11 @@
     "deploy:ios:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:ios --release-channel staging && expo upload:ios",
     "deploy:android:staging": "rm -rf node_modules && yarn && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:android -t app-bundle --release-channel staging && expo upload:android",
     "build:web:staging": "node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
-    "build:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'"
+    "build:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
+    "deploy:web:staging": "gh-pages -d web-build -o gala-wpa-staging",
+    "predeploy:web:staging": "expo build:web && echo testapp.galagym.com > web-build/CNAME",
+    "deploy:web:prod": "gh-pages -d web-build -o gala-wpa-prod && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
+    "predeploy:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && echo app.galagym.com > web-build/CNAME"
   },
   "jest": {
     "preset": "jest-expo",
