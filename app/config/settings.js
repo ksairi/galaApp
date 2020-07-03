@@ -1,41 +1,76 @@
 import {Platform, Linking} from "react-native";
 import {FontAwesome, Foundation} from "@expo/vector-icons";
 import Constants from "expo-constants";
-import {DEV_SERVER_HOSTNAME_2} from "./devHosts";
+import {DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2} from "./devHosts";
 
 const API_ROOT = "/api/";
-const getEnvironment = () => {
+
+const getServer2Environment = (path) => {
   const {slug} = Constants.manifest;
   return slug === "galaAppStaging"
-    ? "https://test.galagym.com"
-    : "https://galagym.com";
+    ? `https://test.galagym.com${API_ROOT}${path}`
+    : `https://galagym.com${API_ROOT}${path}`;
 };
 
-const SERVER_HOSTNAME_2 = __DEV__
-  ? DEV_SERVER_HOSTNAME_2 + API_ROOT
-  : getEnvironment() + API_ROOT;
+const getServerHostName2 = (path) => {
+  if (Platform.OS === "web") {
+    if (__DEV__) {
+      return API_ROOT.concat(path);
+    }
+  }
+  if (__DEV__) {
+    return `${DEV_SERVER_HOSTNAME_2}${API_ROOT}${path}`;
+  }
+  return getServer2Environment(path);
+};
+
+const getServer1Environment = (path) => {
+  const {slug} = Constants.manifest;
+  const port = slug === "galaAppStaging" ? "1083" : "1082";
+  return `http://galagym.sytes.net:${port}/${path}`;
+};
+
+const API_ROOT2 = "/api2/";
+
+const getServerHostName1 = (path) => {
+  const noPhpPath = path.replace(".php", "");
+  if (Platform.OS === "web") {
+    if (__DEV__) {
+      return API_ROOT2.concat(noPhpPath);
+    }
+    return getServer2Environment(path);
+  }
+  if (__DEV__) {
+    return `${DEV_SERVER_HOSTNAME_1}/${noPhpPath}`;
+  }
+  return getServer1Environment(noPhpPath);
+};
 
 export const Urls = {
-  LOGIN: `${SERVER_HOSTNAME_2}login.php`,
-  REGISTER: `${SERVER_HOSTNAME_2}register.php`,
-  RESET_PASSWORD: `${SERVER_HOSTNAME_2}resetPassword.php`,
-  SEND_REFERRAL: `${SERVER_HOSTNAME_2}sendReferral.php`,
-  FETCH_USER_DATA: `${SERVER_HOSTNAME_2}fetchUserData`,
-  FETCH_DYNAMIC_DATA: `${SERVER_HOSTNAME_2}fetchDynamicData.php`,
-  SET_CONTENT_SAVED: `${SERVER_HOSTNAME_2}setContentSaved.php`,
-  SEND_MESSAGES: `${SERVER_HOSTNAME_2}sendMessages.php`,
-  SET_NOTIFIED_MESSAGES_SAVED: `${SERVER_HOSTNAME_2}setNotifiedMessagesSaved.php`,
-  GET_REAL_TIME_MESSAGES: `${SERVER_HOSTNAME_2}getRealTimeMessages.php`,
-  SET_REAL_TIME_MESSAGES_SAVED: `${SERVER_HOSTNAME_2}setRealTimeMessagesSaved.php`,
-  UPLOAD_PROFILE_PICTURE: `${SERVER_HOSTNAME_2}uploadProfilePicture.php`,
-  PROFILE_PICTURES: `${SERVER_HOSTNAME_2}profile_pictures/`,
-  SYNCH_MEMBER_PROPERTIES: `${SERVER_HOSTNAME_2}synchMemberProperties.php`,
-  GET_RECORDED_CLASES: `${SERVER_HOSTNAME_2}getRecordedClasses.php`,
-  GET_MEETING_ID: `${SERVER_HOSTNAME_2}getMeetingId.php`,
-  DELETE_BOOKING: `${SERVER_HOSTNAME_2}deleteClassBookings.php`,
-  GET_CLASSES_TO_BOOK: `${SERVER_HOSTNAME_2}getClassesToBook.php`,
-  NEW_CLASSES_BOOKINGS: `${SERVER_HOSTNAME_2}newClassesBookings.php`,
-  GET_AFFIDAVIT_QUESTIONS: `${SERVER_HOSTNAME_2}getAffidavitQuestions.php`,
+  LOGIN: getServerHostName1("login.php"),
+  REGISTER: getServerHostName1("register.php"),
+  RESET_PASSWORD: getServerHostName1("resetPassword.php"),
+  FETCH_USER_DATA: getServerHostName1("fetchUserData.php"),
+  SEND_REFERRAL: getServerHostName2("sendReferral.php"),
+  FETCH_DYNAMIC_DATA: getServerHostName2("fetchDynamicData.php"),
+  SET_CONTENT_SAVED: getServerHostName2("setContentSaved.php"),
+  SEND_MESSAGES: getServerHostName2("sendMessages.php"),
+  SET_NOTIFIED_MESSAGES_SAVED: getServerHostName2(
+    "setNotifiedMessagesSaved.php"
+  ),
+  GET_REAL_TIME_MESSAGES: getServerHostName2("getRealTimeMessages.php"),
+  SET_REAL_TIME_MESSAGES_SAVED: getServerHostName2(
+    "setRealTimeMessagesSaved.php"
+  ),
+  UPLOAD_PROFILE_PICTURE: getServerHostName2("uploadProfilePicture.php"),
+  PROFILE_PICTURES: getServerHostName2("profile_pictures/"),
+  SYNCH_MEMBER_PROPERTIES: getServerHostName2("synchMemberProperties.php"),
+  GET_RECORDED_CLASES: getServerHostName2("getRecordedClasses.php"),
+  GET_MEETING_ID: getServerHostName2("getMeetingId.php"),
+  DELETE_BOOKING: getServerHostName2("deleteClassBookings.php"),
+  GET_CLASSES_TO_BOOK: getServerHostName2("getClassesToBook.php"),
+  NEW_CLASSES_BOOKINGS: getServerHostName2("newClassesBookings.php"),
+  GET_AFFIDAVIT_QUESTIONS: getServerHostName2("getAffidavitQuestions.php"),
 };
 
 export const Messages = {

@@ -4,11 +4,13 @@ const createExpoWebpackConfigAsync = require("@expo/webpack-config");
 module.exports = async (env, argv) => {
   const config = await createExpoWebpackConfigAsync(env, argv);
   if (env.mode === "development") {
-    const {DEV_HOST} = process.env;
     config.devServer.proxy = {
+      "/api2": {
+        target: "http://galaweb:3000",
+        pathRewrite: {"/api2": ""},
+      },
       "/api": {
-        target: DEV_HOST || "http://localhost:8081",
-        secure: "false",
+        target: "http://galaweb:3001",
       },
     };
   }

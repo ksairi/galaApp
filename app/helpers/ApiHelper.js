@@ -67,7 +67,6 @@ const connectToServer = (
 
 export const login = (userId, password, deviceId, cache) => {
   const loginParamters = {};
-
   loginParamters.userId = userId;
   loginParamters.password = password;
   loginParamters.notificationsToken = deviceId;
