@@ -11,12 +11,9 @@ const getEnvironment = () => {
     : "https://galagym.com";
 };
 
-const SERVER_HOSTNAME_2 =
-  Platform.OS === "web"
-    ? API_ROOT
-    : `${
-        __DEV__ ? DEV_SERVER_HOSTNAME_2 + API_ROOT : getEnvironment() + API_ROOT
-      }`;
+const SERVER_HOSTNAME_2 = __DEV__
+  ? DEV_SERVER_HOSTNAME_2 + API_ROOT
+  : getEnvironment() + API_ROOT;
 
 export const Urls = {
   LOGIN: `${SERVER_HOSTNAME_2}login.php`,
