@@ -5,8 +5,10 @@ import {WebView as WebViewWeb} from "react-native-web-webview";
 import RootWrapper from "components/presentationals/RootWrapper";
 import * as withEnv from "utils/env";
 import {Screens} from "config/settings";
+import {connect} from "react-redux";
+import ActionsCreators from "redux/actions";
 
-export default ({navigation}) => {
+const PayMonthlyFee = ({navigation, dispatch}) => {
   const uri = `${withEnv.getHost()}/api/payments/mercado-pago/virtual-monthly-fee.php`;
 
   const handleWebViewNavigationStateChange = (newNavState) => {
@@ -15,6 +17,8 @@ export default ({navigation}) => {
 
     if (url.includes("successful-payment.html")) {
       navigation.navigate(Screens.Home);
+      dispatch(ActionsCreators.cleanFreePassEndDate());
+      dispatch(ActionsCreators.setLastDateShowingFreePassEnding(null));
     }
   };
   return (
@@ -39,3 +43,4 @@ export default ({navigation}) => {
     </RootWrapper>
   );
 };
+export default connect(() => ({}))(PayMonthlyFee);

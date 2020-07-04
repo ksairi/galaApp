@@ -10,6 +10,9 @@ export const userData = createReducer(
     [ActionsTypes.SET_NEW_PASSWORD](state, action) {
       return {...state, password: action.password};
     },
+    [ActionsTypes.CLEAN_FREE_PASS_END_DATE](state) {
+      return {...state, freePassEndDate: null};
+    },
   }
 );
 

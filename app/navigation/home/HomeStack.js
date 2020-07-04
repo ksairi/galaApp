@@ -84,9 +84,7 @@ const PayMonthlyFeeScreenNavigator = createStackNavigator(
   },
   {
     navigationOptions: ({navigation}) => ({
-      header: (
-        <Header navigation={navigation} title={""} backScreen={Screens.Home} />
-      ),
+      header: <Header navigation={navigation} backScreen={Screens.Home} />,
     }),
   }
 );
