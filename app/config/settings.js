@@ -1,5 +1,5 @@
 import {Platform, Linking} from "react-native";
-import {FontAwesome, Foundation} from "@expo/vector-icons";
+import {FontAwesome, Foundation, MaterialIcons} from "@expo/vector-icons";
 import Constants from "expo-constants";
 import {DEV_SERVER_HOSTNAME_1, DEV_SERVER_HOSTNAME_2} from "./devHosts";
 
@@ -132,6 +132,7 @@ export const Screens = {
   BookedClasses: "BookedClasses",
   ClassesToBook: "ClassesToBook",
   Affidavit: "Affidavit",
+  PayMonthlyFee: "PayMonthlyFee",
 };
 
 export const SignUpConstraints = {
@@ -169,6 +170,9 @@ export const ActionsTypes = {
   UPLOAD_PROFILE_PICTURE: "UPLOAD_PROFILE_PICTURE",
   SET_PROFILE_PICTURE_SYNCHED: "SET_PROFILE_PICTURE_SYNCHED",
   SET_RECEIVE_NOTIFICATIONS_SYNCHED: "SET_RECEIVE_NOTIFICATIONS_SYNCHED",
+  SET_LAST_DATE_SHOWING_FREE_PASS_ENDING:
+    "SET_LAST_DATE_SHOWING_FREE_PASS_ENDING",
+  CLEAN_FREE_PASS_END_DATE: "CLEAN_FREE_PASS_END_DATE",
   // Session
   LOG_IN: "LOG_IN",
   LOG_OUT: "LOG_OUT",
@@ -199,7 +203,18 @@ export const ActionsTypes = {
 };
 
 const requiresMembership = {requiresActiveMember: true};
-
+const baseHomeStyle = {homeStyle: {fontSize: 40, color: "white"}};
+const bookingsData = {
+  ...requiresMembership,
+  IconComponent: Foundation,
+  icon: "bookmark",
+  drawerStyle: {
+    icon: {fontSize: 50, paddingLeft: 7},
+    label: {marginTop: 5},
+    arrow: {marginTop: 15},
+  },
+  ...baseHomeStyle,
+};
 const liveClassProps = {
   icon: "video-camera",
   IconComponent: FontAwesome,
@@ -208,7 +223,7 @@ const liveClassProps = {
     label: {marginTop: 5},
     arrow: {marginTop: 15},
   },
-  homeStyle: {fontSize: 40, color: "white"},
+  ...baseHomeStyle,
   ...requiresMembership,
 };
 
@@ -246,34 +261,18 @@ export const SectionsData = [
       label: {...liveClassProps.drawerStyle.label, fontSize: 17, marginTop: 15},
       arrow: {marginTop: 20},
     },
-    homeStyle: {fontSize: 40, color: "white"},
+    ...baseHomeStyle,
     ...requiresMembership,
     screen: Screens.RecordedClassesByClass,
   },
   // {
   //   label: "TUS RESERVAS",
-  //   ...requiresMembership,
-  //   IconComponent: Foundation,
-  //   icon: "bookmark",
-  //   drawerStyle: {
-  //     icon: {fontSize: 50, paddingLeft: 7},
-  //     label: {marginTop: 5},
-  //     arrow: {marginTop: 15},
-  //   },
-  //   homeStyle: {fontSize: 40, color: "white"},
+  //   ...bookingsData,
   //   screen: Screens.BookedClasses,
   // },
   // {
   //   label: "RESERVA TUS CLASES",
-  //   ...requiresMembership,
-  //   IconComponent: Foundation,
-  //   icon: "bookmark",
-  //   drawerStyle: {
-  //     icon: {fontSize: 50, paddingLeft: 7},
-  //     label: {marginTop: 5},
-  //     arrow: {marginTop: 15},
-  //   },
-  //   homeStyle: {fontSize: 40, color: "white"},
+  //   ...bookingsData,
   //   screen: Screens.Affidavit,
   // },
   // {
@@ -297,7 +296,7 @@ export const SectionsData = [
       label: {marginTop: 5},
       arrow: {marginTop: 15},
     },
-    homeStyle: {fontSize: 40, color: "white"},
+    ...baseHomeStyle,
   },
   {
     icon: "routines",
@@ -313,16 +312,6 @@ export const SectionsData = [
       color: "white",
     },
   },
-  /* {
-  icon: 'classes',
-  label: 'MIS CLASES',
-  screen: Screens.Classes,
-  drawerStyle: {
-  icon: { fontSize: 40, paddingLeft: 15 },
-  label: { marginTop: 5 },
-  arrow: { marginTop: 12 }
-  }
-  },*/
   {
     icon: "timetable",
     label: "HORARIOS",
@@ -332,7 +321,7 @@ export const SectionsData = [
       label: {marginTop: 7},
       arrow: {marginTop: 15},
     },
-    homeStyle: {fontSize: 40, color: "white"},
+    ...baseHomeStyle,
   },
   {
     icon: "messages",
@@ -361,7 +350,21 @@ export const SectionsData = [
       label: {marginTop: 5},
       arrow: {marginTop: 13},
     },
-    homeStyle: {fontSize: 40, color: "white"},
+    ...baseHomeStyle,
+  },
+  {
+    label: "COMPRÁ TU SUBSCRIPCIÓN",
+    screen: Screens.PayMonthlyFee,
+    drawerStyle: {
+      ...liveClassProps.drawerStyle,
+      icon: {...liveClassProps.drawerStyle.icon, fontSize: 40, paddingLeft: 0},
+      label: {...liveClassProps.drawerStyle.label, fontSize: 12, marginTop: 15},
+    },
+    ...baseHomeStyle,
+    icon: "payment",
+    IconComponent: MaterialIcons,
+    requiresActiveMember: false,
+    requiresFreePlan: true,
   },
 ];
 

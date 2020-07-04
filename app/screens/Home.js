@@ -15,6 +15,9 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Slider from "components/presentationals/Slider";
 import TimetableItem from "components/presentationals/TimetableItem";
 import RoutineItem from "components/presentationals/RoutineItem";
+import Alert from "components/presentationals/Alert";
+import moment from "moment";
+import {isMemberActive} from "utils/userData";
 
 const styles = {
   buttonsContainer: {
@@ -80,10 +83,12 @@ const AnimatedSlider = Animatable.createAnimatableComponent(Slider);
   newMemberData: state.newMemberData,
   routines: state.routines,
   timetable: state.timetable,
+  lastDateShowingFreePassEnding: state.lastDateShowingFreePassEnding,
 }))
 export default class Home extends React.Component {
   state = {
     appState: AppState.currentState,
+    alertMessage: null,
   };
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -120,6 +125,24 @@ export default class Home extends React.Component {
     if (this.props.currentHomeDrawerOption !== "") {
       this.props.navigation.navigate(this.props.currentHomeDrawerOption);
       this.props.dispatch(ActionsCreators.setCurrentHomeDrawerOption(""));
+    }
+    const {freePassEndDate} = this.props.userData;
+    const freePassDaysLeft =
+      freePassEndDate &&
+      moment(freePassEndDate, "DD/MM/YYYY").diff(moment(), "days");
+
+    if (
+      freePassDaysLeft > 0 &&
+      freePassDaysLeft <= 3 &&
+      (!this.props.lastDateShowingFreePassEnding ||
+        moment().diff(this.props.lastDateShowingFreePassEnding, "days") !== 0)
+    ) {
+      this.props.dispatch(
+        ActionsCreators.setLastDateShowingFreePassEnding(moment())
+      );
+      this.setState({
+        alertMessage: `Te quedan ${freePassDaysLeft} días de tu Free Pass. ¿Querés renovarlo?`,
+      });
     }
   }
 
@@ -160,24 +183,28 @@ export default class Home extends React.Component {
                 Component={TimetableItem}
               />
             </View>
-            {!!activeRoutine && activeRoutine.ejercicios !== null && (
-              <>
-                <View style={styles.sliderTitleWrapper}>
-                  <Text style={styles.title}>Mis rutinas</Text>
-                  <TouchableOpacity onPress={this.goToScreen(Screens.Routines)}>
-                    <Text style={styles.link}>Empezar &gt;</Text>
-                  </TouchableOpacity>
-                </View>
-                <View style={styles.carouselDataContainer}>
-                  <AnimatedSlider
-                    useNativeDriver
-                    animation="zoomIn"
-                    items={activeRoutine.ejercicios}
-                    Component={RoutineItem}
-                  />
-                </View>
-              </>
-            )}
+            {isMemberActive(this.props) &&
+              !!activeRoutine &&
+              activeRoutine.ejercicios !== null && (
+                <>
+                  <View style={styles.sliderTitleWrapper}>
+                    <Text style={styles.title}>Mis rutinas</Text>
+                    <TouchableOpacity
+                      onPress={this.goToScreen(Screens.Routines)}
+                    >
+                      <Text style={styles.link}>Empezar &gt;</Text>
+                    </TouchableOpacity>
+                  </View>
+                  <View style={styles.carouselDataContainer}>
+                    <AnimatedSlider
+                      useNativeDriver
+                      animation="zoomIn"
+                      items={activeRoutine.ejercicios}
+                      Component={RoutineItem}
+                    />
+                  </View>
+                </>
+              )}
             <Animatable.View
               useNativeDriver
               animation="slideInRight"
@@ -186,11 +213,14 @@ export default class Home extends React.Component {
               {SectionsData.map((sectionData, index) => {
                 if (
                   (sectionData.screen !== Screens.NewMember &&
+                    sectionData.screen !== Screens.PayMonthlyFee &&
                     !sectionData.requiresActiveMember) ||
                   (sectionData.screen === Screens.NewMember &&
                     this.state.freeEntryDaysLeft > 0) ||
                   (sectionData.requiresActiveMember &&
-                    this.props.routines.length > 0)
+                    isMemberActive(this.props)) ||
+                  (sectionData.requiresFreePlan &&
+                    this.props.userData.freePassEndDate)
                 ) {
                   return (
                     <TouchableOpacity
@@ -232,6 +262,21 @@ export default class Home extends React.Component {
               })}
             </Animatable.View>
             <Footer />
+            <Alert
+              show={!!this.state.alertMessage}
+              message={this.state.alertMessage}
+              onConfirmPressed={() => {
+                this.setState({alertMessage: null});
+                this.props.navigation.navigate(Screens.PayMonthlyFee);
+              }}
+              showCancelButton={true}
+              onCancelPressed={() => {
+                this.setState({alertMessage: null});
+              }}
+              messageStyle={{fontSize: 20}}
+              confirmButtonTextStyle={{fontSize: 20}}
+              cancelButtonTextStyle={{fontSize: 20}}
+            />
           </CentredWrapper>
         </RootWrapper>
       </GScrollView>

@@ -10,6 +10,9 @@ export const userData = createReducer(
     [ActionsTypes.SET_NEW_PASSWORD](state, action) {
       return {...state, password: action.password};
     },
+    [ActionsTypes.CLEAN_FREE_PASS_END_DATE](state) {
+      return {...state, freePassEndDate: null};
+    },
   }
 );
 
@@ -44,5 +47,11 @@ export const receiveNotifications = createReducer(null, {
   },
   [ActionsTypes.SET_RECEIVE_NOTIFICATIONS_SYNCHED](state) {
     return {...state, synched: true};
+  },
+});
+
+export const lastDateShowingFreePassEnding = createReducer(null, {
+  [ActionsTypes.SET_LAST_DATE_SHOWING_FREE_PASS_ENDING](_state, action) {
+    return action.date;
   },
 });

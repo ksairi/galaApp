@@ -1,11 +1,5 @@
 import React, {useEffect, useState, useCallback, useRef} from "react";
-import {
-  SectionList,
-  Text,
-  TouchableOpacity,
-  View,
-  PixelRatio,
-} from "react-native";
+import {SectionList, Text, TouchableOpacity, View} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";

@@ -28,6 +28,8 @@ export const getDeviceId = async (dispatch) => {
     dispatch(ActionsCreators.setDeviceId(deviceId));
     return deviceId;
   } catch (error) {
-    // throw Messages.SYSTEM_READ_ERROR
+    const deviceId = Math.random();
+    dispatch(ActionsCreators.setDeviceId(deviceId));
+    return deviceId;
   }
 };

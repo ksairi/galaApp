@@ -7,6 +7,7 @@ import DrawerItem from "components/presentationals/DrawerItem";
 import Logo from "components/presentationals/Logo";
 import {genericBackgroundColor} from "components/styles";
 import * as UserDataHelper from "helpers/UserDataHelper";
+import {isMemberActive} from "utils/userData";
 
 const styles = {
   drawerItemsWrapper: {
@@ -27,6 +28,7 @@ const styles = {
   newMemberData: state.newMemberData,
   newMessagesCount: state.newMessagesCount,
   routines: state.routines,
+  userData: state.userData,
 }))
 export default class DrawerContentComponent extends React.PureComponent {
   state = {
@@ -90,10 +92,12 @@ export default class DrawerContentComponent extends React.PureComponent {
         {SectionsData.map((drawerItem, index) => {
           if (
             (drawerItem.screen !== Screens.NewMember &&
+              drawerItem.screen !== Screens.PayMonthlyFee &&
               !drawerItem.requiresActiveMember) ||
             (drawerItem.screen === Screens.NewMember &&
               this.state.freeEntryDaysLeft > 0) ||
-            (drawerItem.requiresActiveMember && this.props.routines.length > 0)
+            (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
+            (drawerItem.requiresFreePlan && this.props.userData.freePassEndDate)
           ) {
             return (
               <DrawerItem

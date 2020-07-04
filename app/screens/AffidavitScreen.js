@@ -75,7 +75,7 @@ export default function AffidavitScreen({navigation}) {
                 <Text style={styles.questionText}>{question}</Text>
                 <View>
                   <View style={{flexDirection: "row"}}>
-                    <Text style={styles.switchLabels}>Si</Text>
+                    <Text style={styles.switchLabels}>Sí</Text>
                     <Text> </Text>
                     <Text style={styles.switchLabels}>No</Text>
                   </View>
