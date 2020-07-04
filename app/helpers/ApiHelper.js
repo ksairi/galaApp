@@ -84,11 +84,12 @@ export const login = (userId, password, deviceId, cache) => {
     });
 };
 
-export const register = (fullName, userId, password, deviceId) => {
+export const register = (fullName, userId, phoneNumber, password, deviceId) => {
   const registerParamters = {};
 
   registerParamters.fullName = fullName;
   registerParamters.userId = userId;
+  registerParamters.phoneNumber = phoneNumber;
   registerParamters.password = password;
   registerParamters.notificationsToken = deviceId;
   return connectToServer(Urls.REGISTER, registerParamters)

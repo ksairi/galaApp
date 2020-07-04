@@ -100,6 +100,7 @@ export const login = async (
 export const register = async (
   fullName,
   userId,
+  phoneNumber,
   password,
   deviceId,
   loginSynchedDataParameters,
@@ -108,10 +109,10 @@ export const register = async (
   const registerResponse = await ApiHelper.register(
     fullName,
     userId,
+    phoneNumber,
     password,
     deviceId
   );
-
   StoreHelper.clearStore(dispatch);
   dispatch(ActionsCreators.setHasResetFirstPassword(true));
   await fetchDynamicData(

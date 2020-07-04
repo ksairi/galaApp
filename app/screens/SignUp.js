@@ -64,6 +64,8 @@ export default class SignUp extends React.Component {
 
   static userId = null;
 
+  static phoneNumber = null;
+
   static password = null;
 
   static confirmPassword = null;
@@ -74,6 +76,7 @@ export default class SignUp extends React.Component {
     super(props);
     this.fullNameInput = React.createRef();
     this.passwordInput = React.createRef();
+    this.phoneNumberInput = React.createRef();
     this.confirmPasswordInput = React.createRef();
     this.state = {
       errorMessage: "",
@@ -129,7 +132,12 @@ export default class SignUp extends React.Component {
     Keyboard.dismiss();
     let errorMessage;
 
-    if (!SignUp.userfullName || !SignUp.userId || !SignUp.password) {
+    if (
+      !SignUp.userfullName ||
+      !SignUp.userId ||
+      !SignUp.password ||
+      !SignUp.phoneNumber
+    ) {
       this.setState({errorMessage: Messages.INCOMPLETE_INPUT_DATA});
       return;
     }
@@ -157,6 +165,7 @@ export default class SignUp extends React.Component {
       await LoginHelper.register(
         SignUp.userfullName,
         SignUp.userId,
+        SignUp.phoneNumber,
         SignUp.password,
         deviceId,
         this.props.loginSynchedDataParameters,
@@ -178,6 +187,14 @@ export default class SignUp extends React.Component {
   };
 
   onSubmitName = () => {
+    if (!SignUp.phoneNumber) {
+      this.phoneNumberInput.current.focus();
+    } else {
+      this.signUp();
+    }
+  };
+
+  onSubmitPhoneNumber = () => {
     if (!SignUp.password) {
       this.passwordInput.current.focus();
     } else {
@@ -199,6 +216,10 @@ export default class SignUp extends React.Component {
 
   onFullNameChangeText = (fullName) => {
     SignUp.userfullName = fullName;
+  };
+
+  onPhoneNumberChangeText = (phoneNumber) => {
+    SignUp.phoneNumber = phoneNumber;
   };
 
   onUserIdChangeText = (userId) => {
@@ -277,6 +298,26 @@ export default class SignUp extends React.Component {
                     keyboardType: "default",
                     ref: this.fullNameInput,
                     autoCapitalize: "words",
+                    autoCorrect: false,
+                    onFocus: this.onInputTextOnFocus,
+                  }}
+                />
+
+                <RoundedTextInput
+                  containerStyle={
+                    this.state.componentsStyle.textInputContainerStyle
+                  }
+                  inputStyle={[
+                    genericTextInputStyle.input,
+                    this.state.componentsStyle.textInputStyle,
+                  ]}
+                  inputProps={{
+                    placeholder: "Teléfono",
+                    onChangeText: this.onPhoneNumberChangeText,
+                    onSubmitEditing: this.onSubmitPhoneNumber,
+                    keyboardType: "numeric",
+                    returnKeyType: "next",
+                    ref: this.phoneNumberInput,
                     autoCorrect: false,
                     onFocus: this.onInputTextOnFocus,
                   }}
