@@ -59,6 +59,7 @@ export default class LiveClass extends React.Component {
 
   async componentDidMount() {
     AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
+    this.openAppIfNeeded();
     if (Platform.OS === "android") {
       await Permissions.askAsync(
         Permissions.CAMERA,
@@ -95,7 +96,6 @@ export default class LiveClass extends React.Component {
         const {meetingId} = await this.getMeetingId(studioNumber);
         const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
         try {
-          this.props.navigation.navigate(Screens.Home);
           await Linking.openURL(link);
         } catch (e) {
           this.setState({message: "Por favor descargue la app Zoom"});
@@ -118,7 +118,6 @@ export default class LiveClass extends React.Component {
 
   render() {
     const {title} = this.props.navigation.state.params;
-    this.openAppIfNeeded();
 
     return (
       <>
@@ -157,15 +156,17 @@ export default class LiveClass extends React.Component {
           >
             {title}
           </Text>
-          <WebView
-            style={{marginTop: 10}}
-            source={{
-              uri: this.uri,
-            }}
-            onMessage={this.onMessage}
-            injectedJavaScript={this.injectedJs}
-            mediaPlaybackRequiresUserAction={false}
-          />
+          {!this.state.message && (
+            <WebView
+              style={{marginTop: 10}}
+              source={{
+                uri: this.uri,
+              }}
+              onMessage={this.onMessage}
+              injectedJavaScript={this.injectedJs}
+              mediaPlaybackRequiresUserAction={false}
+            />
+          )}
           <Alert
             show={!!this.state.message}
             message={this.state.message}
