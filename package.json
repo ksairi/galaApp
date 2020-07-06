@@ -21,7 +21,8 @@
     "jest-expo": "^37.0.0",
     "lint-staged": "^10.2.2",
     "prettier": "^2.0.5",
-    "react-test-renderer": "^16.13.1"
+    "react-test-renderer": "^16.13.1",
+    "typescript": "^3.9.6"
   },
   "main": "./node_modules/expo/AppEntry.js",
   "scripts": {
@@ -44,8 +45,8 @@
     "prepublish:web:staging": "expo build:web && echo testapp.galagym.com > web-build/CNAME",
     "publish:web:prod": "gh-pages -d web-build -o gala-wpa-prod && node -e 'require(\"./updateExpoAppFile\").init(\"staging\")'",
     "prepublish:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && echo app.galagym.com > web-build/CNAME",
-    "publish:all:staging":"yarn publish:staging && yarn publish:web:staging",
-    "publish:all:prod":"yarn publish:prod && yarn publish:web:prod"
+    "publish:all:staging": "yarn publish:staging && yarn publish:web:staging",
+    "publish:all:prod": "yarn publish:prod && yarn publish:web:prod"
   },
   "jest": {
     "preset": "jest-expo",

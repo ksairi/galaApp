@@ -204,17 +204,17 @@ export const ActionsTypes = {
 
 const requiresMembership = {requiresActiveMember: true};
 const baseHomeStyle = {homeStyle: {fontSize: 40, color: "white"}};
-const bookingsData = {
-  ...requiresMembership,
-  IconComponent: Foundation,
-  icon: "bookmark",
-  drawerStyle: {
-    icon: {fontSize: 50, paddingLeft: 7},
-    label: {marginTop: 5},
-    arrow: {marginTop: 15},
-  },
-  ...baseHomeStyle,
-};
+// const bookingsData = {
+//   ...requiresMembership,
+//   IconComponent: Foundation,
+//   icon: "bookmark",
+//   drawerStyle: {
+//     icon: {fontSize: 50, paddingLeft: 7},
+//     label: {marginTop: 5},
+//     arrow: {marginTop: 15},
+//   },
+//   ...baseHomeStyle,
+// };
 const liveClassProps = {
   icon: "video-camera",
   IconComponent: FontAwesome,
