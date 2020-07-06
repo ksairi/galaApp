@@ -1,5 +1,5 @@
 import React from "react";
-import {View} from "react-native";
+import {View, TouchableOpacity, Linking, Platform} from "react-native";
 import * as Animatable from "react-native-animatable-promise";
 import Button from "components/presentationals/GenericButton";
 import Text from "components/presentationals/GenericText";
@@ -27,7 +27,7 @@ const styles = {
     fontSize: 20,
     color: "white",
     paddingRight: 10,
-    flex: 1.2,
+    flex: 0.9,
     fontFamily: "lato-regular",
   },
   landscapeStyle: {
@@ -44,6 +44,18 @@ export default class Welcome extends React.PureComponent {
   state = {
     componentsStyle: null,
   };
+
+  handleAnimatedLogo = (ref) => (this.animatedLogo = ref);
+
+  handleAnimatedTitle = (ref) => (this.animatedTitle = ref);
+
+  handleAnimatedBody = (ref) => (this.animatedBody = ref);
+
+  handleAnimatedButton = (ref) => (this.animatedButton = ref);
+
+  handleAnimatedImage1 = (ref) => (this.animatedImage1 = ref);
+
+  handleAnimatedImage2 = (ref) => (this.animatedImage2 = ref);
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.orientation) {
@@ -62,20 +74,16 @@ export default class Welcome extends React.PureComponent {
     this.animatedTitle.bounceInRight(duration);
     this.animatedBody.bounceInLeft(duration);
     this.animatedButton.bounceInRight(duration);
+    if (this.animatedImage1) {
+      this.animatedImage1.bounceInRight(duration);
+      this.animatedImage2.bounceInLeft(duration);
+    }
   }
 
   goToLogin = () => {
     this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false));
     this.props.navigation.navigate(Screens.LoginStack);
   };
-
-  handleAnimatedLogo = (ref) => (this.animatedLogo = ref);
-
-  handleAnimatedTitle = (ref) => (this.animatedTitle = ref);
-
-  handleAnimatedBody = (ref) => (this.animatedBody = ref);
-
-  handleAnimatedButton = (ref) => (this.animatedButton = ref);
 
   render() {
     return (
@@ -84,12 +92,12 @@ export default class Welcome extends React.PureComponent {
           <AnimatedLogo
             useNativeDriver
             style={[
-              {flex: 0.9, fontSize: 75, marginTop: 50},
+              {flex: 0.7, fontSize: 75, marginTop: 50},
               this.state.componentsStyle.logo,
             ]}
             ref={this.handleAnimatedLogo}
           />
-          <View style={{flex: 0.95}}>
+          <View style={{flex: 0.65}}>
             <AnimatedText
               useNativeDriver
               style={styles.welcome}
@@ -106,8 +114,56 @@ export default class Welcome extends React.PureComponent {
               nuestras novedades para disfrutar aún más tu gimnasio.
             </AnimatedText>
           </View>
-          <View style={{flexDirection: "row", flex: 0.4}}>
+          <View style={{flex: 1}}>
+            {Platform.OS === "web" && (
+              <View
+                style={{
+                  justifyContent: "space-between",
+                  flexDirection: "row",
+                  paddingBottom: 10,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://apps.apple.com/us/app/gala/id1449314757"
+                    )
+                  }
+                >
+                  <Animatable.Image
+                    useNativeDriver
+                    ref={this.handleAnimatedImage1}
+                    source={require("../assets/images/app-store-badge.png")}
+                    style={{
+                      height: 60,
+                      width: 110,
+                      resizeMode: "contain",
+                    }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() =>
+                    Linking.openURL(
+                      "https://play.google.com/store/apps/details?id=com.gala.galaapp"
+                    )
+                  }
+                >
+                  <Animatable.Image
+                    useNativeDriver
+                    ref={this.handleAnimatedImage2}
+                    source={require("../assets/images/google-play-badge.png")}
+                    style={{
+                      height: 60,
+                      width: 150,
+                      resizeMode: "contain",
+                    }}
+                  />
+                </TouchableOpacity>
+              </View>
+            )}
+
             <AnimatedButton
+              useNativeDriver
               textStyle={{fontFamily: "brother-1816-bold", fontSize: 21}}
               text="EXPLORÁ LA APP"
               onPress={this.goToLogin}
