@@ -33,9 +33,3 @@ export const isSavingNotificationsData = createReducer(false, {
     return action.isSavingNotificationsData;
   },
 });
-
-export const lastTimeSuggestedDownload = createReducer(null, {
-  [ActionsTypes.SET_LAST_TIME_SUGGESTED_DOWNLOAD](state, action) {
-    return action.date;
-  },
-});

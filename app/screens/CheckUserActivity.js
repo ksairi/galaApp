@@ -8,6 +8,7 @@ import * as NotificationsHelper from "helpers/NotificationsHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import {Text} from "react-native-animatable-promise";
 import {genericBackgroundColor} from "components/styles";
+import * as withEnv from "utils/env";
 
 const styles = {
   container: {
@@ -46,7 +47,7 @@ export default class CheckUserActivity extends React.Component {
   }
 
   checkUserStatus = async () => {
-    if (this.props.isAppsFirstTime) {
+    if (this.props.isAppsFirstTime || withEnv.isWebInMobile()) {
       this.props.navigation.navigate(Screens.Welcome);
     } else if (this.props.isLoggedIn) {
       try {

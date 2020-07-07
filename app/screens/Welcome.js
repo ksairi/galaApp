@@ -1,5 +1,5 @@
 import React from "react";
-import {View, TouchableOpacity, Linking, Platform} from "react-native";
+import {View, TouchableOpacity, Linking} from "react-native";
 import * as Animatable from "react-native-animatable-promise";
 import Button from "components/presentationals/GenericButton";
 import Text from "components/presentationals/GenericText";
@@ -10,6 +10,7 @@ import RootWrapper from "components/presentationals/RootWrapper";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import Logo from "components/presentationals/Logo";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
+import * as withEnv from "utils/env";
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 const AnimatedText = Animatable.createAnimatableComponent(Text);
@@ -73,7 +74,9 @@ export default class Welcome extends React.PureComponent {
     this.animatedLogo.bounceInLeft(duration);
     this.animatedTitle.bounceInRight(duration);
     this.animatedBody.bounceInLeft(duration);
-    this.animatedButton.bounceInRight(duration);
+    if (this.animatedButton) {
+      this.animatedButton.bounceInRight(duration);
+    }
     if (this.animatedImage1) {
       this.animatedImage1.bounceInRight(duration);
       this.animatedImage2.bounceInLeft(duration);
@@ -84,6 +87,12 @@ export default class Welcome extends React.PureComponent {
     this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false));
     this.props.navigation.navigate(Screens.LoginStack);
   };
+
+  appleStoreLink = "https://apps.apple.com/us/app/gala/id1449314757";
+  googleStoreLink =
+    "https://play.google.com/store/apps/details?id=com.gala.galaapp";
+
+  storeLink = withEnv.isIOS() ? this.appleStoreLink : this.googleStoreLink;
 
   render() {
     return (
@@ -110,65 +119,88 @@ export default class Welcome extends React.PureComponent {
               style={styles.welcomeDescription}
               ref={this.handleAnimatedBody}
             >
-              Dentro de la app podrás encontrar tus rutinas, clases y todas
-              nuestras novedades para disfrutar aún más tu gimnasio.
+              Dentro de la app podrás encontrar clases online, clases grabadas,
+              rutinas personalizadas y más!
             </AnimatedText>
           </View>
           <View style={{flex: 1}}>
-            {Platform.OS === "web" && (
-              <View
-                style={{
-                  justifyContent: "space-between",
-                  flexDirection: "row",
-                  paddingBottom: 10,
-                }}
-              >
+            {withEnv.isWebInMobile() ? (
+              <View>
                 <TouchableOpacity
-                  onPress={() =>
-                    Linking.openURL(
-                      "https://apps.apple.com/us/app/gala/id1449314757"
-                    )
-                  }
+                  onPress={() => Linking.openURL(this.storeLink)}
                 >
-                  <Animatable.Image
-                    useNativeDriver
-                    ref={this.handleAnimatedImage1}
-                    source={require("../assets/images/app-store-badge.png")}
+                  <Text
                     style={{
-                      height: 60,
-                      width: 110,
-                      resizeMode: "contain",
+                      fontFamily: "lato-regular",
+                      fontSize: 18,
+                      backgroundColor: "#6b35e3",
+                      borderRadius: 20,
+                      padding: 10,
                     }}
-                  />
+                  >
+                    Descargala Ahora!
+                  </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() =>
-                    Linking.openURL(
-                      "https://play.google.com/store/apps/details?id=com.gala.galaapp"
-                    )
-                  }
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    paddingBottom: 10,
+                  }}
                 >
-                  <Animatable.Image
-                    useNativeDriver
-                    ref={this.handleAnimatedImage2}
-                    source={require("../assets/images/google-play-badge.png")}
+                  {withEnv.isIOS() ? (
+                    <TouchableOpacity
+                      onPress={() => Linking.openURL(this.appleStoreLink)}
+                    >
+                      <Animatable.Image
+                        useNativeDriver
+                        ref={this.handleAnimatedImage1}
+                        source={require("../assets/images/app-store-badge.png")}
+                        style={{
+                          height: 60,
+                          width: 110,
+                          resizeMode: "contain",
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity
+                      onPress={() => Linking.openURL(this.googleStoreLink)}
+                    >
+                      <Animatable.Image
+                        useNativeDriver
+                        ref={this.handleAnimatedImage2}
+                        source={require("../assets/images/google-play-badge.png")}
+                        style={{
+                          height: 60,
+                          width: 150,
+                          resizeMode: "contain",
+                        }}
+                      />
+                    </TouchableOpacity>
+                  )}
+                </View>
+                <TouchableOpacity onPress={this.goToLogin}>
+                  <Text
                     style={{
-                      height: 60,
-                      width: 150,
-                      resizeMode: "contain",
+                      fontFamily: "lato-regular",
+                      fontSize: 18,
+                      borderRadius: 20,
                     }}
-                  />
+                  >
+                    o continuá en la versión web!
+                  </Text>
                 </TouchableOpacity>
               </View>
+            ) : (
+              <AnimatedButton
+                useNativeDriver
+                textStyle={{fontFamily: "brother-1816-bold", fontSize: 21}}
+                text="EXPLORÁ LA APP"
+                onPress={this.goToLogin}
+                ref={this.handleAnimatedButton}
+              />
             )}
-
-            <AnimatedButton
-              useNativeDriver
-              textStyle={{fontFamily: "brother-1816-bold", fontSize: 21}}
-              text="EXPLORÁ LA APP"
-              onPress={this.goToLogin}
-              ref={this.handleAnimatedButton}
-            />
           </View>
         </CentredWrapper>
       </RootWrapper>
