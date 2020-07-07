@@ -44,12 +44,3 @@ export function setIsSavingNotificationsData(isSavingNotificationsData) {
     });
   };
 }
-
-export function setLastTimeSuggestedDownload(date) {
-  return (dispatch) => {
-    dispatch({
-      type: ActionsTypes.SET_LAST_TIME_SUGGESTED_DOWNLOAD,
-      date,
-    });
-  };
-}
