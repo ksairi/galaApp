@@ -31,13 +31,7 @@
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "RECORD_AUDIO"
-      ],
-      "config": {
-        "fabric": {
-          "apiKey": "9bee6df4340001230738b6a0e01b9e4e00f3efdb",
-          "buildSecret": "41b61f5edb02c34da3a438cb375bd3a7b9fd77f8235c28e4250d646a9df2ea91"
-        }
-      }
+      ]
     },
     "ios": {
       "bundleIdentifier": "com.gala.galaapp.staging",
@@ -67,6 +61,9 @@
       "color": "#000000",
       "androidCollapsedTitle": "Nuevas notificaciones"
     },
-    "icon": "./assets/app_icon.png"
+    "icon": "./assets/app_icon.png",
+    "facebookAppId": "361095590638823",
+    "facebookDisplayName": "Gala App",
+    "facebookAutoInitEnabled": true
   }
 }
