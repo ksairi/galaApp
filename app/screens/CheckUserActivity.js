@@ -47,7 +47,11 @@ export default class CheckUserActivity extends React.Component {
   }
 
   checkUserStatus = async () => {
-    if (this.props.isAppsFirstTime || withEnv.isWebInMobile()) {
+    if (
+      this.props.isAppsFirstTime ||
+      (withEnv.isWebInMobile() &&
+        !this.props.navigation?.state?.params?.checkUserActivity)
+    ) {
       this.props.navigation.navigate(Screens.Welcome);
     } else if (this.props.isLoggedIn) {
       try {

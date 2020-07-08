@@ -85,7 +85,9 @@ export default class Welcome extends React.PureComponent {
 
   goToLogin = () => {
     this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false));
-    this.props.navigation.navigate(Screens.LoginStack);
+    this.props.navigation.navigate(Screens.CheckUserActivity, {
+      checkUserActivity: true,
+    });
   };
 
   appleStoreLink = "https://apps.apple.com/us/app/gala/id1449314757";
