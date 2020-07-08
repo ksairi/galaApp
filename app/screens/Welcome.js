@@ -79,6 +79,8 @@ export default class Welcome extends React.PureComponent {
     }
     if (this.animatedImage1) {
       this.animatedImage1.bounceInRight(duration);
+    }
+    if (this.animatedImage2) {
       this.animatedImage2.bounceInLeft(duration);
     }
   }
