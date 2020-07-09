@@ -32,7 +32,7 @@ const styles = {
     flex: 1,
   },
 };
-export default function AffidavitScreen({navigation}) {
+export default function Affidavit({navigation}) {
   const [responses, setResponses] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(false);

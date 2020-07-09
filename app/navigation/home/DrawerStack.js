@@ -14,7 +14,8 @@ import CameraView from "screens/CameraView";
 import LiveClass from "screens/LiveClass";
 import RecordedClassesByClass from "screens/RecordedClassesByClass";
 import BookedClasses from "screens/BookedClasses";
-import AffidavitScreen from "screens/ClassesToBook";
+import Affidavit from "screens/Affidavit";
+import ClassesToBook from "screens/ClassesToBook";
 import DrawerContentComponent from "components/containers/DrawerContentComponent";
 import Header from "components/containers/Header";
 
@@ -36,11 +37,30 @@ const BookedClassesNavigator = createStackNavigator(
   }
 );
 
-const ClassesToBookNavigator = createStackNavigator(
-  {[Screens.ClassesToBook]: {screen: AffidavitScreen}},
+const AffidavitNavigator = createStackNavigator(
+  {
+    [Screens.Affidavit]: {screen: Affidavit},
+  },
   {
     navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
+      header: (
+        <Header
+          navigation={navigation}
+          title={"DECLARACIÓN JURADA"}
+          backScreen={Screens.Home}
+        />
+      ),
+    }),
+  }
+);
+
+const ClassesToBookNavigator = createStackNavigator(
+  {
+    [Screens.ClassesToBook]: {screen: ClassesToBook},
+  },
+  {
+    navigationOptions: ({navigation}) => ({
+      header: <Header navigation={navigation} backScreen={Screens.Home} />,
     }),
   }
 );
@@ -138,6 +158,7 @@ const drawerNavigator = createDrawerNavigator(
     [Screens.LiveClassStudio1]: {screen: LiveClass},
     [Screens.LiveClassStudio2]: {screen: LiveClass},
     [Screens.BookedClasses]: {screen: BookedClassesNavigator},
+    [Screens.Affidavit]: {screen: AffidavitNavigator},
     [Screens.ClassesToBook]: {screen: ClassesToBookNavigator},
     [Screens.RecordedClassesByClass]: {screen: RecordedClassesByClassNavigator},
     // [Screens.NewMember]: { screen: NewMemberNavigator },
