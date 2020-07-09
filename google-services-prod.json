@@ -1,1 +1,69 @@
-{}
+{
+  "project_info": {
+    "project_number": "554198694717",
+    "firebase_url": "https://galaapp-9fa91.firebaseio.com",
+    "project_id": "galaapp-9fa91",
+    "storage_bucket": "galaapp-9fa91.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554198694717:android:34bdd9aef4500f4efea354",
+        "android_client_info": {
+          "package_name": "com.adictapp.dict_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554198694717-qn8n617sdmgf84tjck7m97hu1cma6pur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyUQviYxQg_Y8-0ESP66bu0jWwhxgg38U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554198694717-qn8n617sdmgf84tjck7m97hu1cma6pur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:554198694717:android:010bf1bac7af8b66",
+        "android_client_info": {
+          "package_name": "com.gala.galaapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "554198694717-qn8n617sdmgf84tjck7m97hu1cma6pur.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyUQviYxQg_Y8-0ESP66bu0jWwhxgg38U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "554198694717-qn8n617sdmgf84tjck7m97hu1cma6pur.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

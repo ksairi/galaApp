@@ -1,1 +1,40 @@
-{}
+{
+  "project_info": {
+    "project_number": "274273140134",
+    "firebase_url": "https://galaappstaging.firebaseio.com",
+    "project_id": "galaappstaging",
+    "storage_bucket": "galaappstaging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:274273140134:android:578f301e3180059cfe6367",
+        "android_client_info": {
+          "package_name": "com.gala.galaapp.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "274273140134-0la476chnf2t3ce1av441pk1emm1erie.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACaDB7CqYCS3FmzZHioES4_2YLEac4eu4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "274273140134-0la476chnf2t3ce1av441pk1emm1erie.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
