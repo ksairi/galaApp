@@ -128,7 +128,6 @@ export const Screens = {
   RecordedClassesByClass: "RecordedClassesByClass",
   RecordedClassesByDate: "RecordedClassesByDate",
   RecordedClassesByTime: "RecordedClassesByTime",
-  SuggestAppDownload: "SuggestAppDownload",
   BookedClasses: "BookedClasses",
   ClassesToBook: "ClassesToBook",
   Affidavit: "Affidavit",
