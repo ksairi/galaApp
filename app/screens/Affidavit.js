@@ -39,6 +39,7 @@ export default function Affidavit({navigation}) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log(11);
     const getAffidavitQuestions = async () => {
       try {
         setLoading(true);
@@ -50,6 +51,10 @@ export default function Affidavit({navigation}) {
       }
     };
     getAffidavitQuestions();
+    return function aa() {
+      console.log(144);
+      setResponses([]);
+    };
   }, []);
 
   const onValueChange = useCallback(

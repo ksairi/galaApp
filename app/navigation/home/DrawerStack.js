@@ -1,6 +1,6 @@
 import React from "react";
-import {Keyboard} from "react-native";
-import {createDrawerNavigator, createStackNavigator} from "react-navigation";
+import {createDrawerNavigator} from "@react-navigation/drawer";
+import {createStackNavigator} from "@react-navigation/stack";
 import {Screens} from "config/settings";
 import Home from "screens/Home";
 import Profile from "screens/Profile";
@@ -13,182 +13,218 @@ import CameraView from "screens/CameraView";
 // import NewMember from 'screens/NewMember'
 import LiveClass from "screens/LiveClass";
 import RecordedClassesByClass from "screens/RecordedClassesByClass";
-import BookedClasses from "screens/BookedClasses";
 import Affidavit from "screens/Affidavit";
-import ClassesToBook from "screens/ClassesToBook";
 import DrawerContentComponent from "components/containers/DrawerContentComponent";
 import Header from "components/containers/Header";
+import ClassesToBook from "screens/ClassesToBook";
+import BookedClasses from "screens/BookedClasses";
 
-const HomeNavigator = createStackNavigator(
-  {[Screens.Home]: {screen: Home}},
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const Stack = createStackNavigator();
+
+const HomeNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Home}
+      component={Home}
+      options={{
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const BookedClassesNavigator = createStackNavigator(
-  {[Screens.BookedClasses]: {screen: BookedClasses}},
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const BookedClassesNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.BookedClasses}
+      component={BookedClasses}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const AffidavitNavigator = createStackNavigator(
-  {
-    [Screens.Affidavit]: {screen: Affidavit},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: (
-        <Header
-          navigation={navigation}
-          title={"DECLARACIÓN JURADA"}
-          backScreen={Screens.Home}
-        />
-      ),
-    }),
-  }
+const AffidavitNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Affidavit}
+      component={Affidavit}
+      options={{
+        header: ({navigation}) => (
+          <Header
+            {...{navigation}}
+            title={"DECLARACIÓN JURADA"}
+            backScreen={Screens.Home}
+          />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const ClassesToBookNavigator = createStackNavigator(
-  {
-    [Screens.ClassesToBook]: {screen: ClassesToBook},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} backScreen={Screens.Home} />,
-    }),
-  }
+const ClassesToBookNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.ClassesToBook}
+      component={ClassesToBook}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-// const NewMemberNavigator = createStackNavigator({
-//   [Screens.NewMember]: { screen: NewMember }
-// },
-//   {
-//     navigationOptions: ({ navigation }) => ({
-//       header: <Header navigation={navigation} isHomeHeader />
-//     })
-//   }
-// )
+// const NewMemberNavigator = () => (
+//   <Stack.Navigator>
+//     <Stack.Screen
+//       name={Screens.NewMember}
+//       component={NewMember}
+//       options={{
+//         header: ({navigation}) => (
+//           <Header {...{navigation}} backScreen={Screens.Home} />
+//         ),
+//       }}
+//     />
+//   </Stack.Navigator>
+// );
 
-const ProfileNavigator = createStackNavigator(
-  {
-    [Screens.Profile]: {screen: Profile},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const ProfileNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Profile}
+      component={Profile}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const RecordedClassesByClassNavigator = createStackNavigator(
-  {
-    [Screens.RecordedClassesByClass]: {screen: RecordedClassesByClass},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const RecordedClassesByClassNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.RecordedClassesByClass}
+      component={RecordedClassesByClass}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const RoutinesNavigator = createStackNavigator(
-  {
-    [Screens.Routines]: {screen: Routines},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const RoutinesNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Routines}
+      component={Routines}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const RoutineDetailNavigator = createStackNavigator(
-  {
-    [Screens.RoutineDetail]: {screen: RoutineDetail},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const RoutineDetailNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.RoutineDetail}
+      component={RoutineDetail}
+      options={{
+        header: ({navigation}) => <Header {...{navigation}} />,
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const TimetableNavigator = createStackNavigator(
-  {
-    [Screens.Timetable]: {screen: Timetable},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const TimetableNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Timetable}
+      component={Timetable}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const MessagesNavigator = createStackNavigator(
-  {
-    [Screens.Messages]: {screen: Messages},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const MessagesNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Messages}
+      component={Messages}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const ReferralsNavigator = createStackNavigator(
-  {
-    [Screens.Referrals]: {screen: Referrals},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} isHomeHeader />,
-    }),
-  }
+const ReferralsNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Referrals}
+      component={Referrals}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const drawerNavigator = createDrawerNavigator(
-  {
-    [Screens.Home]: {screen: HomeNavigator},
-    [Screens.LiveClassStudio1]: {screen: LiveClass},
-    [Screens.LiveClassStudio2]: {screen: LiveClass},
-    [Screens.BookedClasses]: {screen: BookedClassesNavigator},
-    [Screens.Affidavit]: {screen: AffidavitNavigator},
-    [Screens.ClassesToBook]: {screen: ClassesToBookNavigator},
-    [Screens.RecordedClassesByClass]: {screen: RecordedClassesByClassNavigator},
-    // [Screens.NewMember]: { screen: NewMemberNavigator },
-    [Screens.Profile]: {screen: ProfileNavigator},
-    [Screens.Routines]: {screen: RoutinesNavigator},
-    [Screens.RoutineDetail]: {screen: RoutineDetailNavigator},
-    [Screens.CameraView]: {screen: CameraView},
-    [Screens.Classes]: {screen: TimetableNavigator},
-    [Screens.Timetable]: {screen: TimetableNavigator},
-    [Screens.Messages]: {screen: MessagesNavigator},
-    [Screens.Referrals]: {screen: ReferralsNavigator},
-  },
-  {
-    contentComponent: (props) => (
+const Drawer = createDrawerNavigator();
+export default () => (
+  <Drawer.Navigator
+    initialRouteName="Home"
+    backBehavior="initialRoute"
+    drawerContent={(props) => (
       <DrawerContentComponent
         navigation={props.navigation}
         activeItemKey={props.activeItemKey}
       />
-    ),
-    backBehavior: "initialRoute",
-  }
+    )}
+  >
+    <Drawer.Screen name={Screens.Home}>{HomeNavigator}</Drawer.Screen>
+    <Drawer.Screen name={Screens.LiveClassStudio1} component={LiveClass} />
+    <Drawer.Screen name={Screens.LiveClassStudio2} component={LiveClass} />
+    <Drawer.Screen name={Screens.Affidavit}>{AffidavitNavigator}</Drawer.Screen>
+    <Drawer.Screen name={Screens.ClassesToBook}>
+      {ClassesToBookNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen name={Screens.BookedClasses}>
+      {BookedClassesNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen name={Screens.RecordedClassesByClass}>
+      {RecordedClassesByClassNavigator}
+    </Drawer.Screen>
+
+    {/* <Drawer.Screen name={`${Screens.NewMember}`} component={NewMember} /> */}
+    <Drawer.Screen name={Screens.Profile}>{ProfileNavigator}</Drawer.Screen>
+
+    <Drawer.Screen name={Screens.Routines}>{RoutinesNavigator}</Drawer.Screen>
+    <Drawer.Screen name={Screens.RoutineDetail}>
+      {RoutineDetailNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen name={Screens.CameraView} component={CameraView} />
+    <Drawer.Screen name={Screens.Timetable}>{TimetableNavigator}</Drawer.Screen>
+    <Drawer.Screen name={Screens.Messages}>{MessagesNavigator}</Drawer.Screen>
+    <Drawer.Screen name={Screens.Referrals}>{ReferralsNavigator}</Drawer.Screen>
+  </Drawer.Navigator>
 );
-
-const defaultGetStateForAction = drawerNavigator.router.getStateForAction;
-
-drawerNavigator.router.getStateForAction = (action, state) => {
-  if (state && action.type === "Navigation/DRAWER_OPENED") {
-    Keyboard.dismiss();
-  }
-  return defaultGetStateForAction(action, state);
-};
-
-export default drawerNavigator;

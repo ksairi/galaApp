@@ -1,4 +1,5 @@
 import React from "react";
+import {CommonActions} from "@react-navigation/native";
 import {Platform, TouchableOpacity, View, Text} from "react-native";
 import {WebView} from "react-native-webview";
 import {WebView as WebViewWeb} from "react-native-web-webview";
@@ -25,7 +26,7 @@ export default class VideoPlayer extends React.Component {
   }
 
   render() {
-    const {url: uri, backScreen, title} = this.props.navigation.state.params;
+    const {url: uri, backScreen, title} = this.props.route.params;
     return (
       <>
         {this.state.showBack && (
@@ -39,11 +40,13 @@ export default class VideoPlayer extends React.Component {
             ]}
           >
             <TouchableOpacity
-              onPress={() =>
-                backScreen
-                  ? this.props.navigation.navigate(backScreen)
-                  : this.props.navigation.goBack()
-              }
+              onPress={() => {
+                if (backScreen) {
+                  this.props.navigation.navigate(backScreen);
+                  return;
+                }
+                this.props.navigation.dispatch(CommonActions.back());
+              }}
             >
               <Ionicons
                 name="ios-arrow-round-back"

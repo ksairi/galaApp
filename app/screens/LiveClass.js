@@ -34,7 +34,7 @@ export default class LiveClass extends React.Component {
 
   constructor(props) {
     super(props);
-    const {studioNumber} = props.navigation.state.params;
+    const {studioNumber} = props.route.params;
     const name = props.userData?.name;
     this.uri = `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
   }
@@ -91,7 +91,7 @@ export default class LiveClass extends React.Component {
   openAppIfNeeded = async () => {
     try {
       const name = this.props.userData?.name;
-      const {studioNumber} = this.props.navigation.state.params;
+      const {studioNumber} = this.props.route.params;
       if (Platform.OS === "ios") {
         const {meetingId} = await this.getMeetingId(studioNumber);
         const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
@@ -117,7 +117,7 @@ export default class LiveClass extends React.Component {
   };
 
   render() {
-    const {title} = this.props.navigation.state.params;
+    const {title} = this.props.route.params;
 
     return (
       <>

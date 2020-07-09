@@ -86,8 +86,6 @@ const styles = {
   routines: state.routines,
 }))
 export default class SignIn extends React.Component {
-  static navigationOptions = {header: null};
-
   static isKeyboardShowing = false;
 
   static userId = null;

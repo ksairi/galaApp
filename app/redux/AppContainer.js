@@ -1,7 +1,6 @@
 import React from "react";
 import {AppState, Platform, Vibration, Alert} from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-import StatusBar from "components/presentationals/StatusBar";
 import {Notifications, Updates} from "expo";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
@@ -219,19 +218,7 @@ export default class AppContainer extends React.Component {
   render() {
     return (
       <RootView>
-        <StatusBar
-          backgroundColor="#5E8D48"
-          barStyle="light-content"
-          hidden={
-            (this.props.statusBarIsHidden && Platform.OS !== "ios") ||
-            (Platform.OS === "ios" && this.props.orientation === "landscape")
-          }
-        />
-        <AppRoutes
-          ref={(nav) => {
-            this.navigator = nav ? nav._navigation : nav;
-          }}
-        />
+        <AppRoutes />
       </RootView>
     );
   }

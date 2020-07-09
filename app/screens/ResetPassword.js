@@ -19,7 +19,6 @@ import GenericText from "components/presentationals/GenericText";
 import GenericLink from "components/presentationals/GenericLink";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import {genericTextInputStyle, textWithLinkStyle} from "components/styles";
-import Header from "components/containers/Header";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import RoundedTextInput from "components/presentationals/RoundedTextInput";
 import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
@@ -53,10 +52,6 @@ const styles = {
 }))
 export default class ResetPassword extends React.Component {
   static isKeyboardShowing = false;
-
-  static navigationOptions = ({navigation}) => ({
-    header: <Header navigation={navigation} backScreen={Screens.SignIn} />,
-  });
 
   constructor(props) {
     super(props);

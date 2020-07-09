@@ -1,6 +1,6 @@
 import React from "react";
 import {View, StatusBar, Platform} from "react-native";
-import {SafeAreaView} from "react-navigation";
+import {SafeAreaProvider} from "react-native-safe-area-context";
 import Constants from "expo-constants";
 
 export default class MyStatusBar extends React.PureComponent {
@@ -8,7 +8,7 @@ export default class MyStatusBar extends React.PureComponent {
     if (!this.props.hidden) {
       if (Platform.OS === "ios") {
         return (
-          <SafeAreaView
+          <SafeAreaProvider
             style={[{height: 0}, {backgroundColor: this.props.backgroundColor}]}
           >
             <StatusBar
@@ -16,7 +16,7 @@ export default class MyStatusBar extends React.PureComponent {
               backgroundColor={this.props.backgroundColor}
               {...this.props}
             />
-          </SafeAreaView>
+          </SafeAreaProvider>
         );
       }
       return (

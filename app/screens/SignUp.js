@@ -56,10 +56,6 @@ const styles = {
   loginSynchedDataParameters: state.loginSynchedDataParameters,
 }))
 export default class SignUp extends React.Component {
-  static navigationOptions = ({navigation}) => ({
-    header: <Header navigation={navigation} backScreen={Screens.SignIn} />,
-  });
-
   static userfullName = null;
 
   static userId = null;

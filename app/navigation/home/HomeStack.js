@@ -1,5 +1,5 @@
 import React from "react";
-import {createStackNavigator} from "react-navigation";
+import {createStackNavigator} from "@react-navigation/stack";
 import {Screens} from "config/settings";
 import Settings from "screens/Settings";
 import Header from "components/containers/Header";
@@ -9,78 +9,89 @@ import RecordedClassesByTime from "screens/RecordedClassesByTime";
 import PayMonthlyFee from "screens/PayMonthlyFee";
 import DrawerStack from "./DrawerStack";
 
-const SettingsNavigator = createStackNavigator(
-  {
-    [Screens.Settings]: {screen: Settings},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: (
-        <Header
-          navigation={navigation}
-          title="CONFIGURACIÓN"
-          backScreen={Screens.Profile}
-        />
-      ),
-    }),
-  }
+const Stack = createStackNavigator();
+
+const SettingsNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.Settings}
+      component={Settings}
+      options={{
+        header: ({navigation}) => (
+          <Header
+            {...{navigation}}
+            title="CONFIGURACIÓN"
+            backScreen={Screens.Profile}
+          />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const RecordedClassesByDateNavigator = createStackNavigator(
-  {
-    [Screens.RecordedClassesByDate]: {screen: RecordedClassesByDate},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: (
-        <Header
-          navigation={navigation}
-          title={`CLASES DE ${navigation.state.params.name}`}
-          backScreen={Screens.RecordedClassesByClass}
-        />
-      ),
-    }),
-  }
+const RecordedClassesByDateNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.RecordedClassesByDate}
+      component={RecordedClassesByDate}
+      options={{
+        header: ({navigation}) => (
+          <Header
+            {...{navigation}}
+            title={`CLASES DE ${navigation.state.params.name}`}
+            backScreen={Screens.RecordedClassesByClass}
+          />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const RecordedClassesByTimeNavigator = createStackNavigator(
-  {
-    [Screens.RecordedClassesByTime]: {screen: RecordedClassesByTime},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: (
-        <Header
-          navigation={navigation}
-          title={`CLASES DE ${navigation.state.params.name}`}
-          backScreen={Screens.RecordedClassesByDate}
-        />
-      ),
-    }),
-  }
+const RecordedClassesByTimeNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.RecordedClassesByTime}
+      component={RecordedClassesByTime}
+      options={{
+        header: ({navigation}) => (
+          <Header
+            {...{navigation}}
+            title={`CLASES DE ${navigation.state.params.name}`}
+            backScreen={Screens.RecordedClassesByDate}
+          />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-const PayMonthlyFeeScreenNavigator = createStackNavigator(
-  {
-    [Screens.PayMonthlyFee]: {screen: PayMonthlyFee},
-  },
-  {
-    navigationOptions: ({navigation}) => ({
-      header: <Header navigation={navigation} backScreen={Screens.Home} />,
-    }),
-  }
+const PayMonthlyFeeScreenNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.PayMonthlyFee}
+      component={PayMonthlyFee}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.Home} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
 );
 
-export default createStackNavigator(
-  {
-    DrawerStack: {screen: DrawerStack},
-    [Screens.Settings]: {screen: SettingsNavigator},
-    [Screens.VideoPlayer]: {screen: VideoPlayer},
-    [Screens.RecordedClassesByDate]: {screen: RecordedClassesByDateNavigator},
-    [Screens.RecordedClassesByTime]: {screen: RecordedClassesByTimeNavigator},
-    [Screens.PayMonthlyFee]: {screen: PayMonthlyFeeScreenNavigator},
-  },
-  {
-    headerMode: "none",
-  }
+export default () => (
+  <Stack.Navigator headerMode="none">
+    <Stack.Screen name="DrawerStack" component={DrawerStack} />
+    <Stack.Screen name={Screens.Settings}>{SettingsNavigator}</Stack.Screen>
+    <Stack.Screen name={Screens.VideoPlayer} component={VideoPlayer} />
+    <Stack.Screen name={Screens.RecordedClassesByDate}>
+      {RecordedClassesByDateNavigator}
+    </Stack.Screen>
+    <Stack.Screen name={Screens.RecordedClassesByTime}>
+      {RecordedClassesByTimeNavigator}
+    </Stack.Screen>
+    <Stack.Screen name={Screens.PayMonthlyFee}>
+      {PayMonthlyFeeScreenNavigator}
+    </Stack.Screen>
+  </Stack.Navigator>
 );
