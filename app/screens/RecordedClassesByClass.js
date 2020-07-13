@@ -51,7 +51,10 @@ export default ({navigation}) => {
     <TouchableOpacity
       style={styles.item}
       onPress={() =>
-        navigation.navigate(Screens.RecordedClassesByDate, {classes, name})
+        navigation.navigate(Screens.RecordedClassesByDate, {
+          screen: Screens.RecordedClassesByDate,
+          params: {classes, name},
+        })
       }
     >
       <Text style={styles.name}>{name}</Text>

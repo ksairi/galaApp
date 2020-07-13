@@ -63,6 +63,8 @@ export default class AppContainer extends React.Component {
   };
 
   componentDidMount() {
+    this.props.dispatch(ActionsCreators.setIsInSession(false));
+    this.props.dispatch(ActionsCreators.setGoToMobileWebLogin(false));
     this.notificationSubscription = Notifications.addListener(
       this.handleNotification
     );
@@ -86,7 +88,7 @@ export default class AppContainer extends React.Component {
   }
 
   componentWillUnmount() {
-    this.notificationSubscription.remove();
+    // this.notificationSubscription.remove();
     if (Platform.OS !== "web") {
       AppContainer.unsubscribe();
     }

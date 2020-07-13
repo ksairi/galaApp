@@ -81,7 +81,11 @@ function ClassesToBook({
   });
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      setAlertMessage(null);
+    });
     fetchClassesToBook();
+    return unsubscribe;
   }, []);
 
   const checkoutBookings = useCallback(async () => {

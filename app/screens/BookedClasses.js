@@ -42,6 +42,9 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
   const [showCancelButton, setShowCancelButton] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
   useEffect(() => {
+    const unsubscribe = navigation.addListener("blur", () => {
+      setAlertMessage(null);
+    });
     let tempSortedClasses = [];
     const alreadyFiltered = [];
     bookedClasses.sort((a, b) => {
@@ -87,6 +90,7 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
       alreadyFiltered.push(filteredDate);
     });
     setSortedClasses(tempSortedClasses);
+    return unsubscribe;
   }, [bookedClasses]);
 
   const doDelete = async ({id, userId, className, dow, date, time}) => {

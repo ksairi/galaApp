@@ -14,13 +14,11 @@ const styles = {
   },
 };
 
-export default ({navigation}) => {
+export default ({navigation, route}) => {
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
-    setClasses(
-      navigation.state.params.classes.map(({name, url}) => ({name, url}))
-    );
+    setClasses(route.params.classes.map(({name, url}) => ({name, url})));
   }, []);
 
   const Item = ({name, url}) => (
@@ -29,7 +27,8 @@ export default ({navigation}) => {
       onPress={() =>
         navigation.navigate(Screens.VideoPlayer, {
           url,
-          title: `${navigation.state.params.name} - ${name.substr(-5)}`,
+          title: `${route.params.name} - ${name.substr(-5)}`,
+          backScreen: Screens.RecordedClassesByTime,
         })
       }
     >

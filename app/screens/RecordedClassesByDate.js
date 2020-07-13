@@ -15,11 +15,11 @@ const styles = {
   },
 };
 
-export default ({navigation}) => {
+export default ({navigation, route}) => {
   const [filteredRecordings, setFilteredRecordings] = useState([]);
   useEffect(() => {
     let recordingsToShow = [];
-    const classesByName = navigation.state.params.classes;
+    const classesByName = route.params.classes;
     classesByName.forEach(({name, url}) => {
       const dateToSearch = name
         .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
@@ -63,13 +63,17 @@ export default ({navigation}) => {
       onPress={() => {
         if (classes.length > 1) {
           navigation.navigate(Screens.RecordedClassesByTime, {
-            classes,
-            name: `${navigation.state.params.name} - ${date}`,
+            screen: Screens.RecordedClassesByTime,
+            params: {
+              classes,
+              name: `${route.params.name} - ${date}`,
+            },
           });
         } else {
           navigation.navigate(Screens.VideoPlayer, {
             url,
-            title: `${navigation.state.params.name} - ${date}`,
+            title: `${route.params.name} - ${date}`,
+            backScreen: Screens.RecordedClassesByDate,
           });
         }
       }}

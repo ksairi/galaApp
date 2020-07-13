@@ -44,3 +44,21 @@ export function setIsSavingNotificationsData(isSavingNotificationsData) {
     });
   };
 }
+
+export function setIsInSession(isInSession) {
+  return (dispatch) => {
+    dispatch({
+      type: ActionsTypes.SET_IS_IN_SESSION,
+      isInSession,
+    });
+  };
+}
+
+export function setGoToMobileWebLogin(value) {
+  return (dispatch) => {
+    dispatch({
+      type: ActionsTypes.SET_GO_TO_MOBILE_WEB_LOGIN,
+      value,
+    });
+  };
+}

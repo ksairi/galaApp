@@ -11,6 +11,8 @@ import CentredWrapper from "components/presentationals/CentredWrapper";
 import Logo from "components/presentationals/Logo";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import * as withEnv from "utils/env";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {genericBackgroundColor} from "components/styles";
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 const AnimatedText = Animatable.createAnimatableComponent(Text);
@@ -87,9 +89,11 @@ export default class Welcome extends React.PureComponent {
 
   goToLogin = () => {
     this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false));
-    this.props.navigation.navigate(Screens.CheckUserActivity, {
-      checkUserActivity: true,
-    });
+  };
+
+  goToMobileWebLogin = () => {
+    this.props.dispatch(ActionsCreators.setGoToMobileWebLogin(true));
+    this.props.dispatch(ActionsCreators.setIsAppsFirstTime(false));
   };
 
   appleStoreLink = "https://apps.apple.com/us/app/gala/id1449314757";
@@ -100,114 +104,116 @@ export default class Welcome extends React.PureComponent {
 
   render() {
     return (
-      <RootWrapper>
-        <CentredWrapper>
-          <AnimatedLogo
-            useNativeDriver
-            style={[
-              {flex: 0.7, fontSize: 75, marginTop: 50},
-              this.state.componentsStyle.logo,
-            ]}
-            ref={this.handleAnimatedLogo}
-          />
-          <View style={{flex: 0.65}}>
-            <AnimatedText
+      <SafeAreaView style={{backgroundColor: genericBackgroundColor, flex: 1}}>
+        <RootWrapper>
+          <CentredWrapper>
+            <AnimatedLogo
               useNativeDriver
-              style={styles.welcome}
-              ref={this.handleAnimatedTitle}
-            >
-              ¡BIENVENIDO!
-            </AnimatedText>
-            <AnimatedText
-              useNativeDriver
-              style={styles.welcomeDescription}
-              ref={this.handleAnimatedBody}
-            >
-              Dentro de la app podrás encontrar clases online, clases grabadas,
-              rutinas personalizadas y más!
-            </AnimatedText>
-          </View>
-          <View style={{flex: 1}}>
-            {withEnv.isWebInMobile() ? (
-              <View>
-                <TouchableOpacity
-                  onPress={() => Linking.openURL(this.storeLink)}
-                >
-                  <Text
-                    style={{
-                      fontFamily: "lato-regular",
-                      fontSize: 18,
-                      backgroundColor: "#6b35e3",
-                      borderRadius: 20,
-                      padding: 10,
-                    }}
-                  >
-                    Descargala Ahora!
-                  </Text>
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    paddingBottom: 10,
-                  }}
-                >
-                  {withEnv.isIOS() ? (
-                    <TouchableOpacity
-                      onPress={() => Linking.openURL(this.appleStoreLink)}
-                    >
-                      <Animatable.Image
-                        useNativeDriver
-                        ref={this.handleAnimatedImage1}
-                        source={require("../assets/images/app-store-badge.png")}
-                        style={{
-                          height: 60,
-                          width: 110,
-                          resizeMode: "contain",
-                        }}
-                      />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity
-                      onPress={() => Linking.openURL(this.googleStoreLink)}
-                    >
-                      <Animatable.Image
-                        useNativeDriver
-                        ref={this.handleAnimatedImage2}
-                        source={require("../assets/images/google-play-badge.png")}
-                        style={{
-                          height: 60,
-                          width: 150,
-                          resizeMode: "contain",
-                        }}
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
-                <TouchableOpacity onPress={this.goToLogin}>
-                  <Text
-                    style={{
-                      fontFamily: "lato-regular",
-                      fontSize: 18,
-                      borderRadius: 20,
-                    }}
-                  >
-                    o continuá en la versión web!
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <AnimatedButton
+              style={[
+                {flex: 0.7, fontSize: 75, marginTop: 50},
+                this.state.componentsStyle.logo,
+              ]}
+              ref={this.handleAnimatedLogo}
+            />
+            <View style={{flex: 0.65}}>
+              <AnimatedText
                 useNativeDriver
-                textStyle={{fontFamily: "brother-1816-bold", fontSize: 21}}
-                text="EXPLORÁ LA APP"
-                onPress={this.goToLogin}
-                ref={this.handleAnimatedButton}
-              />
-            )}
-          </View>
-        </CentredWrapper>
-      </RootWrapper>
+                style={styles.welcome}
+                ref={this.handleAnimatedTitle}
+              >
+                ¡BIENVENIDO!
+              </AnimatedText>
+              <AnimatedText
+                useNativeDriver
+                style={styles.welcomeDescription}
+                ref={this.handleAnimatedBody}
+              >
+                Dentro de la app podrás encontrar clases online, clases
+                grabadas, rutinas personalizadas y más!
+              </AnimatedText>
+            </View>
+            <View style={{flex: 1}}>
+              {withEnv.isWebInMobile() ? (
+                <View>
+                  <TouchableOpacity
+                    onPress={() => Linking.openURL(this.storeLink)}
+                  >
+                    <Text
+                      style={{
+                        fontFamily: "lato-regular",
+                        fontSize: 18,
+                        backgroundColor: "#6b35e3",
+                        borderRadius: 20,
+                        padding: 10,
+                      }}
+                    >
+                      Descargala Ahora!
+                    </Text>
+                  </TouchableOpacity>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      paddingBottom: 10,
+                    }}
+                  >
+                    {withEnv.isIOS() ? (
+                      <TouchableOpacity
+                        onPress={() => Linking.openURL(this.appleStoreLink)}
+                      >
+                        <Animatable.Image
+                          useNativeDriver
+                          ref={this.handleAnimatedImage1}
+                          source={require("../assets/images/app-store-badge.png")}
+                          style={{
+                            height: 60,
+                            width: 110,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      </TouchableOpacity>
+                    ) : (
+                      <TouchableOpacity
+                        onPress={() => Linking.openURL(this.googleStoreLink)}
+                      >
+                        <Animatable.Image
+                          useNativeDriver
+                          ref={this.handleAnimatedImage2}
+                          source={require("../assets/images/google-play-badge.png")}
+                          style={{
+                            height: 60,
+                            width: 150,
+                            resizeMode: "contain",
+                          }}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                  <TouchableOpacity onPress={this.goToMobileWebLogin}>
+                    <Text
+                      style={{
+                        fontFamily: "lato-regular",
+                        fontSize: 18,
+                        borderRadius: 20,
+                      }}
+                    >
+                      o continuá en la versión web!
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <AnimatedButton
+                  useNativeDriver
+                  textStyle={{fontFamily: "brother-1816-bold", fontSize: 21}}
+                  text="EXPLORÁ LA APP"
+                  onPress={this.goToLogin}
+                  ref={this.handleAnimatedButton}
+                />
+              )}
+            </View>
+          </CentredWrapper>
+        </RootWrapper>
+      </SafeAreaView>
     );
   }
 }

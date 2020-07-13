@@ -8,6 +8,7 @@ import Logo from "components/presentationals/Logo";
 import {genericBackgroundColor} from "components/styles";
 import * as UserDataHelper from "helpers/UserDataHelper";
 import {isMemberActive} from "utils/userData";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 const styles = {
   drawerItemsWrapper: {
@@ -16,7 +17,6 @@ const styles = {
     alignItems: "flex-start",
     paddingLeft: 5,
     paddingBottom: 5,
-    flexGrow: 1,
   },
   headerIcon: {
     flex: 1,
@@ -73,57 +73,60 @@ export default class DrawerContentComponent extends React.PureComponent {
   };
 
   onPress = (screen, params) => () => {
-    this.props.navigation.navigate(screen, params);
+    this.props.navigation.navigate(screen, {screen, params});
   };
 
   navigateToHome = (screen) => () => {
-    this.props.navigation.navigate(screen);
+    this.props.navigation.navigation(screen);
   };
 
   render() {
     return (
-      <GScrollView contentContainerStyle={styles.drawerItemsWrapper}>
-        <TouchableOpacity
-          style={{flex: 1, flexDirection: "row", marginLeft: 13}}
-          onPress={this.navigateToHome(Screens.Home)}
-        >
-          <Logo style={styles.headerIcon} />
-        </TouchableOpacity>
-        {SectionsData.map((drawerItem, index) => {
-          if (
-            (drawerItem.screen !== Screens.NewMember &&
-              drawerItem.screen !== Screens.PayMonthlyFee &&
-              !drawerItem.requiresActiveMember) ||
-            (drawerItem.screen === Screens.NewMember &&
-              this.state.freeEntryDaysLeft > 0) ||
-            (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
-            (drawerItem.requiresFreePlan && this.props.userData.freePassEndDate)
-          ) {
-            return (
-              <DrawerItem
-                key={index}
-                active={this.props.activeItemKey === drawerItem.screen}
-                icon={drawerItem.icon}
-                label={drawerItem.label}
-                screen={drawerItem.screen}
-                onPress={
-                  drawerItem.onPress
-                    ? () => drawerItem.onPress()
-                    : this.onPress(drawerItem.screen, drawerItem.params)
-                }
-                style={drawerItem.drawerStyle}
-                IconComponent={drawerItem.IconComponent}
-                labelExtraData={
-                  drawerItem.label === "MENSAJES" &&
-                  this.props.newMessagesCount > 0
-                    ? ` (${this.props.newMessagesCount})`
-                    : null
-                }
-              />
-            );
-          }
-        })}
-      </GScrollView>
+      <SafeAreaView style={{backgroundColor: genericBackgroundColor, flex: 1}}>
+        <GScrollView contentContainerStyle={styles.drawerItemsWrapper}>
+          <TouchableOpacity
+            style={{flex: 1, flexDirection: "row", marginLeft: 13}}
+            onPress={this.navigateToHome(Screens.Home)}
+          >
+            <Logo style={styles.headerIcon} />
+          </TouchableOpacity>
+          {SectionsData.map((drawerItem, index) => {
+            if (
+              (drawerItem.screen !== Screens.NewMember &&
+                drawerItem.screen !== Screens.PayMonthlyFee &&
+                !drawerItem.requiresActiveMember) ||
+              (drawerItem.screen === Screens.NewMember &&
+                this.state.freeEntryDaysLeft > 0) ||
+              (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
+              (drawerItem.requiresFreePlan &&
+                this.props.userData.freePassEndDate)
+            ) {
+              return (
+                <DrawerItem
+                  key={index}
+                  active={this.props.activeItemKey === drawerItem.screen}
+                  icon={drawerItem.icon}
+                  label={drawerItem.label}
+                  screen={drawerItem.screen}
+                  onPress={
+                    drawerItem.onPress
+                      ? () => drawerItem.onPress()
+                      : this.onPress(drawerItem.screen, drawerItem.params)
+                  }
+                  style={drawerItem.drawerStyle}
+                  IconComponent={drawerItem.IconComponent}
+                  labelExtraData={
+                    drawerItem.label === "MENSAJES" &&
+                    this.props.newMessagesCount > 0
+                      ? ` (${this.props.newMessagesCount})`
+                      : null
+                  }
+                />
+              );
+            }
+          })}
+        </GScrollView>
+      </SafeAreaView>
     );
   }
 }

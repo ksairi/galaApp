@@ -179,6 +179,8 @@ export const ActionsTypes = {
   SET_HAS_RESET_FIRST_PASSWORD: "SET_HAS_RESET_FIRST_PASSWORD",
   SET_IN_RESET_FIRT_PASSWORD_MODE: "SET_IN_RESET_FIRT_PASSWORD_MODE",
   SET_IS_SAVING_NOTIFICATIONS_DATA: "SET_IS_SAVING_NOTIFICATIONS_DATA",
+  SET_IS_IN_SESSION: "SET_IS_IN_SESSION",
+  SET_GO_TO_MOBILE_WEB_LOGIN: "SET_GO_TO_MOBILE_WEB_LOGIN",
 
   // Navigation
   SET_CURRENT_HOME_DRAWER_OPTION: "SET_CURRENT_HOME_DRAWER_OPTION",
@@ -274,16 +276,16 @@ export const SectionsData = [
   //   screen: Screens.Affidavit,
   // },
   // {
-  //   icon: 'exclamation',
-  //   label: 'SOCIO NUEVO',
+  //   icon: "exclamation",
+  //   label: "SOCIO NUEVO",
   //   screen: Screens.NewMember,
   //   IconComponent: FontAwesome,
   //   drawerStyle: {
-  //     icon: { marginTop: 5, paddingLeft: 15, fontSize: 30 },
-  //     label: { marginTop: 10, color: 'green', fontFamily: 'lato-regular' },
-  //     arrow: { marginTop: 15 }
+  //     icon: {marginTop: 5, paddingLeft: 15, fontSize: 30},
+  //     label: {marginTop: 10, color: "green", fontFamily: "lato-regular"},
+  //     arrow: {marginTop: 15},
   //   },
-  //   homeStyle: { fontSize: 40, color: 'white' }
+  //   homeStyle: {fontSize: 40, color: "white"},
   // },
   {
     icon: "user-icon",

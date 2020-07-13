@@ -1,10 +1,10 @@
-import React from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import {Text, View, TouchableOpacity, Platform, Linking} from "react-native";
 import {WebView} from "react-native-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
-import {Screens, AnalitycsEventsLabels, Messages} from "config/settings";
+import {AnalitycsEventsLabels, Messages} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
@@ -14,6 +14,8 @@ import * as Permissions from "expo-permissions";
 import {detect} from "detect-browser";
 import Alert from "components/presentationals/Alert";
 import * as withEnv from "utils/env";
+import {SafeAreaView} from "react-native-safe-area-context";
+
 const styles = {
   title: {
     alignSelf: "center",
@@ -23,23 +25,81 @@ const styles = {
   },
 };
 
-@connect((state) => ({
-  userData: state.userData,
-}))
-export default class LiveClass extends React.Component {
-  state = {
-    loading: true,
-    message: null,
-  };
+function LiveClass({navigation, route, userData}) {
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [uri, setUri] = useState(null);
+  const [hasLeft, setHastLeft] = useState(false);
 
-  constructor(props) {
-    super(props);
-    const {studioNumber} = props.route.params;
-    const name = props.userData?.name;
-    this.uri = `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
-  }
+  const goBack = useCallback(() => {
+    navigation.goBack();
+  });
 
-  injectedJs = `
+  const getMeetingId = useCallback(async (studioNumber) =>
+    ApiHelper.getMeetingId({studioNumber})
+  );
+
+  const openAppIfNeeded = useCallback(async () => {
+    try {
+      const name = userData?.name;
+      const {studioNumber} = route.params.params;
+      if (Platform.OS === "ios") {
+        const {meetingId} = await getMeetingId(studioNumber);
+        const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
+        try {
+          await Linking.openURL(link);
+        } catch (e) {
+          setMessage("Por favor descargue la app Zoom");
+        }
+      }
+      if (Platform.OS === "web") {
+        const browser = detect().name;
+        goBack();
+        if (browser === "chrome" || browser === "edge") {
+          window.open(uri, "_blank");
+        } else {
+          const {meetingId} = await getMeetingId(studioNumber);
+          window.open(`https://zoom.us/j/${meetingId}`, "_blank");
+        }
+      }
+    } catch (e) {
+      setMessage(Messages.SERVER_ERROR);
+    }
+  }, [userData.name]);
+  useEffect(() => {
+    const askAndroidPermissions = async () => {
+      if (Platform.OS === "android") {
+        await Permissions.askAsync(
+          Permissions.CAMERA,
+          Permissions.AUDIO_RECORDING
+        );
+        setTimeout(() => {
+          setLoading(false);
+        }, 15000);
+        activateKeepAwake();
+      }
+    };
+    askAndroidPermissions();
+    return deactivateKeepAwake();
+  });
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      const {studioNumber} = route.params.params;
+      const name = userData?.name;
+      setUri(
+        `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`
+      );
+      AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
+      openAppIfNeeded();
+
+      const {title} = route.params.params;
+      setTitle(title);
+      return unsubscribe;
+    });
+  }, [navigation]);
+
+  const injectedJs = `
     setTimeout(function () {
       var startAudioButton = document.getElementById('pc-join');
       var startFSButton = document.getElementsByClassName('full-screen-widget ax-outline')[0];
@@ -57,126 +117,80 @@ export default class LiveClass extends React.Component {
     true;
   `;
 
-  async componentDidMount() {
-    AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
-    this.openAppIfNeeded();
-    if (Platform.OS === "android") {
-      await Permissions.askAsync(
-        Permissions.CAMERA,
-        Permissions.AUDIO_RECORDING
-      );
-      setTimeout(() => {
-        this.setState({loading: false});
-      }, 15000);
-      activateKeepAwake();
-    }
-  }
-
-  componentWillUnmount() {
-    deactivateKeepAwake();
-  }
-
-  onMessage = ({nativeEvent}) => {
-    try {
-      const result = JSON.parse(nativeEvent.data);
-      if (result.status === "error") {
-        this.setState({message: "La clase no ha empezado aun"});
-      }
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
-  };
-
-  getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
-
-  openAppIfNeeded = async () => {
-    try {
-      const name = this.props.userData?.name;
-      const {studioNumber} = this.props.route.params;
-      if (Platform.OS === "ios") {
-        const {meetingId} = await this.getMeetingId(studioNumber);
-        const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
-        try {
-          await Linking.openURL(link);
-        } catch (e) {
-          this.setState({message: "Por favor descargue la app Zoom"});
+  const onMessage = ({nativeEvent}) => {
+    if (!hasLeft) {
+      try {
+        const result = JSON.parse(nativeEvent.data);
+        if (result.status === "error") {
+          setMessage("La clase no ha empezado aun");
         }
-      }
-      if (Platform.OS === "web") {
-        const browser = detect().name;
-        this.props.navigation.navigate(Screens.Home);
-        if (browser === "chrome" || browser === "edge") {
-          window.open(this.uri, "_blank");
-        } else {
-          const {meetingId} = await this.getMeetingId(studioNumber);
-          window.open(`https://zoom.us/j/${meetingId}`, "_blank");
-        }
-      }
-    } catch (e) {
-      this.setState({message: Messages.SERVER_ERROR});
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
     }
   };
-
-  render() {
-    const {title} = this.props.route.params;
-
-    return (
-      <>
-        <View
-          style={{
-            flex: 0.07,
-            paddingLeft: 10,
-            backgroundColor: genericBackgroundColor,
-          }}
-        >
-          <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
-            <Ionicons
-              name="ios-arrow-round-back"
-              size={30}
-              color="white"
-              style={{
-                alignSelf: "flex-start",
-              }}
-            />
-          </TouchableOpacity>
-        </View>
-        <RootWrapper
-          style={{
-            flex: 2,
-            justifyContent: "center",
-          }}
-        >
-          {this.state.loading && <Text style={styles.title}>Cargando...</Text>}
-          <Text
+  return (
+    <SafeAreaView style={{backgroundColor: genericBackgroundColor}}>
+      <View
+        style={{
+          flex: 0.07,
+          paddingLeft: 10,
+          backgroundColor: genericBackgroundColor,
+        }}
+      >
+        <TouchableOpacity onPress={() => goBack()}>
+          <Ionicons
+            name="ios-arrow-round-back"
+            size={30}
+            color="white"
             style={{
-              marginTop: 10,
-              alignSelf: "center",
-              color: "white",
-              fontFamily: "lato-regular",
-            }}
-          >
-            {title}
-          </Text>
-          {!this.state.message && (
-            <WebView
-              style={{marginTop: 10}}
-              source={{
-                uri: this.uri,
-              }}
-              onMessage={this.onMessage}
-              injectedJavaScript={this.injectedJs}
-              mediaPlaybackRequiresUserAction={false}
-            />
-          )}
-          <Alert
-            show={!!this.state.message}
-            message={this.state.message}
-            showCancelButton={false}
-            onConfirmPressed={() => {
-              this.props.navigation.navigate(Screens.Home);
+              alignSelf: "flex-start",
             }}
           />
-        </RootWrapper>
-      </>
-    );
-  }
+        </TouchableOpacity>
+      </View>
+      <RootWrapper
+        style={{
+          flex: 2,
+          justifyContent: "center",
+        }}
+      >
+        {loading && <Text style={styles.title}>Cargando...</Text>}
+        <Text
+          style={{
+            marginTop: 10,
+            alignSelf: "center",
+            color: "white",
+            fontFamily: "lato-regular",
+          }}
+        >
+          {title}
+        </Text>
+        {!hasLeft && uri && (
+          <WebView
+            style={{marginTop: 10}}
+            source={{
+              uri: encodeURI(uri),
+            }}
+            onMessage={onMessage}
+            injectedJavaScript={injectedJs}
+            mediaPlaybackRequiresUserAction={false}
+          />
+        )}
+        <Alert
+          show={!!message}
+          message={message}
+          showCancelButton={false}
+          onConfirmPressed={() => {
+            goBack();
+            setMessage(null);
+            setHastLeft(true);
+          }}
+        />
+      </RootWrapper>
+    </SafeAreaView>
+  );
 }
+
+export default connect((state) => ({
+  userData: state.userData,
+}))(LiveClass);

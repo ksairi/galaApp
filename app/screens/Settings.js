@@ -10,7 +10,7 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Alert from "components/presentationals/Alert";
 
 const styles = {
-  settingsWrapper: {flex: 0.4},
+  settingsWrapper: {flex: 0.4, marginTop: 10},
   settingItem: {
     flexDirection: "row",
     marginTop: 5,
@@ -89,10 +89,10 @@ export default class Settings extends React.Component {
             message="¿Cerrar sesión?"
             showCancelButton={true}
             onConfirmPressed={() => {
+              this.props.dispatch(ActionsCreators.setIsInSession(false));
+              this.props.dispatch(ActionsCreators.logout());
               this.setState({showAlert: false});
               AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
-              this.props.navigation.navigate(Screens.LoginStack);
-              this.props.dispatch(ActionsCreators.logout());
             }}
             onCancelPressed={() => {
               this.setState({showAlert: false});

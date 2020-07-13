@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Alert,
-  TouchableOpacity,
-  BackHandler,
-  ImageBackground,
-} from "react-native";
+import {View, Alert, TouchableOpacity, ImageBackground} from "react-native";
 import {connect} from "react-redux";
 import {Camera} from "expo-camera";
 import Constants from "expo-constants";
@@ -76,21 +70,7 @@ export default class CameraView extends React.Component {
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.CameraView);
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
-
-  componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
-  }
-
-  handleBackPress = () => {
-    if (this.state.pictureTaken) {
-      this.setState({pictureTaken: false, renderCamera: true});
-      return true;
-    }
-    this.props.navigation.navigate(Screens.Profile);
-    return true;
-  };
 
   renderCameraViewTopBar = () => (
     <View style={styles.topBar}>

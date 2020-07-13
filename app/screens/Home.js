@@ -151,7 +151,7 @@ export default class Home extends React.Component {
   }
 
   onIconPressed = (screen, params) => () => {
-    this.props.navigation.navigate(screen, params);
+    this.props.navigation.navigate(screen, {screen, params});
   };
 
   goToScreen = (screen) => () => {

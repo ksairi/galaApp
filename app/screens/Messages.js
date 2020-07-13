@@ -98,10 +98,18 @@ export default class Messages extends React.Component {
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.Messages);
     AppState.addEventListener("change", this._handleAppStateChange);
-    if (this.props.newMessagesCount > 0) {
-      this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
-    }
-    this.startPullingMessages();
+    this._unsubscribePullingMessages = this.props.navigation.addListener(
+      "focus",
+      () => {
+        if (this.props.newMessagesCount > 0) {
+          this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+        }
+        this.startPullingMessages();
+      }
+    );
+    this.props.navigation.addListener("blur", () => {
+      clearInterval(this.intervalId);
+    });
   }
 
   startPullingMessages = () => {
@@ -137,6 +145,7 @@ export default class Messages extends React.Component {
     AppState.removeEventListener("change", this._handleAppStateChange);
     clearInterval(this.intervalId);
     this.doGetRealTimeMessages(true);
+    this._unsubscribePullingMessages();
   }
 
   _handleAppStateChange = (nextAppState) => {

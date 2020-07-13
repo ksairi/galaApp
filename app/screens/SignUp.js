@@ -23,7 +23,6 @@ import {
   textWithLinkStyle,
   containerPadding,
 } from "components/styles";
-import Header from "components/containers/Header";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import RoundedTextInput from "components/presentationals/RoundedTextInput";
 import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
@@ -168,7 +167,6 @@ export default class SignUp extends React.Component {
         this.props.dispatch
       );
       this.setState({spinnerVisible: false});
-      this.props.navigation.navigate(Screens.HomeStack);
     } catch (errorMessage) {
       this.setState({spinnerVisible: false, errorMessage});
     }

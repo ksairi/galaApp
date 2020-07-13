@@ -7,6 +7,8 @@ import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Ionicons} from "@expo/vector-icons";
 import ActionsCreators from "redux/actions";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {genericBackgroundColor} from "components/styles";
 
 @connect((state) => ({
   userData: state.userData,
@@ -28,14 +30,13 @@ export default class VideoPlayer extends React.Component {
   render() {
     const {url: uri, backScreen, title} = this.props.route.params;
     return (
-      <>
+      <SafeAreaView style={{backgroundColor: genericBackgroundColor, flex: 1}}>
         {this.state.showBack && (
           <View
             style={[
               {
-                flex: 0.3,
+                flex: 0.2,
                 paddingLeft: 10,
-                backgroundColor: Platform.OS === "ios" ? "#262626" : "black",
               },
             ]}
           >
@@ -45,7 +46,7 @@ export default class VideoPlayer extends React.Component {
                   this.props.navigation.navigate(backScreen);
                   return;
                 }
-                this.props.navigation.dispatch(CommonActions.back());
+                this.props.navigation.dispatch(CommonActions.goBack());
               }}
             >
               <Ionicons
@@ -83,7 +84,7 @@ export default class VideoPlayer extends React.Component {
             <WebView allowsFullscreenVideo source={{uri}} />
           )}
         </RootWrapper>
-      </>
+      </SafeAreaView>
     );
   }
 }

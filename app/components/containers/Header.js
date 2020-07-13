@@ -18,7 +18,7 @@ import GenericText from "components/presentationals/GenericText";
 import * as NetworkHelper from "helpers/NetworkHelper";
 import ActionsCreators from "redux/actions/";
 import {SafeAreaView} from "react-native-safe-area-context";
-import {CommonActions} from "@react-navigation/native";
+import {Ionicons} from "@expo/vector-icons";
 
 const styles = {
   wrapper: {
@@ -148,11 +148,7 @@ export default class Header extends React.PureComponent {
   };
 
   onBackPressed = () => {
-    this.props.navigation.dispatch(
-      CommonActions.reset({
-        routes: [{name: this.props.backScreen}],
-      })
-    );
+    this.props.navigation.navigate(this.props.backScreen);
   };
 
   hideKeyboard = () => {
@@ -212,11 +208,7 @@ export default class Header extends React.PureComponent {
                     onPress={this.onBackPressed}
                     style={styles.backButton}
                   >
-                    <Icon
-                      name="arrow-navigation-white-left"
-                      size={20}
-                      color="white"
-                    />
+                    <Ionicons name="md-arrow-back" size={32} color="white" />
                   </TouchableOpacity>
                 )}
               </View>
