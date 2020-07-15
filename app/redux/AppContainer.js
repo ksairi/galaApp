@@ -1,24 +1,25 @@
 import React from "react";
-import {AppState, Platform, Vibration, Alert} from "react-native";
+import {Platform, Alert} from "react-native";
 import NetInfo from "@react-native-community/netinfo";
-import {Notifications, Updates} from "expo";
+import * as Updates from "expo-updates";
+import * as Notifications from "expo-notifications";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {
   AnalitycsEventsLabels,
   Notifications as NotificationsData,
+  // Screens,
 } from "config/settings";
 
 import AppRoutes from "navigation";
 import * as NetworkHelper from "helpers/NetworkHelper";
 import RootView from "components/containers/RootView";
-// import {setNotifiedMessagesSaved} from "helpers/ApiHelper";
 import {sendUnsentMessages} from "helpers/MessagesHelper";
 import * as UserDataHelper from "helpers/UserDataHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
-import createNotificationsHanlder from "./lib/createHandler";
 import ActionsCreators from "./actions";
-
+import StatusBar from "components/presentationals/StatusBar";
+// import {navigate} from "navigation";
 @connect(
   (state) => ({
     userId: state.userData.userId,
@@ -38,8 +39,6 @@ import ActionsCreators from "./actions";
   })
 )
 export default class AppContainer extends React.Component {
-  static alreadySetMessagesSaved = false;
-
   static unsubscribe;
 
   static interval;
@@ -65,9 +64,10 @@ export default class AppContainer extends React.Component {
   componentDidMount() {
     this.props.dispatch(ActionsCreators.setIsInSession(false));
     this.props.dispatch(ActionsCreators.setGoToMobileWebLogin(false));
-    this.notificationSubscription = Notifications.addListener(
-      this.handleNotification
-    );
+    Notifications.addNotificationReceivedListener(this.notificationReceived);
+    // Notifications.addNotificationResponseReceivedListener(
+    //   this.notificationResponseReceived
+    // );
     if (Platform.OS !== "web") {
       AppContainer.unsubscribe = NetInfo.addEventListener(
         this.handleConnectivityChange
@@ -88,111 +88,61 @@ export default class AppContainer extends React.Component {
   }
 
   componentWillUnmount() {
-    // this.notificationSubscription.remove();
+    Notifications.removeAllNotificationListeners();
     if (Platform.OS !== "web") {
       AppContainer.unsubscribe();
     }
     clearInterval(AppContainer.interval);
   }
 
-  handleNotification = async (notification) => {
-    let localNotificationBody = "";
-    const {props} = this;
-    if (notification.origin === "received") {
-      AnalyticsHelper.setEvent(
-        `${AnalitycsEventsLabels.notificationReceivedOf} ${
-          AnalitycsEventsLabels[
-            Object.keys(notification.data).filter(
-              (key) =>
-                key !== NotificationsData.idFieldName &&
-                key !== NotificationsData.handlerFieldName &&
-                key !== NotificationsData.destScreenFieldName
-            )
-          ]
-        }`
-      );
-      createNotificationsHanlder({
-        messages() {
-          // saveMessagesToDevice(
-          //   notification.data.messages,
-          //   null,
-          //   props.dispatch
-          // )
-          props.dispatch(
-            ActionsCreators.setNewMessagesCount(
-              notification.data.messages.length
-            )
-          );
-          // setNotifiedMessagesSaved({
-          //   userId: props.userId,
-          //   notificationId: notification.data.notificationId,
-          //   lastMessageServerTime:
-          //     notification.data.messages[notification.data.messages.length - 1]
-          //       .serverTime,
-          // });
-          // AppContainer.alreadySetMessagesSaved = true;
-          localNotificationBody = "Tenés nuevos mensajes!";
-        },
-      })(notification.data);
-    }
-
-    if (notification.origin === "selected") {
-      // const {navigator} = this;
-      createNotificationsHanlder({
-        messages() {
-          if (!AppContainer.alreadySetMessagesSaved) {
-            AnalyticsHelper.setEvent(
-              `${AnalitycsEventsLabels.notificationReceivedOf} ${AnalitycsEventsLabels.messages}`
-            );
-            // saveMessagesToDevice(
-            //   notification.data.messages,
-            //   null,
-            //   props.dispatch
-            // )
-
-            props.dispatch(
-              ActionsCreators.setNewMessagesCount(
-                notification.data.messages.length
-              )
-            );
-            // setNotifiedMessagesSaved({
-            //   userId: props.userId,
-            //   notificationId: notification.data.notificationId,
-            //   lastMessageServerTime:
-            //     notification.data.messages[
-            //       notification.data.messages.length - 1
-            //     ].serverTime,
-            // });
-          }
-        },
-      })(notification.data);
-      // is making the setInterval not to finish when
-      // leaving Messages screen
-      // if (!props.isLoggedIn) {
-      //   navigator.navigate(Screens.Messages)
-      // } else {
-      //   navigator.navigate(Screens.LoginStack)
-      // }
-    }
-    if (
-      props.isLoggedIn &&
-      Platform.OS === "ios" &&
-      AppState.currentState === "active" &&
-      notification.origin === "received"
-    ) {
-      // remote notifications are not shown when app is active in iOS
-      this.props.dispatch(
-        ActionsCreators.setNotificationsText(localNotificationBody)
-      );
-      Vibration.vibrate();
-    }
-    if (Platform.OS === "ios") {
-      const badgeNumber = await Notifications.getBadgeNumberAsync();
-      await Notifications.setBadgeNumberAsync(
-        badgeNumber + notification.data.messages.length
-      );
-    }
+  setAnalyticEvent = (data) => {
+    AnalyticsHelper.setEvent(
+      `${AnalitycsEventsLabels.notificationReceivedOf} ${
+        AnalitycsEventsLabels[
+          Object.keys(data).filter(
+            (key) =>
+              key !== NotificationsData.idFieldName &&
+              key !== NotificationsData.handlerFieldName &&
+              key !== NotificationsData.destScreenFieldName
+          )
+        ]
+      }`
+    );
   };
+
+  notificationReceived = async ({
+    request: {
+      content: {data},
+    },
+  }) => {
+    const messagesCount = data.messages.length;
+    this.props.dispatch(
+      ActionsCreators.setNotificationsText("Tenés nuevos mensajes!")
+    );
+    this.props.dispatch(ActionsCreators.setNewMessagesCount(messagesCount));
+    const badgeNumber = await Notifications.getBadgeNumberAsync();
+    await Notifications.setBadgeNumberAsync(badgeNumber + messagesCount);
+    this.setAnalyticEvent(data);
+  };
+
+  // notificationResponseReceived = async ({
+  //   notification: {
+  //     request: {
+  //       content: {data},
+  //     },
+  //   },
+  // }) => {
+  //    NOT WORKING! this.props is null
+  //   this.setAnalyticEvent(data);
+  //   if (isReadyRef.current && this.props.isLoggedIn) {
+  //     const messagesCount = data.messages.length;
+  //     this.props.dispatch(ActionsCreators.setNewMessagesCount(messagesCount));
+  //     const badgeNumber = await Notifications.getBadgeNumberAsync();
+  //     await Notifications.setBadgeNumberAsync(badgeNumber + messagesCount);
+  //     navigate(Screens.Messages);
+  //   }
+  //   this.props.dispatch(ActionsCreators.setNewMessagesCount(messagesCount));
+  // };
 
   handleConnectivityChange = async (connectionInfo) => {
     if (await NetworkHelper.isConnected(connectionInfo)) {
@@ -220,6 +170,14 @@ export default class AppContainer extends React.Component {
   render() {
     return (
       <RootView>
+        <StatusBar
+          backgroundColor="#5E8D48"
+          barStyle="light-content"
+          hidden={
+            (this.props.statusBarIsHidden && Platform.OS !== "ios") ||
+            (Platform.OS === "ios" && this.props.orientation === "landscape")
+          }
+        />
         <AppRoutes />
       </RootView>
     );

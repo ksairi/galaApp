@@ -7,9 +7,9 @@ const API_ROOT = "/api/";
 
 const getServer2Environment = (path) => {
   const {slug} = Constants.manifest;
-  return slug === "galaAppStaging"
-    ? `https://test.galagym.com${API_ROOT}${path}`
-    : `https://galagym.com${API_ROOT}${path}`;
+  return slug === "galaApp"
+    ? `https://galagym.com${API_ROOT}${path}`
+    : `https://test.galagym.com${API_ROOT}${path}`;
 };
 
 const getServerHostName2 = (path) => {
@@ -26,7 +26,7 @@ const getServerHostName2 = (path) => {
 
 const getServer1Environment = (path) => {
   const {slug} = Constants.manifest;
-  const port = slug === "galaAppStaging" ? "1083" : "1082";
+  const port = slug === "galaApp" ? "1082" : "1083";
   return `http://galagym.sytes.net:${port}/${path}`;
 };
 

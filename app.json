@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Gala Staging",
+    "name": "Gala Dev",
     "description": "Mobile App for Gala Fitness Center",
     "owner": "ksairi",
-    "slug": "galaAppStaging",
+    "slug": "galaAppDev",
     "privacy": "public",
-    "version": "1.1",
+    "version": "1.0",
     "githubUrl": "https://github.com/ksairi/galaApp",
     "primaryColor": "#0b1143",
     "scheme": "galaapp",
@@ -22,20 +22,21 @@
       "node_modules/@expo/vector-icons/fonts/Entypo.ttf"
     ],
     "android": {
-      "package": "com.gala.galaapp.staging",
-      "versionCode": 2,
-      "googleServicesFile": "google-services-staging.json",
+      "package": "com.gala.galaapp.dev",
+      "versionCode": 1,
+      "googleServicesFile": "google-services-dev.json",
       "playStoreUrl": "https://play.google.com/",
       "permissions": [
         "CAMERA",
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE",
         "RECORD_AUDIO"
-      ]
+      ],
+      "useNextNotificationsApi": true
     },
     "ios": {
-      "bundleIdentifier": "com.gala.galaapp.staging",
-      "buildNumber": "2",
+      "bundleIdentifier": "com.gala.galaapp.dev",
+      "buildNumber": "1",
       "supportsTablet": true,
       "isTabletOnly": false,
       "infoPlist": {
@@ -59,7 +60,9 @@
     "notification": {
       "icon": "./app/assets/icons/notification_icon.png",
       "color": "#000000",
-      "androidCollapsedTitle": "Nuevas notificaciones"
+      "androidCollapsedTitle": "Nuevas notificaciones",
+      "iosDisplayInForeground": true,
+      "androidMode": "collapse"
     },
     "icon": "./assets/app_icon.png",
     "facebookAppId": "361095590638823",

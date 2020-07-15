@@ -20,7 +20,7 @@ import {getRealTimeMessages, setRealTimeMessagesSaved} from "helpers/ApiHelper";
 import {saveMessagesToDevice} from "helpers/StoreHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import {Screens} from "config/settings";
-import {Notifications} from "expo";
+import * as Notifications from "expo-notifications";
 
 const styles = {
   textInputStyle: {
@@ -91,7 +91,7 @@ export default class Messages extends React.Component {
       this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
     }
     if (Platform.OS === "ios") {
-      await Notifications.setBadgeNumberAsync(0);
+      await Notifications.setBadgeCountAsync(0);
     }
   }
 

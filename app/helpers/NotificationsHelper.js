@@ -1,4 +1,4 @@
-import {Notifications} from "expo";
+import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
 import ActionsCreators from "redux/actions";
 
@@ -24,7 +24,7 @@ export const getDeviceId = async (dispatch) => {
     }
 
     // Get the token that uniquely identifies this device
-    const deviceId = await Notifications.getExpoPushTokenAsync();
+    const deviceId = (await Notifications.getExpoPushTokenAsync()).data;
     dispatch(ActionsCreators.setDeviceId(deviceId));
     return deviceId;
   } catch (error) {

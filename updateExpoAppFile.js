@@ -1,11 +1,24 @@
 const editJsonFile = require("edit-json-file");
 
+const DEV_APP_VERSION = "1.0";
+const DEV_APP_ANDROID_VERSION_CODE = 1;
+const DEV_APP_IOS_BUILD_NUMBER = "1";
 const STAGING_APP_VERSION = "1.1";
 const STAGING_APP_ANDROID_VERSION_CODE = 2;
 const STAGING_APP_IOS_BUILD_NUMBER = "2";
 const PROD_APP_VERSION = "1.2";
 const PROD_APP_ANDROID_VERSION_CODE = 12;
 const PROD_APP_IOS_BUILD_NUMBER = "1";
+
+const devDeployData = {
+  name: "Gala Dev",
+  slug: "galaAppDev",
+  version: DEV_APP_VERSION,
+  iosBuildNumber: DEV_APP_IOS_BUILD_NUMBER,
+  androidVersionCode: DEV_APP_ANDROID_VERSION_CODE,
+  bundleIdentifier: "com.gala.galaapp.dev",
+  googleServicesFile: "google-services-dev.json",
+};
 
 const stagingDeployData = {
   name: "Gala Staging",
@@ -30,10 +43,16 @@ const prodDeployData = {
 // eslint-disable-next-line no-undef
 exports.init = (environment) => {
   let dataToSet;
-  if (environment === "default") {
-    dataToSet = prodDeployData;
-  } else {
-    dataToSet = stagingDeployData;
+  switch (environment) {
+    case "default":
+      dataToSet = prodDeployData;
+      break;
+    case "staging":
+      dataToSet = stagingDeployData;
+      break;
+    case "dev":
+      dataToSet = devDeployData;
+      break;
   }
 
   const file = editJsonFile(`${__dirname}/app.json`);
