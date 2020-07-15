@@ -25,7 +25,7 @@ const styles = {
     flexDirection: "row",
     alignItems: "flex-start",
     backgroundColor: genericBackgroundColor,
-    paddingTop: 10,
+    // paddingTop: 10,
     paddingLeft: containerPadding,
   },
   backButton: {
@@ -161,7 +161,7 @@ export default class Header extends React.PureComponent {
         <TouchableWithoutFeedback onPress={this.hideKeyboard}>
           <View style={this.state.headerStyle.wrapper}>
             <View style={styles.wrapper}>
-              {Platform.OS === "ios" && this.props.newNotificationsText !== "" && (
+              {this.props.newNotificationsText !== "" && (
                 <AnimatedBanner
                   useNativeDriver
                   ref={this.handleBannerRef}
