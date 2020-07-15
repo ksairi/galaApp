@@ -13,7 +13,7 @@ import {
 import AppRoutes from "navigation";
 import * as NetworkHelper from "helpers/NetworkHelper";
 import RootView from "components/containers/RootView";
-import {setNotifiedMessagesSaved} from "helpers/ApiHelper";
+// import {setNotifiedMessagesSaved} from "helpers/ApiHelper";
 import {sendUnsentMessages} from "helpers/MessagesHelper";
 import * as UserDataHelper from "helpers/UserDataHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
@@ -122,14 +122,14 @@ export default class AppContainer extends React.Component {
               notification.data.messages.length
             )
           );
-          setNotifiedMessagesSaved({
-            userId: props.userId,
-            notificationId: notification.data.notificationId,
-            lastMessageServerTime:
-              notification.data.messages[notification.data.messages.length - 1]
-                .serverTime,
-          });
-          AppContainer.alreadySetMessagesSaved = true;
+          // setNotifiedMessagesSaved({
+          //   userId: props.userId,
+          //   notificationId: notification.data.notificationId,
+          //   lastMessageServerTime:
+          //     notification.data.messages[notification.data.messages.length - 1]
+          //       .serverTime,
+          // });
+          // AppContainer.alreadySetMessagesSaved = true;
           localNotificationBody = "Tenés nuevos mensajes!";
         },
       })(notification.data);
@@ -154,15 +154,14 @@ export default class AppContainer extends React.Component {
                 notification.data.messages.length
               )
             );
-
-            setNotifiedMessagesSaved({
-              userId: props.userId,
-              notificationId: notification.data.notificationId,
-              lastMessageServerTime:
-                notification.data.messages[
-                  notification.data.messages.length - 1
-                ].serverTime,
-            });
+            // setNotifiedMessagesSaved({
+            //   userId: props.userId,
+            //   notificationId: notification.data.notificationId,
+            //   lastMessageServerTime:
+            //     notification.data.messages[
+            //       notification.data.messages.length - 1
+            //     ].serverTime,
+            // });
           }
         },
       })(notification.data);
