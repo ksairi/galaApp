@@ -40,41 +40,34 @@ function LiveClass({navigation, route, userData}) {
     ApiHelper.getMeetingId({studioNumber})
   );
 
-  const openAppIfNeeded = useCallback(async () => {
+  const openAppIfNeeded = useCallback(async (name, studioNumber, uri) => {
     try {
-      const name = userData?.name;
-      const {studioNumber} = route.params.params;
       if (Platform.OS === "ios") {
         const {meetingId} = await getMeetingId(studioNumber);
         const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
         try {
           await Linking.openURL(link);
+          goBack();
         } catch (e) {
           setMessage("Por favor descargue la app Zoom");
         }
       }
       if (Platform.OS === "web") {
         const browser = detect().name;
-        goBack();
-        if ((uri && browser === "chrome") || browser === "edge") {
-          window.open(uri, "_blank");
+        if (browser === "chrome" || browser === "edge") {
+          if (uri) {
+            window.open(uri, "_blank");
+          }
         } else {
           const {meetingId} = await getMeetingId(studioNumber);
           window.open(`https://zoom.us/j/${meetingId}`, "_blank");
         }
+        goBack();
       }
     } catch (e) {
       setMessage(Messages.SERVER_ERROR);
     }
-  }, [userData.name, uri]);
-
-  useEffect(() => {
-    return deactivateKeepAwake();
-  });
-  const clear = (unsubscribe) => {
-    deactivateKeepAwake();
-    return unsubscribe;
-  };
+  }, []);
 
   useEffect(() => {
     const askAndroidPermissions = async () => {
@@ -89,23 +82,24 @@ function LiveClass({navigation, route, userData}) {
         activateKeepAwake();
       }
     };
-    const unsubscribe = navigation.addListener("focus", () => {
+    navigation.addListener("focus", () => {
+      setMessage(null);
+      setHastLeft(false);
       askAndroidPermissions();
       AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
       const {studioNumber} = route.params.params;
       const name = userData?.name;
-      setUri(
-        `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`
-      );
+      const uri = `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
+      openAppIfNeeded(name, studioNumber, uri);
+      setUri(uri);
       const {title} = route.params.params;
       setTitle(title);
-      return clear(unsubscribe);
+    });
+    navigation.addListener("blur", () => {
+      setHastLeft(true);
+      deactivateKeepAwake();
     });
   }, []);
-
-  useEffect(() => {
-    openAppIfNeeded();
-  }, [uri]);
 
   const injectedJs = `
     setTimeout(function () {
@@ -173,7 +167,7 @@ function LiveClass({navigation, route, userData}) {
         >
           {title}
         </Text>
-        {!hasLeft && uri && (
+        {!hasLeft && uri && Platform.OS === "android" && (
           <WebView
             style={{marginTop: 10}}
             source={{
@@ -190,8 +184,6 @@ function LiveClass({navigation, route, userData}) {
           showCancelButton={false}
           onConfirmPressed={() => {
             goBack();
-            setMessage(null);
-            setHastLeft(true);
           }}
         />
       </RootWrapper>
