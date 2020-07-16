@@ -4,7 +4,7 @@ import {WebView} from "react-native-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
-import {AnalitycsEventsLabels, Messages} from "config/settings";
+import {AnalitycsEventsLabels, Messages, Screens} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
@@ -33,7 +33,7 @@ function LiveClass({navigation, route, userData}) {
   const [hasLeft, setHastLeft] = useState(false);
 
   const goBack = useCallback(() => {
-    navigation.goBack();
+    navigation.navigate(Screens.Home);
   });
 
   const getMeetingId = useCallback(async (studioNumber) =>
@@ -56,7 +56,7 @@ function LiveClass({navigation, route, userData}) {
       if (Platform.OS === "web") {
         const browser = detect().name;
         goBack();
-        if (browser === "chrome" || browser === "edge") {
+        if ((uri && browser === "chrome") || browser === "edge") {
           window.open(uri, "_blank");
         } else {
           const {meetingId} = await getMeetingId(studioNumber);
@@ -66,7 +66,16 @@ function LiveClass({navigation, route, userData}) {
     } catch (e) {
       setMessage(Messages.SERVER_ERROR);
     }
-  }, [userData.name]);
+  }, [userData.name, uri]);
+
+  useEffect(() => {
+    return deactivateKeepAwake();
+  });
+  const clear = (unsubscribe) => {
+    deactivateKeepAwake();
+    return unsubscribe;
+  };
+
   useEffect(() => {
     const askAndroidPermissions = async () => {
       if (Platform.OS === "android") {
@@ -80,24 +89,23 @@ function LiveClass({navigation, route, userData}) {
         activateKeepAwake();
       }
     };
-    askAndroidPermissions();
-    return deactivateKeepAwake();
-  });
-  useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
+      askAndroidPermissions();
+      AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
       const {studioNumber} = route.params.params;
       const name = userData?.name;
       setUri(
         `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`
       );
-      AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
-      openAppIfNeeded();
-
       const {title} = route.params.params;
       setTitle(title);
-      return unsubscribe;
+      return clear(unsubscribe);
     });
-  }, [navigation]);
+  }, []);
+
+  useEffect(() => {
+    openAppIfNeeded();
+  }, [uri]);
 
   const injectedJs = `
     setTimeout(function () {
