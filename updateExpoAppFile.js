@@ -2,7 +2,7 @@ const editJsonFile = require("edit-json-file");
 
 const DEV_APP_VERSION = "1.0";
 const DEV_APP_ANDROID_VERSION_CODE = 1;
-const DEV_APP_IOS_BUILD_NUMBER = "1";
+const DEV_APP_IOS_BUILD_NUMBER = "2";
 const STAGING_APP_VERSION = "1.1";
 const STAGING_APP_ANDROID_VERSION_CODE = 2;
 const STAGING_APP_IOS_BUILD_NUMBER = "2";
