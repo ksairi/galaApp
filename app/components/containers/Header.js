@@ -25,7 +25,7 @@ const styles = {
     flexDirection: "row",
     alignItems: "flex-start",
     backgroundColor: genericBackgroundColor,
-    // paddingTop: 10,
+    paddingTop: 10,
     paddingLeft: containerPadding,
   },
   backButton: {
