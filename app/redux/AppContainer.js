@@ -45,6 +45,12 @@ export default class AppContainer extends React.Component {
 
   state = {cancelTime: null};
 
+  constructor(props) {
+    super(props);
+    props.dispatch(ActionsCreators.setIsInSession(false));
+    props.dispatch(ActionsCreators.setGoToMobileWebLogin(false));
+  }
+
   showAlert = () => {
     Alert.alert(
       "Nueva versión disponible",
@@ -62,8 +68,6 @@ export default class AppContainer extends React.Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(ActionsCreators.setIsInSession(false));
-    this.props.dispatch(ActionsCreators.setGoToMobileWebLogin(false));
     Notifications.addNotificationReceivedListener(this.notificationReceived);
     // Notifications.addNotificationResponseReceivedListener(
     //   this.notificationResponseReceived
