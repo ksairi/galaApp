@@ -208,7 +208,7 @@ export default class Header extends React.PureComponent {
                     onPress={this.onBackPressed}
                     style={styles.backButton}
                   >
-                    <Ionicons name="md-arrow-back" size={32} color="white" />
+                    <Ionicons name="md-arrow-back" size={25} color="white" />
                   </TouchableOpacity>
                 )}
               </View>

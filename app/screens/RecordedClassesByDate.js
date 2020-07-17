@@ -18,44 +18,46 @@ const styles = {
 export default ({navigation, route}) => {
   const [filteredRecordings, setFilteredRecordings] = useState([]);
   useEffect(() => {
-    let recordingsToShow = [];
-    const classesByName = route.params.classes;
-    classesByName.forEach(({name, url}) => {
-      const dateToSearch = name
-        .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
-        .trim();
-      const classesByDate = classesByName.filter(
-        ({name}) =>
-          name
-            .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
-            .trim() === dateToSearch
-      );
+    navigation.addListener("focus", () => {
+      let recordingsToShow = [];
+      const classesByName = route.params.classes;
+      classesByName.forEach(({name, url}) => {
+        const dateToSearch = name
+          .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
+          .trim();
+        const classesByDate = classesByName.filter(
+          ({name}) =>
+            name
+              .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
+              .trim() === dateToSearch
+        );
 
-      if (!recordingsToShow.find(({date}) => dateToSearch === date)) {
-        recordingsToShow = [
-          ...recordingsToShow,
-          {
-            date: dateToSearch,
-            url,
-            classes: classesByDate,
-          },
-        ];
-      }
-    });
+        if (!recordingsToShow.find(({date}) => dateToSearch === date)) {
+          recordingsToShow = [
+            ...recordingsToShow,
+            {
+              date: dateToSearch,
+              url,
+              classes: classesByDate,
+            },
+          ];
+        }
+      });
 
-    recordingsToShow.sort((a, b) => {
-      const dateA = moment(a.date, "DD-MM-YY");
-      const dateB = moment(b.date, "DD-MM-YY");
-      if (dateA.isSameOrAfter(dateB)) {
-        return -1;
-      }
-      if (dateA.isSameOrBefore(dateB)) {
-        return 1;
-      }
-      return 0;
+      recordingsToShow.sort((a, b) => {
+        const dateA = moment(a.date, "DD-MM-YY");
+        const dateB = moment(b.date, "DD-MM-YY");
+        if (dateA.isSameOrAfter(dateB)) {
+          return -1;
+        }
+        if (dateA.isSameOrBefore(dateB)) {
+          return 1;
+        }
+        return 0;
+      });
+      setFilteredRecordings(recordingsToShow);
     });
-    setFilteredRecordings(recordingsToShow);
-  }, []);
+  }, [route.params]);
 
   const Item = ({date, url, classes}) => (
     <TouchableOpacity

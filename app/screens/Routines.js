@@ -21,6 +21,7 @@ function Routines({routines, navigation, dispatch}) {
   const [personalRoutines, setPersonalRoutines] = useState([]);
   const [generalRoutines, setGeneralRoutines] = useState([]);
   useEffect(() => {
+    AnalyticsHelper.setPageHit(Screens.Routines);
     const validRoutines = routines.filter(
       (routine) => routine.ejercicios.length
     );
@@ -43,9 +44,6 @@ function Routines({routines, navigation, dispatch}) {
     setPersonalRoutines(personalRoutines);
     setGeneralRoutines(generalRoutines);
   }, []);
-  // componentDidMount() {
-  //   AnalyticsHelper.setPageHit(Screens.Routines);
-  // }
 
   const seeRoutine = (routine) => () => {
     dispatch(ActionsCreators.setCurrentRoutine(routine));

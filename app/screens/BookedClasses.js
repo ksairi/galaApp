@@ -1,5 +1,12 @@
-import React, {useState, useEffect} from "react";
-import {SectionList, Text, TouchableOpacity, View} from "react-native";
+import React, {useState, useEffect, useCallback} from "react";
+import {
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  Dimensions,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
@@ -41,10 +48,7 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
   const [onOKPress, setOnOKPress] = useState(null);
   const [showCancelButton, setShowCancelButton] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
-  useEffect(() => {
-    const unsubscribe = navigation.addListener("blur", () => {
-      setAlertMessage(null);
-    });
+  const showBookedClasses = useCallback(() => {
     let tempSortedClasses = [];
     const alreadyFiltered = [];
     bookedClasses.sort((a, b) => {
@@ -90,7 +94,18 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
       alreadyFiltered.push(filteredDate);
     });
     setSortedClasses(tempSortedClasses);
-    return unsubscribe;
+  });
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      showBookedClasses();
+    });
+    navigation.addListener("blur", () => {
+      setAlertMessage(null);
+    });
+  }, [bookedClasses]);
+
+  useEffect(() => {
+    showBookedClasses();
   }, [bookedClasses]);
 
   const doDelete = async ({id, userId, className, dow, date, time}) => {
@@ -207,6 +222,15 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
         onCancelPressed={() => {
           setAlertMessage(null);
         }}
+        contentContainerStyle={
+          Platform.OS === "web"
+            ? {
+                left: Dimensions.get("window").width / 2,
+                bottom: 400,
+                width: 200,
+              }
+            : {}
+        }
       />
     </RootWrapper>
   );

@@ -1,5 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  Dimensions,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -31,12 +38,18 @@ export default ({navigation}) => {
         setLoading(true);
         const recordings = await ApiHelper.getRecordedClasses();
         setRecordings(recordings);
-        setLoading(false);
       } catch (e) {
-        setErrorMessage(errorMessage);
+        setErrorMessage(e);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchRecordedClasses();
+    navigation.addListener("focus", () => {
+      fetchRecordedClasses();
+    });
+    navigation.addListener("blur", () => {
+      setErrorMessage(null);
+    });
   }, []);
 
   if (loading) {
@@ -140,6 +153,15 @@ export default ({navigation}) => {
           navigation.navigate(Screens.Home);
           setErrorMessage(null);
         }}
+        contentContainerStyle={
+          Platform.OS === "web"
+            ? {
+                left: Dimensions.get("window").width / 2,
+                bottom: 400,
+                width: 200,
+              }
+            : {}
+        }
       />
     </RootWrapper>
   );

@@ -1,5 +1,12 @@
 import React from "react";
-import {View, Text, TouchableOpacity, Switch} from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Switch,
+  Dimensions,
+  Platform,
+} from "react-native";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import GScrollView from "components/presentationals/GenericScrollView";
@@ -97,6 +104,20 @@ export default class Settings extends React.Component {
             onCancelPressed={() => {
               this.setState({showAlert: false});
             }}
+            contentContainerStyle={
+              Platform.OS === "web"
+                ? {
+                    left: Dimensions.get("window").width / 2,
+                  }
+                : {}
+            }
+            overlayStyle={
+              Platform.OS === "web"
+                ? {
+                    backgroundColor: "transparent",
+                  }
+                : {}
+            }
           />
         </RootWrapper>
       </GScrollView>

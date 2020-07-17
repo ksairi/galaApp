@@ -39,21 +39,21 @@ export default function Affidavit({navigation}) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("focus", () => {
+    navigation.addListener("focus", () => {
+      const getAffidavitQuestions = async () => {
+        try {
+          setLoading(true);
+          const {questions} = await ApiHelper.getAffidavitQuestions();
+          setQuestions(questions);
+        } catch (e) {
+          setError(e);
+        } finally {
+          setLoading(false);
+        }
+      };
+      getAffidavitQuestions();
       setResponses([]);
     });
-    const getAffidavitQuestions = async () => {
-      try {
-        setLoading(true);
-        const {questions} = await ApiHelper.getAffidavitQuestions();
-        setQuestions(questions);
-        setLoading(false);
-      } catch (e) {
-        setError(e);
-      }
-    };
-    getAffidavitQuestions();
-    return unsubscribe;
   }, []);
 
   const onValueChange = useCallback(

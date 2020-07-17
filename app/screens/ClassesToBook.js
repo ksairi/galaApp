@@ -1,5 +1,12 @@
 import React, {useEffect, useState, useCallback, useRef} from "react";
-import {SectionList, Text, TouchableOpacity, View} from "react-native";
+import {
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  Dimensions,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -58,6 +65,8 @@ function ClassesToBook({
 
   const fetchClassesToBook = useCallback(async () => {
     setClassesToBook([]);
+    setCheckoutClasses([]);
+    setOnOkAlert(null);
     try {
       setLoading(true);
       const {
@@ -81,12 +90,17 @@ function ClassesToBook({
   });
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener("blur", () => {
+    navigation.addListener("focus", () => {
+      fetchClassesToBook();
+    });
+    navigation.addListener("blur", () => {
       setAlertMessage(null);
     });
-    fetchClassesToBook();
-    return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    // fetchClassesToBook();
+  }, [bookedClasses]);
 
   const checkoutBookings = useCallback(async () => {
     try {
@@ -171,12 +185,6 @@ function ClassesToBook({
         return;
       }
       setCheckoutClasses((checkoutClases) => [...checkoutClases, pItem]);
-      if (classesToBook.length) {
-        listRef.current.scrollToLocation({
-          sectionIndex: 1,
-          itemIndex: classesToBook[classesToBook.length - 1].data.length,
-        });
-      }
     },
     [checkoutClasses]
   );
@@ -309,6 +317,15 @@ function ClassesToBook({
                 setAlertMessage(null);
                 if (onOkAlert) onOkAlert();
               }}
+              contentContainerStyle={
+                Platform.OS === "web"
+                  ? {
+                      left: Dimensions.get("window").width / 2,
+                      bottom: 400,
+                      width: 200,
+                    }
+                  : {}
+              }
             />
           </CentredWrapper>
         </>

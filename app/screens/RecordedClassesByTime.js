@@ -18,8 +18,10 @@ export default ({navigation, route}) => {
   const [classes, setClasses] = useState([]);
 
   useEffect(() => {
-    setClasses(route.params.classes.map(({name, url}) => ({name, url})));
-  }, []);
+    navigation.addListener("focus", () => {
+      setClasses(route.params.classes.map(({name, url}) => ({name, url})));
+    });
+  }, [route.params]);
 
   const Item = ({name, url}) => (
     <TouchableOpacity
