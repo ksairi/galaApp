@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback} from "react";
-import {Text, View, TouchableOpacity, Platform, Linking} from "react-native";
+import {Text, TouchableOpacity, Platform, Linking} from "react-native";
 import {WebView} from "react-native-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -9,19 +9,16 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
 import {Ionicons} from "@expo/vector-icons";
-import {genericBackgroundColor} from "components/styles";
 import * as Permissions from "expo-permissions";
 import {detect} from "detect-browser";
 import Alert from "components/presentationals/Alert";
 import * as withEnv from "utils/env";
-import {SafeAreaView} from "react-native-safe-area-context";
 
 const styles = {
   title: {
     alignSelf: "center",
     color: "white",
     fontFamily: "lato-regular",
-    marginTop: 10,
   },
 };
 
@@ -83,6 +80,7 @@ function LiveClass({navigation, route, userData}) {
       }
     };
     navigation.addListener("focus", () => {
+      setLoading(true);
       setMessage(null);
       setHastLeft(false);
       askAndroidPermissions();
@@ -96,6 +94,7 @@ function LiveClass({navigation, route, userData}) {
       setTitle(title);
     });
     navigation.addListener("blur", () => {
+      setLoading(false);
       setHastLeft(true);
       deactivateKeepAwake();
     });
@@ -131,63 +130,61 @@ function LiveClass({navigation, route, userData}) {
     }
   };
   return (
-    <SafeAreaView style={{backgroundColor: genericBackgroundColor}}>
-      <View
-        style={{
-          flex: 0.07,
-          paddingLeft: 10,
-          backgroundColor: genericBackgroundColor,
-        }}
-      >
-        <TouchableOpacity onPress={() => goBack()}>
-          <Ionicons
-            name="ios-arrow-round-back"
-            size={30}
-            color="white"
+    <RootWrapper
+      style={{
+        justifyContent: "center",
+        paddingTop: 5,
+      }}
+    >
+      {loading ? (
+        <Text style={styles.title}>Cargando...</Text>
+      ) : (
+        <>
+          <TouchableOpacity onPress={() => goBack()}>
+            <Ionicons
+              name="ios-arrow-round-back"
+              size={30}
+              color="white"
+              style={{
+                alignSelf: "flex-start",
+              }}
+            />
+          </TouchableOpacity>
+          <Text
             style={{
-              alignSelf: "flex-start",
+              alignSelf: "center",
+              color: "white",
+              fontFamily: "lato-regular",
             }}
-          />
-        </TouchableOpacity>
-      </View>
-      <RootWrapper
-        style={{
-          flex: 2,
-          justifyContent: "center",
-        }}
-      >
-        {loading && <Text style={styles.title}>Cargando...</Text>}
-        <Text
-          style={{
-            marginTop: 10,
-            alignSelf: "center",
-            color: "white",
-            fontFamily: "lato-regular",
+          >
+            {title}
+          </Text>
+        </>
+      )}
+
+      {!hasLeft && uri && Platform.OS === "android" && (
+        <WebView
+          style={{marginTop: 10}}
+          source={{
+            uri: encodeURI(uri),
           }}
-        >
-          {title}
-        </Text>
-        {!hasLeft && uri && Platform.OS === "android" && (
-          <WebView
-            style={{marginTop: 10}}
-            source={{
-              uri: encodeURI(uri),
-            }}
-            onMessage={onMessage}
-            injectedJavaScript={injectedJs}
-            mediaPlaybackRequiresUserAction={false}
-          />
-        )}
+          onMessage={onMessage}
+          injectedJavaScript={injectedJs}
+          mediaPlaybackRequiresUserAction={false}
+        />
+      )}
+      {!hasLeft && (
         <Alert
           show={!!message}
           message={message}
           showCancelButton={false}
           onConfirmPressed={() => {
+            setMessage(null);
             goBack();
           }}
         />
-      </RootWrapper>
-    </SafeAreaView>
+      )}
+    </RootWrapper>
   );
 }
 

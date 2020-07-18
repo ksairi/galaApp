@@ -4,7 +4,7 @@ import {detect} from "detect-browser";
 
 export const getHost = () => {
   if (__DEV__) {
-    return "http://galaweb:3001";
+    return "https://galagym.com";
   }
   const {slug} = Constants.manifest;
   return slug === "galaApp"
