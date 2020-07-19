@@ -1,9 +1,16 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
+import React, {useEffect, useState, useCallback} from "react";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  BackHandler,
+} from "react-native";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -16,12 +23,19 @@ const styles = {
 
 export default ({navigation, route}) => {
   const [classes, setClasses] = useState([]);
-
-  useEffect(() => {
-    navigation.addListener("focus", () => {
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate(Screens.RecordedClassesByDate);
+        return true;
+      };
       setClasses(route.params.classes.map(({name, url}) => ({name, url})));
-    });
-  }, [route.params]);
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [route.params])
+  );
 
   const Item = ({name, url}) => (
     <TouchableOpacity

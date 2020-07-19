@@ -16,6 +16,7 @@ import {connect} from "react-redux";
 import ActionsCreators from "redux/actions";
 import moment from "moment";
 import Alert from "components/presentationals/Alert";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -94,15 +95,9 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
       alreadyFiltered.push(filteredDate);
     });
     setSortedClasses(tempSortedClasses);
-  });
-  useEffect(() => {
-    navigation.addListener("focus", () => {
-      showBookedClasses();
-    });
-    navigation.addListener("blur", () => {
-      setAlertMessage(null);
-    });
   }, [bookedClasses]);
+
+  useFocusEffect(showBookedClasses);
 
   useEffect(() => {
     showBookedClasses();

@@ -13,6 +13,7 @@ import * as Permissions from "expo-permissions";
 import {detect} from "detect-browser";
 import Alert from "components/presentationals/Alert";
 import * as withEnv from "utils/env";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   title: {
@@ -29,13 +30,9 @@ function LiveClass({navigation, route, userData}) {
   const [uri, setUri] = useState(null);
   const [hasLeft, setHastLeft] = useState(false);
 
-  const goBack = useCallback(() => {
-    navigation.navigate(Screens.Home);
-  });
+  const goBack = () => navigation.navigate(Screens.Home);
 
-  const getMeetingId = useCallback(async (studioNumber) =>
-    ApiHelper.getMeetingId({studioNumber})
-  );
+  const getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
 
   const openAppIfNeeded = useCallback(async (name, studioNumber, uri) => {
     try {
@@ -66,20 +63,20 @@ function LiveClass({navigation, route, userData}) {
     }
   }, []);
 
-  useEffect(() => {
-    const askAndroidPermissions = async () => {
-      if (Platform.OS === "android") {
-        await Permissions.askAsync(
-          Permissions.CAMERA,
-          Permissions.AUDIO_RECORDING
-        );
-        setTimeout(() => {
-          setLoading(false);
-        }, 15000);
-        activateKeepAwake();
-      }
-    };
-    navigation.addListener("focus", () => {
+  useFocusEffect(
+    useCallback(() => {
+      const askAndroidPermissions = async () => {
+        if (Platform.OS === "android") {
+          await Permissions.askAsync(
+            Permissions.CAMERA,
+            Permissions.AUDIO_RECORDING
+          );
+          setTimeout(() => {
+            setLoading(false);
+          }, 15000);
+          activateKeepAwake();
+        }
+      };
       setLoading(true);
       setMessage(null);
       setHastLeft(false);
@@ -92,13 +89,13 @@ function LiveClass({navigation, route, userData}) {
       setUri(uri);
       const {title} = route.params.params;
       setTitle(title);
-    });
-    navigation.addListener("blur", () => {
-      setLoading(false);
-      setHastLeft(true);
-      deactivateKeepAwake();
-    });
-  }, []);
+      return () => {
+        setLoading(false);
+        setHastLeft(true);
+        deactivateKeepAwake();
+      };
+    }, [route.params])
+  );
 
   const injectedJs = `
     setTimeout(function () {

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback, useRef} from "react";
+import React, {useState, useCallback, useRef} from "react";
 import {
   SectionList,
   Text,
@@ -19,6 +19,7 @@ import moment from "moment";
 import ActionsCreators from "redux/actions";
 import Alert from "components/presentationals/Alert";
 import SectionListGetItemLayout from "react-native-section-list-get-item-layout";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -63,12 +64,8 @@ function ClassesToBook({
   const [onOkAlert, setOnOkAlert] = useState(null);
   const listRef = useRef(null);
 
-  const fetchClassesToBook = useCallback(async () => {
-    setClassesToBook([]);
-    setCheckoutClasses([]);
-    setOnOkAlert(null);
+  const doFetchClasses = useCallback(async () => {
     try {
-      setLoading(true);
       const {
         classesToBook: remoteClassesToBook,
       } = await ApiHelper.getClassesToBook();
@@ -87,20 +84,17 @@ function ClassesToBook({
     } finally {
       setLoading(false);
     }
-  });
-
-  useEffect(() => {
-    navigation.addListener("focus", () => {
-      fetchClassesToBook();
-    });
-    navigation.addListener("blur", () => {
-      setAlertMessage(null);
-    });
   }, []);
 
-  useEffect(() => {
-    // fetchClassesToBook();
-  }, [bookedClasses]);
+  const fetchClassesToBook = useCallback(() => {
+    setAlertMessage(null);
+    setClassesToBook([]);
+    setCheckoutClasses([]);
+    setOnOkAlert(null);
+    doFetchClasses();
+  }, []);
+
+  useFocusEffect(fetchClassesToBook);
 
   const checkoutBookings = useCallback(async () => {
     try {
@@ -133,13 +127,11 @@ function ClassesToBook({
       );
       dispatch(ActionsCreators.addNewBookedClasses(successfullBookings));
       if (successfullBookings.length) {
-        await fetchClassesToBook(successfullBookings);
+        setClassesToBook([]);
+        await doFetchClasses();
       }
       setAlertMessage(alertMessage);
       setCheckoutClasses([]);
-      if (!result.errorMessages.length) {
-        setOnOkAlert(() => () => navigation.navigate(Screens.BookedClasses));
-      }
     } catch (e) {
       setAlertMessage(e);
     } finally {

@@ -107,7 +107,7 @@ export default class Messages extends React.Component {
         this.startPullingMessages();
       }
     );
-    this.props.navigation.addListener("blur", () => {
+    this._unsubscribeBlur = this.props.navigation.addListener("blur", () => {
       clearInterval(this.intervalId);
     });
   }
@@ -143,6 +143,7 @@ export default class Messages extends React.Component {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
+    this._unsubscribeBlur();
     clearInterval(this.intervalId);
     this.doGetRealTimeMessages(true);
     this._unsubscribePullingMessages();

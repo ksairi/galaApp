@@ -264,6 +264,7 @@ export const SectionsData = [
     ...baseHomeStyle,
     ...requiresMembership,
     screen: Screens.RecordedClassesByClass,
+    params: {loadClasses: true},
   },
   // {
   //   label: "TUS RESERVAS",

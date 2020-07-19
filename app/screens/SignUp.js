@@ -95,7 +95,10 @@ export default class SignUp extends React.Component {
       "keyboardDidHide",
       this._keyboardDidHide
     );
-    BackHandler.addEventListener("hardwareBackPress", this.goBack);
+    this.backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.goBack
+    );
   }
 
   goBack = () => {
@@ -106,7 +109,7 @@ export default class SignUp extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
-    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+    this.backHandler();
   }
 
   _keyboardDidShow = () => {

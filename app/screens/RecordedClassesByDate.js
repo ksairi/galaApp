@@ -1,10 +1,18 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
+import React, {useState, useCallback} from "react";
+
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  BackHandler,
+} from "react-native";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import moment from "moment";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -17,8 +25,17 @@ const styles = {
 
 export default ({navigation, route}) => {
   const [filteredRecordings, setFilteredRecordings] = useState([]);
-  useEffect(() => {
-    navigation.addListener("focus", () => {
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate(Screens.RecordedClassesByClass, {
+          screen: Screens.RecordedClassesByClass,
+          params: {loadClasses: false},
+        });
+        return true;
+      };
+
       let recordingsToShow = [];
       const classesByName = route.params.classes;
       classesByName.forEach(({name, url}) => {
@@ -56,8 +73,12 @@ export default ({navigation, route}) => {
         return 0;
       });
       setFilteredRecordings(recordingsToShow);
-    });
-  }, [route.params]);
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [route.params])
+  );
 
   const Item = ({date, url, classes}) => (
     <TouchableOpacity

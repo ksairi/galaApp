@@ -75,7 +75,7 @@ export default class DrawerContentComponent extends React.PureComponent {
   };
 
   navigateToHome = (screen) => () => {
-    this.props.navigation.navigation(screen);
+    this.props.navigation.navigate(screen);
   };
 
   render() {

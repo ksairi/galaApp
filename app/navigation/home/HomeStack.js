@@ -43,9 +43,7 @@ const BookedClassesNavigator = () => (
       name={Screens.BookedClasses}
       component={BookedClasses}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -58,11 +56,7 @@ const AffidavitNavigator = () => (
       component={Affidavit}
       options={{
         header: ({navigation}) => (
-          <Header
-            {...{navigation}}
-            title={"DECLARACIÓN JURADA"}
-            backScreen={Screens.Home}
-          />
+          <Header {...{navigation}} title={"DECLARACIÓN JURADA"} isHomeHeader />
         ),
       }}
     />
@@ -75,9 +69,7 @@ const ClassesToBookNavigator = () => (
       name={Screens.ClassesToBook}
       component={ClassesToBook}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -90,7 +82,7 @@ const ClassesToBookNavigator = () => (
 //       component={NewMember}
 //       options={{
 //         header: ({navigation}) => (
-//           <Header {...{navigation}} backScreen={Screens.Home} />
+//           <Header {...{navigation}}  />
 //         ),
 //       }}
 //     />
@@ -103,9 +95,7 @@ const ProfileNavigator = () => (
       name={Screens.Profile}
       component={Profile}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -117,9 +107,7 @@ const RecordedClassesByClassNavigator = () => (
       name={Screens.RecordedClassesByClass}
       component={RecordedClassesByClass}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -131,9 +119,7 @@ const RoutinesNavigator = () => (
       name={Screens.Routines}
       component={Routines}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -159,9 +145,7 @@ const TimetableNavigator = () => (
       name={Screens.Timetable}
       component={Timetable}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -173,9 +157,7 @@ const MessagesNavigator = () => (
       name={Screens.Messages}
       component={Messages}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -187,9 +169,7 @@ const ReferralsNavigator = () => (
       name={Screens.Referrals}
       component={Referrals}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} isHomeHeader />,
       }}
     />
   </Stack.Navigator>
@@ -224,6 +204,7 @@ const RecordedClassesByDateNavigator = () => (
             {...{navigation}}
             title={`CLASES DE ${route.params?.name}`}
             backScreen={Screens.RecordedClassesByClass}
+            backScreenParams={{loadClasses: false}}
           />
         ),
       }}
@@ -255,10 +236,9 @@ const PayMonthlyFeeScreenNavigator = () => (
       name={Screens.PayMonthlyFee}
       component={PayMonthlyFee}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.Home} />
-        ),
+        header: ({navigation}) => <Header {...{navigation}} />,
       }}
+      isHomeHeader
     />
   </Stack.Navigator>
 );

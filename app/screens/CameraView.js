@@ -69,7 +69,19 @@ export default class CameraView extends React.Component {
   };
 
   componentDidMount() {
+    this._unsubscribeBlur = this.props.navigation.addListener("blur", () => {
+      this.setState({
+        cameraType: Camera.Constants.Type.front,
+        flash: "off",
+        renderCamera: true,
+        pictureTaken: null,
+      });
+    });
     AnalyticsHelper.setPageHit(Screens.CameraView);
+  }
+
+  componentWillUnmount() {
+    this._unsubscribeBlur.remove();
   }
 
   renderCameraViewTopBar = () => (

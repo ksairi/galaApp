@@ -1,6 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useState, useCallback} from "react";
 import {CommonActions} from "@react-navigation/native";
-import {Platform, TouchableOpacity, View, Text} from "react-native";
+import {
+  Platform,
+  TouchableOpacity,
+  View,
+  Text,
+  BackHandler,
+} from "react-native";
 import {WebView} from "react-native-webview";
 import {WebView as WebViewWeb} from "react-native-web-webview";
 import {connect} from "react-redux";
@@ -9,6 +15,7 @@ import {Ionicons} from "@expo/vector-icons";
 import ActionsCreators from "redux/actions";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {genericBackgroundColor} from "components/styles";
+import {useFocusEffect} from "@react-navigation/native";
 
 function VideoPlayer({
   dispatch,
@@ -19,20 +26,33 @@ function VideoPlayer({
 }) {
   const [showBack, setShowBack] = useState(false);
   const [uri, setUri] = useState(null);
-  useEffect(() => {
-    navigation.addListener("focus", () => {
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate(backScreen);
+        return true;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [backScreen])
+  );
+  useFocusEffect(
+    useCallback(() => {
       setUri(url);
       dispatch(ActionsCreators.setHiddenStatusBar(true));
       setTimeout(() => {
         setShowBack(true);
       }, 3000);
-    });
-    navigation.addListener("blur", () => {
-      setUri(null);
-      dispatch(ActionsCreators.setHiddenStatusBar(false));
-      setShowBack(false);
-    });
-  }, [url]);
+      return () => {
+        setUri(null);
+        dispatch(ActionsCreators.setHiddenStatusBar(false));
+        setShowBack(false);
+      };
+    }, [[url]])
+  );
+
   return (
     <SafeAreaView style={{backgroundColor: genericBackgroundColor, flex: 1}}>
       {showBack && (

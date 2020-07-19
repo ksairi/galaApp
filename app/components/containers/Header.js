@@ -148,7 +148,11 @@ export default class Header extends React.PureComponent {
   };
 
   onBackPressed = () => {
-    this.props.navigation.navigate(this.props.backScreen);
+    const {backScreen, backScreenParams, navigation} = this.props;
+    navigation.navigate(backScreen, {
+      screen: backScreen,
+      params: backScreenParams,
+    });
   };
 
   hideKeyboard = () => {
