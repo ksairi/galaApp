@@ -92,7 +92,6 @@ export default class DrawerContentComponent extends React.PureComponent {
         {SectionsData.map((drawerItem, index) => {
           if (
             (drawerItem.screen !== Screens.NewMember &&
-              drawerItem.screen !== Screens.PayMonthlyFee &&
               !drawerItem.requiresActiveMember) ||
             (drawerItem.screen === Screens.NewMember &&
               this.state.freeEntryDaysLeft > 0) ||

@@ -213,7 +213,6 @@ export default class Home extends React.Component {
               {SectionsData.map((sectionData, index) => {
                 if (
                   (sectionData.screen !== Screens.NewMember &&
-                    sectionData.screen !== Screens.PayMonthlyFee &&
                     !sectionData.requiresActiveMember) ||
                   (sectionData.screen === Screens.NewMember &&
                     this.state.freeEntryDaysLeft > 0) ||
@@ -262,21 +261,6 @@ export default class Home extends React.Component {
               })}
             </Animatable.View>
             <Footer />
-            <Alert
-              show={!!this.state.alertMessage}
-              message={this.state.alertMessage}
-              onConfirmPressed={() => {
-                this.setState({alertMessage: null});
-                this.props.navigation.navigate(Screens.PayMonthlyFee);
-              }}
-              showCancelButton={true}
-              onCancelPressed={() => {
-                this.setState({alertMessage: null});
-              }}
-              messageStyle={{fontSize: 20}}
-              confirmButtonTextStyle={{fontSize: 20}}
-              cancelButtonTextStyle={{fontSize: 20}}
-            />
           </CentredWrapper>
         </RootWrapper>
       </GScrollView>

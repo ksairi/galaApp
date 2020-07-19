@@ -131,7 +131,6 @@ export const Screens = {
   BookedClasses: "BookedClasses",
   ClassesToBook: "ClassesToBook",
   Affidavit: "Affidavit",
-  PayMonthlyFee: "PayMonthlyFee",
 };
 
 export const SignUpConstraints = {
@@ -352,20 +351,6 @@ export const SectionsData = [
       arrow: {marginTop: 13},
     },
     ...baseHomeStyle,
-  },
-  {
-    label: "COMPRÁ TU SUBSCRIPCIÓN",
-    screen: Screens.PayMonthlyFee,
-    drawerStyle: {
-      ...liveClassProps.drawerStyle,
-      icon: {...liveClassProps.drawerStyle.icon, fontSize: 40, paddingLeft: 0},
-      label: {...liveClassProps.drawerStyle.label, fontSize: 12, marginTop: 15},
-    },
-    ...baseHomeStyle,
-    icon: "payment",
-    IconComponent: MaterialIcons,
-    requiresActiveMember: false,
-    requiresFreePlan: true,
   },
 ];
 
