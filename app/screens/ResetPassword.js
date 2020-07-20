@@ -89,7 +89,7 @@ export default class ResetPassword extends React.Component {
       "keyboardDidHide",
       this._keyboardDidHide
     );
-    this.backHanlder = BackHandler.addEventListener(
+    this.backHandler = BackHandler.addEventListener(
       "hardwareBackPress",
       this.goBack
     );
@@ -103,7 +103,7 @@ export default class ResetPassword extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
-    this.backHanlder.remove();
+    this.backHandler.remove();
   }
 
   _keyboardDidShow = () => {

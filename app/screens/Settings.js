@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useCallback} from "react";
 import {
   View,
   Text,
@@ -6,6 +6,7 @@ import {
   Switch,
   Dimensions,
   Platform,
+  BackHandler,
 } from "react-native";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -15,6 +16,7 @@ import {Screens, AnalitycsEventsLabels} from "config/settings";
 import {synchMemberProperties} from "helpers/UserDataHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Alert from "components/presentationals/Alert";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   settingsWrapper: {flex: 0.4, marginTop: 10},
@@ -32,95 +34,93 @@ const styles = {
   },
 };
 
-@connect((state) => ({
-  receiveNotifications: state.receiveNotifications,
-  userId: state.userData.userId,
-}))
-export default class Settings extends React.Component {
-  state = {showAlert: false};
+function Settings({dispatch, userId, receiveNotifications, navigation}) {
+  const [showAlert, setShowAlert] = useState(false);
 
-  logout = () => {
-    this.setState({showAlert: true});
+  const logout = () => {
+    setShowAlert(true);
   };
+  useFocusEffect(
+    useCallback(() => {
+      AnalyticsHelper.setPageHit(Screens.Settings);
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => {
+          navigation.navigate(Screens.Profile);
+          return true;
+        }
+      );
+      return () => backHandler.remove();
+    }, [userId])
+  );
 
-  componentDidMount() {
-    AnalyticsHelper.setPageHit(Screens.Settings);
-  }
-
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.receiveNotifications != null) {
-      return {receiveNotifications: nextProps.receiveNotifications.value};
-    }
-    return prevState;
-  }
-
-  onValueChange = (value) => {
+  const onValueChange = (value) => {
     const values = {
       value,
       synched: false,
     };
-    this.props.dispatch(ActionsCreators.setReceiveNotifications(values));
-    synchMemberProperties(this.props.dispatch, {
-      userId: this.props.userId,
+    dispatch(ActionsCreators.setReceiveNotifications(values));
+    synchMemberProperties(dispatch, {
+      userId,
       data: {receiveNotifications: values},
     });
   };
 
-  render() {
-    return (
-      <GScrollView>
-        <RootWrapper>
-          <View style={styles.settingsWrapper}>
-            <View style={styles.settingItem}>
-              <Text style={styles.settingText}>Recibir Notificaciones</Text>
-              <Switch
-                style={{alignSelf: "flex-end"}}
-                value={
-                  this.props.receiveNotifications == null
-                    ? true
-                    : this.props.receiveNotifications.value
-                }
-                ios_backgroundColor="grey"
-                trackColor="green"
-                onValueChange={(value) => {
-                  this.onValueChange(value);
-                }}
-              />
-            </View>
-            <TouchableOpacity style={styles.settingItem} onPress={this.logout}>
-              <Text style={styles.settingText}>Cerrar Sesión</Text>
-            </TouchableOpacity>
+  return (
+    <GScrollView>
+      <RootWrapper>
+        <View style={styles.settingsWrapper}>
+          <View style={styles.settingItem}>
+            <Text style={styles.settingText}>Recibir Notificaciones</Text>
+            <Switch
+              style={{alignSelf: "flex-end"}}
+              value={
+                receiveNotifications == null ? true : receiveNotifications.value
+              }
+              ios_backgroundColor="grey"
+              trackColor="green"
+              onValueChange={(value) => {
+                onValueChange(value);
+              }}
+            />
           </View>
-          <Alert
-            show={!!this.state.showAlert}
-            message="¿Cerrar sesión?"
-            showCancelButton={true}
-            onConfirmPressed={() => {
-              this.props.dispatch(ActionsCreators.setIsInSession(false));
-              this.props.dispatch(ActionsCreators.logout());
-              this.setState({showAlert: false});
-              AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
-            }}
-            onCancelPressed={() => {
-              this.setState({showAlert: false});
-            }}
-            contentContainerStyle={
-              Platform.OS === "web"
-                ? {
-                    left: Dimensions.get("window").width / 2,
-                  }
-                : {}
-            }
-            overlayStyle={
-              Platform.OS === "web"
-                ? {
-                    backgroundColor: "transparent",
-                  }
-                : {}
-            }
-          />
-        </RootWrapper>
-      </GScrollView>
-    );
-  }
+          <TouchableOpacity style={styles.settingItem} onPress={logout}>
+            <Text style={styles.settingText}>Cerrar Sesión</Text>
+          </TouchableOpacity>
+        </View>
+        <Alert
+          show={!!showAlert}
+          message="¿Cerrar sesión?"
+          showCancelButton={true}
+          onConfirmPressed={() => {
+            dispatch(ActionsCreators.setIsInSession(false));
+            dispatch(ActionsCreators.logout());
+            setShowAlert(false);
+            AnalyticsHelper.setEvent(AnalitycsEventsLabels.signOut);
+          }}
+          onCancelPressed={() => {
+            setShowAlert(false);
+          }}
+          contentContainerStyle={
+            Platform.OS === "web"
+              ? {
+                  left: Dimensions.get("window").width / 2,
+                }
+              : {}
+          }
+          overlayStyle={
+            Platform.OS === "web"
+              ? {
+                  backgroundColor: "transparent",
+                }
+              : {}
+          }
+        />
+      </RootWrapper>
+    </GScrollView>
+  );
 }
+export default connect((state) => ({
+  receiveNotifications: state.receiveNotifications,
+  userId: state.userData.userId,
+}))(Settings);

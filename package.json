@@ -35,7 +35,7 @@
     "react-devtools": "react-devtools",
     "lint": "eslint './**/*.{js,tsx,ts}' --fix",
     "typecheck": "tsc",
-    "nexus5x:android": "emulator -avd Nexus_5X_API_28 &",
+    "nexus5x:android": "emulator -avd Nexus_5X_API_28 -no-snapshot &",
     "publish:web:prod": "gh-pages -d web-build -o gala-wpa-prod && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
     "prepublish:web:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:web && echo app.galagym.com > web-build/CNAME",
     "publish:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo publish && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
