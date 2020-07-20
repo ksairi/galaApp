@@ -65,7 +65,7 @@ export default class Profile extends React.Component {
     });
   };
   componentWillUnmount() {
-    this._unsubscribeFocus.remove();
+    this._unsubscribeFocus();
   }
 
   goToSettings = () => {
