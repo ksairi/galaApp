@@ -81,7 +81,7 @@ export default class CameraView extends React.Component {
   }
 
   componentWillUnmount() {
-    this._unsubscribeBlur.remove();
+    this._unsubscribeBlur();
   }
 
   renderCameraViewTopBar = () => (
