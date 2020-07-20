@@ -1,5 +1,11 @@
-import React from "react";
-import {View, Alert, TouchableOpacity, ImageBackground} from "react-native";
+import React, {useState, useCallback} from "react";
+import {
+  View,
+  Alert,
+  TouchableOpacity,
+  ImageBackground,
+  BackHandler,
+} from "react-native";
 import {connect} from "react-redux";
 import {Camera} from "expo-camera";
 import Constants from "expo-constants";
@@ -10,6 +16,7 @@ import ActionsCreators from "redux/actions";
 import * as UserDataHelper from "helpers/UserDataHelper";
 import * as ImageHelper from "helpers/ImageHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   camera: {
@@ -57,94 +64,141 @@ const flashIcons = {
   auto: "flash-auto",
   torch: "highlight",
 };
-@connect((state) => ({
-  userData: state.userData,
-}))
-export default class CameraView extends React.Component {
-  state = {
-    cameraType: Camera.Constants.Type.front,
-    flash: "off",
-    renderCamera: true,
-    pictureTaken: null,
+
+function CameraView({navigation, dispatch, userData, profilePicture}) {
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
+  const [flash, setFlash] = useState("off");
+  const [renderCamera, setRenderCamera] = useState(true);
+  const [pictureTaken, setPictureTaken] = useState(null);
+  let camera;
+  useFocusEffect(
+    useCallback(() => {
+      setCameraType(Camera.Constants.Type.front);
+      setFlash("off");
+      setRenderCamera(true);
+      setPictureTaken(null);
+      AnalyticsHelper.setPageHit(Screens.CameraView);
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        () => {
+          navigation.navigate(Screens.Profile);
+          return true;
+        }
+      );
+      return () => {
+        setRenderCamera(false);
+        backHandler.remove();
+      };
+    }, [])
+  );
+
+  const stopCamera = () => {
+    navigation.navigate(Screens.Profile);
   };
 
-  componentDidMount() {
-    this._unsubscribeBlur = this.props.navigation.addListener("blur", () => {
-      this.setState({
-        cameraType: Camera.Constants.Type.front,
-        flash: "off",
-        renderCamera: true,
-        pictureTaken: null,
+  const toggleFacing = () =>
+    setCameraType(cameraType === "back" ? "front" : "back");
+
+  const toggleFlash = () => setFlash(flashModeOrder[flash]);
+
+  const showAlert = (message) => {
+    Alert.alert("", message, [{text: "Aceptar", style: "cancel"}]);
+  };
+
+  const takePicture = async () => {
+    if (camera) {
+      try {
+        const picture = await camera.takePictureAsync({
+          quality: 1,
+        });
+        setPictureTaken(picture);
+        setRenderCamera(false);
+        AnalyticsHelper.setEvent(AnalitycsEventsLabels.takeProfilePicture);
+      } catch (error) {
+        showAlert(Messages.NO_SPACE_IN_DISK);
+      }
+    }
+  };
+
+  const discardPicture = () => {
+    setPictureTaken(null);
+    setRenderCamera(true);
+  };
+
+  const savePicture = async () => {
+    const picturePath = ImageHelper.getProfilePicturePath();
+
+    try {
+      if (profilePicture) {
+        await FileSystem.deleteAsync(`${profilePicture.path}`, {
+          idempotent: true,
+        });
+      }
+      await FileSystem.moveAsync({
+        from: pictureTaken.uri,
+        to: picturePath,
       });
-    });
-    AnalyticsHelper.setPageHit(Screens.CameraView);
-  }
+      setPictureTaken(null);
+      dispatch(
+        ActionsCreators.setProfilePicture({path: picturePath, synched: false})
+      );
+      UserDataHelper.uploadProfilePicture(dispatch, {
+        path: picturePath,
+        userId: userData.userId,
+      });
+      navigation.navigate(Screens.Profile);
+    } catch (error) {
+      showAlert(Messages.NO_SPACE_IN_DISK);
+    }
+  };
 
-  componentWillUnmount() {
-    this._unsubscribeBlur();
-  }
-
-  renderCameraViewTopBar = () => (
+  const renderCameraViewTopBar = () => (
     <View style={styles.topBar}>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.stopCamera}>
+      <TouchableOpacity style={styles.toggleButton} onPress={stopCamera}>
         <Ionicons name="md-arrow-back" size={32} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFacing}>
+      <TouchableOpacity style={styles.toggleButton} onPress={toggleFacing}>
         <Ionicons name="ios-reverse-camera" size={32} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFlash}>
-        <MaterialIcons
-          name={flashIcons[this.state.flash]}
-          size={32}
-          color="white"
-        />
+      <TouchableOpacity style={styles.toggleButton} onPress={toggleFlash}>
+        <MaterialIcons name={flashIcons[flash]} size={32} color="white" />
       </TouchableOpacity>
     </View>
   );
 
-  renderCameraViewBottomBar = () => (
+  const renderCameraViewBottomBar = () => (
     <View style={styles.bottomBar}>
       <View style={{flex: 1, alignSelf: "flex-end"}}>
-        <TouchableOpacity
-          onPress={this.takePicture}
-          style={{alignSelf: "center"}}
-        >
+        <TouchableOpacity onPress={takePicture} style={{alignSelf: "center"}}>
           <Ionicons name="ios-radio-button-on" size={70} color="white" />
         </TouchableOpacity>
       </View>
     </View>
   );
 
-  renderCamera = () => (
+  const doRenderCamera = () => (
     <View style={{flex: 1}}>
       <Camera
         ref={(ref) => {
-          this.camera = ref;
+          camera = ref;
         }}
         style={styles.camera}
-        // onCameraReady={this.collectPictureSizes}
-        type={this.state.cameraType}
+        type={cameraType}
         autoFocus="on"
         zoom={0}
         whiteBalance="auto"
         ratio="16:9"
-        // pictureSize={this.state.pictureSize}
-        // onFacesDetected={
-        //	this.state.faceDetecting ? this.onFacesDetected : undefined
-        // }
-        // onFaceDetectionError={this.onFaceDetectionError}
-        // onBarCodeRead={
       >
-        {this.renderCameraViewTopBar()}
-        {this.renderCameraViewBottomBar()}
+        {renderCameraViewTopBar()}
+        {renderCameraViewBottomBar()}
       </Camera>
     </View>
   );
 
-  renderPicture = () => (
+  const renderPicture = () => (
     <ImageBackground
       source={{
-        uri: `${this.state.pictureTaken.uri}`,
+        uri: `${pictureTaken.uri}`,
       }}
       style={{
         flex: 1,
@@ -155,7 +209,7 @@ export default class CameraView extends React.Component {
       <View style={[styles.bottomBar, {alignItems: "flex-end"}]}>
         <View style={{flex: 1}}>
           <TouchableOpacity
-            onPress={this.discardPicture}
+            onPress={discardPicture}
             style={{alignSelf: "flex-start"}}
           >
             <Entypo name="circle-with-cross" size={50} color="white" />
@@ -163,7 +217,7 @@ export default class CameraView extends React.Component {
         </View>
         <View style={{flex: 1}}>
           <TouchableOpacity
-            onPress={this.savePicture}
+            onPress={savePicture}
             style={{alignSelf: "flex-end"}}
           >
             <Ionicons name="md-send" size={50} color="white" />
@@ -173,90 +227,16 @@ export default class CameraView extends React.Component {
     </ImageBackground>
   );
 
-  discardPicture = () => {
-    this.setState({pictureTaken: null, renderCamera: true});
-  };
-
-  savePicture = async () => {
-    const picturePath = ImageHelper.getProfilePicturePath();
-
-    try {
-      if (this.props.profilePicture) {
-        await FileSystem.deleteAsync(`${this.props.profilePicture.path}`, {
-          idempotent: true,
-        });
-      }
-      await FileSystem.moveAsync({
-        from: this.state.pictureTaken.uri,
-        to: picturePath,
-      });
-      this.setState({
-        pictureTaken: null,
-      });
-      this.props.dispatch(
-        ActionsCreators.setProfilePicture({path: picturePath, synched: false})
-      );
-      UserDataHelper.uploadProfilePicture(this.props.dispatch, {
-        path: picturePath,
-        userId: this.props.userData.userId,
-      });
-      this.props.navigation.navigate(Screens.Profile);
-    } catch (error) {
-      this.showAlert(Messages.NO_SPACE_IN_DISK);
-    }
-  };
-
-  stopCamera = () => {
-    this.props.navigation.navigate(Screens.Profile);
-  };
-
-  toggleFacing = () =>
-    this.setState({
-      cameraType: this.state.cameraType === "back" ? "front" : "back",
-    });
-
-  toggleFlash = () => this.setState({flash: flashModeOrder[this.state.flash]});
-
-  showAlert(message) {
-    Alert.alert("", message, [{text: "Aceptar", style: "cancel"}]);
+  if (pictureTaken) {
+    return renderPicture();
   }
-
-  takePicture = async () => {
-    if (this.camera) {
-      try {
-        const picture = await this.camera.takePictureAsync({
-          quality: 1,
-        });
-        this.setState({pictureTaken: picture, renderCamera: false});
-        AnalyticsHelper.setEvent(AnalitycsEventsLabels.takeProfilePicture);
-      } catch (error) {
-        this.showAlert(Messages.NO_SPACE_IN_DISK);
-      }
-    }
-  };
-
-  getImageDimensions = ({width, height}, pictureSize) => {
-    if (width > height) {
-      const scaledHeight = (pictureSize * height) / width;
-      return {
-        width: pictureSize,
-        height: scaledHeight,
-      };
-    }
-    const scaledWidth = (pictureSize * width) / height;
-    return {
-      width: scaledWidth,
-      height: pictureSize,
-    };
-  };
-
-  render() {
-    if (this.state.pictureTaken) {
-      return this.renderPicture();
-    }
-    if (this.state.renderCamera) {
-      return this.renderCamera();
-    }
-    return null;
+  if (renderCamera) {
+    return doRenderCamera();
   }
+  return null;
 }
+
+export default connect((state) => ({
+  userData: state.userData,
+  profilePicture: state.profilePicture,
+}))(CameraView);
