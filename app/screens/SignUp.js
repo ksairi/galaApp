@@ -109,7 +109,7 @@ export default class SignUp extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
-    this.backHandler();
+    this.backHandler.remove();
   }
 
   _keyboardDidShow = () => {
@@ -133,8 +133,8 @@ export default class SignUp extends React.Component {
     if (
       !SignUp.userfullName ||
       !SignUp.userId ||
-      !SignUp.password ||
-      !SignUp.phoneNumber
+      !SignUp.password
+      // !SignUp.phoneNumber
     ) {
       this.setState({errorMessage: Messages.INCOMPLETE_INPUT_DATA});
       return;
