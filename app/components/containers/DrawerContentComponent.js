@@ -1,5 +1,5 @@
 import React from "react";
-import {TouchableOpacity, AppState} from "react-native";
+import {TouchableOpacity, AppState, Platform} from "react-native";
 import {connect} from "react-redux";
 import {Screens, SectionsData} from "config/settings";
 import DrawerItem from "components/presentationals/DrawerItem";
@@ -91,12 +91,13 @@ export default class DrawerContentComponent extends React.PureComponent {
         </TouchableOpacity>
         {SectionsData.map((drawerItem, index) => {
           if (
-            (drawerItem.screen !== Screens.NewMember &&
-              !drawerItem.requiresActiveMember) ||
-            (drawerItem.screen === Screens.NewMember &&
-              this.state.freeEntryDaysLeft > 0) ||
-            (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
-            (drawerItem.requiresFreePlan && this.props.userData.freePassEndDate)
+            (!drawerItem.requiresActiveMember ||
+              (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
+              (drawerItem.requiresFreePlan &&
+                this.props.userData.freePassEndDate)) &&
+            ((!drawerItem.notShowiOS && Platform.OS === "ios") ||
+              (Platform.OS === "android" &&
+                (drawerItem.notShowiOS || !drawerItem.notShowiOS)))
           ) {
             return (
               <DrawerItem

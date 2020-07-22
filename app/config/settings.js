@@ -234,12 +234,14 @@ export const SectionsData = [
     params: {studioNumber: 1, title: "ESTUDIO 1"},
     screen: Screens.LiveClassStudio1,
     ...liveClassProps,
+    notShowiOS: true,
   },
   {
     label: "VIVO ESTUDIO 2",
     params: {studioNumber: 2, title: "ESTUDIO 2"},
     screen: Screens.LiveClassStudio2,
     ...liveClassProps,
+    notShowiOS: true,
   },
   {
     label: "VIVO ESTUDIO 3",
@@ -249,6 +251,7 @@ export const SectionsData = [
         ? window.open(studio3Url, "_blank")
         : Linking.openURL(studio3Url),
     ...liveClassProps,
+    notShowiOS: true,
   },
   {
     label: "CLASES GRABADAS",

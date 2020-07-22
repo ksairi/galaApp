@@ -1,5 +1,5 @@
 import React from "react";
-import {View, TouchableOpacity, AppState, Text} from "react-native";
+import {View, TouchableOpacity, AppState, Text, Platform} from "react-native";
 import {connect} from "react-redux";
 import GScrollView from "components/presentationals/GenericScrollView";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -212,14 +212,14 @@ export default class Home extends React.Component {
             >
               {SectionsData.map((sectionData, index) => {
                 if (
-                  (sectionData.screen !== Screens.NewMember &&
-                    !sectionData.requiresActiveMember) ||
-                  (sectionData.screen === Screens.NewMember &&
-                    this.state.freeEntryDaysLeft > 0) ||
-                  (sectionData.requiresActiveMember &&
-                    isMemberActive(this.props)) ||
-                  (sectionData.requiresFreePlan &&
-                    this.props.userData.freePassEndDate)
+                  (!sectionData.requiresActiveMember ||
+                    (sectionData.requiresActiveMember &&
+                      isMemberActive(this.props)) ||
+                    (sectionData.requiresFreePlan &&
+                      this.props.userData.freePassEndDate)) &&
+                  ((!sectionData.notShowiOS && Platform.OS === "ios") ||
+                    (Platform.OS === "android" &&
+                      (sectionData.notShowiOS || !sectionData.notShowiOS)))
                 ) {
                   return (
                     <TouchableOpacity

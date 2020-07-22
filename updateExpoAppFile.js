@@ -8,7 +8,7 @@ const STAGING_APP_ANDROID_VERSION_CODE = 3;
 const STAGING_APP_IOS_BUILD_NUMBER = "3";
 const PROD_APP_VERSION = "1.3";
 const PROD_APP_ANDROID_VERSION_CODE = 13;
-const PROD_APP_IOS_BUILD_NUMBER = "3";
+const PROD_APP_IOS_BUILD_NUMBER = "4";
 
 const devDeployData = {
   name: "Gala Dev",
