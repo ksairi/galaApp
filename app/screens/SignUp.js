@@ -57,7 +57,7 @@ const styles = {
 export default class SignUp extends React.Component {
   static userfullName = null;
 
-  static userId = null;
+  static userId = "32552567";
 
   static phoneNumber = null;
 
@@ -132,7 +132,7 @@ export default class SignUp extends React.Component {
 
     if (
       !SignUp.userfullName ||
-      !SignUp.userId ||
+      // !SignUp.userId ||
       !SignUp.password
       // !SignUp.phoneNumber
     ) {
@@ -140,7 +140,7 @@ export default class SignUp extends React.Component {
       return;
     }
 
-    errorMessage = ValidationHelper.userIdWithErrors(SignUp.userId);
+    errorMessage = "";
     if (errorMessage) {
       this.setState({errorMessage});
       return;
