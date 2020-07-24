@@ -26,7 +26,8 @@ const getServerHostName2 = (path) => {
 
 const getServer1Environment = (path) => {
   const {slug} = Constants.manifest;
-  const port = slug === "galaApp" ? "1082" : "1083";
+  // const port = slug === "galaApp" ? "1082" : "1083";
+  const port = slug === "galaApp" ? "1083" : "1082";
   return `http://galagym.sytes.net:${port}/${path}`;
 };
 

@@ -41,7 +41,7 @@ const styles = {
   showingKeyboardComponentsStyle: {
     textInputStyle: {flex: 0.6},
     textInputContainerStyle: {flex: 0.3},
-    titleStyle: {flex: 0.15},
+    titleStyle: {flex: 0.1},
     buttonContainerStyle: {flex: 0.3},
     buttonStyle: {height: 50},
     buttonContentStyle: {fontSize: 15},
@@ -259,7 +259,7 @@ export default class SignUp extends React.Component {
                   REGISTRAR CUENTA
                 </GenericText>
 
-                <RoundedTextInput
+                {/* <RoundedTextInput
                   containerStyle={
                     this.state.componentsStyle.textInputContainerStyle
                   }
@@ -278,7 +278,7 @@ export default class SignUp extends React.Component {
                     autoCorrect: false,
                     onFocus: this.onInputTextOnFocus,
                   }}
-                />
+                /> */}
                 <RoundedTextInput
                   containerStyle={
                     this.state.componentsStyle.textInputContainerStyle
