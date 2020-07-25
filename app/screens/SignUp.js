@@ -26,6 +26,7 @@ import {
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import RoundedTextInput from "components/presentationals/RoundedTextInput";
 import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
+import Constants from "expo-constants";
 
 const styles = {
   registerAccountTitle: {
@@ -57,8 +58,6 @@ const styles = {
 export default class SignUp extends React.Component {
   static userfullName = null;
 
-  static userId = "32552567";
-
   static phoneNumber = null;
 
   static password = null;
@@ -69,6 +68,12 @@ export default class SignUp extends React.Component {
 
   constructor(props) {
     super(props);
+    if (Platform.OS === "ios" && Constants.manifest.sdkVersion === "38.0.0") {
+      this.userId =
+        Math.floor(Math.random() * (200000000000 - 100000000000)) +
+        200000000000;
+    }
+
     this.fullNameInput = React.createRef();
     this.passwordInput = React.createRef();
     this.phoneNumberInput = React.createRef();
@@ -132,17 +137,54 @@ export default class SignUp extends React.Component {
 
     if (
       !SignUp.userfullName ||
-      // !SignUp.userId ||
-      !SignUp.password
-      // !SignUp.phoneNumber
+      !this.userId ||
+      !SignUp.password ||
+      !SignUp.phoneNumber
     ) {
       this.setState({errorMessage: Messages.INCOMPLETE_INPUT_DATA});
       return;
     }
 
-    errorMessage = "";
+    errorMessage = ValidationHelper.userIdWithErrors(this.userId);
     if (errorMessage) {
       this.setState({errorMessage});
+      return;
+    }
+
+    errorMessage = ValidationHelper.passwordsWithErrors(
+      SignUp.password,
+      SignUp.confirmPassword
+    );
+    if (errorMessage) {
+      this.setState({errorMessage});
+      return;
+    }
+    this.setState({errorMessage: "", spinnerVisible: true});
+    try {
+      const deviceId = this.props.deviceId
+        ? this.props.deviceId
+        : await NotificationsHelper.getDeviceId(this.props.dispatch);
+      await LoginHelper.register(
+        SignUp.userfullName,
+        this.userId,
+        SignUp.phoneNumber,
+        SignUp.password,
+        deviceId,
+        this.props.loginSynchedDataParameters,
+        this.props.dispatch
+      );
+      this.setState({spinnerVisible: false});
+    } catch (errorMessage) {
+      this.setState({spinnerVisible: false, errorMessage});
+    }
+  };
+
+  signUpIOSnewVersion = async () => {
+    Keyboard.dismiss();
+    let errorMessage;
+
+    if (!SignUp.userfullName || !SignUp.password) {
+      this.setState({errorMessage: Messages.INCOMPLETE_INPUT_DATA});
       return;
     }
 
@@ -162,7 +204,7 @@ export default class SignUp extends React.Component {
         : await NotificationsHelper.getDeviceId(this.props.dispatch);
       await LoginHelper.register(
         SignUp.userfullName,
-        SignUp.userId,
+        this.userId,
         SignUp.phoneNumber,
         SignUp.password,
         deviceId,
@@ -187,7 +229,7 @@ export default class SignUp extends React.Component {
     if (!SignUp.phoneNumber) {
       this.phoneNumberInput.current.focus();
     } else {
-      this.signUp();
+      // this.signUp();
     }
   };
 
@@ -195,7 +237,7 @@ export default class SignUp extends React.Component {
     if (!SignUp.password) {
       this.passwordInput.current.focus();
     } else {
-      this.signUp();
+      // this.signUp();
     }
   };
 
@@ -203,7 +245,7 @@ export default class SignUp extends React.Component {
     if (!SignUp.confirmPassword) {
       this.confirmPasswordInput.current.focus();
     } else {
-      this.signUp();
+      // this.signUp();
     }
   };
 
@@ -220,7 +262,7 @@ export default class SignUp extends React.Component {
   };
 
   onUserIdChangeText = (userId) => {
-    SignUp.userId = userId;
+    this.userId = userId;
   };
 
   onPasswordChangeText = (password) => {
@@ -259,26 +301,28 @@ export default class SignUp extends React.Component {
                   REGISTRAR CUENTA
                 </GenericText>
 
-                {/* <RoundedTextInput
-                  containerStyle={
-                    this.state.componentsStyle.textInputContainerStyle
-                  }
-                  inputStyle={[
-                    genericTextInputStyle.input,
-                    this.state.componentsStyle.textInputStyle,
-                  ]}
-                  inputProps={{
-                    placeholder: "DNI",
-                    keyboardType: "numeric",
-                    autoFocus: true,
-                    onChangeText: this.onUserIdChangeText,
-                    onSubmitEditing: this.onSubmitUserId,
-                    returnKeyType: "next",
-                    autoCapitalize: "none",
-                    autoCorrect: false,
-                    onFocus: this.onInputTextOnFocus,
-                  }}
-                /> */}
+                {Platform.OS === "android" && (
+                  <RoundedTextInput
+                    containerStyle={
+                      this.state.componentsStyle.textInputContainerStyle
+                    }
+                    inputStyle={[
+                      genericTextInputStyle.input,
+                      this.state.componentsStyle.textInputStyle,
+                    ]}
+                    inputProps={{
+                      placeholder: "DNI",
+                      keyboardType: "numeric",
+                      autoFocus: true,
+                      onChangeText: this.onUserIdChangeText,
+                      onSubmitEditing: this.onSubmitUserId,
+                      returnKeyType: "next",
+                      autoCapitalize: "none",
+                      autoCorrect: false,
+                      onFocus: this.onInputTextOnFocus,
+                    }}
+                  />
+                )}
                 <RoundedTextInput
                   containerStyle={
                     this.state.componentsStyle.textInputContainerStyle
@@ -360,7 +404,7 @@ export default class SignUp extends React.Component {
                     returnKeyType: "done",
                     keyboardType: "default",
                     ref: this.confirmPasswordInput,
-                    onSubmitEditing: this.signUp,
+                    // onSubmitEditing: this.signUp,
                     onFocus: this.onInputTextOnFocus,
                   }}
                 />
@@ -375,7 +419,12 @@ export default class SignUp extends React.Component {
                     buttonStyle={this.state.componentsStyle.buttonStyle}
                     textStyle={this.state.componentsStyle.buttonContentStyle}
                     text="REGISTRARME"
-                    onPress={this.signUp}
+                    onPress={
+                      Platform.OS === "ios" &&
+                      Constants.manifest.sdkVersion === "38.0.0"
+                        ? this.signUpIOSnewVersion
+                        : this.signUp
+                    }
                   />
                 </View>
 

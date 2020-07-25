@@ -8,6 +8,8 @@ import {genericBackgroundColor} from "components/styles";
 import * as UserDataHelper from "helpers/UserDataHelper";
 import {isMemberActive} from "utils/userData";
 import {DrawerContentScrollView} from "@react-navigation/drawer";
+import Constants from "expo-constants";
+
 const styles = {
   drawerItemsWrapper: {
     paddingTop: 20,
@@ -95,9 +97,10 @@ export default class DrawerContentComponent extends React.PureComponent {
               (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
               (drawerItem.requiresFreePlan &&
                 this.props.userData.freePassEndDate)) &&
-            ((!drawerItem.notShowiOS && Platform.OS === "ios") ||
-              (Platform.OS === "android" &&
-                (drawerItem.notShowiOS || !drawerItem.notShowiOS)))
+            (!drawerItem.notShowInOSNewVersion ||
+              Constants.manifest.sdkVersion === "37.0.0" ||
+              (Constants.manifest.sdkVersion === "38.0.0" &&
+                Platform.OS === "android"))
           ) {
             return (
               <DrawerItem

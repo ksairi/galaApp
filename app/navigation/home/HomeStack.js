@@ -22,6 +22,8 @@ import Settings from "screens/Settings";
 import VideoPlayer from "screens/VideoPlayer";
 import RecordedClassesByDate from "screens/RecordedClassesByDate";
 import RecordedClassesByTime from "screens/RecordedClassesByTime";
+import PayMonthlyFee from "screens/PayMonthlyFee";
+
 const Stack = createStackNavigator();
 
 const HomeNavigator = () => (
@@ -229,6 +231,19 @@ const RecordedClassesByTimeNavigator = () => (
   </Stack.Navigator>
 );
 
+const PayMonthlyFeeScreenNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.PayMonthlyFee}
+      component={PayMonthlyFee}
+      options={{
+        header: ({navigation}) => <Header {...{navigation}} />,
+      }}
+      isHomeHeader
+    />
+  </Stack.Navigator>
+);
+
 const Drawer = createDrawerNavigator();
 export default () => (
   <Drawer.Navigator
@@ -272,5 +287,8 @@ export default () => (
     <Drawer.Screen name={Screens.Referrals}>{ReferralsNavigator}</Drawer.Screen>
     <Stack.Screen name={Screens.Settings}>{SettingsNavigator}</Stack.Screen>
     <Stack.Screen name={Screens.VideoPlayer} component={VideoPlayer} />
+    <Stack.Screen name={Screens.PayMonthlyFee}>
+      {PayMonthlyFeeScreenNavigator}
+    </Stack.Screen>
   </Drawer.Navigator>
 );

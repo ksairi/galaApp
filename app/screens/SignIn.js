@@ -31,6 +31,7 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 import RoundedTextInput from "components/presentationals/RoundedTextInput";
 import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
 import {SafeAreaView} from "react-native-safe-area-context";
+import Constants from "expo-constants";
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 
@@ -332,25 +333,28 @@ export default class SignIn extends React.Component {
                       </GenericLink>
                     </View>
 
-                    <View
-                      style={[
-                        textWithLinkStyle.container,
-                        this.state.componentsStyle.secondLinkStyle,
-                      ]}
-                    >
-                      <GenericText style={textWithLinkStyle.text}>
-                        ¿Olvidaste tu contraseña?
-                      </GenericText>
-                      <GenericLink
-                        containerStyle={textWithLinkStyle.link.container}
-                        contentStyle={textWithLinkStyle.link.content}
-                        onPress={this.goToResetPassword}
+                    {((Platform.OS == "android" &&
+                      Constants.manifest.sdkVersion === "38.0.0") ||
+                      Constants.manifest.sdkVersion === "37.0.0") && (
+                      <View
+                        style={[
+                          textWithLinkStyle.container,
+                          this.state.componentsStyle.secondLinkStyle,
+                        ]}
                       >
-                        Recuperala
-                      </GenericLink>
-                    </View>
+                        <GenericText style={textWithLinkStyle.text}>
+                          ¿Olvidaste tu contraseña?
+                        </GenericText>
+                        <GenericLink
+                          containerStyle={textWithLinkStyle.link.container}
+                          contentStyle={textWithLinkStyle.link.content}
+                          onPress={this.goToResetPassword}
+                        >
+                          Recuperala
+                        </GenericLink>
+                      </View>
+                    )}
                   </View>
-
                   {this.state.errorMessage !== "" && (
                     <GenericText
                       style={{

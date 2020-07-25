@@ -18,6 +18,7 @@ import RoutineItem from "components/presentationals/RoutineItem";
 import Alert from "components/presentationals/Alert";
 import moment from "moment";
 import {isMemberActive} from "utils/userData";
+import Constants from "expo-constants";
 
 const styles = {
   buttonsContainer: {
@@ -217,9 +218,10 @@ export default class Home extends React.Component {
                       isMemberActive(this.props)) ||
                     (sectionData.requiresFreePlan &&
                       this.props.userData.freePassEndDate)) &&
-                  ((!sectionData.notShowiOS && Platform.OS === "ios") ||
-                    (Platform.OS === "android" &&
-                      (sectionData.notShowiOS || !sectionData.notShowiOS)))
+                  (!sectionData.notShowInOSNewVersion ||
+                    Constants.manifest.sdkVersion === "37.0.0" ||
+                    (Constants.manifest.sdkVersion === "38.0.0" &&
+                      Platform.OS === "android"))
                 ) {
                   return (
                     <TouchableOpacity
@@ -261,6 +263,26 @@ export default class Home extends React.Component {
               })}
             </Animatable.View>
             <Footer />
+            <Alert
+              show={
+                (Constants.manifest.sdkVersion === "37.0.0" ||
+                  (Constants.manifest.sdkVersion === "38.0.0" &&
+                    Platform.OS === "android")) &&
+                !!this.state.alertMessage
+              }
+              message={this.state.alertMessage}
+              onConfirmPressed={() => {
+                this.setState({alertMessage: null});
+                this.props.navigation.navigate(Screens.PayMonthlyFee);
+              }}
+              showCancelButton={true}
+              onCancelPressed={() => {
+                this.setState({alertMessage: null});
+              }}
+              messageStyle={{fontSize: 20}}
+              confirmButtonTextStyle={{fontSize: 20}}
+              cancelButtonTextStyle={{fontSize: 20}}
+            />
           </CentredWrapper>
         </RootWrapper>
       </GScrollView>
