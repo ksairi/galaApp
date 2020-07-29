@@ -41,7 +41,7 @@
     "publish:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo publish && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
     "deploy:ios:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:ios && expo upload:ios && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
     "deploy:android:prod": "node -e 'require(\"./updateExpoAppFile\").init(\"default\")' && expo build:android -t app-bundle && expo upload:android && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
-    "publish:web:staging": "gh-pages -d web-build -o gala-wpa-staging",
+    "publish:web:staging": "gh-pages -d web-build -o gala-wpa-staging && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
     "publish:staging": "node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo publish --release-channel staging && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
     "prepublish:web:staging": "node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:web && echo testapp.galagym.com > web-build/CNAME",
     "deploy:ios:staging": "node -e 'require(\"./updateExpoAppFile\").init(\"staging\")' && expo build:ios --release-channel staging && expo upload:ios && node -e 'require(\"./updateExpoAppFile\").init(\"dev\")'",
