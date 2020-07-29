@@ -1,5 +1,5 @@
 import React from "react";
-import {View, TouchableOpacity, BackHandler, Platform} from "react-native";
+import {View, TouchableOpacity, Platform} from "react-native";
 import GScrollView from "components/presentationals/GenericScrollView";
 import {connect} from "react-redux";
 import Timeline from "react-native-timeline-flatlist";
@@ -44,11 +44,9 @@ export default class RoutineDetail extends React.Component {
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.RoutineDetail);
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     this.props.dispatch(ActionsCreators.setCurrentRoutine(""));
   }
 
@@ -81,15 +79,6 @@ export default class RoutineDetail extends React.Component {
       });
     return result;
   }
-
-  handleBackPress = () => {
-    this.goBackToRoutines();
-    return true;
-  };
-
-  goBackToRoutines = () => {
-    this.props.navigation.navigate(Screens.Routines);
-  };
 
   showVideo = (url, title) => {
     this.props.navigation.navigate(Screens.VideoPlayer, {
@@ -253,12 +242,12 @@ export default class RoutineDetail extends React.Component {
             marginTop: 5,
           }}
         >
-          <TouchableOpacity onPress={this.goBackToRoutines}>
+          {/* <TouchableOpacity onPress={this.goBackToRoutines}>
             <Icon
               name="arrow-navigation-white-left"
               style={{fontSize: 25, color: "white", marginLeft: 15}}
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <GenericText
             style={{
               fontFamily: "brother-1816-bold",

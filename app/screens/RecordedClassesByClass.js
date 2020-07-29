@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
+import React, {useState, useCallback} from "react";
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  Dimensions,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -8,6 +15,7 @@ import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Alert from "components/presentationals/Alert";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -19,25 +27,31 @@ const styles = {
   },
 };
 
-export default ({navigation}) => {
+export default ({navigation, route}) => {
   const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  useEffect(() => {
-    const fetchRecordedClasses = async () => {
+  useFocusEffect(
+    useCallback(() => {
       AnalyticsHelper.setEvent(AnalitycsEventsLabels.recordedClasses);
-      try {
-        setLoading(true);
-        const recordings = await ApiHelper.getRecordedClasses();
-        setRecordings(recordings);
-        setLoading(false);
-      } catch (e) {
-        setErrorMessage(errorMessage);
+      const fetchRecordedClasses = async () => {
+        try {
+          setLoading(true);
+          const recordings = await ApiHelper.getRecordedClasses();
+          setRecordings(recordings);
+        } catch (e) {
+          setErrorMessage(e);
+        } finally {
+          setLoading(false);
+        }
+      };
+      setErrorMessage(null);
+      if (route.params?.loadClasses) {
+        fetchRecordedClasses();
       }
-    };
-    fetchRecordedClasses();
-  }, []);
+    }, [route.params])
+  );
 
   if (loading) {
     return (
@@ -51,7 +65,10 @@ export default ({navigation}) => {
     <TouchableOpacity
       style={styles.item}
       onPress={() =>
-        navigation.navigate(Screens.RecordedClassesByDate, {classes, name})
+        navigation.navigate(Screens.RecordedClassesByDate, {
+          screen: Screens.RecordedClassesByDate,
+          params: {classes, name},
+        })
       }
     >
       <Text style={styles.name}>{name}</Text>
@@ -137,6 +154,15 @@ export default ({navigation}) => {
           navigation.navigate(Screens.Home);
           setErrorMessage(null);
         }}
+        contentContainerStyle={
+          Platform.OS === "web"
+            ? {
+                left: Dimensions.get("window").width / 2,
+                bottom: 400,
+                width: 200,
+              }
+            : {}
+        }
       />
     </RootWrapper>
   );

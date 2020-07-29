@@ -23,7 +23,6 @@ import {
   textWithLinkStyle,
   containerPadding,
 } from "components/styles";
-import Header from "components/containers/Header";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import RoundedTextInput from "components/presentationals/RoundedTextInput";
 import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
@@ -56,10 +55,6 @@ const styles = {
   loginSynchedDataParameters: state.loginSynchedDataParameters,
 }))
 export default class SignUp extends React.Component {
-  static navigationOptions = ({navigation}) => ({
-    header: <Header navigation={navigation} backScreen={Screens.SignIn} />,
-  });
-
   static userfullName = null;
 
   static userId = null;
@@ -100,7 +95,10 @@ export default class SignUp extends React.Component {
       "keyboardDidHide",
       this._keyboardDidHide
     );
-    BackHandler.addEventListener("hardwareBackPress", this.goBack);
+    this.backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      this.goBack
+    );
   }
 
   goBack = () => {
@@ -111,7 +109,7 @@ export default class SignUp extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
-    BackHandler.removeEventListener("hardwareBackPress", this.goBack);
+    this.backHandler.remove();
   }
 
   _keyboardDidShow = () => {
@@ -172,7 +170,6 @@ export default class SignUp extends React.Component {
         this.props.dispatch
       );
       this.setState({spinnerVisible: false});
-      this.props.navigation.navigate(Screens.HomeStack);
     } catch (errorMessage) {
       this.setState({spinnerVisible: false, errorMessage});
     }

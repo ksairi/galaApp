@@ -1,6 +1,5 @@
 import React from "react";
 import {TouchableOpacity, AppState} from "react-native";
-import GScrollView from "components/presentationals/GenericScrollView";
 import {connect} from "react-redux";
 import {Screens, SectionsData} from "config/settings";
 import DrawerItem from "components/presentationals/DrawerItem";
@@ -8,7 +7,7 @@ import Logo from "components/presentationals/Logo";
 import {genericBackgroundColor} from "components/styles";
 import * as UserDataHelper from "helpers/UserDataHelper";
 import {isMemberActive} from "utils/userData";
-
+import {DrawerContentScrollView} from "@react-navigation/drawer";
 const styles = {
   drawerItemsWrapper: {
     paddingTop: 20,
@@ -16,7 +15,6 @@ const styles = {
     alignItems: "flex-start",
     paddingLeft: 5,
     paddingBottom: 5,
-    flexGrow: 1,
   },
   headerIcon: {
     flex: 1,
@@ -73,7 +71,7 @@ export default class DrawerContentComponent extends React.PureComponent {
   };
 
   onPress = (screen, params) => () => {
-    this.props.navigation.navigate(screen, params);
+    this.props.navigation.navigate(screen, {screen, params});
   };
 
   navigateToHome = (screen) => () => {
@@ -82,7 +80,9 @@ export default class DrawerContentComponent extends React.PureComponent {
 
   render() {
     return (
-      <GScrollView contentContainerStyle={styles.drawerItemsWrapper}>
+      <DrawerContentScrollView
+        style={{backgroundColor: genericBackgroundColor}}
+      >
         <TouchableOpacity
           style={{flex: 1, flexDirection: "row", marginLeft: 13}}
           onPress={this.navigateToHome(Screens.Home)}
@@ -123,7 +123,7 @@ export default class DrawerContentComponent extends React.PureComponent {
             );
           }
         })}
-      </GScrollView>
+      </DrawerContentScrollView>
     );
   }
 }

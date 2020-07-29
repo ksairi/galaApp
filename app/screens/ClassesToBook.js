@@ -1,5 +1,12 @@
-import React, {useEffect, useState, useCallback, useRef} from "react";
-import {SectionList, Text, TouchableOpacity, View} from "react-native";
+import React, {useState, useCallback, useRef} from "react";
+import {
+  SectionList,
+  Text,
+  TouchableOpacity,
+  View,
+  Platform,
+  Dimensions,
+} from "react-native";
 import * as ApiHelper from "helpers/ApiHelper";
 import LoadingSpinner from "components/presentationals/LoadingSpinner";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -12,6 +19,7 @@ import moment from "moment";
 import ActionsCreators from "redux/actions";
 import Alert from "components/presentationals/Alert";
 import SectionListGetItemLayout from "react-native-section-list-get-item-layout";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -56,10 +64,8 @@ function ClassesToBook({
   const [onOkAlert, setOnOkAlert] = useState(null);
   const listRef = useRef(null);
 
-  const fetchClassesToBook = useCallback(async () => {
-    setClassesToBook([]);
+  const doFetchClasses = useCallback(async () => {
     try {
-      setLoading(true);
       const {
         classesToBook: remoteClassesToBook,
       } = await ApiHelper.getClassesToBook();
@@ -78,11 +84,17 @@ function ClassesToBook({
     } finally {
       setLoading(false);
     }
-  });
-
-  useEffect(() => {
-    fetchClassesToBook();
   }, []);
+
+  const fetchClassesToBook = useCallback(() => {
+    setAlertMessage(null);
+    setClassesToBook([]);
+    setCheckoutClasses([]);
+    setOnOkAlert(null);
+    doFetchClasses();
+  }, []);
+
+  useFocusEffect(fetchClassesToBook);
 
   const checkoutBookings = useCallback(async () => {
     try {
@@ -115,13 +127,11 @@ function ClassesToBook({
       );
       dispatch(ActionsCreators.addNewBookedClasses(successfullBookings));
       if (successfullBookings.length) {
-        await fetchClassesToBook(successfullBookings);
+        setClassesToBook([]);
+        await doFetchClasses();
       }
       setAlertMessage(alertMessage);
       setCheckoutClasses([]);
-      if (!result.errorMessages.length) {
-        setOnOkAlert(() => () => navigation.navigate(Screens.BookedClasses));
-      }
     } catch (e) {
       setAlertMessage(e);
     } finally {
@@ -167,12 +177,6 @@ function ClassesToBook({
         return;
       }
       setCheckoutClasses((checkoutClases) => [...checkoutClases, pItem]);
-      if (classesToBook.length) {
-        listRef.current.scrollToLocation({
-          sectionIndex: 1,
-          itemIndex: classesToBook[classesToBook.length - 1].data.length,
-        });
-      }
     },
     [checkoutClasses]
   );
@@ -305,6 +309,15 @@ function ClassesToBook({
                 setAlertMessage(null);
                 if (onOkAlert) onOkAlert();
               }}
+              contentContainerStyle={
+                Platform.OS === "web"
+                  ? {
+                      left: Dimensions.get("window").width / 2,
+                      bottom: 400,
+                      width: 200,
+                    }
+                  : {}
+              }
             />
           </CentredWrapper>
         </>

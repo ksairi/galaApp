@@ -6,6 +6,7 @@ import {PersistGate} from "redux-persist/integration/react";
 import AppContainer from "redux/AppContainer";
 import configureStore from "redux/configureStore";
 import Splash from "components/presentationals/Splash";
+import {SafeAreaProvider} from "react-native-safe-area-context";
 
 const {store, persistor} = configureStore();
 
@@ -59,14 +60,16 @@ export default class App extends React.Component {
       return <Splash onSplashImageLoad={this.onSplashImageLoad} />;
     }
     return (
-      <Provider store={store}>
-        <PersistGate
-          loading={<Splash onSplashImageLoad={this.onSplashImageLoad} />}
-          persistor={persistor}
-        >
-          <AppContainer />
-        </PersistGate>
-      </Provider>
+      <SafeAreaProvider>
+        <Provider store={store}>
+          <PersistGate
+            loading={<Splash onSplashImageLoad={this.onSplashImageLoad} />}
+            persistor={persistor}
+          >
+            <AppContainer />
+          </PersistGate>
+        </Provider>
+      </SafeAreaProvider>
     );
   }
 }

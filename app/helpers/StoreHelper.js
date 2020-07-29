@@ -7,6 +7,7 @@ export const setInitialData = (loginServerData, userId, password, dispatch) => {
   userData.userId = userId;
   userData.password = password;
 
+  dispatch(ActionsCreators.setIsInSession(true));
   dispatch(ActionsCreators.logIn());
   if (userData) {
     const userDataCopy = {...userData};

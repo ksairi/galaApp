@@ -54,6 +54,9 @@ export default class Referrals extends React.Component {
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.Referrals);
+    this.unsubscribe = this.props.navigation.addListener("blur", () => {
+      this.setState({error: null, message: null, mail: null});
+    });
     this.keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       this._keyboardDidShow
@@ -67,6 +70,7 @@ export default class Referrals extends React.Component {
   componentWillUnmount() {
     this.keyboardDidShowListener.remove();
     this.keyboardDidHideListener.remove();
+    this.unsubscribe();
   }
 
   _keyboardDidShow = () => {
@@ -137,7 +141,7 @@ export default class Referrals extends React.Component {
                 autoFocus: true,
                 onChangeText: this.onMailChange,
                 onSubmitEditing: this.sendEmail,
-                keyboardType: "email-address",
+                // keyboardType: "email-address",
                 returnKeyType: "send",
                 autoCapitalize: "none",
                 autoCorrect: false,

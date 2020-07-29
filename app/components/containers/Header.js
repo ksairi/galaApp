@@ -17,10 +17,11 @@ import Logo from "components/presentationals/Logo";
 import GenericText from "components/presentationals/GenericText";
 import * as NetworkHelper from "helpers/NetworkHelper";
 import ActionsCreators from "redux/actions/";
+import {SafeAreaView} from "react-native-safe-area-context";
+import {Ionicons} from "@expo/vector-icons";
 
 const styles = {
   wrapper: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "flex-start",
     backgroundColor: genericBackgroundColor,
@@ -31,10 +32,10 @@ const styles = {
     marginTop: 3,
     flex: 1,
   },
-  portrait: {logo: {fontSize: 40}, wrapper: {flex: 0.13}},
+  portrait: {logo: {fontSize: 40}, wrapper: {}},
   landscape: {
     logo: {fontSize: 30},
-    wrapper: {flex: 0.17},
+    wrapper: {},
   },
   title: {fontSize: 19, color: "white", fontFamily: "brother-1816-bold"},
 };
@@ -147,11 +148,11 @@ export default class Header extends React.PureComponent {
   };
 
   onBackPressed = () => {
-    if (this.props.backScreen) {
-      this.props.navigation.navigate(this.props.backScreen);
-    } else {
-      this.props.navigation.goBack();
-    }
+    const {backScreen, backScreenParams, navigation} = this.props;
+    navigation.navigate(backScreen, {
+      screen: backScreen,
+      params: backScreenParams,
+    });
   };
 
   hideKeyboard = () => {
@@ -160,102 +161,101 @@ export default class Header extends React.PureComponent {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={this.hideKeyboard}>
-        <View style={this.state.headerStyle.wrapper}>
-          <View style={styles.wrapper}>
-            {Platform.OS === "ios" && this.props.newNotificationsText !== "" && (
-              <AnimatedBanner
-                useNativeDriver
-                ref={this.handleBannerRef}
+      <SafeAreaView style={{backgroundColor: genericBackgroundColor}}>
+        <TouchableWithoutFeedback onPress={this.hideKeyboard}>
+          <View style={this.state.headerStyle.wrapper}>
+            <View style={styles.wrapper}>
+              {this.props.newNotificationsText !== "" && (
+                <AnimatedBanner
+                  useNativeDriver
+                  ref={this.handleBannerRef}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    flexDirection: "row",
+                    width: Dimensions.get("window").width,
+                    backgroundColor: "yellow",
+                    zIndex: 2,
+                    height: 30,
+                    opacity: 0,
+                    alignItems: "center",
+                  }}
+                >
+                  <GenericText
+                    style={{
+                      color: genericBackgroundColor,
+                      fontFamily: "lato-bold",
+                    }}
+                  >
+                    {this.props.newNotificationsText}
+                  </GenericText>
+                </AnimatedBanner>
+              )}
+
+              <View
                 style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  flexDirection: "row",
-                  width: Dimensions.get("window").width,
-                  backgroundColor: "yellow",
-                  zIndex: 2,
-                  height: 30,
-                  opacity: 0,
-                  alignItems: "center",
+                  flex: 0.9,
+                  zIndex: 1,
                 }}
               >
-                <GenericText
-                  style={{
-                    color: genericBackgroundColor,
-                    fontFamily: "lato-bold",
-                  }}
-                >
-                  {this.props.newNotificationsText}
-                </GenericText>
-              </AnimatedBanner>
-            )}
+                {this.props.isHomeHeader && (
+                  <TouchableOpacity
+                    onPress={this.onMenuPressed}
+                    style={styles.firstButton}
+                  >
+                    <Icon name="menu" size={20} color="white" />
+                  </TouchableOpacity>
+                )}
+                {this.props.backScreen && (
+                  <TouchableOpacity
+                    onPress={this.onBackPressed}
+                    style={styles.backButton}
+                  >
+                    <Ionicons name="md-arrow-back" size={25} color="white" />
+                  </TouchableOpacity>
+                )}
+              </View>
 
-            <View
-              style={{
-                flex: 0.9,
-                zIndex: 1,
-              }}
-            >
-              {this.props.isHomeHeader ? (
-                <TouchableOpacity
-                  onPress={this.onMenuPressed}
-                  style={styles.firstButton}
-                >
-                  <Icon name="menu" size={20} color="white" />
-                </TouchableOpacity>
-              ) : (
-                <TouchableOpacity
-                  onPress={this.onBackPressed}
-                  style={styles.backButton}
-                >
-                  <Icon
-                    name="arrow-navigation-white-left"
-                    size={20}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              )}
-            </View>
+              <View
+                style={{
+                  flex: 2.5,
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  zIndex: 1,
+                }}
+              >
+                {this.props.title ? (
+                  <Text
+                    style={[
+                      styles.title,
+                      {fontSize: this.props.title.length >= 13 ? 15 : 19},
+                    ]}
+                  >
+                    {this.props.title}
+                  </Text>
+                ) : (
+                  <Logo style={this.state.headerStyle.logo} />
+                )}
+              </View>
 
-            <View
-              style={{
-                flex: 2.5,
-                flexDirection: "row",
-                justifyContent: "center",
-                zIndex: 1,
-              }}
-            >
-              {this.props.title ? (
-                <Text
-                  style={[
-                    styles.title,
-                    {fontSize: this.props.title.length >= 13 ? 15 : 19},
-                  ]}
-                >
-                  {this.props.title}
-                </Text>
-              ) : (
-                <Logo style={this.state.headerStyle.logo} />
-              )}
-            </View>
-
-            <View style={{flex: 1, flexDirection: "row", zIndex: 1}}>
-              {!this.state.isDeviceConnected ? (
-                <GenericText
-                  style={{
-                    backgroundColor: "red",
-                  }}
-                >
-                  Sin conexión
-                </GenericText>
-              ) : (
-                this.showBackToConnection()
-              )}
+              <View style={{flex: 1, flexDirection: "row", zIndex: 1}}>
+                {!this.state.isDeviceConnected ? (
+                  <GenericText
+                    style={{
+                      backgroundColor: "red",
+                    }}
+                  >
+                    Sin conexión
+                  </GenericText>
+                ) : (
+                  this.showBackToConnection()
+                )}
+              </View>
             </View>
           </View>
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
     );
   }
 }

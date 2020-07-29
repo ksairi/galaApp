@@ -33,3 +33,15 @@ export const isSavingNotificationsData = createReducer(false, {
     return action.isSavingNotificationsData;
   },
 });
+
+export const isInSession = createReducer(false, {
+  [ActionsTypes.SET_IS_IN_SESSION](state, action) {
+    return action.isInSession;
+  },
+});
+
+export const goToMobileWebLogin = createReducer(false, {
+  [ActionsTypes.SET_GO_TO_MOBILE_WEB_LOGIN](state, action) {
+    return action.value;
+  },
+});

@@ -1,45 +1,103 @@
-import React from "react";
-import {Text, View, TouchableOpacity, Platform, Linking} from "react-native";
+import React, {useEffect, useState, useCallback} from "react";
+import {Text, TouchableOpacity, Platform, Linking} from "react-native";
 import {WebView} from "react-native-webview";
 import {connect} from "react-redux";
 import RootWrapper from "components/presentationals/RootWrapper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
-import {Screens, AnalitycsEventsLabels, Messages} from "config/settings";
+import {AnalitycsEventsLabels, Messages, Screens} from "config/settings";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import * as ApiHelper from "helpers/ApiHelper";
 import {activateKeepAwake, deactivateKeepAwake} from "expo-keep-awake";
 import {Ionicons} from "@expo/vector-icons";
-import {genericBackgroundColor} from "components/styles";
 import * as Permissions from "expo-permissions";
 import {detect} from "detect-browser";
 import Alert from "components/presentationals/Alert";
 import * as withEnv from "utils/env";
+import {useFocusEffect} from "@react-navigation/native";
+
 const styles = {
   title: {
     alignSelf: "center",
     color: "white",
     fontFamily: "lato-regular",
-    marginTop: 10,
   },
 };
 
-@connect((state) => ({
-  userData: state.userData,
-}))
-export default class LiveClass extends React.Component {
-  state = {
-    loading: true,
-    message: null,
-  };
+function LiveClass({navigation, route, userData}) {
+  const [loading, setLoading] = useState(true);
+  const [message, setMessage] = useState(null);
+  const [title, setTitle] = useState(null);
+  const [uri, setUri] = useState(null);
+  const [hasLeft, setHastLeft] = useState(false);
 
-  constructor(props) {
-    super(props);
-    const {studioNumber} = props.navigation.state.params;
-    const name = props.userData?.name;
-    this.uri = `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
-  }
+  const goBack = () => navigation.navigate(Screens.Home);
 
-  injectedJs = `
+  const getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
+
+  const openAppIfNeeded = useCallback(async (name, studioNumber, uri) => {
+    try {
+      if (Platform.OS === "ios") {
+        const {meetingId} = await getMeetingId(studioNumber);
+        const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
+        try {
+          await Linking.openURL(link);
+          goBack();
+        } catch (e) {
+          setMessage("Por favor descargue la app Zoom");
+        }
+      }
+      if (Platform.OS === "web") {
+        const browser = detect().name;
+        if (browser === "chrome" || browser === "edge") {
+          if (uri) {
+            window.open(uri, "_blank");
+          }
+        } else {
+          const {meetingId} = await getMeetingId(studioNumber);
+          window.open(`https://zoom.us/j/${meetingId}`, "_blank");
+        }
+        goBack();
+      }
+    } catch (e) {
+      setMessage(Messages.SERVER_ERROR);
+    }
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      const askAndroidPermissions = async () => {
+        if (Platform.OS === "android") {
+          await Permissions.askAsync(
+            Permissions.CAMERA,
+            Permissions.AUDIO_RECORDING
+          );
+          setTimeout(() => {
+            setLoading(false);
+          }, 15000);
+          activateKeepAwake();
+        }
+      };
+      setLoading(true);
+      setMessage(null);
+      setHastLeft(false);
+      askAndroidPermissions();
+      AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
+      const {studioNumber} = route.params.params;
+      const name = userData?.name;
+      const uri = `${withEnv.getHost()}/live-classes/zoom/studio${studioNumber}.php?name=${name}&hash=${API_ACCESS_TOKEN}`;
+      openAppIfNeeded(name, studioNumber, uri);
+      setUri(uri);
+      const {title} = route.params.params;
+      setTitle(title);
+      return () => {
+        setLoading(false);
+        setHastLeft(true);
+        deactivateKeepAwake();
+      };
+    }, [route.params])
+  );
+
+  const injectedJs = `
     setTimeout(function () {
       var startAudioButton = document.getElementById('pc-join');
       var startFSButton = document.getElementsByClassName('full-screen-widget ax-outline')[0];
@@ -57,78 +115,29 @@ export default class LiveClass extends React.Component {
     true;
   `;
 
-  async componentDidMount() {
-    AnalyticsHelper.setEvent(AnalitycsEventsLabels.liveClass);
-    this.openAppIfNeeded();
-    if (Platform.OS === "android") {
-      await Permissions.askAsync(
-        Permissions.CAMERA,
-        Permissions.AUDIO_RECORDING
-      );
-      setTimeout(() => {
-        this.setState({loading: false});
-      }, 15000);
-      activateKeepAwake();
-    }
-  }
-
-  componentWillUnmount() {
-    deactivateKeepAwake();
-  }
-
-  onMessage = ({nativeEvent}) => {
-    try {
-      const result = JSON.parse(nativeEvent.data);
-      if (result.status === "error") {
-        this.setState({message: "La clase no ha empezado aun"});
-      }
-      // eslint-disable-next-line no-empty
-    } catch (e) {}
-  };
-
-  getMeetingId = (studioNumber) => ApiHelper.getMeetingId({studioNumber});
-
-  openAppIfNeeded = async () => {
-    try {
-      const name = this.props.userData?.name;
-      const {studioNumber} = this.props.navigation.state.params;
-      if (Platform.OS === "ios") {
-        const {meetingId} = await this.getMeetingId(studioNumber);
-        const link = `zoomus://zoom.us/join?confno=${meetingId}&&zc=0&browser=safari&uname=${name}`;
-        try {
-          await Linking.openURL(link);
-        } catch (e) {
-          this.setState({message: "Por favor descargue la app Zoom"});
+  const onMessage = ({nativeEvent}) => {
+    if (!hasLeft) {
+      try {
+        const result = JSON.parse(nativeEvent.data);
+        if (result.status === "error") {
+          setMessage("La clase no ha empezado aun");
         }
-      }
-      if (Platform.OS === "web") {
-        const browser = detect().name;
-        this.props.navigation.navigate(Screens.Home);
-        if (browser === "chrome" || browser === "edge") {
-          window.open(this.uri, "_blank");
-        } else {
-          const {meetingId} = await this.getMeetingId(studioNumber);
-          window.open(`https://zoom.us/j/${meetingId}`, "_blank");
-        }
-      }
-    } catch (e) {
-      this.setState({message: Messages.SERVER_ERROR});
+        // eslint-disable-next-line no-empty
+      } catch (e) {}
     }
   };
-
-  render() {
-    const {title} = this.props.navigation.state.params;
-
-    return (
-      <>
-        <View
-          style={{
-            flex: 0.07,
-            paddingLeft: 10,
-            backgroundColor: genericBackgroundColor,
-          }}
-        >
-          <TouchableOpacity onPress={() => this.props.navigation.goBack()}>
+  return (
+    <RootWrapper
+      style={{
+        justifyContent: "center",
+        paddingTop: 5,
+      }}
+    >
+      {loading ? (
+        <Text style={styles.title}>Cargando...</Text>
+      ) : (
+        <>
+          <TouchableOpacity onPress={() => goBack()}>
             <Ionicons
               name="ios-arrow-round-back"
               size={30}
@@ -138,17 +147,8 @@ export default class LiveClass extends React.Component {
               }}
             />
           </TouchableOpacity>
-        </View>
-        <RootWrapper
-          style={{
-            flex: 2,
-            justifyContent: "center",
-          }}
-        >
-          {this.state.loading && <Text style={styles.title}>Cargando...</Text>}
           <Text
             style={{
-              marginTop: 10,
               alignSelf: "center",
               color: "white",
               fontFamily: "lato-regular",
@@ -156,27 +156,35 @@ export default class LiveClass extends React.Component {
           >
             {title}
           </Text>
-          {!this.state.message && (
-            <WebView
-              style={{marginTop: 10}}
-              source={{
-                uri: this.uri,
-              }}
-              onMessage={this.onMessage}
-              injectedJavaScript={this.injectedJs}
-              mediaPlaybackRequiresUserAction={false}
-            />
-          )}
-          <Alert
-            show={!!this.state.message}
-            message={this.state.message}
-            showCancelButton={false}
-            onConfirmPressed={() => {
-              this.props.navigation.navigate(Screens.Home);
-            }}
-          />
-        </RootWrapper>
-      </>
-    );
-  }
+        </>
+      )}
+
+      {!hasLeft && uri && Platform.OS === "android" && (
+        <WebView
+          style={{marginTop: 10}}
+          source={{
+            uri: encodeURI(uri),
+          }}
+          onMessage={onMessage}
+          injectedJavaScript={injectedJs}
+          mediaPlaybackRequiresUserAction={false}
+        />
+      )}
+      {!hasLeft && (
+        <Alert
+          show={!!message}
+          message={message}
+          showCancelButton={false}
+          onConfirmPressed={() => {
+            setMessage(null);
+            goBack();
+          }}
+        />
+      )}
+    </RootWrapper>
+  );
 }
+
+export default connect((state) => ({
+  userData: state.userData,
+}))(LiveClass);

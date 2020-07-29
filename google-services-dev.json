@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "583999955624",
+    "firebase_url": "https://galaappdev.firebaseio.com",
+    "project_id": "galaappdev",
+    "storage_bucket": "galaappdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:583999955624:android:ba3bb2503f00382396989d",
+        "android_client_info": {
+          "package_name": "com.gala.galaapp.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "583999955624-jiujulagqq94aes9i9rvmd1h18em9pnt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDhjfCOU8c6yUgB8Vp09GnpCWdJR2WE25Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "583999955624-jiujulagqq94aes9i9rvmd1h18em9pnt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

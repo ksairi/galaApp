@@ -1,10 +1,18 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, Text, TouchableOpacity, View} from "react-native";
+import React, {useState, useCallback} from "react";
+
+import {
+  FlatList,
+  Text,
+  TouchableOpacity,
+  View,
+  BackHandler,
+} from "react-native";
 import RootWrapper from "components/presentationals/RootWrapper";
 import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import moment from "moment";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   item: {
@@ -15,47 +23,62 @@ const styles = {
   },
 };
 
-export default ({navigation}) => {
+export default ({navigation, route}) => {
   const [filteredRecordings, setFilteredRecordings] = useState([]);
-  useEffect(() => {
-    let recordingsToShow = [];
-    const classesByName = navigation.state.params.classes;
-    classesByName.forEach(({name, url}) => {
-      const dateToSearch = name
-        .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
-        .trim();
-      const classesByDate = classesByName.filter(
-        ({name}) =>
-          name
-            .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
-            .trim() === dateToSearch
-      );
 
-      if (!recordingsToShow.find(({date}) => dateToSearch === date)) {
-        recordingsToShow = [
-          ...recordingsToShow,
-          {
-            date: dateToSearch,
-            url,
-            classes: classesByDate,
-          },
-        ];
-      }
-    });
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        navigation.navigate(Screens.RecordedClassesByClass, {
+          screen: Screens.RecordedClassesByClass,
+          params: {loadClasses: false},
+        });
+        return true;
+      };
 
-    recordingsToShow.sort((a, b) => {
-      const dateA = moment(a.date, "DD-MM-YY");
-      const dateB = moment(b.date, "DD-MM-YY");
-      if (dateA.isSameOrAfter(dateB)) {
-        return -1;
-      }
-      if (dateA.isSameOrBefore(dateB)) {
-        return 1;
-      }
-      return 0;
-    });
-    setFilteredRecordings(recordingsToShow);
-  }, []);
+      let recordingsToShow = [];
+      const classesByName = route.params.classes;
+      classesByName.forEach(({name, url}) => {
+        const dateToSearch = name
+          .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
+          .trim();
+        const classesByDate = classesByName.filter(
+          ({name}) =>
+            name
+              .substring(name.indexOf("-") + 1, name.indexOf("-") + 9)
+              .trim() === dateToSearch
+        );
+
+        if (!recordingsToShow.find(({date}) => dateToSearch === date)) {
+          recordingsToShow = [
+            ...recordingsToShow,
+            {
+              date: dateToSearch,
+              url,
+              classes: classesByDate,
+            },
+          ];
+        }
+      });
+
+      recordingsToShow.sort((a, b) => {
+        const dateA = moment(a.date, "DD-MM-YY");
+        const dateB = moment(b.date, "DD-MM-YY");
+        if (dateA.isSameOrAfter(dateB)) {
+          return -1;
+        }
+        if (dateA.isSameOrBefore(dateB)) {
+          return 1;
+        }
+        return 0;
+      });
+      setFilteredRecordings(recordingsToShow);
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [route.params])
+  );
 
   const Item = ({date, url, classes}) => (
     <TouchableOpacity
@@ -63,13 +86,17 @@ export default ({navigation}) => {
       onPress={() => {
         if (classes.length > 1) {
           navigation.navigate(Screens.RecordedClassesByTime, {
-            classes,
-            name: `${navigation.state.params.name} - ${date}`,
+            screen: Screens.RecordedClassesByTime,
+            params: {
+              classes,
+              name: `${route.params.name} - ${date}`,
+            },
           });
         } else {
           navigation.navigate(Screens.VideoPlayer, {
             url,
-            title: `${navigation.state.params.name} - ${date}`,
+            title: `${route.params.name} - ${date}`,
+            backScreen: Screens.RecordedClassesByDate,
           });
         }
       }}

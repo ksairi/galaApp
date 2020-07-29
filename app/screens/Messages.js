@@ -20,7 +20,7 @@ import {getRealTimeMessages, setRealTimeMessagesSaved} from "helpers/ApiHelper";
 import {saveMessagesToDevice} from "helpers/StoreHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import {Screens} from "config/settings";
-import {Notifications} from "expo";
+import * as Notifications from "expo-notifications";
 
 const styles = {
   textInputStyle: {
@@ -91,17 +91,25 @@ export default class Messages extends React.Component {
       this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
     }
     if (Platform.OS === "ios") {
-      await Notifications.setBadgeNumberAsync(0);
+      await Notifications.setBadgeCountAsync(0);
     }
   }
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.Messages);
     AppState.addEventListener("change", this._handleAppStateChange);
-    if (this.props.newMessagesCount > 0) {
-      this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
-    }
-    this.startPullingMessages();
+    this._unsubscribePullingMessages = this.props.navigation.addListener(
+      "focus",
+      () => {
+        if (this.props.newMessagesCount > 0) {
+          this.props.dispatch(ActionsCreators.setNewMessagesCount(null));
+        }
+        this.startPullingMessages();
+      }
+    );
+    this._unsubscribeBlur = this.props.navigation.addListener("blur", () => {
+      clearInterval(this.intervalId);
+    });
   }
 
   startPullingMessages = () => {
@@ -135,8 +143,10 @@ export default class Messages extends React.Component {
 
   componentWillUnmount() {
     AppState.removeEventListener("change", this._handleAppStateChange);
+    this._unsubscribeBlur();
     clearInterval(this.intervalId);
     this.doGetRealTimeMessages(true);
+    this._unsubscribePullingMessages();
   }
 
   _handleAppStateChange = (nextAppState) => {

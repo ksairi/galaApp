@@ -60,8 +60,13 @@ export default class Profile extends React.Component {
 
   componentDidMount = () => {
     AnalyticsHelper.setPageHit(Screens.Profile);
-    this.getImageSource();
+    this._unsubscribeFocus = this.props.navigation.addListener("focus", () => {
+      this.getImageSource();
+    });
   };
+  componentWillUnmount() {
+    this._unsubscribeFocus();
+  }
 
   goToSettings = () => {
     this.props.navigation.navigate(Screens.Settings);

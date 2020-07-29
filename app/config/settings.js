@@ -7,9 +7,9 @@ const API_ROOT = "/api/";
 
 const getServer2Environment = (path) => {
   const {slug} = Constants.manifest;
-  return slug === "galaAppStaging"
-    ? `https://test.galagym.com${API_ROOT}${path}`
-    : `https://galagym.com${API_ROOT}${path}`;
+  return slug === "galaApp"
+    ? `https://galagym.com${API_ROOT}${path}`
+    : `https://test.galagym.com${API_ROOT}${path}`;
 };
 
 const getServerHostName2 = (path) => {
@@ -26,7 +26,7 @@ const getServerHostName2 = (path) => {
 
 const getServer1Environment = (path) => {
   const {slug} = Constants.manifest;
-  const port = slug === "galaAppStaging" ? "1083" : "1082";
+  const port = slug === "galaApp" ? "1082" : "1083";
   return `http://galagym.sytes.net:${port}/${path}`;
 };
 
@@ -179,6 +179,8 @@ export const ActionsTypes = {
   SET_HAS_RESET_FIRST_PASSWORD: "SET_HAS_RESET_FIRST_PASSWORD",
   SET_IN_RESET_FIRT_PASSWORD_MODE: "SET_IN_RESET_FIRT_PASSWORD_MODE",
   SET_IS_SAVING_NOTIFICATIONS_DATA: "SET_IS_SAVING_NOTIFICATIONS_DATA",
+  SET_IS_IN_SESSION: "SET_IS_IN_SESSION",
+  SET_GO_TO_MOBILE_WEB_LOGIN: "SET_GO_TO_MOBILE_WEB_LOGIN",
 
   // Navigation
   SET_CURRENT_HOME_DRAWER_OPTION: "SET_CURRENT_HOME_DRAWER_OPTION",
@@ -262,6 +264,7 @@ export const SectionsData = [
     ...baseHomeStyle,
     ...requiresMembership,
     screen: Screens.RecordedClassesByClass,
+    params: {loadClasses: true},
   },
   // {
   //   label: "TUS RESERVAS",
@@ -274,16 +277,16 @@ export const SectionsData = [
   //   screen: Screens.Affidavit,
   // },
   // {
-  //   icon: 'exclamation',
-  //   label: 'SOCIO NUEVO',
+  //   icon: "exclamation",
+  //   label: "SOCIO NUEVO",
   //   screen: Screens.NewMember,
   //   IconComponent: FontAwesome,
   //   drawerStyle: {
-  //     icon: { marginTop: 5, paddingLeft: 15, fontSize: 30 },
-  //     label: { marginTop: 10, color: 'green', fontFamily: 'lato-regular' },
-  //     arrow: { marginTop: 15 }
+  //     icon: {marginTop: 5, paddingLeft: 15, fontSize: 30},
+  //     label: {marginTop: 10, color: "green", fontFamily: "lato-regular"},
+  //     arrow: {marginTop: 15},
   //   },
-  //   homeStyle: { fontSize: 40, color: 'white' }
+  //   homeStyle: {fontSize: 40, color: "white"},
   // },
   {
     icon: "user-icon",

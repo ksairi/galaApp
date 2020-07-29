@@ -8,7 +8,6 @@ import * as NotificationsHelper from "helpers/NotificationsHelper";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import {Text} from "react-native-animatable-promise";
 import {genericBackgroundColor} from "components/styles";
-import * as withEnv from "utils/env";
 
 const styles = {
   container: {
@@ -23,7 +22,6 @@ const styles = {
 
 @connect((state) => ({
   isAppsFirstTime: state.isAppsFirstTime,
-  isLoggedIn: state.isLoggedIn,
   userId: state.userData.userId,
   password: state.userData.password,
   loginSynchedDataParameters: state.loginSynchedDataParameters,
@@ -47,52 +45,39 @@ export default class CheckUserActivity extends React.Component {
   }
 
   checkUserStatus = async () => {
-    if (
-      this.props.isAppsFirstTime ||
-      (withEnv.isWebInMobile() &&
-        !this.props.navigation?.state?.params?.checkUserActivity)
-    ) {
-      this.props.navigation.navigate(Screens.Welcome);
-    } else if (this.props.isLoggedIn) {
-      try {
-        CheckUserActivity.isInLoggingProcess = true;
-        const deviceId = this.props.deviceId
-          ? this.props.deviceId
-          : await NotificationsHelper.getDeviceId(this.props.dispatch);
-        await LoginHelper.login(
-          this.props.userId,
-          this.props.password,
-          deviceId,
-          this.props.loginSynchedDataParameters,
-          this.props.messages,
-          this.props.dispatch,
-          {
-            data: {
-              userData: this.props.userData,
-              hasResetFirstPassword: this.props.hasResetFirstPassword,
-              newMemberData: this.props.newMemberData,
-              routines: this.props.routines,
-            },
-          }
-        );
-        if (this.props.hasResetFirstPassword) {
-          this.props.navigation.navigate(Screens.HomeStack);
-        } else {
-          this.props.dispatch(
-            ActionsCreators.setInResetFirstPasswordMode(true)
-          );
-          this.props.navigation.navigate(Screens.ResetPassword);
+    try {
+      CheckUserActivity.isInLoggingProcess = true;
+      const deviceId = this.props.deviceId
+        ? this.props.deviceId
+        : await NotificationsHelper.getDeviceId(this.props.dispatch);
+      await LoginHelper.login(
+        this.props.userId,
+        this.props.password,
+        deviceId,
+        this.props.loginSynchedDataParameters,
+        this.props.messages,
+        this.props.dispatch,
+        {
+          data: {
+            userData: this.props.userData,
+            hasResetFirstPassword: this.props.hasResetFirstPassword,
+            newMemberData: this.props.newMemberData,
+            routines: this.props.routines,
+          },
         }
-      } catch (error) {
-        if (Messages.CHECK_INTERNET_CONNECTION === error) {
-          // offline login
-          this.props.navigation.navigate(Screens.HomeStack);
-        } else {
-          this.props.navigation.navigate(Screens.LoginStack);
-        }
+      );
+      if (!this.props.hasResetFirstPassword) {
+        this.props.dispatch(ActionsCreators.setInResetFirstPasswordMode(true));
       }
-    } else {
-      this.props.navigation.navigate(Screens.LoginStack);
+    } catch (error) {
+      if (Messages.CHECK_INTERNET_CONNECTION === error) {
+        // offline login
+        this.props.dispatch(ActionsCreators.setIsInSession(true));
+        this.props.dispatch(ActionsCreators.login());
+      } else {
+        this.props.dispatch(ActionsCreators.setIsInSession(false));
+        this.props.dispatch(ActionsCreators.logout());
+      }
     }
   };
 

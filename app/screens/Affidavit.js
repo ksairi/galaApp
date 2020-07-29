@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect} from "react";
+import React, {useCallback, useState} from "react";
 import {View, Text, Switch} from "react-native";
 import RootWrapper from "components/presentationals/RootWrapper";
 import GScrollView from "components/presentationals/GenericScrollView";
@@ -7,6 +7,7 @@ import {Screens} from "config/settings";
 import Button from "components/presentationals/GenericButton";
 import * as ApiHelper from "helpers/ApiHelper";
 import Alert from "components/presentationals/Alert";
+import {useFocusEffect} from "@react-navigation/native";
 
 const styles = {
   wrapper: {flex: 0.5, justifyContent: "center", alignItems: "center"},
@@ -38,19 +39,25 @@ export default function Affidavit({navigation}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const getAffidavitQuestions = async () => {
-      try {
-        setLoading(true);
-        const {questions} = await ApiHelper.getAffidavitQuestions();
-        setQuestions(questions);
-        setLoading(false);
-      } catch (e) {
-        setError(e);
-      }
-    };
-    getAffidavitQuestions();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const getAffidavitQuestions = async () => {
+        try {
+          setLoading(true);
+          const {questions} = await ApiHelper.getAffidavitQuestions();
+          setQuestions(questions);
+        } catch (e) {
+          setError(e);
+        } finally {
+          setLoading(false);
+        }
+      };
+      getAffidavitQuestions();
+      return () => {
+        setResponses([]);
+      };
+    }, [])
+  );
 
   const onValueChange = useCallback(
     (value, index) => {
