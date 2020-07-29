@@ -1,5 +1,12 @@
 import React from "react";
-import {View, TouchableOpacity, AppState, Text} from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  AppState,
+  Text,
+  Platform,
+  Dimensions,
+} from "react-native";
 import {connect} from "react-redux";
 import GScrollView from "components/presentationals/GenericScrollView";
 import RootWrapper from "components/presentationals/RootWrapper";
@@ -276,6 +283,22 @@ export default class Home extends React.Component {
               messageStyle={{fontSize: 20}}
               confirmButtonTextStyle={{fontSize: 20}}
               cancelButtonTextStyle={{fontSize: 20}}
+              contentContainerStyle={
+                Platform.OS === "web"
+                  ? {
+                      left: Dimensions.get("window").width / 2,
+                      bottom: 400,
+                      width: 200,
+                    }
+                  : {}
+              }
+              overlayStyle={
+                Platform.OS === "web"
+                  ? {
+                      backgroundColor: "transparent",
+                    }
+                  : {}
+              }
             />
           </CentredWrapper>
         </RootWrapper>
