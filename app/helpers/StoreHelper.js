@@ -6,7 +6,6 @@ export const setInitialData = (loginServerData, userId, password, dispatch) => {
   const {userData, newMemberData, routines} = loginServerData;
   userData.userId = userId;
   userData.password = password;
-
   dispatch(ActionsCreators.setIsInSession(true));
   dispatch(ActionsCreators.logIn());
   if (userData) {

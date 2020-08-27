@@ -4,6 +4,8 @@ import * as StoreHelper from "helpers/StoreHelper";
 import * as ScreenDimensions from "utils/ScreenDimensions";
 import * as MessagesHelper from "helpers/MessagesHelper";
 import ActionsCreators from "redux/actions";
+import {RESTRICTED_PASSWORD} from "utils/userData";
+import {RestrictedSectionsData, SectionsData} from "config/settings";
 
 const hasResponseResults = (response) =>
   (response.messages && response.messages.length > 0) ||
@@ -126,3 +128,8 @@ export const register = async (
     dispatch
   );
 };
+
+export const isRestrictedLogin = (password) => password === RESTRICTED_PASSWORD;
+
+export const getSectionsData = (password) =>
+  isRestrictedLogin(password) ? RestrictedSectionsData : SectionsData;

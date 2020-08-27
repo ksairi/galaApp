@@ -9,3 +9,5 @@ export const isMemberActive = ({routines, userData}) => {
     return routines.length > 0;
   }
 };
+
+export const RESTRICTED_PASSWORD = "gala";

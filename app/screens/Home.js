@@ -12,7 +12,7 @@ import GScrollView from "components/presentationals/GenericScrollView";
 import RootWrapper from "components/presentationals/RootWrapper";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import ActionsCreators from "redux/actions";
-import {Screens, SectionsData} from "config/settings";
+import {Screens} from "config/settings";
 import Icon from "helpers/ImageHelper";
 import GenericText from "components/presentationals/GenericText";
 import Footer from "components/presentationals/Footer";
@@ -25,6 +25,8 @@ import RoutineItem from "components/presentationals/RoutineItem";
 import Alert from "components/presentationals/Alert";
 import moment from "moment";
 import {isMemberActive} from "utils/userData";
+import {getSectionsData, isRestrictedLogin} from "helpers/LoginHelper";
+import RestrictedUserData from "components/presentationals/RestrictedUserData";
 
 const styles = {
   buttonsContainer: {
@@ -176,97 +178,106 @@ export default class Home extends React.Component {
       <GScrollView>
         <RootWrapper style={{paddingTop: 10}}>
           <CentredWrapper>
-            <View style={styles.sliderTitleWrapper}>
-              <Text style={styles.title}>Clases</Text>
-              <TouchableOpacity onPress={this.goToScreen(Screens.Timetable)}>
-                <Text style={styles.link}>Ver &gt;</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.carouselDataContainer}>
-              <AnimatedSlider
-                useNativeDriver
-                animation="zoomIn"
-                items={todayClassesData}
-                Component={TimetableItem}
-              />
-            </View>
-            {isMemberActive(this.props) &&
-              !!activeRoutine &&
-              activeRoutine.ejercicios !== null && (
-                <>
-                  <View style={styles.sliderTitleWrapper}>
-                    <Text style={styles.title}>Mis rutinas</Text>
-                    <TouchableOpacity
-                      onPress={this.goToScreen(Screens.Routines)}
-                    >
-                      <Text style={styles.link}>Empezar &gt;</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.carouselDataContainer}>
-                    <AnimatedSlider
-                      useNativeDriver
-                      animation="zoomIn"
-                      items={activeRoutine.ejercicios}
-                      Component={RoutineItem}
-                    />
-                  </View>
-                </>
-              )}
+            <RestrictedUserData userData={this.props.userData} />
+            {!isRestrictedLogin(this.props.userData.password) && (
+              <>
+                <View style={styles.sliderTitleWrapper}>
+                  <Text style={styles.title}>Clases</Text>
+                  <TouchableOpacity
+                    onPress={this.goToScreen(Screens.Timetable)}
+                  >
+                    <Text style={styles.link}>Ver &gt;</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.carouselDataContainer}>
+                  <AnimatedSlider
+                    useNativeDriver
+                    animation="zoomIn"
+                    items={todayClassesData}
+                    Component={TimetableItem}
+                  />
+                </View>
+                {isMemberActive(this.props) &&
+                  !!activeRoutine &&
+                  activeRoutine.ejercicios !== null && (
+                    <>
+                      <View style={styles.sliderTitleWrapper}>
+                        <Text style={styles.title}>Mis rutinas</Text>
+                        <TouchableOpacity
+                          onPress={this.goToScreen(Screens.Routines)}
+                        >
+                          <Text style={styles.link}>Empezar &gt;</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <View style={styles.carouselDataContainer}>
+                        <AnimatedSlider
+                          useNativeDriver
+                          animation="zoomIn"
+                          items={activeRoutine.ejercicios}
+                          Component={RoutineItem}
+                        />
+                      </View>
+                    </>
+                  )}
+              </>
+            )}
             <Animatable.View
               useNativeDriver
               animation="slideInRight"
               style={styles.buttonsContainer}
             >
-              {SectionsData.map((sectionData, index) => {
-                if (
-                  (sectionData.screen !== Screens.NewMember &&
-                    sectionData.screen !== Screens.PayMonthlyFee &&
-                    !sectionData.requiresActiveMember) ||
-                  (sectionData.screen === Screens.NewMember &&
-                    this.state.freeEntryDaysLeft > 0) ||
-                  (sectionData.requiresActiveMember &&
-                    isMemberActive(this.props)) ||
-                  (sectionData.requiresFreePlan &&
-                    this.props.userData.freePassEndDate)
-                ) {
-                  return (
-                    <TouchableOpacity
-                      key={index}
-                      onPress={
-                        sectionData.onPress
-                          ? () => sectionData.onPress()
-                          : this.onIconPressed(
-                              sectionData.screen,
-                              sectionData.params
-                            )
-                      }
-                    >
-                      <View style={styles.buttonWrapper}>
-                        <View
-                          style={{
-                            alignItems: "center",
-                          }}
-                        >
-                          {sectionData.IconComponent ? (
-                            <sectionData.IconComponent
-                              name={sectionData.icon}
-                              style={sectionData.homeStyle}
-                            />
-                          ) : (
-                            <Icon
-                              name={sectionData.icon}
-                              style={sectionData.homeStyle}
-                            />
-                          )}
-                          <GenericText style={styles.label}>
-                            {sectionData.label}
-                          </GenericText>
+              {getSectionsData(this.props.userData.password).map(
+                (sectionData, index) => {
+                  if (
+                    (sectionData.screen !== Screens.NewMember &&
+                      sectionData.screen !== Screens.PayMonthlyFee &&
+                      !sectionData.requiresActiveMember) ||
+                    (sectionData.screen === Screens.NewMember &&
+                      this.state.freeEntryDaysLeft > 0) ||
+                    (sectionData.requiresActiveMember &&
+                      isMemberActive(this.props)) ||
+                    (sectionData.requiresFreePlan &&
+                      this.props.userData.freePassEndDate)
+                  ) {
+                    return (
+                      <TouchableOpacity
+                        key={index}
+                        onPress={
+                          sectionData.onPress
+                            ? () => sectionData.onPress()
+                            : this.onIconPressed(
+                                sectionData.screen,
+                                sectionData.params
+                              )
+                        }
+                      >
+                        <View style={styles.buttonWrapper}>
+                          <View
+                            style={{
+                              alignItems: "center",
+                            }}
+                          >
+                            {sectionData.IconComponent ? (
+                              <sectionData.IconComponent
+                                name={sectionData.icon}
+                                style={sectionData.homeStyle}
+                              />
+                            ) : (
+                              <Icon
+                                name={sectionData.icon}
+                                style={sectionData.homeStyle}
+                              />
+                            )}
+                            <GenericText style={styles.label}>
+                              {sectionData.label}
+                            </GenericText>
+                          </View>
                         </View>
-                      </View>
-                    </TouchableOpacity>
-                  );
+                      </TouchableOpacity>
+                    );
+                  }
                 }
-              })}
+              )}
             </Animatable.View>
             <Footer />
             <Alert

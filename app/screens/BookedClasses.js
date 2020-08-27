@@ -17,6 +17,7 @@ import ActionsCreators from "redux/actions";
 import moment from "moment";
 import Alert from "components/presentationals/Alert";
 import {useFocusEffect} from "@react-navigation/native";
+import RestrictedUserData from "components/presentationals/RestrictedUserData";
 
 const styles = {
   item: {
@@ -43,7 +44,7 @@ const styles = {
   },
 };
 
-function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
+function BookedClasses({navigation, bookedClasses, userData, dispatch}) {
   const [sortedClasses, setSortedClasses] = useState([]);
   const [alertMessage, setAlertMessage] = useState(null);
   const [onOKPress, setOnOKPress] = useState(null);
@@ -131,7 +132,7 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
             setShowProgress(true);
             try {
               const {message, errorMessage} = await doDelete({
-                userId,
+                userId: userData.userId,
                 id,
                 time,
                 className,
@@ -156,6 +157,7 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
   );
   return (
     <RootWrapper style={{padding: 0}}>
+      <RestrictedUserData {...{userData}} />
       {sortedClasses.length > 0 ? (
         <>
           <Text
@@ -233,5 +235,5 @@ function BookedClasses({navigation, bookedClasses, userId, dispatch}) {
 
 export default connect((state) => ({
   bookedClasses: state.bookedClasses,
-  userId: state.userData.userId,
+  userData: state.userData,
 }))(BookedClasses);

@@ -31,6 +31,7 @@ import AnalyticsHelper from "helpers/AnalyticsHelper";
 import RoundedTextInput from "components/presentationals/RoundedTextInput";
 import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
 import {SafeAreaView} from "react-native-safe-area-context";
+import {RESTRICTED_PASSWORD} from "utils/userData";
 
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 
@@ -377,6 +378,11 @@ export default class SignIn extends React.Component {
   signIn = async () => {
     if (Platform.OS === "web") {
       Keyboard.dismiss();
+    } else {
+      if (SignIn.password === RESTRICTED_PASSWORD) {
+        this.setState({errorMessage: "Por favor acceder desde la web!"});
+        return;
+      }
     }
     if (!SignIn.userId || !SignIn.password) {
       this.setState({errorMessage: Messages.INVALID_USER_ID_PASSWORD});

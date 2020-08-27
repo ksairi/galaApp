@@ -20,6 +20,7 @@ import ActionsCreators from "redux/actions";
 import Alert from "components/presentationals/Alert";
 import SectionListGetItemLayout from "react-native-section-list-get-item-layout";
 import {useFocusEffect} from "@react-navigation/native";
+import RestrictedUserData from "components/presentationals/RestrictedUserData";
 
 const styles = {
   item: {
@@ -49,13 +50,7 @@ const styles = {
   selected: {color: "green"},
 };
 
-function ClassesToBook({
-  navigation,
-  userId,
-  fullName,
-  bookedClasses,
-  dispatch,
-}) {
+function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
   const [classesToBook, setClassesToBook] = useState([]);
   const [checkoutClasses, setCheckoutClasses] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -100,8 +95,8 @@ function ClassesToBook({
     try {
       setAddingBookings(true);
       const result = await ApiHelper.newBookings({
-        userId,
-        fullName,
+        userId: userData.userId,
+        fullName: userData.name,
         bookings: checkoutClasses,
       });
       let alertMessage = "";
@@ -260,6 +255,7 @@ function ClassesToBook({
           >
             RESERVA DE CLASES
           </Text>
+          <RestrictedUserData {...{userData}} />
           <CentredWrapper>
             <SectionList
               ref={listRef}
@@ -344,6 +340,5 @@ function ClassesToBook({
 
 export default connect((state) => ({
   bookedClasses: state.bookedClasses,
-  userId: state.userData.userId,
-  fullName: state.userData.name,
+  userData: state.userData,
 }))(ClassesToBook);

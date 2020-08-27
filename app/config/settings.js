@@ -204,17 +204,17 @@ export const ActionsTypes = {
 
 const requiresMembership = {requiresActiveMember: true};
 const baseHomeStyle = {homeStyle: {fontSize: 40, color: "white"}};
-// const bookingsData = {
-//   ...requiresMembership,
-//   IconComponent: Foundation,
-//   icon: "bookmark",
-//   drawerStyle: {
-//     icon: {fontSize: 50, paddingLeft: 7},
-//     label: {marginTop: 5},
-//     arrow: {marginTop: 15},
-//   },
-//   ...baseHomeStyle,
-// };
+const bookingsData = {
+  ...requiresMembership,
+  IconComponent: Foundation,
+  icon: "bookmark",
+  drawerStyle: {
+    icon: {fontSize: 50, paddingLeft: 7},
+    label: {marginTop: 5},
+    arrow: {marginTop: 15},
+  },
+  ...baseHomeStyle,
+};
 const liveClassProps = {
   icon: "video-camera",
   IconComponent: FontAwesome,
@@ -228,6 +228,21 @@ const liveClassProps = {
 };
 
 const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
+
+const bookingClasses = [
+  {
+    label: "TUS RESERVAS",
+    ...bookingsData,
+    screen: Screens.BookedClasses,
+  },
+  {
+    label: "RESERVA TUS CLASES",
+    ...bookingsData,
+    screen: Screens.Affidavit,
+  },
+];
+
+export const RestrictedSectionsData = [...bookingClasses];
 
 export const SectionsData = [
   {
@@ -266,16 +281,7 @@ export const SectionsData = [
     screen: Screens.RecordedClassesByClass,
     params: {loadClasses: true},
   },
-  // {
-  //   label: "TUS RESERVAS",
-  //   ...bookingsData,
-  //   screen: Screens.BookedClasses,
-  // },
-  // {
-  //   label: "RESERVA TUS CLASES",
-  //   ...bookingsData,
-  //   screen: Screens.Affidavit,
-  // },
+  // ...bookingClasses,
   // {
   //   icon: "exclamation",
   //   label: "SOCIO NUEVO",
