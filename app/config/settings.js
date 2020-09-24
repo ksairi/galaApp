@@ -281,19 +281,19 @@ export const SectionsData = [
     screen: Screens.RecordedClassesByClass,
     params: {loadClasses: true},
   },
-  // ...bookingClasses,
-  // {
-  //   icon: "exclamation",
-  //   label: "SOCIO NUEVO",
-  //   screen: Screens.NewMember,
-  //   IconComponent: FontAwesome,
-  //   drawerStyle: {
-  //     icon: {marginTop: 5, paddingLeft: 15, fontSize: 30},
-  //     label: {marginTop: 10, color: "green", fontFamily: "lato-regular"},
-  //     arrow: {marginTop: 15},
-  //   },
-  //   homeStyle: {fontSize: 40, color: "white"},
-  // },
+  ...bookingClasses,
+  {
+    icon: "exclamation",
+    label: "SOCIO NUEVO",
+    screen: Screens.NewMember,
+    IconComponent: FontAwesome,
+    drawerStyle: {
+      icon: {marginTop: 5, paddingLeft: 15, fontSize: 30},
+      label: {marginTop: 10, color: "green", fontFamily: "lato-regular"},
+      arrow: {marginTop: 15},
+    },
+    homeStyle: {fontSize: 40, color: "white"},
+  },
   {
     icon: "user-icon",
     label: "MI PERFIL",
