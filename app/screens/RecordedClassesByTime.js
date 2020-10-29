@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useState, useCallback} from "react";
 import {
   FlatList,
   Text,
@@ -11,6 +11,7 @@ import {Screens} from "config/settings";
 import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import {useFocusEffect} from "@react-navigation/native";
+import {useDimensions} from "@react-native-community/hooks";
 
 const styles = {
   item: {
@@ -23,6 +24,7 @@ const styles = {
 
 export default ({navigation, route}) => {
   const [classes, setClasses] = useState([]);
+  const maxHeight = useDimensions().window.height - 50;
   useFocusEffect(
     useCallback(() => {
       const onBackPress = () => {
@@ -52,7 +54,7 @@ export default ({navigation, route}) => {
     </TouchableOpacity>
   );
   return (
-    <RootWrapper style={{padding: 0}}>
+    <RootWrapper style={{padding: 0, maxHeight}}>
       {classes.length > 0 ? (
         <CentredWrapper>
           <FlatList

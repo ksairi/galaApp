@@ -13,6 +13,7 @@ import CentredWrapper from "components/presentationals/CentredWrapper";
 import GenericText from "components/presentationals/GenericText";
 import moment from "moment";
 import {useFocusEffect} from "@react-navigation/native";
+import {useDimensions} from "@react-native-community/hooks";
 
 const styles = {
   item: {
@@ -25,6 +26,7 @@ const styles = {
 
 export default ({navigation, route}) => {
   const [filteredRecordings, setFilteredRecordings] = useState([]);
+  const maxHeight = useDimensions().window.height - 50;
 
   useFocusEffect(
     useCallback(() => {
@@ -105,7 +107,12 @@ export default ({navigation, route}) => {
     </TouchableOpacity>
   );
   return (
-    <RootWrapper style={{padding: 0}}>
+    <RootWrapper
+      style={{
+        padding: 0,
+        maxHeight,
+      }}
+    >
       {filteredRecordings.length > 0 ? (
         <CentredWrapper>
           <FlatList

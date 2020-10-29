@@ -18,6 +18,7 @@ import moment from "moment";
 import Alert from "components/presentationals/Alert";
 import {useFocusEffect} from "@react-navigation/native";
 import RestrictedUserData from "components/presentationals/RestrictedUserData";
+import {useDimensions} from "@react-native-community/hooks";
 
 const styles = {
   item: {
@@ -50,6 +51,8 @@ function BookedClasses({navigation, bookedClasses, userData, dispatch}) {
   const [onOKPress, setOnOKPress] = useState(null);
   const [showCancelButton, setShowCancelButton] = useState(false);
   const [showProgress, setShowProgress] = useState(false);
+  const maxHeight = useDimensions().window.height - 50;
+
   const showBookedClasses = useCallback(() => {
     let tempSortedClasses = [];
     const alreadyFiltered = [];
@@ -156,7 +159,7 @@ function BookedClasses({navigation, bookedClasses, userData, dispatch}) {
     </View>
   );
   return (
-    <RootWrapper style={{padding: 0}}>
+    <RootWrapper style={{padding: 0, maxHeight}}>
       <RestrictedUserData {...{userData}} />
       {sortedClasses.length > 0 ? (
         <>

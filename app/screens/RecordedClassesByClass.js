@@ -16,6 +16,7 @@ import GenericText from "components/presentationals/GenericText";
 import AnalyticsHelper from "helpers/AnalyticsHelper";
 import Alert from "components/presentationals/Alert";
 import {useFocusEffect} from "@react-navigation/native";
+import {useDimensions} from "@react-native-community/hooks";
 
 const styles = {
   item: {
@@ -31,6 +32,7 @@ export default ({navigation, route}) => {
   const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
+  const maxHeight = useDimensions().window.height - 50;
 
   useFocusEffect(
     useCallback(() => {
@@ -105,7 +107,7 @@ export default ({navigation, route}) => {
   });
 
   return (
-    <RootWrapper style={{padding: 0}}>
+    <RootWrapper style={{padding: 0, maxHeight}}>
       {filteredRecordings.length > 0 ? (
         <>
           <Text

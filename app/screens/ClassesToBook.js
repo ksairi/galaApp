@@ -21,6 +21,7 @@ import Alert from "components/presentationals/Alert";
 import SectionListGetItemLayout from "react-native-section-list-get-item-layout";
 import {useFocusEffect} from "@react-navigation/native";
 import RestrictedUserData from "components/presentationals/RestrictedUserData";
+import {useDimensions} from "@react-native-community/hooks";
 
 const styles = {
   item: {
@@ -58,6 +59,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
   const [addingBookings, setAddingBookings] = useState(false);
   const [onOkAlert, setOnOkAlert] = useState(null);
   const listRef = useRef(null);
+  const maxHeight = useDimensions().window.height - 50;
 
   const doFetchClasses = useCallback(async () => {
     try {
@@ -233,7 +235,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
               ifNeededSelectedStyle,
             ]}
           >
-            Cupos {item.classBookings}/{item.classAvailability}
+            Reservas {item.classBookings}/{item.classAvailability}
           </Text>
         </View>
       </TouchableOpacity>
@@ -241,7 +243,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
   };
 
   return (
-    <RootWrapper style={{padding: 0}}>
+    <RootWrapper style={{padding: 0, maxHeight}}>
       {classesToBook.length > 0 ? (
         <>
           <Text
