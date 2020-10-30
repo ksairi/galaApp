@@ -282,7 +282,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
                   </Text>
                 );
               }}
-              ListFooterComponent={
+              ListHeaderComponent={
                 checkoutClasses.length > 0 && (
                   <Button
                     containerStyle={{marginTop: 10}}
