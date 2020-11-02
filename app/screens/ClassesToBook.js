@@ -29,7 +29,7 @@ const styles = {
     alignSelf: "center",
   },
   header: {
-    color: "white",
+    color: "#D0D3D4",
     fontSize: 18,
     fontFamily: "lato-bold",
     marginTop: 20,
@@ -81,7 +81,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setClassesToBook, setAlertMessage, setLoading, setOnOkAlert]);
 
   const fetchClassesToBook = useCallback(() => {
     setAlertMessage(null);
@@ -89,11 +89,17 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
     setCheckoutClasses([]);
     setOnOkAlert(null);
     doFetchClasses();
-  }, []);
+  }, [
+    setAlertMessage,
+    setClassesToBook,
+    setCheckoutClasses,
+    setOnOkAlert,
+    doFetchClasses,
+  ]);
 
   useFocusEffect(fetchClassesToBook);
 
-  const checkoutBookings = useCallback(async () => {
+  const checkoutBookings = async () => {
     try {
       setAddingBookings(true);
       const result = await ApiHelper.newBookings({
@@ -134,7 +140,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
     } finally {
       setAddingBookings(false);
     }
-  });
+  };
 
   const editClassToCheckout = useCallback(
     (pItem) => {
@@ -242,6 +248,49 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
     );
   };
 
+  const renderItem = ({item, section}) => (
+    <Item {...{item}} date={section.title.date} dow={section.title.dow} />
+  );
+
+  const renderListHeaderComponent = useCallback(
+    () =>
+      checkoutClasses.length > 0 && (
+        <View style={{flex: 0.1}}>
+          <Button
+            textStyle={{fontSize: 14}}
+            text={
+              addingBookings
+                ? "Reservando..."
+                : `Reserva ${checkoutClasses.length} ${
+                    checkoutClasses.length === 1 ? "clase" : "clases"
+                  }`
+            }
+            onPress={checkoutBookings}
+          />
+        </View>
+      ),
+    [checkoutClasses, addingBookings]
+  );
+
+  const keyExtractor = useCallback(() => Math.random().toString(), []);
+
+  const renderSectionHeader = useCallback(
+    ({section}) => {
+      return (
+        <Text style={styles.header}>
+          {section.title.dow}{" "}
+          {moment(section.title.date, "YYYY-MM-DD").format("DD/MM")}
+        </Text>
+      );
+    },
+    [moment]
+  );
+
+  const onConfirmPress = useCallback(() => {
+    setAlertMessage(null);
+    if (onOkAlert) onOkAlert();
+  }, [setAlertMessage, onOkAlert]);
+
   return (
     <RootWrapper style={{padding: 0, maxHeight}}>
       {classesToBook.length > 0 ? (
@@ -259,54 +308,25 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
           </Text>
           <RestrictedUserData {...{userData}} />
           <CentredWrapper>
-            <SectionList
-              ref={listRef}
-              keyExtractor={() => Math.random().toString()}
-              sections={classesToBook}
-              getItemLayout={SectionListGetItemLayout({
-                getItemHeight: () => 40,
-                getSectionFooterHeight: () => 70,
-              })}
-              renderItem={({item, section}) => (
-                <Item
-                  {...{item}}
-                  date={section.title.date}
-                  dow={section.title.dow}
-                />
-              )}
-              renderSectionHeader={({section}) => {
-                return (
-                  <Text style={styles.header}>
-                    {section.title.dow}{" "}
-                    {moment(section.title.date, "YYYY-MM-DD").format("DD/MM")}
-                  </Text>
-                );
-              }}
-              ListHeaderComponent={
-                checkoutClasses.length > 0 && (
-                  <Button
-                    containerStyle={{marginTop: 10}}
-                    text={
-                      addingBookings
-                        ? "Reservando..."
-                        : `Reserva ${checkoutClasses.length} ${
-                            checkoutClasses.length === 1 ? "clase" : "clases"
-                          }`
-                    }
-                    onPress={checkoutBookings}
-                  />
-                )
-              }
-            />
-
+            {renderListHeaderComponent()}
+            <View style={{flex: 0.9}}>
+              <SectionList
+                ref={listRef}
+                keyExtractor={keyExtractor}
+                sections={classesToBook}
+                getItemLayout={SectionListGetItemLayout({
+                  getItemHeight: () => 40,
+                  getSectionFooterHeight: () => 70,
+                })}
+                renderItem={renderItem}
+                renderSectionHeader={renderSectionHeader}
+              />
+            </View>
             <Alert
               show={!!alertMessage}
               message={alertMessage}
               showCancelButton={false}
-              onConfirmPressed={() => {
-                setAlertMessage(null);
-                if (onOkAlert) onOkAlert();
-              }}
+              onConfirmPressed={onConfirmPress}
               contentContainerStyle={
                 Platform.OS === "web"
                   ? {
