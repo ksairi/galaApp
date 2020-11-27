@@ -159,7 +159,7 @@ export default ({navigation, route}) => {
         contentContainerStyle={
           Platform.OS === "web"
             ? {
-                left: Dimensions.get("window").width / 2,
+                left: __DEV__ ? Dimensions.get("window").width / 2 : 1,
                 bottom: 400,
                 width: 200,
               }

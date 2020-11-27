@@ -255,7 +255,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
   const renderListHeaderComponent = useCallback(
     () =>
       checkoutClasses.length > 0 && (
-        <View style={{flex: 0.1}}>
+        <View style={{height: 50}}>
           <Button
             textStyle={{fontSize: 14}}
             text={
@@ -330,7 +330,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
               contentContainerStyle={
                 Platform.OS === "web"
                   ? {
-                      left: Dimensions.get("window").width / 2,
+                      left: __DEV__ ? Dimensions.get("window").width / 2 : 1,
                       bottom: 400,
                       width: 200,
                     }

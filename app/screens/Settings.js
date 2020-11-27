@@ -65,7 +65,6 @@ function Settings({dispatch, userId, receiveNotifications, navigation}) {
       data: {receiveNotifications: values},
     });
   };
-
   return (
     <GScrollView>
       <RootWrapper>
@@ -104,7 +103,7 @@ function Settings({dispatch, userId, receiveNotifications, navigation}) {
           contentContainerStyle={
             Platform.OS === "web"
               ? {
-                  left: Dimensions.get("window").width / 2,
+                  left: __DEV__ ? Dimensions.get("window").width / 2 : 1,
                 }
               : {}
           }
