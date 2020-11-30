@@ -116,7 +116,9 @@ function BookedClasses({navigation, bookedClasses, userData, dispatch}) {
       date,
       time,
     });
-    dispatch(ActionsCreators.deleteBookedClass(id));
+    if (!errorMessage) {
+      dispatch(ActionsCreators.deleteBookedClass(id));
+    }
     return {message, errorMessage};
   };
   const Item = ({className, time, id, date, dow}) => (
