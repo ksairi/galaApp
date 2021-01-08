@@ -1,6 +1,7 @@
 import {Urls, Messages, ServerProtocol} from "config/settings";
 import * as NetworkHelper from "helpers/NetworkHelper";
 import API_ACCESS_TOKEN from "config/apiAccessToken";
+import {RESTRICTED_PASSWORD} from "utils/userData";
 
 const CONTENT_TYPE_MULTI_PART = "multipart/form-data";
 const CONTENT_TYPE_JSON = "application/json";
@@ -77,7 +78,7 @@ export const login = (userId, password, deviceId, cache) => {
     .catch((error) => {
       // in case that login server fails (which could) catch that and use cache
       if (error === Messages.SERVER_ERROR)
-        if (cache.data.userData.name) {
+        if (cache.data.userData.name && password !== RESTRICTED_PASSWORD) {
           return cache;
         }
       throw error;
