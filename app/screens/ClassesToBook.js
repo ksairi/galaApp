@@ -145,24 +145,32 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
   const editClassToCheckout = useCallback(
     (pItem) => {
       if (
-        checkoutClasses.find(
+        bookedClasses.find(
           (item) =>
-            item.date === pItem.date && item.className !== pItem.className
+            item.date === pItem.date &&
+            item.className === pItem.className &&
+            item.time === pItem.time
         )
       ) {
-        setAlertMessage("Se puede reservar una clase por día.");
+        setAlertMessage("Ya tenés una reserva para ésta clase");
         return;
       }
 
-      if (bookedClasses.find((item) => item.date === pItem.date)) {
+      const bookedClassesByDate = bookedClasses.find(
+        (item) => item.date === pItem.date
+      );
+      const classDateTime = moment(`${pItem.date} ${pItem.time}`).format(
+        "YYYY-MM-DD HH:mm"
+      );
+      const today = moment().format("YYYY-MM-DD HH:mm");
+
+      if (moment(classDateTime).isAfter(today) && bookedClassesByDate) {
         setAlertMessage(
-          `Ya tenes una reserva para el día ${moment(
-            pItem.date,
-            "YYYY-MM-DD"
-          ).format("DD/MM")}`
+          "Ya tenés una clase para hoy pero vas a poder reservar la clase cuando ésta empiece"
         );
         return;
       }
+
       const index = checkoutClasses.findIndex(
         (item) =>
           item.date === pItem.date &&
