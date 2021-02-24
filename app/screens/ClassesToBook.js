@@ -114,6 +114,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
         )}`;
       }
       if (result.messages.length) {
+        alertMessage = alertMessage ? alertMessage.concat("\n") : "";
         alertMessage = alertMessage.concat(
           `Reserva(s) con éxito:\n ${result.messages.join(".\n")}`
         );
