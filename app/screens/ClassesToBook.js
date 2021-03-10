@@ -157,38 +157,49 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
         return;
       }
 
-      const bookedClassesByDate = bookedClasses.find(
-        (item) => item.date === pItem.date
-      );
+      const today = moment().format("YYYY-MM-DD HH:mm");
+
       const classDateTime = moment(`${pItem.date} ${pItem.time}`).format(
         "YYYY-MM-DD HH:mm"
       );
-      const today = moment().format("YYYY-MM-DD HH:mm");
 
-      if (moment(classDateTime).isAfter(today) && bookedClassesByDate) {
-        setAlertMessage(
-          "Ya tenés una clase para hoy pero vas a poder reservar la clase cuando ésta empiece"
-        );
-        return;
-      }
-
-      const index = checkoutClasses.findIndex(
-        (item) =>
-          item.date === pItem.date &&
-          item.className === pItem.className &&
-          item.saloon === pItem.saloon
+      const bookedClassesByDate = bookedClasses.find(
+        (item) => item.date === pItem.date
       );
-      if (index >= 0) {
-        setCheckoutClasses(
-          checkoutClasses
-            .slice(0, index)
-            .concat(checkoutClasses.slice(index + 1))
-        );
-        listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
 
-        return;
+      if (bookedClassesByDate) {
+        if (moment(classDateTime).isAfter(today)) {
+          setAlertMessage(
+            "Ya tenés una clase para hoy pero vas a poder reservar la clase cuando ésta empiece"
+          );
+          return;
+        }
       }
-      setCheckoutClasses((checkoutClases) => [...checkoutClases, pItem]);
+
+      setCheckoutClasses((checkoutClasses) => {
+        const index = checkoutClasses.findIndex(
+          (item) =>
+            item.date === pItem.date &&
+            item.className === pItem.className &&
+            item.saloon === pItem.saloon
+        );
+        if (index >= 0) {
+          listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
+          return checkoutClasses
+            .slice(0, index)
+            .concat(checkoutClasses.slice(index + 1));
+        }
+        if (
+          checkoutClasses.length > 0 &&
+          moment(classDateTime).isAfter(today)
+        ) {
+          setAlertMessage(
+            "Se puede reservar una clase por día. Para resevar más de una, la clase debe haber comenzado"
+          );
+          return checkoutClasses;
+        }
+        return [...checkoutClasses, pItem];
+      });
     },
     [checkoutClasses]
   );

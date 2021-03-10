@@ -121,41 +121,53 @@ function BookedClasses({navigation, bookedClasses, userData, dispatch}) {
     }
     return {message, errorMessage};
   };
+
+  const onPressDelete = useCallback(
+    (id, className, date, time, dow) => () => {
+      const today = moment().format("YYYY-MM-DD HH:mm");
+      const classDateTime = moment(`${date} ${time}`).format(
+        "YYYY-MM-DD HH:mm"
+      );
+      if (moment(today).isAfter(classDateTime)) {
+        setAlertMessage("No se puede borrar una clase ya empezada");
+        setOnOKPress(() => () => setAlertMessage(null));
+        return;
+      }
+      setAlertMessage(
+        `Deseas borrar la reserva de ${className} el ${dow} ${moment(
+          date,
+          "YYYY-MM-DD"
+        ).format("DD/MM")} a ${time} ?`
+      );
+      setOnOKPress(() => async () => {
+        setShowProgress(true);
+        try {
+          const {message, errorMessage} = await doDelete({
+            userId: userData.userId,
+            id,
+            time,
+            className,
+            date,
+            dow,
+          });
+          setAlertMessage(message || errorMessage);
+        } catch (e) {
+          setAlertMessage(e);
+        } finally {
+          setShowCancelButton(false);
+          setOnOKPress(() => () => setAlertMessage(null));
+          setShowProgress(false);
+        }
+      });
+      setShowCancelButton(true);
+    },
+    []
+  );
   const Item = ({className, time, id, date, dow}) => (
     <View style={styles.item}>
       <Text style={styles.itemText}>{time}</Text>
       <Text style={styles.itemText}>{className}</Text>
-      <TouchableOpacity
-        onPress={() => {
-          setAlertMessage(
-            `Deseas borrar la reserva de ${className} el ${dow} ${moment(
-              date,
-              "YYYY-MM-DD"
-            ).format("DD/MM")} a ${time} ?`
-          );
-          setOnOKPress(() => async () => {
-            setShowProgress(true);
-            try {
-              const {message, errorMessage} = await doDelete({
-                userId: userData.userId,
-                id,
-                time,
-                className,
-                date,
-                dow,
-              });
-              setAlertMessage(message || errorMessage);
-            } catch (e) {
-              setAlertMessage(e);
-            } finally {
-              setShowCancelButton(false);
-              setOnOKPress(() => () => setAlertMessage(null));
-              setShowProgress(false);
-            }
-          });
-          setShowCancelButton(true);
-        }}
-      >
+      <TouchableOpacity onPress={onPressDelete(id, className, date, time, dow)}>
         <Text style={[styles.itemText, styles.removeBooking]}>Borrar</Text>
       </TouchableOpacity>
     </View>
