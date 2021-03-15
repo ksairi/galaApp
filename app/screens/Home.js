@@ -138,19 +138,29 @@ export default class Home extends React.Component {
     const {freePassEndDate} = this.props.userData;
     const freePassDaysLeft =
       freePassEndDate &&
-      moment(freePassEndDate, "DD/MM/YYYY").diff(moment(), "days");
-
+      moment(freePassEndDate, "DD/MM/YYYY")
+        .startOf("day")
+        .diff(moment().startOf("day"), "days");
     if (
-      freePassDaysLeft > 0 &&
+      freePassDaysLeft >= 0 &&
       freePassDaysLeft <= 3 &&
       (!this.props.lastDateShowingFreePassEnding ||
-        moment().diff(this.props.lastDateShowingFreePassEnding, "days") !== 0)
+        moment()
+          .startOf("day")
+          .diff(
+            moment(this.props.lastDateShowingFreePassEnding).startOf("day"),
+            "days"
+          ) !== 0)
     ) {
       this.props.dispatch(
         ActionsCreators.setLastDateShowingFreePassEnding(moment())
       );
       this.setState({
-        alertMessage: `Te quedan ${freePassDaysLeft} días de tu Free Pass. ¿Querés renovarlo?`,
+        alertMessage: `Te ${
+          freePassDaysLeft > 1 ? "quedan" : "queda"
+        } ${freePassDaysLeft} ${
+          freePassDaysLeft > 1 ? "días" : "día"
+        } de tu Free Pass. ¿Querés renovarlo?`,
       });
     }
   }
@@ -237,7 +247,9 @@ export default class Home extends React.Component {
                     (sectionData.requiresActiveMember &&
                       isMemberActive(this.props)) ||
                     (sectionData.requiresFreePlan &&
-                      this.props.userData.freePassEndDate)
+                      this.props.userData.freePassEndDate) ||
+                    (!isMemberActive(this.props) &&
+                      sectionData.requiresNoActiveMember)
                   ) {
                     return (
                       <TouchableOpacity

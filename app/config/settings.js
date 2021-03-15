@@ -132,6 +132,8 @@ export const Screens = {
   ClassesToBook: "ClassesToBook",
   Affidavit: "Affidavit",
   PayMonthlyFee: "PayMonthlyFee",
+  PayFaceToFaceMonthlyFee: "PayFaceToFaceMonthlyFee",
+  PayVirtualMonthlyFee: "PayVirtualMonthlyFee",
 };
 
 export const SignUpConstraints = {
@@ -245,6 +247,21 @@ const bookingClasses = [
 export const RestrictedSectionsData = [...bookingClasses];
 
 export const SectionsData = [
+  {
+    label: "COMPRÁ TU SUBSCRIPCIÓN",
+    screen: Screens.PayMonthlyFee,
+    drawerStyle: {
+      ...liveClassProps.drawerStyle,
+      icon: {...liveClassProps.drawerStyle.icon, fontSize: 40, paddingLeft: 0},
+      label: {...liveClassProps.drawerStyle.label, fontSize: 12, marginTop: 15},
+    },
+    ...baseHomeStyle,
+    icon: "payment",
+    IconComponent: MaterialIcons,
+    requiresActiveMember: false,
+    requiresFreePlan: false,
+    requiresNoActiveMember: true,
+  },
   {
     label: "VIVO ESTUDIO 1",
     screen: Screens.LiveClassStudio1,
@@ -361,20 +378,6 @@ export const SectionsData = [
       arrow: {marginTop: 13},
     },
     ...baseHomeStyle,
-  },
-  {
-    label: "COMPRÁ TU SUBSCRIPCIÓN",
-    screen: Screens.PayMonthlyFee,
-    drawerStyle: {
-      ...liveClassProps.drawerStyle,
-      icon: {...liveClassProps.drawerStyle.icon, fontSize: 40, paddingLeft: 0},
-      label: {...liveClassProps.drawerStyle.label, fontSize: 12, marginTop: 15},
-    },
-    ...baseHomeStyle,
-    icon: "payment",
-    IconComponent: MaterialIcons,
-    requiresActiveMember: false,
-    requiresFreePlan: true,
   },
 ];
 

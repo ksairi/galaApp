@@ -101,7 +101,8 @@ export default class DrawerContentComponent extends React.PureComponent {
                 this.state.freeEntryDaysLeft > 0) ||
               (drawerItem.requiresActiveMember && isMemberActive(this.props)) ||
               (drawerItem.requiresFreePlan &&
-                this.props.userData.freePassEndDate)
+                this.props.userData.freePassEndDate) ||
+              (!isMemberActive(this.props) && drawerItem.requiresNoActiveMember)
             ) {
               return (
                 <DrawerItem

@@ -1,46 +1,48 @@
 import React from "react";
-import {Platform} from "react-native";
-import {WebView} from "react-native-webview";
-import {WebView as WebViewWeb} from "react-native-web-webview";
+import {Text} from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler";
+import {genericBackgroundColor} from "components/styles";
 import RootWrapper from "components/presentationals/RootWrapper";
-import * as withEnv from "utils/env";
+import CentredWrapper from "components/presentationals/CentredWrapper";
+
 import {Screens} from "config/settings";
-import {connect} from "react-redux";
-import ActionsCreators from "redux/actions";
 
-const PayMonthlyFee = ({navigation, dispatch}) => {
-  const uri = `${withEnv.getHost()}/api/payments/mercado-pago/virtual-monthly-fee.php`;
+const styles = {
+  container: {
+    backgrondColor: genericBackgroundColor,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    color: "white",
+    fontFamily: "lato-bold",
+    fontSize: 21,
+  },
+  textWrapper: {
+    padding: 20,
+  },
+};
 
-  const handleWebViewNavigationStateChange = (newNavState) => {
-    const {url} = newNavState;
-    if (!url) return;
-
-    if (url.includes("successful-payment.html")) {
-      navigation.navigate(Screens.Home);
-      dispatch(ActionsCreators.cleanFreePassEndDate());
-      dispatch(ActionsCreators.setLastDateShowingFreePassEnding(null));
-    }
-  };
+function PayMonthlyFee({navigation}) {
   return (
-    <RootWrapper
-      style={{
-        justifyContent: "center",
-        flex: 2,
-        padding: 0,
-        paddingTop: 0,
-        paddingBottom: 0,
-      }}
-    >
-      {Platform.OS === "web" ? (
-        <WebViewWeb source={{uri}} />
-      ) : (
-        <WebView
-          allowsFullscreenVideo
-          source={{uri}}
-          onNavigationStateChange={handleWebViewNavigationStateChange}
-        />
-      )}
+    <RootWrapper>
+      <CentredWrapper style={{justifyContent: "center"}}>
+        <TouchableOpacity
+          style={styles.textWrapper}
+          onPress={() => navigation.navigate(Screens.PayFaceToFaceMonthlyFee)}
+        >
+          <Text style={styles.text}>PLAN PRESENCIAL MENSUAL</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.textWrapper}
+          onPress={() => navigation.navigate(Screens.PayVirtualMonthlyFee)}
+        >
+          <Text style={styles.text}>PLAN VIRTUAL MENSUAL</Text>
+        </TouchableOpacity>
+      </CentredWrapper>
     </RootWrapper>
   );
-};
-export default connect(() => ({}))(PayMonthlyFee);
+}
+
+export default PayMonthlyFee;

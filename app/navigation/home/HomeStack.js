@@ -23,6 +23,9 @@ import VideoPlayer from "screens/VideoPlayer";
 import RecordedClassesByDate from "screens/RecordedClassesByDate";
 import RecordedClassesByTime from "screens/RecordedClassesByTime";
 import PayMonthlyFee from "screens/PayMonthlyFee";
+import PayVirtualMonthlyFee from "screens/PayVirtualMonthlyFee";
+import PayFaceToFaceMonthlyFee from "screens/PayFaceToFaceMonthlyFee";
+
 const Stack = createStackNavigator();
 
 const HomeNavigator = () => (
@@ -236,9 +239,42 @@ const PayMonthlyFeeScreenNavigator = () => (
       name={Screens.PayMonthlyFee}
       component={PayMonthlyFee}
       options={{
-        header: ({navigation}) => <Header {...{navigation}} />,
+        header: ({navigation}) => (
+          <Header
+            {...{navigation}}
+            isHomeHeader
+            title={"PLANES ACTIVOS GALA"}
+          />
+        ),
       }}
-      isHomeHeader
+    />
+  </Stack.Navigator>
+);
+
+const PayVirtualMonthlyFeeScreenNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.PayVirtualMonthlyFee}
+      component={PayVirtualMonthlyFee}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.PayMonthlyFee} />
+        ),
+      }}
+    />
+  </Stack.Navigator>
+);
+
+const PayFaceToFaceMonthlyFeeScreenNavigator = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name={Screens.PayFaceToFaceMonthlyFee}
+      component={PayFaceToFaceMonthlyFee}
+      options={{
+        header: ({navigation}) => (
+          <Header {...{navigation}} backScreen={Screens.PayMonthlyFee} />
+        ),
+      }}
     />
   </Stack.Navigator>
 );
@@ -289,6 +325,12 @@ export default () => (
 
     <Stack.Screen name={Screens.PayMonthlyFee}>
       {PayMonthlyFeeScreenNavigator}
+    </Stack.Screen>
+    <Stack.Screen name={Screens.PayVirtualMonthlyFee}>
+      {PayVirtualMonthlyFeeScreenNavigator}
+    </Stack.Screen>
+    <Stack.Screen name={Screens.PayFaceToFaceMonthlyFee}>
+      {PayFaceToFaceMonthlyFeeScreenNavigator}
     </Stack.Screen>
   </Drawer.Navigator>
 );
