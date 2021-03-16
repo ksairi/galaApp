@@ -142,7 +142,8 @@ export default class Home extends React.Component {
         .startOf("day")
         .diff(moment().startOf("day"), "days");
     if (
-      freePassDaysLeft >= 0 &&
+      !isMemberActive(this.props) &&
+      freePassDaysLeft > 0 &&
       freePassDaysLeft <= 3 &&
       (!this.props.lastDateShowingFreePassEnding ||
         moment()
