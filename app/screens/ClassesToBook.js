@@ -159,21 +159,31 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
 
       const today = moment().format("YYYY-MM-DD HH:mm");
 
-      const classDateTime = moment(`${pItem.date} ${pItem.time}`).format(
-        "YYYY-MM-DD HH:mm"
-      );
+      const potentialBookingDateTime = moment(
+        `${pItem.date} ${pItem.time}`
+      ).format("YYYY-MM-DD HH:mm");
 
-      const bookedClassesByDate = bookedClasses.find(
+      const bookedClassesByDate = bookedClasses.filter(
         (item) => item.date === pItem.date
       );
 
-      if (bookedClassesByDate) {
-        if (moment(classDateTime).isAfter(today)) {
-          setAlertMessage(
-            "Ya tenés una clase para hoy pero vas a poder reservar la clase cuando ésta empiece"
-          );
-          return;
-        }
+      const mostRecentTimeClass = bookedClassesByDate.reduce(
+        (prev, curr) => (prev.time > curr.time ? prev.time : curr.time),
+        0
+      );
+
+      const mostRecentBookingDateTime = moment(
+        `${pItem.date} ${mostRecentTimeClass}`
+      ).format("YYYY-MM-DD HH:mm");
+      if (
+        bookedClassesByDate.length &&
+        moment(potentialBookingDateTime).isAfter(today) &&
+        moment(today).diff(mostRecentBookingDateTime, "minutes") < 45
+      ) {
+        setAlertMessage(
+          "Ya tenés una clase para esta fecha pero vas a poder reservar cuando tu más reciente reserva de ese día este por terminar"
+        );
+        return;
       }
 
       setCheckoutClasses((checkoutClasses) => {
@@ -191,10 +201,11 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
         }
         if (
           checkoutClasses.length > 0 &&
-          moment(classDateTime).isAfter(today)
+          moment(potentialBookingDateTime).isAfter(today) &&
+          moment(today).diff(mostRecentBookingDateTime, "minutes") >= 15
         ) {
           setAlertMessage(
-            "Se puede reservar una clase por día. Para resevar más de una, la clase debe haber comenzado"
+            "Se puede reservar una clase por día. Vas a poder resevar más cuando tu más reciente reserva de ese día esté por terminar"
           );
           return checkoutClasses;
         }
