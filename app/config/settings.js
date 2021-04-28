@@ -273,7 +273,7 @@ export const SectionsData = [
   },
   {
     label: "VIVO ESTUDIO 2",
-    params: {studioNumber: 2, title: "ESTUDIO 2"},
+    params: {studioNumber: 1, title: "ESTUDIO 2"},
     screen: Screens.LiveClassStudio2,
     ...liveClassProps,
   },
