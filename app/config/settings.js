@@ -229,6 +229,7 @@ const liveClassProps = {
   ...requiresMembership,
 };
 const studio1Url = "https://www.instagram.com/galavirtualclases/?hl=es";
+const studio2Url = "https://www.instagram.com/galavirtualclases1/?hl=es";
 const studio3Url = "https://www.instagram.com/gala.gym/?hl=es";
 
 const bookingClasses = [
@@ -273,8 +274,11 @@ export const SectionsData = [
   },
   {
     label: "VIVO ESTUDIO 2",
-    params: {studioNumber: 1, title: "ESTUDIO 2"},
     screen: Screens.LiveClassStudio2,
+    onPress: () =>
+      Platform.OS === "web"
+        ? window.open(studio2Url, "_blank")
+        : Linking.openURL(studio2Url),
     ...liveClassProps,
   },
   {
