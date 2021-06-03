@@ -145,70 +145,70 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
 
   const editClassToCheckout = useCallback(
     (pItem) => {
-      if (
-        bookedClasses.find(
-          (item) =>
-            item.date === pItem.date &&
-            item.className === pItem.className &&
-            item.time === pItem.time
-        )
-      ) {
-        setAlertMessage("Ya tenés una reserva para ésta clase");
-        return;
-      }
+      // if (
+      //   bookedClasses.find(
+      //     (item) =>
+      //       item.date === pItem.date &&
+      //       item.className === pItem.className &&
+      //       item.time === pItem.time
+      //   )
+      // ) {
+      //   setAlertMessage("Ya tenés una reserva para ésta clase");
+      //   return;
+      // }
 
-      const today = moment().format("YYYY-MM-DD HH:mm");
+      // const today = moment().format("YYYY-MM-DD HH:mm");
 
-      const potentialBookingDateTime = moment(
-        `${pItem.date} ${pItem.time}`
-      ).format("YYYY-MM-DD HH:mm");
+      // const potentialBookingDateTime = moment(
+      //   `${pItem.date} ${pItem.time}`
+      // ).format("YYYY-MM-DD HH:mm");
 
-      const bookedClassesByDate = bookedClasses.filter(
-        (item) => item.date === pItem.date
-      );
+      // const bookedClassesByDate = bookedClasses.filter(
+      //   (item) => item.date === pItem.date
+      // );
 
-      const mostRecentTimeClass = bookedClassesByDate.reduce(
-        (prev, curr) => (prev.time > curr.time ? prev.time : curr.time),
-        0
-      );
+      // const mostRecentTimeClass = bookedClassesByDate.reduce(
+      //   (prev, curr) => (prev.time > curr.time ? prev.time : curr.time),
+      //   0
+      // );
 
-      const mostRecentBookingDateTime = moment(
-        `${pItem.date} ${mostRecentTimeClass}`
-      ).format("YYYY-MM-DD HH:mm");
-      if (
-        bookedClassesByDate.length &&
-        moment(potentialBookingDateTime).isAfter(today) &&
-        moment(today).diff(mostRecentBookingDateTime, "minutes") < 45
-      ) {
-        setAlertMessage(
-          "Ya tenés una clase para esta fecha pero vas a poder reservar cuando tu más reciente reserva de ese día este por terminar"
-        );
-        return;
-      }
+      // const mostRecentBookingDateTime = moment(
+      //   `${pItem.date} ${mostRecentTimeClass}`
+      // ).format("YYYY-MM-DD HH:mm");
+      // if (
+      //   bookedClassesByDate.length &&
+      //   moment(potentialBookingDateTime).isAfter(today) &&
+      //   moment(today).diff(mostRecentBookingDateTime, "minutes") < 45
+      // ) {
+      //   setAlertMessage(
+      //     "Ya tenés una clase para esta fecha pero vas a poder reservar cuando tu más reciente reserva de ese día este por terminar"
+      //   );
+      //   return;
+      // }
 
       setCheckoutClasses((checkoutClasses) => {
-        const index = checkoutClasses.findIndex(
-          (item) =>
-            item.date === pItem.date &&
-            item.className === pItem.className &&
-            item.saloon === pItem.saloon
-        );
-        if (index >= 0) {
-          listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
-          return checkoutClasses
-            .slice(0, index)
-            .concat(checkoutClasses.slice(index + 1));
-        }
-        if (
-          checkoutClasses.length > 0 &&
-          moment(potentialBookingDateTime).isAfter(today) &&
-          moment(today).diff(mostRecentBookingDateTime, "minutes") >= 15
-        ) {
-          setAlertMessage(
-            "Se puede reservar una clase por día. Vas a poder resevar más cuando tu más reciente reserva de ese día esté por terminar"
-          );
-          return checkoutClasses;
-        }
+        //   const index = checkoutClasses.findIndex(
+        //     (item) =>
+        //       item.date === pItem.date &&
+        //       item.className === pItem.className &&
+        //       item.saloon === pItem.saloon
+        //   );
+        //   if (index >= 0) {
+        //     listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
+        //     return checkoutClasses
+        //       .slice(0, index)
+        //       .concat(checkoutClasses.slice(index + 1));
+        //   }
+        // if (
+        //   checkoutClasses.length > 0 &&
+        //   moment(potentialBookingDateTime).isAfter(today) &&
+        //   moment(today).diff(mostRecentBookingDateTime, "minutes") >= 15
+        // ) {
+        //   setAlertMessage(
+        //     "Se puede reservar una clase por día. Vas a poder resevar más cuando tu más reciente reserva de ese día esté por terminar"
+        //   );
+        //   return checkoutClasses;
+        // }
         return [...checkoutClasses, pItem];
       });
     },
