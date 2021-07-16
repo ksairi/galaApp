@@ -1,6 +1,7 @@
 import React from "react";
+import {LogBox} from "react-native";
 import {Provider} from "react-redux";
-import {SplashScreen} from "expo";
+import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
 import {PersistGate} from "redux-persist/integration/react";
 import AppContainer from "redux/AppContainer";
@@ -73,10 +74,6 @@ export default class App extends React.Component {
     );
   }
 }
-// YellowBox.ignoreWarnings(['Setting a timer', 'Remote debugger',
-// 'Warning: componentWillMount is deprecated',
-// 'Warning: componentWillUpdate is deprecated',
-// 'Warning: componentWillReceiveProps is deprecated'])
-
-// eslint-disable-next-line no-console
-console.disableYellowBox = true;
+if (LogBox) {
+  LogBox.ignoreAllLogs(true);
+}

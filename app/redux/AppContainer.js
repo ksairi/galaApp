@@ -92,7 +92,7 @@ export default class AppContainer extends React.Component {
   }
 
   componentWillUnmount() {
-    Notifications.removeAllNotificationListeners();
+    Notifications.removeNotificationSubscription(this.notificationReceived);
     if (Platform.OS !== "web") {
       AppContainer.unsubscribe();
     }
@@ -124,8 +124,8 @@ export default class AppContainer extends React.Component {
       ActionsCreators.setNotificationsText("Tenés nuevos mensajes!")
     );
     this.props.dispatch(ActionsCreators.setNewMessagesCount(messagesCount));
-    const badgeNumber = await Notifications.getBadgeNumberAsync();
-    await Notifications.setBadgeNumberAsync(badgeNumber + messagesCount);
+    const badgeNumber = await Notifications.getBadgeCountAsync();
+    await Notifications.setBadgeCountAsync(badgeNumber + messagesCount);
     this.setAnalyticEvent(data);
   };
 
@@ -141,8 +141,8 @@ export default class AppContainer extends React.Component {
   //   if (isReadyRef.current && this.props.isLoggedIn) {
   //     const messagesCount = data.messages.length;
   //     this.props.dispatch(ActionsCreators.setNewMessagesCount(messagesCount));
-  //     const badgeNumber = await Notifications.getBadgeNumberAsync();
-  //     await Notifications.setBadgeNumberAsync(badgeNumber + messagesCount);
+  //     const badgeNumber = await Notifications.getBadgeCountAsync();
+  //     await Notifications.setBadgeCountAsync(badgeNumber + messagesCount);
   //     navigate(Screens.Messages);
   //   }
   //   this.props.dispatch(ActionsCreators.setNewMessagesCount(messagesCount));
