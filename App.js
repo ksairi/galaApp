@@ -17,11 +17,6 @@ export default class App extends React.Component {
     showSplashImage: false,
   };
 
-  constructor(props) {
-    super(props);
-    SplashScreen.preventAutoHide();
-  }
-
   componentDidMount() {
     this._cacheResourcesAsync()
       .then(() => {

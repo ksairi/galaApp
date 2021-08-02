@@ -202,7 +202,7 @@ const RecordedClassesByDateNavigator = () => (
       name={Screens.RecordedClassesByDate}
       component={RecordedClassesByDate}
       options={{
-        header: ({navigation, scene: {route}}) => (
+        header: ({navigation, route}) => (
           <Header
             {...{navigation}}
             title={`CLASES DE ${route.params?.name}`}
@@ -221,7 +221,7 @@ const RecordedClassesByTimeNavigator = () => (
       name={Screens.RecordedClassesByTime}
       component={RecordedClassesByTime}
       options={{
-        header: ({navigation, scene: {route}}) => (
+        header: ({navigation, route}) => (
           <Header
             {...{navigation}}
             title={`CLASES DE ${route.params?.name}`}
@@ -271,14 +271,21 @@ const PayFaceToFaceMonthlyFeeScreenNavigator = () => (
       name={Screens.PayFaceToFaceMonthlyFee}
       component={PayFaceToFaceMonthlyFee}
       options={{
-        header: ({navigation}) => (
-          <Header {...{navigation}} backScreen={Screens.PayMonthlyFee} />
-        ),
+        header: (a) => {
+          console.log("ksairi");
+          console.log(a);
+          return <Header backScreen={Screens.PayMonthlyFee} />;
+        },
       }}
     />
   </Stack.Navigator>
 );
 
+const hiderHeader = {
+  options: {
+    headerShown: false,
+  },
+};
 const Drawer = createDrawerNavigator();
 export default () => (
   <Drawer.Navigator
@@ -291,45 +298,77 @@ export default () => (
       />
     )}
   >
-    <Drawer.Screen name={Screens.Home}>{HomeNavigator}</Drawer.Screen>
-    <Drawer.Screen name={Screens.LiveClassStudio1} component={LiveClass} />
-    <Drawer.Screen name={Screens.LiveClassStudio2} component={LiveClass} />
-    <Drawer.Screen name={Screens.Affidavit}>{AffidavitNavigator}</Drawer.Screen>
-    <Drawer.Screen name={Screens.ClassesToBook}>
+    <Drawer.Screen {...hiderHeader} name={Screens.Home}>
+      {HomeNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen
+      {...hiderHeader}
+      name={Screens.LiveClassStudio1}
+      component={LiveClass}
+    />
+    <Drawer.Screen
+      {...hiderHeader}
+      name={Screens.LiveClassStudio2}
+      component={LiveClass}
+    />
+    <Drawer.Screen {...hiderHeader} name={Screens.Affidavit}>
+      {AffidavitNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen {...hiderHeader} name={Screens.ClassesToBook}>
       {ClassesToBookNavigator}
     </Drawer.Screen>
-    <Drawer.Screen name={Screens.BookedClasses}>
+    <Drawer.Screen {...hiderHeader} name={Screens.BookedClasses}>
       {BookedClassesNavigator}
     </Drawer.Screen>
-    <Drawer.Screen name={Screens.RecordedClassesByClass}>
+    <Drawer.Screen {...hiderHeader} name={Screens.RecordedClassesByClass}>
       {RecordedClassesByClassNavigator}
     </Drawer.Screen>
-    <Stack.Screen name={Screens.RecordedClassesByDate}>
+    <Stack.Screen {...hiderHeader} name={Screens.RecordedClassesByDate}>
       {RecordedClassesByDateNavigator}
     </Stack.Screen>
-    <Stack.Screen name={Screens.RecordedClassesByTime}>
+    <Stack.Screen {...hiderHeader} name={Screens.RecordedClassesByTime}>
       {RecordedClassesByTimeNavigator}
     </Stack.Screen>
-    {/* <Drawer.Screen name={`${Screens.NewMember}`} component={NewMember} /> */}
-    <Drawer.Screen name={Screens.Profile}>{ProfileNavigator}</Drawer.Screen>
-    <Drawer.Screen name={Screens.Routines}>{RoutinesNavigator}</Drawer.Screen>
-    <Drawer.Screen name={Screens.RoutineDetail}>
+    {/* <Drawer.Screen {...hiderHeader} name={`${Screens.NewMember}`} component={NewMember} /> */}
+    <Drawer.Screen {...hiderHeader} name={Screens.Profile}>
+      {ProfileNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen {...hiderHeader} name={Screens.Routines}>
+      {RoutinesNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen {...hiderHeader} name={Screens.RoutineDetail}>
       {RoutineDetailNavigator}
     </Drawer.Screen>
-    <Drawer.Screen name={Screens.CameraView} component={CameraView} />
-    <Drawer.Screen name={Screens.Timetable}>{TimetableNavigator}</Drawer.Screen>
-    <Drawer.Screen name={Screens.Messages}>{MessagesNavigator}</Drawer.Screen>
-    <Drawer.Screen name={Screens.Referrals}>{ReferralsNavigator}</Drawer.Screen>
-    <Stack.Screen name={Screens.Settings}>{SettingsNavigator}</Stack.Screen>
-    <Stack.Screen name={Screens.VideoPlayer} component={VideoPlayer} />
+    <Drawer.Screen
+      {...hiderHeader}
+      name={Screens.CameraView}
+      component={CameraView}
+    />
+    <Drawer.Screen {...hiderHeader} name={Screens.Timetable}>
+      {TimetableNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen {...hiderHeader} name={Screens.Messages}>
+      {MessagesNavigator}
+    </Drawer.Screen>
+    <Drawer.Screen {...hiderHeader} name={Screens.Referrals}>
+      {ReferralsNavigator}
+    </Drawer.Screen>
+    <Stack.Screen {...hiderHeader} name={Screens.Settings}>
+      {SettingsNavigator}
+    </Stack.Screen>
+    <Stack.Screen
+      {...hiderHeader}
+      name={Screens.VideoPlayer}
+      component={VideoPlayer}
+    />
 
-    <Stack.Screen name={Screens.PayMonthlyFee}>
+    <Stack.Screen {...hiderHeader} name={Screens.PayMonthlyFee}>
       {PayMonthlyFeeScreenNavigator}
     </Stack.Screen>
-    <Stack.Screen name={Screens.PayVirtualMonthlyFee}>
+    <Stack.Screen {...hiderHeader} name={Screens.PayVirtualMonthlyFee}>
       {PayVirtualMonthlyFeeScreenNavigator}
     </Stack.Screen>
-    <Stack.Screen name={Screens.PayFaceToFaceMonthlyFee}>
+    <Stack.Screen {...hiderHeader} name={Screens.PayFaceToFaceMonthlyFee}>
       {PayFaceToFaceMonthlyFeeScreenNavigator}
     </Stack.Screen>
   </Drawer.Navigator>
