@@ -1,9 +1,34 @@
 {
   "build": {
-    "release": {},
-    "development": {
-      "developmentClient": true,
-      "distribution": "internal"
+    "base": {
+      "env": {},
+      "android": {
+        "image": "default",
+        "env": {}
+      },
+      "ios": {
+        "image": "latest",
+        "env": {}
+      }
+    },
+    "prod": {
+      "extends": "base",
+      "distribution":"store",
+      "releaseChannel":"eas-prod",
+      "env": {},
+      "android": {}
+    },
+    "staging": {
+      "extends": "base",
+      "releaseChannel":"eas-staging",
+      "distribution":"store",
+      "env": {}
+    },
+    "dev": {
+      "extends": "base",
+      "distribution":"store",
+      "releaseChannel":"eas-dev",
+      "env": {}
     }
   }
 }

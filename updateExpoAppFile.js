@@ -12,7 +12,7 @@ const PROD_APP_IOS_BUILD_NUMBER = "7";
 
 const devDeployData = {
   name: "Gala Dev",
-  slug: "galaAppDev",
+  slug: "galaAppEasDev",
   version: DEV_APP_VERSION,
   iosBuildNumber: DEV_APP_IOS_BUILD_NUMBER,
   androidVersionCode: DEV_APP_ANDROID_VERSION_CODE,
@@ -22,7 +22,7 @@ const devDeployData = {
 
 const stagingDeployData = {
   name: "Gala Staging",
-  slug: "galaAppStaging",
+  slug: "galaAppEasStaging",
   version: STAGING_APP_VERSION,
   iosBuildNumber: STAGING_APP_IOS_BUILD_NUMBER,
   androidVersionCode: STAGING_APP_ANDROID_VERSION_CODE,
@@ -32,7 +32,7 @@ const stagingDeployData = {
 
 const prodDeployData = {
   name: "Gala",
-  slug: "galaApp",
+  slug: "galaEasApp",
   version: PROD_APP_VERSION,
   iosBuildNumber: PROD_APP_IOS_BUILD_NUMBER,
   androidVersionCode: PROD_APP_ANDROID_VERSION_CODE,
