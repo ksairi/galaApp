@@ -33,6 +33,8 @@ import CustomFormWrapper from "components/presentationals/CustomFormWrapper";
 import {SafeAreaView} from "react-native-safe-area-context";
 import {RESTRICTED_PASSWORD} from "utils/userData";
 
+import * as LocalAuthentication from "expo-local-authentication";
+
 const AnimatedLogo = Animatable.createAnimatableComponent(Logo);
 
 const styles = {
@@ -55,10 +57,9 @@ const styles = {
     secondLinkStyle: {flex: 0.5},
   },
   showingKeyboardComponentsStyle: {
-    passwordContainerStyle: {marginBottom: 5},
-    linksContainerStyle: {flex: 0.9},
-    firstLinkStyle: {flex: 0.3},
-    secondLinkStyle: {flex: 0.3},
+    linksContainerStyle: {flex: 1},
+    firstLinkStyle: {flex: 0.2},
+    secondLinkStyle: {flex: 0.2},
   },
   landscape: {
     showingKeyboardComponentsStyle: {
@@ -78,7 +79,6 @@ const styles = {
 
 @connect((state) => ({
   userData: state.userData,
-  isLoggedIn: state.isLoggedIn,
   orientation: state.currentOrientation,
   loginImages: state.loginImages,
   loginSynchedDataParameters: state.loginSynchedDataParameters,
@@ -95,6 +95,8 @@ export default class SignIn extends React.Component {
 
   static password = null;
 
+  static biometricOptions;
+
   constructor(props) {
     super(props);
     this.passwordInput = React.createRef();
@@ -102,6 +104,14 @@ export default class SignIn extends React.Component {
       errorMessage: "",
       spinnerVisible: false,
       componentsStyle: styles.hiddenKeyboardComponentsStyle,
+      biometricAvailable: false,
+    };
+
+    SignIn.biometricOptions = {
+      promptMessage: `Hola ${this.props.userData.name}! Ahore podés usar tu huella para loguiarte`,
+      cancelLabel: "Cancelar",
+      fallbackLabel: "Usar clave personal",
+      disableDeviceFallback: true,
     };
   }
 
@@ -115,6 +125,63 @@ export default class SignIn extends React.Component {
     }
     return prevState;
   }
+
+  doLogin = async (byBiometric = false) => {
+    this.setState({errorMessage: "", spinnerVisible: true});
+    try {
+      const deviceId = this.props.deviceId
+        ? this.props.deviceId
+        : await NotificationsHelper.getDeviceId(this.props.dispatch);
+      await LoginHelper.login(
+        byBiometric ? this.props.userData.userId : SignIn.userId,
+        byBiometric ? this.props.userData.password : SignIn.password,
+        deviceId,
+        this.props.loginSynchedDataParameters,
+        this.props.messages,
+        this.props.dispatch,
+        {
+          data: {
+            userData: this.props.userData,
+            hasResetFirstPassword: this.props.hasResetFirstPassword,
+            newMemberData: this.props.newMemberData,
+            routines: this.props.routines,
+          },
+        }
+      );
+      this.setState({spinnerVisible: false});
+      if (!this.props.hasResetFirstPassword) {
+        this.props.dispatch(ActionsCreators.setInResetFirstPasswordMode(true));
+      }
+    } catch (errorMessage) {
+      this.setState({spinnerVisible: false});
+      if (
+        Messages.CHECK_INTERNET_CONNECTION === errorMessage &&
+        SignIn.userId === this.props.userData.userId &&
+        SignIn.password === this.props.userData.password
+      ) {
+        // offline login
+        this.props.dispatch(ActionsCreators.setIsInSession(true));
+        this.props.dispatch(ActionsCreators.login());
+      } else {
+        this.setState({errorMessage});
+      }
+    }
+  };
+
+  asyncBiometricCheck = async () => {
+    const isEnrolled = await LocalAuthentication.isEnrolledAsync();
+    if (isEnrolled && this.props.userData.userId) {
+      this.setState({
+        biometricAvailable: true,
+      });
+      const {success} = await LocalAuthentication.authenticateAsync(
+        SignIn.biometricOptions
+      );
+      if (success) {
+        this.doLogin(true);
+      }
+    }
+  };
 
   componentDidMount() {
     AnalyticsHelper.setPageHit(Screens.SignIn);
@@ -132,6 +199,8 @@ export default class SignIn extends React.Component {
       "keyboardDidHide",
       this._keyboardDidHide
     );
+
+    this.asyncBiometricCheck();
   }
 
   componentWillUnmount() {
@@ -239,7 +308,6 @@ export default class SignIn extends React.Component {
                         resizeMode="contain"
                       />
                     )}
-
                   <RoundedTextInput
                     containerStyle={[
                       {
@@ -350,8 +418,23 @@ export default class SignIn extends React.Component {
                         Recuperala
                       </GenericLink>
                     </View>
+                    {this.state.biometricAvailable && (
+                      <View
+                        style={[
+                          textWithLinkStyle.container,
+                          this.state.componentsStyle.secondLinkStyle,
+                        ]}
+                      >
+                        <GenericLink
+                          containerStyle={textWithLinkStyle.link.container}
+                          contentStyle={textWithLinkStyle.link.content}
+                          onPress={this.asyncBiometricCheck}
+                        >
+                          Usa tu huella
+                        </GenericLink>
+                      </View>
+                    )}
                   </View>
-
                   {this.state.errorMessage !== "" && (
                     <GenericText
                       style={{
@@ -388,52 +471,14 @@ export default class SignIn extends React.Component {
       this.setState({errorMessage: Messages.INVALID_USER_ID_PASSWORD});
       return;
     }
-    this.setState({errorMessage: "", spinnerVisible: true});
-    try {
-      const deviceId = this.props.deviceId
-        ? this.props.deviceId
-        : await NotificationsHelper.getDeviceId(this.props.dispatch);
-      await LoginHelper.login(
-        SignIn.userId,
-        SignIn.password,
-        deviceId,
-        this.props.loginSynchedDataParameters,
-        this.props.messages,
-        this.props.dispatch,
-        {
-          data: {
-            userData: this.props.userData,
-            hasResetFirstPassword: this.props.hasResetFirstPassword,
-            newMemberData: this.props.newMemberData,
-            routines: this.props.routines,
-          },
-        }
-      );
-      this.setState({spinnerVisible: false});
-      if (!this.props.hasResetFirstPassword) {
-        this.props.dispatch(ActionsCreators.setInResetFirstPasswordMode(true));
-      }
-    } catch (errorMessage) {
-      this.setState({spinnerVisible: false});
-      if (
-        Messages.CHECK_INTERNET_CONNECTION === errorMessage &&
-        SignIn.userId === this.props.userData.userId &&
-        SignIn.password === this.props.userData.password
-      ) {
-        // offline login
-        this.props.dispatch(ActionsCreators.setIsInSession(true));
-        this.props.dispatch(ActionsCreators.login());
-      } else {
-        this.setState({errorMessage});
-      }
-    }
+    this.doLogin();
   };
 
   onSubmitUserId = () => {
     if (!SignIn.password) {
       this.passwordInput.current.focus();
     } else {
-      this.signIn();
+      this.doLogin();
     }
   };
 

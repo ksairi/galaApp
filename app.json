@@ -44,7 +44,8 @@
         "NSMicrophoneUsageDescription": "Permite el acceso para poder usar el micrfono en la app de Zoom",
         "LSApplicationQueriesSchemes": [
           "zoomus"
-        ]
+        ],
+        "NSFaceIDUsageDescription":"Gala necesita usar FACE ID / TOUCH ID para autenticarte"
       },
       "associatedDomains": [
         "applinks:y0by.app.link"
