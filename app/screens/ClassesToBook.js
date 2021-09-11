@@ -63,6 +63,7 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
 
   const doFetchClasses = useCallback(async () => {
     try {
+      setLoading(true);
       const {
         classesToBook: remoteClassesToBook,
       } = await ApiHelper.getClassesToBook();
@@ -187,18 +188,18 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
       // }
 
       setCheckoutClasses((checkoutClasses) => {
-        //   const index = checkoutClasses.findIndex(
-        //     (item) =>
-        //       item.date === pItem.date &&
-        //       item.className === pItem.className &&
-        //       item.saloon === pItem.saloon
-        //   );
-        //   if (index >= 0) {
-        //     listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
-        //     return checkoutClasses
-        //       .slice(0, index)
-        //       .concat(checkoutClasses.slice(index + 1));
-        //   }
+        const index = checkoutClasses.findIndex(
+          (item) =>
+            item.date === pItem.date &&
+            item.className === pItem.className &&
+            item.saloon === pItem.saloon
+        );
+        if (index >= 0) {
+          listRef.current.scrollToLocation({sectionIndex: 0, itemIndex: 0});
+          return checkoutClasses
+            .slice(0, index)
+            .concat(checkoutClasses.slice(index + 1));
+        }
         // if (
         //   checkoutClasses.length > 0 &&
         //   moment(potentialBookingDateTime).isAfter(today) &&
@@ -208,7 +209,6 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
         //     "Se puede reservar una clase por día. Vas a poder resevar más cuando tu más reciente reserva de ese día esté por terminar"
         //   );
         //   return checkoutClasses;
-        // }
         return [...checkoutClasses, pItem];
       });
     },
@@ -224,14 +224,6 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
     },
     [checkoutClasses]
   );
-
-  if (loading) {
-    return (
-      <RootWrapper>
-        <LoadingSpinner visible={loading} />
-      </RootWrapper>
-    );
-  }
 
   const Item = ({item, date, dow}) => {
     const ifNeededSelectedStyle = isSelected({...item, date, dow})
@@ -321,6 +313,14 @@ function ClassesToBook({navigation, userData, bookedClasses, dispatch}) {
     setAlertMessage(null);
     if (onOkAlert) onOkAlert();
   }, [setAlertMessage, onOkAlert]);
+
+  if (loading) {
+    return (
+      <RootWrapper>
+        <LoadingSpinner visible={loading} />
+      </RootWrapper>
+    );
+  }
 
   return (
     <RootWrapper style={{padding: 0, maxHeight}}>
